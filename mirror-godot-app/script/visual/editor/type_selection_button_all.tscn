@@ -1,0 +1,64 @@
+[gd_scene load_steps=12 format=3 uid="uid://bcn5yv8dwccr3"]
+
+[ext_resource type="Texture2D" uid="uid://iiewwnvhc5fm" path="res://script/visual/editor/icons/option_button/any_variant.svg" id="1_ugjem"]
+[ext_resource type="Texture2D" uid="uid://bvbpsjcaytc2j" path="res://script/visual/editor/icons/option_button/bool.svg" id="2_5s0nr"]
+[ext_resource type="Texture2D" uid="uid://dvye58ntgi274" path="res://script/visual/editor/icons/option_button/int.svg" id="3_ua8qv"]
+[ext_resource type="Texture2D" uid="uid://c3a6m5wwplm0p" path="res://script/visual/editor/icons/option_button/float.svg" id="4_0alhp"]
+[ext_resource type="Texture2D" uid="uid://isugiixhrvxl" path="res://script/visual/editor/icons/option_button/string.svg" id="5_qxnuh"]
+[ext_resource type="Texture2D" uid="uid://cg47hsy6xvgfv" path="res://script/visual/editor/icons/option_button/vector2.svg" id="6_01t6s"]
+[ext_resource type="Texture2D" uid="uid://ck2i6dfxr7son" path="res://script/visual/editor/icons/option_button/vector3.svg" id="7_a1aw2"]
+[ext_resource type="Texture2D" uid="uid://xicckaim3tjs" path="res://script/visual/editor/icons/option_button/color.svg" id="8_h6w0y"]
+[ext_resource type="Texture2D" uid="uid://8emjxwy6egqf" path="res://script/visual/editor/icons/option_button/object.svg" id="9_fg21q"]
+[ext_resource type="Texture2D" uid="uid://dtwu6nlspkqwa" path="res://script/visual/editor/icons/option_button/dictionary.svg" id="10_upqpk"]
+[ext_resource type="Texture2D" uid="uid://d16gg6um7otq1" path="res://script/visual/editor/icons/option_button/array.svg" id="11_iyrvd"]
+
+[node name="TypeSelectionButtonAll" type="OptionButton"]
+custom_minimum_size = Vector2(60, 25)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -30.0
+offset_top = -12.5
+offset_right = 30.0
+offset_bottom = 12.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+expand_icon = true
+item_count = 11
+selected = 0
+popup/item_0/text = ""
+popup/item_0/icon = ExtResource("1_ugjem")
+popup/item_0/id = 0
+popup/item_1/text = ""
+popup/item_1/icon = ExtResource("2_5s0nr")
+popup/item_1/id = 1
+popup/item_2/text = ""
+popup/item_2/icon = ExtResource("3_ua8qv")
+popup/item_2/id = 2
+popup/item_3/text = ""
+popup/item_3/icon = ExtResource("4_0alhp")
+popup/item_3/id = 3
+popup/item_4/text = ""
+popup/item_4/icon = ExtResource("5_qxnuh")
+popup/item_4/id = 4
+popup/item_5/text = ""
+popup/item_5/icon = ExtResource("6_01t6s")
+popup/item_5/id = 5
+popup/item_6/text = ""
+popup/item_6/icon = ExtResource("7_a1aw2")
+popup/item_6/id = 9
+popup/item_7/text = ""
+popup/item_7/icon = ExtResource("8_h6w0y")
+popup/item_7/id = 20
+popup/item_8/text = ""
+popup/item_8/icon = ExtResource("9_fg21q")
+popup/item_8/id = 24
+popup/item_9/text = ""
+popup/item_9/icon = ExtResource("10_upqpk")
+popup/item_9/id = 27
+popup/item_10/text = ""
+popup/item_10/icon = ExtResource("11_iyrvd")
+popup/item_10/id = 28

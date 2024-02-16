@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://yxfbqri1wo1i"]
+
+[sub_resource type="StandardMaterial3D" id="13"]
+no_depth_test = true
+shading_mode = 0
+
+[sub_resource type="SphereMesh" id="12"]
+material = SubResource("13")
+radius = 0.1
+height = 0.2
+
+[node name="debug_sphere" type="MeshInstance3D"]
+mesh = SubResource("12")

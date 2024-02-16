@@ -1,0 +1,27 @@
+[gd_scene load_steps=7 format=3 uid="uid://c244flwpgdfsd"]
+
+[ext_resource type="PackedScene" uid="uid://cx3cuhqnehql1" path="res://creator/selection/gizmo/parts/translation_scale/base_translation_scale_gizmo.tscn" id="1_sh0lk"]
+[ext_resource type="Script" path="res://creator/selection/gizmo/parts/translation_scale/scale_gizmo.gd" id="2_ed0bi"]
+[ext_resource type="Material" uid="uid://p2vlt37ahm4i" path="res://creator/selection/gizmo/material/x_axis.tres" id="2_ve5er"]
+[ext_resource type="Material" uid="uid://xgv2bye8gtts" path="res://creator/selection/gizmo/material/y_axis.tres" id="4_mjjyx"]
+[ext_resource type="Material" uid="uid://kv4p22wgy5j0" path="res://creator/selection/gizmo/material/z_axis.tres" id="5_kwuh4"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_fq35y"]
+top_radius = 0.1
+bottom_radius = 0.1
+height = 0.2
+
+[node name="ScaleGizmo" instance=ExtResource("1_sh0lk")]
+script = ExtResource("2_ed0bi")
+
+[node name="Tip" parent="XArrow" index="0"]
+material_override = ExtResource("2_ve5er")
+mesh = SubResource("CylinderMesh_fq35y")
+
+[node name="Tip" parent="YArrow" index="1"]
+material_override = ExtResource("4_mjjyx")
+mesh = SubResource("CylinderMesh_fq35y")
+
+[node name="Tip" parent="ZArrow" index="1"]
+material_override = ExtResource("5_kwuh4")
+mesh = SubResource("CylinderMesh_fq35y")

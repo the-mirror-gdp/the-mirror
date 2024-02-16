@@ -1,0 +1,17 @@
+[gd_resource type="StandardMaterial3D" load_steps=6 format=3 uid="uid://2pwawdnyt3d7"]
+
+[ext_resource type="Texture2D" uid="uid://djunpd1i3nr1j" path="res://player/character_models/astronaut/helmet_albedo.jpg" id="1_qun3h"]
+[ext_resource type="Texture2D" uid="uid://dmsylkmdeq7uj" path="res://player/character_models/astronaut/helmet_ao.jpg" id="2_r8x5c"]
+[ext_resource type="Texture2D" uid="uid://b5iyc450n0emj" path="res://player/character_models/astronaut/helmet_metallic.jpg" id="3_3pbjb"]
+[ext_resource type="Texture2D" uid="uid://p5547a8ltj8f" path="res://player/character_models/astronaut/helmet_normal.jpg" id="4_i18ha"]
+[ext_resource type="Texture2D" uid="uid://oru7h08x4epo" path="res://player/character_models/astronaut/helmet_roughness.jpg" id="5_qy57u"]
+
+[resource]
+albedo_texture = ExtResource("1_qun3h")
+metallic = 1.0
+metallic_texture = ExtResource("3_3pbjb")
+roughness_texture = ExtResource("5_qy57u")
+normal_enabled = true
+normal_texture = ExtResource("4_i18ha")
+ao_enabled = true
+ao_texture = ExtResource("2_r8x5c")

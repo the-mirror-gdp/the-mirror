@@ -1,0 +1,4 @@
+export enum PAGINATION_STRATEGY {
+  START_ITEM = 'START_ITEM',
+  PAGE = 'PAGE'
+}

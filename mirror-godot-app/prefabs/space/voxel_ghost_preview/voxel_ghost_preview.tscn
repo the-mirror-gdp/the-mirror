@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://8il0flywmvd"]
+
+[ext_resource type="Script" path="res://prefabs/space/voxel_ghost_preview/voxel_ghost_preview.gd" id="1_3s165"]
+
+[sub_resource type="SphereShape3D" id="1"]
+radius = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a8obj"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 1, 1, 0.15)
+
+[sub_resource type="SphereMesh" id="SphereMesh_3t3xn"]
+material = SubResource("StandardMaterial3D_a8obj")
+radius = 1.0
+height = 2.0
+radial_segments = 32
+
+[node name="VoxelGhostPreview" type="Area3D"]
+script = ExtResource("1_3s165")
+
+[node name="CollisionShape" type="CollisionShape3D" parent="."]
+shape = SubResource("1")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_3t3xn")

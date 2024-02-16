@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://bmxgo1qof2ijr"]
+
+[ext_resource type="PackedScene" uid="uid://dacr8ad8b62aw" path="res://creator/common/base_asset_slot.tscn" id="1_tojuy"]
+[ext_resource type="Script" path="res://creator/asset_inventory/browser/recent/space_script_entity_slot.gd" id="1_y1ytm"]
+
+[node name="SpaceScriptEntitySlot" instance=ExtResource("1_tojuy")]
+script = ExtResource("1_y1ytm")

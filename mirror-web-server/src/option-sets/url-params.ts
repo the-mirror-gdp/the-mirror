@@ -1,0 +1,3 @@
+export enum URL_PARAMS {
+  USER_STATUS = 'USER_STATUS'
+}

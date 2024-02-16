@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=3 uid="uid://cprw7dhdbphw3"]
+
+[ext_resource type="Script" path="res://ui/common/modulo_sized_control.gd" id="1_72f7t"]
+[ext_resource type="PackedScene" uid="uid://b6kuvk63etfpw" path="res://ui/main_menu/pages/space_select.tscn" id="3_5mja0"]
+[ext_resource type="PackedScene" uid="uid://bxip7xuk82fsr" path="res://ui/main_menu/pages/view_space.tscn" id="5_1b50l"]
+[ext_resource type="PackedScene" uid="uid://brrda4tvbd43x" path="res://ui/main_menu/pages/edit_space/edit_space.tscn" id="6_kk8t8"]
+
+[node name="Build" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Pages" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_72f7t")
+items_container_path = NodePath("DiscoverSpaceSelect/VBoxContainer")
+item_width = 376
+
+[node name="DiscoverSpaceSelect" parent="Pages" instance=ExtResource("3_5mja0")]
+layout_mode = 1
+_data_source = 1
+
+[node name="Title" parent="Pages/DiscoverSpaceSelect/VBoxContainer/MarginContainer/VBoxContainer" index="1"]
+text = "Build Spaces"
+
+[node name="ViewSpace" parent="Pages" instance=ExtResource("5_1b50l")]
+visible = false
+layout_mode = 1
+offset_top = 80.0
+
+[node name="EditSpace" parent="Pages" instance=ExtResource("6_kk8t8")]
+visible = false
+layout_mode = 1
+offset_top = 80.0
+
+[editable path="Pages/DiscoverSpaceSelect"]
+[editable path="Pages/DiscoverSpaceSelect/VBoxContainer/Panel/MarginContainer/EndlessScrollFlowContainer"]

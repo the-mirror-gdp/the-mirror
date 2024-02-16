@@ -1,0 +1,141 @@
+[gd_scene load_steps=9 format=3 uid="uid://c60m08p0m42of"]
+
+[ext_resource type="Script" path="res://ui/game/health/health_display.gd" id="1_ytn82"]
+[ext_resource type="AudioStream" uid="uid://cifqhfa68w7sg" path="res://ui/game/health/sounds/audio_player_death.wav" id="2_nauhp"]
+[ext_resource type="Texture2D" uid="uid://dj4jdngeax3r8" path="res://ui/game/health/damage_screen.png" id="2_nhxfn"]
+[ext_resource type="AudioStream" uid="uid://dv1spl5tjfr74" path="res://ui/game/health/sounds/audio_player_respawn.wav" id="3_26gnp"]
+[ext_resource type="Shader" path="res://ui/common/shaders/ui_blurr.gdshader" id="3_oba4a"]
+[ext_resource type="FontFile" uid="uid://cgyrixnr8bppj" path="res://ui/common/fonts/montserrat/montserrat_medium.ttf" id="4_vqoxa"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8cjuj"]
+shader = ExtResource("3_oba4a")
+shader_parameter/blur = 2.33
+shader_parameter/color = Color(0.072, 0.0882, 0.18, 1)
+shader_parameter/strength = 0.45
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t2vwa"]
+bg_color = Color(1, 1, 1, 0)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_size = 1
+shadow_offset = Vector2(1, 1)
+
+[node name="HealthDisplay" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_ytn82")
+_death_sound = ExtResource("2_nauhp")
+_respawn_sound = ExtResource("3_26gnp")
+
+[node name="DamageScreen" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Top" type="TextureRect" parent="DamageScreen"]
+modulate = Color(1, 1, 1, 0.501961)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 200.0
+grow_horizontal = 2
+mouse_filter = 2
+texture = ExtResource("2_nhxfn")
+expand_mode = 1
+flip_v = true
+
+[node name="Bottom" type="TextureRect" parent="DamageScreen"]
+modulate = Color(1, 1, 1, 0.501961)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -200.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+texture = ExtResource("2_nhxfn")
+expand_mode = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="DamageScreen"]
+unique_name_in_owner = true
+
+[node name="DamageIndicators" type="Control" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 0, 0, 0.701961)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Panel" type="Panel" parent="."]
+material = SubResource("ShaderMaterial_8cjuj")
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -219.0
+offset_top = -105.0
+offset_right = -12.0
+offset_bottom = -14.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_t2vwa")
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_bottom = 15
+metadata/_edit_use_anchors_ = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_fonts/font = ExtResource("4_vqoxa")
+theme_override_font_sizes/font_size = 18
+text = "HEALTH"
+vertical_alignment = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_right = 5
+
+[node name="HealthLabel" type="Label" parent="Panel/MarginContainer/HBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_fonts/font = ExtResource("4_vqoxa")
+theme_override_font_sizes/font_size = 50
+text = "100"
+vertical_alignment = 2
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]

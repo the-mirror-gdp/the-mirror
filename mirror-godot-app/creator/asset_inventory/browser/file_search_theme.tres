@@ -1,0 +1,37 @@
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://iixsh1y7xih1"]
+
+[ext_resource type="Texture2D" uid="uid://cf0ttxyympec2" path="res://ui/art/arrow_backward/light.png" id="1_2w3ie"]
+[ext_resource type="Texture2D" uid="uid://cxhv0vxb5q0lh" path="res://ui/art/arrow_forward/light.png" id="2_yrnax"]
+[ext_resource type="Texture2D" uid="uid://xt1vcp0ji5k4" path="res://ui/art/arrow_up/light.png" id="3_iiaw6"]
+[ext_resource type="StyleBox" uid="uid://bbs54ft14uu3q" path="res://ui/common/buttons/gray/gray_normal.stylebox.tres" id="4_1r451"]
+[ext_resource type="FontVariation" uid="uid://cjhnx2nsio76o" path="res://ui/common/fonts/montserrat/montserrat_regular_letter_spaced.tres" id="4_5rqby"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e3ljp"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fi2y0"]
+bg_color = Color(0.0431373, 0.0627451, 0.129412, 0.701961)
+border_color = Color(0.0588235, 0.0666667, 0.2, 0.498039)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+corner_detail = 20
+expand_margin_top = 40.0
+
+[resource]
+Button/styles/hover = SubResource("StyleBoxEmpty_e3ljp")
+FileDialog/icons/back_folder = ExtResource("1_2w3ie")
+FileDialog/icons/forward_folder = ExtResource("2_yrnax")
+FileDialog/icons/parent_folder = ExtResource("3_iiaw6")
+MarginContainer/constants/margin_bottom = 20
+MarginContainer/constants/margin_left = 20
+MarginContainer/constants/margin_right = 20
+MarginContainer/constants/margin_top = 20
+Panel/styles/panel = ExtResource("4_1r451")
+Window/constants/close_h_offset = 33
+Window/fonts/title_font = ExtResource("4_5rqby")
+Window/styles/embedded_border = SubResource("StyleBoxFlat_fi2y0")

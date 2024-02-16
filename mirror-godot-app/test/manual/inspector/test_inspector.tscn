@@ -1,0 +1,139 @@
+[gd_scene load_steps=11 format=3 uid="uid://bfnbil8wrromk"]
+
+[ext_resource type="PackedScene" uid="uid://dtc1sn4c4obtk" path="res://creator/selection/inspector/inspector.tscn" id="1_75n6b"]
+[ext_resource type="Script" path="res://test/manual/inspector/test_inspector.gd" id="1_qsem3"]
+[ext_resource type="Theme" uid="uid://ys8qltjcesi5" path="res://ui/new_player_ui/ui.theme.tres" id="5_roomo"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_nvkjw"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_olnhh"]
+sky_material = SubResource("ProceduralSkyMaterial_nvkjw")
+
+[sub_resource type="Environment" id="Environment_ikn01"]
+background_mode = 2
+sky = SubResource("Sky_olnhh")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_sdkwr"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_56cjv"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_14j1o"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vpdev"]
+size = Vector3(10, 1, 10)
+
+[node name="TestInspector" type="Node"]
+script = ExtResource("1_qsem3")
+
+[node name="Inspector" parent="." instance=ExtResource("1_75n6b")]
+
+[node name="TestButtons" type="VBoxContainer" parent="Inspector"]
+custom_minimum_size = Vector2(128, 0)
+anchors_preset = -1
+anchor_bottom = 1.0
+offset_left = 128.0
+grow_horizontal = 0
+grow_vertical = 2
+theme = ExtResource("5_roomo")
+alignment = 1
+
+[node name="Label" type="Label" parent="Inspector/TestButtons"]
+offset_top = 577.0
+offset_right = 128.0
+offset_bottom = 611.0
+text = "Try holding
+shift or ctrl!"
+horizontal_alignment = 1
+
+[node name="Environment" type="Button" parent="Inspector/TestButtons"]
+custom_minimum_size = Vector2(0, 32)
+offset_top = 615.0
+offset_right = 128.0
+offset_bottom = 647.0
+text = "Select Env"
+
+[node name="Suns" type="Button" parent="Inspector/TestButtons"]
+custom_minimum_size = Vector2(0, 32)
+offset_top = 651.0
+offset_right = 128.0
+offset_bottom = 683.0
+text = "Select Suns"
+
+[node name="OmniLight" type="Button" parent="Inspector/TestButtons"]
+custom_minimum_size = Vector2(0, 32)
+offset_top = 687.0
+offset_right = 128.0
+offset_bottom = 719.0
+text = "Select Light"
+
+[node name="PlainBox" type="Button" parent="Inspector/TestButtons"]
+custom_minimum_size = Vector2(0, 32)
+offset_top = 723.0
+offset_right = 128.0
+offset_bottom = 755.0
+text = "Select Box"
+
+[node name="RigidBox" type="Button" parent="Inspector/TestButtons"]
+custom_minimum_size = Vector2(0, 32)
+offset_top = 759.0
+offset_right = 128.0
+offset_bottom = 791.0
+text = "Select Rigid"
+
+[node name="Floor" type="Button" parent="Inspector/TestButtons"]
+custom_minimum_size = Vector2(0, 32)
+offset_top = 795.0
+offset_right = 128.0
+offset_bottom = 827.0
+text = "Select Floor"
+
+[node name="None" type="Button" parent="Inspector/TestButtons"]
+custom_minimum_size = Vector2(0, 32)
+offset_top = 831.0
+offset_right = 128.0
+offset_bottom = 863.0
+text = "Select None"
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(0.866025, -0.25, 0.433013, 0, 0.866025, 0.5, -0.5, -0.433013, 0.75, 3, 3, 5)
+current = true
+
+[node name="Environment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ikn01")
+
+[node name="OmniLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+light_color = Color(1, 0, 0, 1)
+omni_range = 20.0
+
+[node name="PlainBox" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 2)
+mesh = SubResource("BoxMesh_sdkwr")
+skeleton = NodePath("")
+
+[node name="RigidBox" type="RigidBody3D" parent="."]
+
+[node name="Shape" type="CollisionShape3D" parent="RigidBox"]
+shape = SubResource("BoxShape3D_56cjv")
+
+[node name="Mesh" type="MeshInstance3D" parent="RigidBox"]
+mesh = SubResource("BoxMesh_14j1o")
+skeleton = NodePath("../..")
+
+[node name="Floor" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+
+[node name="Shape" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_vpdev")
+
+[connection signal="pressed" from="Inspector/TestButtons/Environment" to="." method="_on_environment_pressed"]
+[connection signal="pressed" from="Inspector/TestButtons/Suns" to="." method="_on_suns_pressed"]
+[connection signal="pressed" from="Inspector/TestButtons/OmniLight" to="." method="_on_omni_light_pressed"]
+[connection signal="pressed" from="Inspector/TestButtons/PlainBox" to="." method="_on_plain_box_pressed"]
+[connection signal="pressed" from="Inspector/TestButtons/RigidBox" to="." method="_on_rigid_box_pressed"]
+[connection signal="pressed" from="Inspector/TestButtons/Floor" to="." method="_on_floor_pressed"]
+[connection signal="pressed" from="Inspector/TestButtons/None" to="." method="_on_none_pressed"]

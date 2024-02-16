@@ -1,0 +1,71 @@
+[gd_scene load_steps=8 format=3 uid="uid://b2c2wkyl7hh3f"]
+
+[ext_resource type="PackedScene" uid="uid://dkxqj3l0xm8uw" path="res://creator/selection/inspector/categories/inspector_category_base.tscn" id="1_rylve"]
+[ext_resource type="Script" path="res://creator/selection/inspector/categories/inspector_physics.gd" id="2_edctl"]
+[ext_resource type="PackedScene" uid="uid://cdctwmtu1ot17" path="res://creator/selection/inspector/primitive/inspector_bool.tscn" id="3_trthf"]
+[ext_resource type="PackedScene" uid="uid://nepceiq6xabl" path="res://creator/selection/inspector/primitive/inspector_subset.tscn" id="4_4ktbm"]
+[ext_resource type="PackedScene" uid="uid://yl2tfblvbyak" path="res://creator/selection/inspector/primitive/inspector_number_field.tscn" id="5_g4lnv"]
+[ext_resource type="PackedScene" uid="uid://cigpns5k3w4m8" path="res://creator/selection/inspector/primitive/inspector_dropdown.tscn" id="5_t04d3"]
+[ext_resource type="PackedScene" uid="uid://7fra83sagq5p" path="res://creator/selection/inspector/primitive/inspector_number_slider.tscn" id="6_sovxu"]
+
+[node name="InspectorPhysics" instance=ExtResource("1_rylve")]
+offset_bottom = 900.0
+script = ExtResource("2_edctl")
+
+[node name="ToggleButton" parent="CategoryTitle" index="0" node_paths=PackedStringArray("properties")]
+properties = NodePath("../../Properties")
+
+[node name="Text" parent="CategoryTitle/ToggleButton/Name" index="3"]
+text = "PHYSICS"
+
+[node name="Properties" parent="." index="1"]
+visible = true
+
+[node name="CollisionCheckbox" parent="Properties/MarginContainer/PropertyList" index="0" instance=ExtResource("3_trthf")]
+layout_mode = 2
+reset_value = true
+label_text = "Collision"
+
+[node name="CollisionSubset" parent="Properties/MarginContainer/PropertyList" index="1" instance=ExtResource("4_4ktbm")]
+layout_mode = 2
+
+[node name="ShapeType" parent="Properties/MarginContainer/PropertyList/CollisionSubset/PropertyList" index="0" instance=ExtResource("5_t04d3")]
+layout_mode = 2
+values = ["Auto", "Convex", "Concave", "Capsule"]
+current_value = 0
+label_text = "Shape Type"
+
+[node name="BodyType" parent="Properties/MarginContainer/PropertyList/CollisionSubset/PropertyList" index="1" instance=ExtResource("5_t04d3")]
+layout_mode = 2
+values = ["Static", "Kinematic", "Dynamic", "Trigger"]
+current_value = 0
+label_text = "Body Type"
+
+[node name="DynamicSubset" parent="Properties/MarginContainer/PropertyList/CollisionSubset/PropertyList" index="2" instance=ExtResource("4_4ktbm")]
+visible = false
+layout_mode = 2
+
+[node name="Mass" parent="Properties/MarginContainer/PropertyList/CollisionSubset/PropertyList/DynamicSubset/PropertyList" index="0" instance=ExtResource("5_g4lnv")]
+layout_mode = 2
+reset_value = 1.0
+current_value = 1.0
+unit_suffix = "kg"
+label_text = "Mass"
+
+[node name="GravityScale" parent="Properties/MarginContainer/PropertyList/CollisionSubset/PropertyList/DynamicSubset/PropertyList" index="1" instance=ExtResource("6_sovxu")]
+layout_mode = 2
+reset_value = 1.0
+current_value = 1.0
+max_value = 2.0
+allow_greater = true
+allow_lesser = true
+label_text = "Gravity scale"
+
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/CollisionCheckbox" to="." method="_on_collision_checkbox_value_changed"]
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/CollisionSubset/PropertyList/ShapeType" to="." method="_on_shape_type_value_changed"]
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/CollisionSubset/PropertyList/BodyType" to="." method="_on_body_type_value_changed"]
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/CollisionSubset/PropertyList/DynamicSubset/PropertyList/Mass" to="." method="_on_mass_value_changed"]
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/CollisionSubset/PropertyList/DynamicSubset/PropertyList/GravityScale" to="." method="_on_gravity_scale_value_changed"]
+
+[editable path="Properties/MarginContainer/PropertyList/CollisionSubset"]
+[editable path="Properties/MarginContainer/PropertyList/CollisionSubset/PropertyList/DynamicSubset"]

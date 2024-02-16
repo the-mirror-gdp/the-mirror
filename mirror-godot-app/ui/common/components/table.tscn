@@ -1,0 +1,37 @@
+[gd_scene load_steps=3 format=3 uid="uid://b3nmfx70hnuix"]
+
+[ext_resource type="Script" path="res://scripts/ui/table.gd" id="1_iruno"]
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="10_88674"]
+
+[node name="table" type="HBoxContainer"]
+clip_contents = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+script = ExtResource("1_iruno")
+
+[node name="table_header" type="Control" parent="."]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="add_data_row" type="Control" parent="."]
+visible = false
+layout_mode = 2
+
+[node name="new_row" type="Control" parent="."]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="table" type="GridContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme = ExtResource("10_88674")
+theme_override_constants/h_separation = 0
+columns = 4

@@ -1,0 +1,375 @@
+[gd_scene load_steps=24 format=3 uid="uid://cvyh06rrrcdyc"]
+
+[ext_resource type="Script" path="res://ui/main_menu/common/space_panel.gd" id="1_4uh82"]
+[ext_resource type="Texture2D" uid="uid://cuqq3ychrk642" path="res://ui/common/images/space-default.jpg" id="2_7i53w"]
+[ext_resource type="Script" path="res://ui/main_menu/common/UrlTextureRect.gd" id="3_1vgjp"]
+[ext_resource type="FontFile" uid="uid://cv5tkor0qdxqq" path="res://ui/common/fonts/fontawesome-free-6/Font Awesome 6 Free-Solid-900.otf" id="3_s1316"]
+[ext_resource type="PackedScene" uid="uid://b6ox2gq4sespi" path="res://ui/hover_text/hoverable_label.tscn" id="4_l8lve"]
+[ext_resource type="Texture2D" uid="uid://sfmsfqm36hlk" path="res://ui/common/components/star_rating_icons/star-full.svg" id="5_1umgj"]
+[ext_resource type="PackedScene" uid="uid://nqtj3k1bv6uh" path="res://ui/hover_text/hoverable_button.tscn" id="6_6jvnu"]
+[ext_resource type="Texture2D" uid="uid://chxs1yrpg2n32" path="res://ui/main_menu/common/icons/build.svg" id="6_lphio"]
+[ext_resource type="Texture2D" uid="uid://v5a1qchqlwnk" path="res://ui/main_menu/common/icons/view.svg" id="7_rre78"]
+[ext_resource type="Texture2D" uid="uid://dppvpb85bmbio" path="res://ui/main_menu/common/icons/play.svg" id="8_h7urb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xenow"]
+bg_color = Color(0.152941, 0.164706, 0.188235, 0.956863)
+border_width_top = 5
+border_color = Color(0.0627451, 0.929412, 0.760784, 1)
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_emmjb"]
+bg_color = Color(0.101961, 0.109804, 0.129412, 0.941176)
+border_width_top = 5
+border_color = Color(0.0627451, 0.929412, 0.760784, 1)
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eg7uf"]
+bg_color = Color(0.0862745, 0.0941176, 0.109804, 1)
+border_width_top = 5
+border_color = Color(0.0627451, 0.929412, 0.760784, 1)
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s0f5v"]
+bg_color = Color(0.152941, 0.164706, 0.188235, 0.956863)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_25j55"]
+content_margin_left = 8.0
+content_margin_right = 8.0
+bg_color = Color(1, 0.603922, 0.396078, 1)
+border_color = Color(0.941176, 0.941176, 0.941176, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y8xv4"]
+content_margin_left = 8.0
+content_margin_right = 8.0
+bg_color = Color(0.976471, 0.666667, 0.501961, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ad8fw"]
+content_margin_left = 8.0
+content_margin_right = 8.0
+bg_color = Color(1, 0.564706, 0.317647, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kixtf"]
+content_margin_left = 8.0
+content_margin_right = 8.0
+bg_color = Color(1, 0.737255, 0.6, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.941176, 0.941176, 0.941176, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d7vhv"]
+content_margin_left = 6.0
+content_margin_right = 8.0
+bg_color = Color(0.145098, 0.419608, 0.984314, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nu8rl"]
+content_margin_left = 6.0
+content_margin_right = 8.0
+bg_color = Color(0.145098, 0.501961, 0.984314, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gjlyv"]
+content_margin_left = 6.0
+content_margin_right = 8.0
+bg_color = Color(0.105882, 0.392157, 0.980392, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.756863, 0.854902, 1, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qqqgo"]
+content_margin_left = 6.0
+content_margin_right = 8.0
+bg_color = Color(0.105882, 0.392157, 0.980392, 1)
+border_color = Color(0.756863, 0.854902, 1, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pgor7"]
+content_margin_left = 10.0
+bg_color = Color(0.333333, 1, 0.831373, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+expand_margin_left = 1.0
+
+[node name="SpacePanel" instance=ExtResource("6_6jvnu")]
+custom_minimum_size = Vector2(360, 320)
+offset_right = 360.0
+offset_bottom = 320.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_xenow")
+theme_override_styles/hover = SubResource("StyleBoxFlat_emmjb")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_eg7uf")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_xenow")
+theme_override_styles/focus = SubResource("StyleBoxFlat_xenow")
+script = ExtResource("1_4uh82")
+metadata/_edit_use_custom_anchors = false
+metadata/_edit_layout_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." index="0"]
+layout_mode = 2
+offset_top = 5.0
+offset_right = 360.0
+offset_bottom = 324.0
+theme_override_constants/separation = 0
+
+[node name="Preview" type="TextureRect" parent="VBoxContainer" index="0"]
+unique_name_in_owner = true
+clip_contents = true
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+texture = ExtResource("2_7i53w")
+expand_mode = 1
+stretch_mode = 6
+script = ExtResource("3_1vgjp")
+
+[node name="IsReadyZone" parent="VBoxContainer/Preview" index="0" instance=ExtResource("4_l8lve")]
+visible = false
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_top = 5.0
+offset_right = -10.0
+offset_bottom = 35.0
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("3_s1316")
+theme_override_styles/normal = SubResource("StyleBoxFlat_s0f5v")
+text = "users"
+horizontal_alignment = 1
+vertical_alignment = 1
+hover_tooltip_text = "Space is running"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer" index="1"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 16
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer" index="0"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="HboxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer" index="0"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 8
+
+[node name="TitleLabel" parent="VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HboxContainer" index="0" instance=ExtResource("4_l8lve")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 20
+text = "Empty Space "
+text_overrun_behavior = 3
+
+[node name="RatingStarIcon" type="TextureRect" parent="VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HboxContainer" index="1"]
+custom_minimum_size = Vector2(19, 20)
+layout_mode = 2
+size_flags_vertical = 0
+texture = ExtResource("5_1umgj")
+expand_mode = 1
+
+[node name="RatingLabel" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HboxContainer" index="2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "???"
+vertical_alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer" index="1"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 8
+
+[node name="DescriptionLabel" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2" index="0"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.333333, 1, 0.831373, 1)
+theme_override_font_sizes/font_size = 12
+text = "Additional Details Here"
+autowrap_mode = 2
+clip_text = true
+uppercase = true
+
+[node name="UsersCountIcon" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2" index="1"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("3_s1316")
+theme_override_font_sizes/font_size = 15
+text = "user"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="UsersCountLabel" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/VBoxContainer/HBoxContainer2" index="2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "???"
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer" index="1"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_constants/separation = 7
+
+[node name="EnterButton" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" index="0" instance=ExtResource("6_6jvnu")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 20)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/h_separation = 1
+theme_override_constants/icon_max_width = 19
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_25j55")
+theme_override_styles/hover = SubResource("StyleBoxFlat_y8xv4")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ad8fw")
+theme_override_styles/focus = SubResource("StyleBoxFlat_kixtf")
+text = "Build"
+icon = ExtResource("6_lphio")
+alignment = 0
+hover_tooltip_text = "Load the space in Build mode."
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false
+
+[node name="ViewButton" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" index="1" instance=ExtResource("6_6jvnu")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 20)
+layout_mode = 2
+tooltip_text = "View"
+mouse_filter = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/h_separation = 0
+theme_override_constants/icon_max_width = 24
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_d7vhv")
+theme_override_styles/hover = SubResource("StyleBoxFlat_nu8rl")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_gjlyv")
+theme_override_styles/focus = SubResource("StyleBoxFlat_qqqgo")
+text = "View"
+icon = ExtResource("7_rre78")
+alignment = 0
+hover_tooltip_text = "View the space details in the main menu."
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false
+
+[node name="PlayButton" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" index="2" instance=ExtResource("6_6jvnu")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 20)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_constants/h_separation = 0
+theme_override_constants/icon_max_width = 24
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_d7vhv")
+theme_override_styles/hover = SubResource("StyleBoxFlat_nu8rl")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_gjlyv")
+theme_override_styles/focus = SubResource("StyleBoxFlat_qqqgo")
+text = "Play"
+icon = ExtResource("8_h7urb")
+alignment = 0
+hover_tooltip_text = "Play this space as a game."
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false
+
+[node name="PresentUsersInPlay" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/PlayButton" index="0" instance=ExtResource("4_l8lve")]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -16.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 16.0
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("3_s1316")
+theme_override_font_sizes/font_size = 10
+theme_override_styles/normal = SubResource("StyleBoxFlat_pgor7")
+text = "user"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="CreateButton" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" index="3" instance=ExtResource("6_6jvnu")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 20)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_s1316")
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_d7vhv")
+theme_override_styles/hover = SubResource("StyleBoxFlat_nu8rl")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_gjlyv")
+theme_override_styles/focus = SubResource("StyleBoxFlat_qqqgo")
+text = "plus"
+hover_tooltip_text = "Create a new space from this one."
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/EnterButton" to="." method="_on_enter_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/CreateButton" to="." method="_on_create_button_pressed"]

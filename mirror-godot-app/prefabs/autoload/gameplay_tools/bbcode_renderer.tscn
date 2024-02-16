@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=3 uid="uid://bh3jrkur8ney3"]
+
+[ext_resource type="Script" path="res://prefabs/autoload/gameplay_tools/bbcode_renderer.gd" id="1_m4a7o"]
+[ext_resource type="FontFile" uid="uid://cgyrixnr8bppj" path="res://ui/common/fonts/montserrat/montserrat_medium.ttf" id="2_kk8jf"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="3_snrqh"]
+[ext_resource type="FontFile" uid="uid://bfrj1luneglfi" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_italic.ttf" id="4_p8maj"]
+[ext_resource type="FontFile" uid="uid://drup1kwon8nxo" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_bold_italic.ttf" id="5_wrbn5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1i27e"]
+content_margin_left = 10.0
+content_margin_right = 10.0
+bg_color = Color(0.152941, 0.152941, 0.152941, 1)
+expand_margin_bottom = 5.0
+
+[node name="BbcodeRenderer" type="SubViewport"]
+disable_3d = true
+transparent_bg = true
+positional_shadow_atlas_16_bits = false
+render_target_update_mode = 1
+script = ExtResource("1_m4a7o")
+
+[node name="Panel" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(512, 512)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1i27e")
+
+[node name="Text" type="RichTextLabel" parent="Panel"]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("2_kk8jf")
+theme_override_fonts/bold_font = ExtResource("3_snrqh")
+theme_override_fonts/italics_font = ExtResource("4_p8maj")
+theme_override_fonts/bold_italics_font = ExtResource("5_wrbn5")
+bbcode_enabled = true
+text = "
+[p] [/p][p] [/p][p] [/p]
+[center][font_size=208][b]B[/b][/font_size]
+[font_size=64][b][color=#ffdb75]Billboard[/color][/b]
+[/font_size]
+[/center]"
+fit_content = true
+scroll_active = false

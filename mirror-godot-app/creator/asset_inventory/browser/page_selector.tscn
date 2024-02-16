@@ -1,0 +1,55 @@
+[gd_scene load_steps=3 format=3 uid="uid://co42jht05t7bo"]
+
+[ext_resource type="Script" path="res://creator/asset_inventory/browser/page_selector.gd" id="1_trfnk"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_y6yur"]
+size = Vector2(0, 0)
+
+[node name="PageSelector" type="HBoxContainer"]
+offset_right = 145.0
+offset_bottom = 31.0
+theme_override_constants/separation = 12
+alignment = 1
+script = ExtResource("1_trfnk")
+
+[node name="FirstPage" type="Button" parent="."]
+custom_minimum_size = Vector2(32, 24)
+offset_right = 32.0
+offset_bottom = 31.0
+text = "<<"
+
+[node name="PrevPage" type="Button" parent="."]
+custom_minimum_size = Vector2(32, 24)
+offset_left = 44.0
+offset_right = 76.0
+offset_bottom = 31.0
+text = "<"
+
+[node name="CurrentPage" type="SpinBox" parent="."]
+offset_left = 88.0
+offset_right = 155.0
+offset_bottom = 31.0
+theme_override_icons/updown = SubResource("PlaceholderTexture2D_y6yur")
+max_value = 9.22337e+18
+alignment = 1
+select_all_on_focus = true
+
+[node name="NextPage" type="Button" parent="."]
+custom_minimum_size = Vector2(32, 24)
+offset_left = 167.0
+offset_right = 199.0
+offset_bottom = 31.0
+text = ">"
+
+[node name="LastPage" type="Button" parent="."]
+custom_minimum_size = Vector2(32, 24)
+offset_left = 211.0
+offset_right = 243.0
+offset_bottom = 31.0
+text = ">>"
+
+[connection signal="pressed" from="FirstPage" to="." method="_on_first_page_pressed"]
+[connection signal="pressed" from="PrevPage" to="." method="_on_prev_page_pressed"]
+[connection signal="value_changed" from="CurrentPage" to="." method="_on_page_changed"]
+[connection signal="pressed" from="NextPage" to="." method="_on_next_page_pressed"]
+[connection signal="pressed" from="LastPage" to="." method="_on_last_page_pressed"]

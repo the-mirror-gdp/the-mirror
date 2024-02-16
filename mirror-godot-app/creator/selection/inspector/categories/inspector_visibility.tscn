@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=3 uid="uid://cy8ambaorkycj"]
+
+[ext_resource type="PackedScene" uid="uid://dkxqj3l0xm8uw" path="res://creator/selection/inspector/categories/inspector_category_base.tscn" id="1_h2eod"]
+[ext_resource type="Script" path="res://creator/selection/inspector/categories/inspector_visibility.gd" id="2_fj02k"]
+[ext_resource type="PackedScene" uid="uid://cdctwmtu1ot17" path="res://creator/selection/inspector/primitive/inspector_bool.tscn" id="3_kwdsa"]
+[ext_resource type="PackedScene" uid="uid://yl2tfblvbyak" path="res://creator/selection/inspector/primitive/inspector_number_field.tscn" id="6_22hdp"]
+
+[node name="InspectorVisibility" instance=ExtResource("1_h2eod")]
+offset_bottom = 602.0
+script = ExtResource("2_fj02k")
+
+[node name="Text" parent="CategoryTitle/ToggleButton/Name" index="3"]
+text = "VISIBILITY"
+
+[node name="Properties" parent="." index="1"]
+visible = true
+
+[node name="CastShadowsCheckbox" parent="Properties/MarginContainer/PropertyList" index="0" instance=ExtResource("3_kwdsa")]
+layout_mode = 2
+reset_value = true
+label_text = "Cast Shadows"
+
+[node name="VisibiltyFrom" parent="Properties/MarginContainer/PropertyList" index="1" instance=ExtResource("6_22hdp")]
+layout_mode = 2
+unit_suffix = "m"
+step = 0.01
+label_text = "Visibility Begin"
+
+[node name="VisibiltyFromMargin" parent="Properties/MarginContainer/PropertyList" index="2" instance=ExtResource("6_22hdp")]
+visible = false
+layout_mode = 2
+unit_suffix = "m"
+step = 0.01
+label_text = "Begin Fade"
+
+[node name="VisibilityTo" parent="Properties/MarginContainer/PropertyList" index="3" instance=ExtResource("6_22hdp")]
+layout_mode = 2
+unit_suffix = "m"
+step = 0.01
+label_text = "Visibility End"
+
+[node name="VisibilityToMargin" parent="Properties/MarginContainer/PropertyList" index="4" instance=ExtResource("6_22hdp")]
+visible = false
+layout_mode = 2
+unit_suffix = "m"
+step = 0.01
+label_text = "End Fade"
+
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/CastShadowsCheckbox" to="." method="_on_cast_shadows_checkbox_value_changed"]

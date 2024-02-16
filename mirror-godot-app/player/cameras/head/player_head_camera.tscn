@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://g08bytt518wj"]
+
+[ext_resource type="Script" path="res://player/cameras/head/player_head_camera.gd" id="1_knvqp"]
+[ext_resource type="Script" path="res://player/cameras/camera_nodes/asset_placement_normal_mode.gd" id="2_yncxo"]
+[ext_resource type="Script" path="res://player/equipable/equipable_view_model.gd" id="3_euhnc"]
+[ext_resource type="Script" path="res://player/cameras/head/third_person_camera_arm.gd" id="4_8wxnm"]
+
+[node name="PlayerHeadCamera" type="Node3D" node_paths=PackedStringArray("_camera")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1.625, 2.08165e-12)
+script = ExtResource("1_knvqp")
+_camera = NodePath("CameraRecoilOffset/ThirdPersonCameraArm/ThirdPersonCamera")
+
+[node name="CameraRecoilOffset" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="FirstPersonCamera" type="Camera3D" parent="CameraRecoilOffset"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.08165e-12, 0, -2.08165e-12)
+script = ExtResource("2_yncxo")
+
+[node name="EquipableViewModel" type="Node3D" parent="CameraRecoilOffset/FirstPersonCamera"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, -0.2, -0.2)
+script = ExtResource("3_euhnc")
+
+[node name="ThirdPersonCameraArm" type="Node3D" parent="CameraRecoilOffset"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0, 0)
+script = ExtResource("4_8wxnm")
+
+[node name="ThirdPersonCamera" type="Camera3D" parent="CameraRecoilOffset/ThirdPersonCameraArm"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.5)
+script = ExtResource("2_yncxo")

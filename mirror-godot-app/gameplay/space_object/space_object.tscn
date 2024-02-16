@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://drc3cpvtxm7rl"]
+
+[ext_resource type="Script" path="res://gameplay/space_object/space_object.gd" id="1_3j8et"]
+[ext_resource type="Script" path="res://gameplay/space_object/scaled_model.gd" id="2_e6riu"]
+[ext_resource type="Script" path="res://gameplay/space_object/interpolated_node.gd" id="2_tnpw4"]
+[ext_resource type="Material" uid="uid://d2xpwyxq4hw8c" path="res://art/outline.tres" id="3_8ibm8"]
+[ext_resource type="Script" path="res://scripts/entities/data_store_node.gd" id="5_xrgw2"]
+
+[node name="SpaceObject" type="TMSpaceObjectBase"]
+layer_name = &"STATIC"
+script = ExtResource("1_3j8et")
+
+[node name="_InterpolatedNode" type="Node3D" parent="."]
+top_level = true
+script = ExtResource("2_tnpw4")
+
+[node name="_ScaledModel" type="Node3D" parent="_InterpolatedNode"]
+script = ExtResource("2_e6riu")
+outline_resource = ExtResource("3_8ibm8")
+
+[node name="_DataStoreNodePath" type="Node" parent="."]
+script = ExtResource("5_xrgw2")
+
+[node name="_SelectionLabel" type="Label3D" parent="."]
+pixel_size = 0.002
+billboard = 1
+double_sided = false
+no_depth_test = true
+fixed_size = true
+render_priority = 127
+outline_render_priority = 126
+font_size = 12
+uppercase = true

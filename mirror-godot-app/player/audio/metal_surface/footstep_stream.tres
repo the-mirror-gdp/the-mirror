@@ -1,0 +1,29 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=9 format=3 uid="uid://c3cry3nh757mc"]
+
+[ext_resource type="AudioStream" uid="uid://b41qrpe0b8vd2" path="res://player/audio/metal_surface/footsteps/Footstep_FPS-001.wav" id="1_b4ywk"]
+[ext_resource type="AudioStream" uid="uid://d0cn5a82jxubv" path="res://player/audio/metal_surface/footsteps/Footstep_FPS-002.wav" id="2_nn0hg"]
+[ext_resource type="AudioStream" uid="uid://dafvf6erljpi4" path="res://player/audio/metal_surface/footsteps/Footstep_FPS-003.wav" id="3_ww8mc"]
+[ext_resource type="AudioStream" uid="uid://cgg05m4igm4vu" path="res://player/audio/metal_surface/footsteps/Footstep_FPS-004.wav" id="4_f25s8"]
+[ext_resource type="AudioStream" uid="uid://k8owt5wvogy8" path="res://player/audio/metal_surface/footsteps/Footstep_FPS-005.wav" id="5_nbku8"]
+[ext_resource type="AudioStream" uid="uid://chy51ui4awhmn" path="res://player/audio/metal_surface/footsteps/Footstep_FPS-006.wav" id="6_1d86s"]
+[ext_resource type="AudioStream" uid="uid://dct4ujpidl1rv" path="res://player/audio/metal_surface/footsteps/Footstep_FPS-007.wav" id="7_1itka"]
+[ext_resource type="AudioStream" uid="uid://cvtk5g4u5o5g1" path="res://player/audio/metal_surface/footsteps/Footstep_FPS-008.wav" id="8_5f604"]
+
+[resource]
+streams_count = 8
+stream_0/stream = ExtResource("1_b4ywk")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("2_nn0hg")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("3_ww8mc")
+stream_2/weight = 1.0
+stream_3/stream = ExtResource("4_f25s8")
+stream_3/weight = 1.0
+stream_4/stream = ExtResource("5_nbku8")
+stream_4/weight = 1.0
+stream_5/stream = ExtResource("6_1d86s")
+stream_5/weight = 1.0
+stream_6/stream = ExtResource("7_1itka")
+stream_6/weight = 1.0
+stream_7/stream = ExtResource("8_5f604")
+stream_7/weight = 1.0

@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://b7imxc8pmx14a"]
+
+[ext_resource type="Script" path="res://prefabs/autoload/gameplay_tools/audio_input_detector.gd" id="1_mbycq"]
+
+[sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_dsc6d"]
+
+[node name="AudioInputDetector" type="AudioStreamPlayer"]
+stream = SubResource("AudioStreamMicrophone_dsc6d")
+bus = &"Record"
+script = ExtResource("1_mbycq")

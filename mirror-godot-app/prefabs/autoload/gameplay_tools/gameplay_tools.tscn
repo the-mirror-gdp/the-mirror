@@ -1,0 +1,16 @@
+[gd_scene load_steps=5 format=3 uid="uid://cysj2rhduysfe"]
+
+[ext_resource type="Script" path="res://prefabs/autoload/gameplay_tools/gameplay_tools.gd" id="1_n0s4u"]
+[ext_resource type="PackedScene" uid="uid://bh3jrkur8ney3" path="res://prefabs/autoload/gameplay_tools/bbcode_renderer.tscn" id="2_hd0rt"]
+[ext_resource type="PackedScene" uid="uid://b1rx4mgfrumg1" path="res://prefabs/autoload/gameplay_tools/material_selector.tscn" id="3_tmoox"]
+[ext_resource type="PackedScene" uid="uid://b7imxc8pmx14a" path="res://prefabs/autoload/gameplay_tools/audio_input_detector.tscn" id="4_o8c22"]
+
+[node name="GameplayTools" type="Node3D"]
+script = ExtResource("1_n0s4u")
+
+[node name="BbcodeRenderer" parent="." instance=ExtResource("2_hd0rt")]
+
+[node name="MaterialSelector" parent="." instance=ExtResource("3_tmoox")]
+
+[node name="AudioInputDetector" parent="." instance=ExtResource("4_o8c22")]
+volume_db = -80.0

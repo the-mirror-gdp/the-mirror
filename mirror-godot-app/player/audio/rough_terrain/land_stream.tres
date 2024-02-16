@@ -1,0 +1,14 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=4 format=3 uid="uid://dt37cvcrpn5vd"]
+
+[ext_resource type="AudioStream" uid="uid://cl4a37dfksu0a" path="res://player/audio/rough_terrain/land/Land_Gen_RoughTerrain-001.wav" id="1_h4sjp"]
+[ext_resource type="AudioStream" uid="uid://busbp6aiawxck" path="res://player/audio/rough_terrain/land/Land_Gen_RoughTerrain-002.wav" id="2_dldd8"]
+[ext_resource type="AudioStream" uid="uid://bfal1rvq04rcw" path="res://player/audio/rough_terrain/land/Land_Gen_RoughTerrain-003.wav" id="3_j1tod"]
+
+[resource]
+streams_count = 3
+stream_0/stream = ExtResource("1_h4sjp")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("2_dldd8")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("3_j1tod")
+stream_2/weight = 1.0

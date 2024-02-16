@@ -1,0 +1,473 @@
+[gd_scene load_steps=30 format=3 uid="uid://pdt3sfnghnqp"]
+
+[ext_resource type="Script" path="res://ui/login/login_ui.gd" id="1_jnny8"]
+[ext_resource type="Theme" uid="uid://ggwm8asxintx" path="res://ui/common/themes/menu_ui.theme.tres" id="1_ltd4e"]
+[ext_resource type="Texture2D" uid="uid://kq6e5t72lfel" path="res://ui/login/login-background.png" id="3_f1hcg"]
+[ext_resource type="Script" path="res://ui/login/app_logo_branding_from_config.gd" id="5_8lxjt"]
+[ext_resource type="Texture2D" uid="uid://dado8tm3ai4q" path="res://ui/common/images/logo-default.svg" id="7_tbjhu"]
+[ext_resource type="FontFile" uid="uid://s44wjlc18fo7" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_bold.ttf" id="8_28d3i"]
+[ext_resource type="StyleBox" uid="uid://nen4cpg1225q" path="res://ui/common/panels/panel_basic_rounded.stylebox.tres" id="8_eu7c4"]
+[ext_resource type="Shader" path="res://ui/common/shaders/ui_blurr.gdshader" id="8_uraan"]
+[ext_resource type="FontFile" uid="uid://wnq6gpmrsr6v" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_medium.ttf" id="9_ql2dm"]
+[ext_resource type="StyleBox" uid="uid://b14r8oqdqptk8" path="res://ui/common/panels/panel_round_border_only.tres" id="10_q30ds"]
+[ext_resource type="FontFile" uid="uid://bjwepurchoc75" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_semi_bold.ttf" id="13_k150r"]
+[ext_resource type="Texture2D" uid="uid://cm6vtqb7wpw1n" path="res://ui/login/google_login.svg" id="13_qlee5"]
+[ext_resource type="Texture2D" uid="uid://pqhwfvt685gr" path="res://ui/login/discord_login.svg" id="14_67dg5"]
+[ext_resource type="Texture2D" uid="uid://bxr2pumng86d1" path="res://ui/login/facebook_login.svg" id="15_4esbn"]
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="16_jhpgq"]
+[ext_resource type="PackedScene" uid="uid://b58iveuspbtyj" path="res://ui/button_sound/button_sound.tscn" id="17_5bdl5"]
+[ext_resource type="FontFile" uid="uid://cgyrixnr8bppj" path="res://ui/common/fonts/montserrat/montserrat_medium.ttf" id="17_hawul"]
+[ext_resource type="StyleBox" uid="uid://ca63qjc22p8ek" path="res://ui/common/buttons/blue_underline/blue_underline_normal.stylebox.tres" id="17_i5gqh"]
+[ext_resource type="StyleBox" uid="uid://cfnh350gqlauw" path="res://ui/common/buttons/blue_underline/blue_underline_hover.stylebox.tres" id="18_hffas"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rk4rc"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tm8vm"]
+shader = ExtResource("8_uraan")
+shader_parameter/blur = 3.0
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/strength = 0.15
+
+[sub_resource type="Theme" id="Theme_ij11x"]
+
+[sub_resource type="FontVariation" id="Font_mbwka"]
+base_font = ExtResource("8_28d3i")
+
+[sub_resource type="FontVariation" id="Font_d5673"]
+base_font = ExtResource("9_ql2dm")
+variation_embolden = 0.5
+
+[sub_resource type="FontVariation" id="Font_oqr4b"]
+base_font = ExtResource("13_k150r")
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_secha"]
+color = Color(1, 1, 1, 0.2)
+
+[sub_resource type="FontVariation" id="Font_3a6vw"]
+base_font = ExtResource("13_k150r")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a3r7x"]
+shader = ExtResource("8_uraan")
+shader_parameter/blur = 3.0
+shader_parameter/color = Color(0, 0, 0, 1)
+shader_parameter/strength = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7twde"]
+bg_color = Color(0, 0, 0, 0)
+
+[node name="LoginUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_ltd4e")
+script = ExtResource("1_jnny8")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+self_modulate = Color(0.239216, 0.247059, 0.309804, 0.878431)
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_f1hcg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -329.0
+offset_top = -369.0
+offset_right = 329.0
+offset_bottom = 369.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_layout_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+texture = ExtResource("7_tbjhu")
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("5_8lxjt")
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxEmpty_rk4rc")
+
+[node name="SignInMenu" type="Panel" parent="VBoxContainer"]
+material = SubResource("ShaderMaterial_tm8vm")
+custom_minimum_size = Vector2(500, 500)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = ExtResource("8_eu7c4")
+
+[node name="Border" type="Panel" parent="VBoxContainer/SignInMenu"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_ij11x")
+theme_override_styles/panel = ExtResource("10_q30ds")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/SignInMenu"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 150
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 150
+theme_override_constants/margin_bottom = 100
+metadata/_edit_layout_mode = 1
+
+[node name="LoginContainer" type="VBoxContainer" parent="VBoxContainer/SignInMenu/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="Label" type="Label" parent="VBoxContainer/SignInMenu/MarginContainer/LoginContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("Font_mbwka")
+theme_override_font_sizes/font_size = 40
+text = "Sign in
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SignUpHereContainer" type="HBoxContainer" parent="VBoxContainer/SignInMenu/MarginContainer/LoginContainer"]
+layout_direction = 2
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/SignUpHereContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("Font_d5673")
+theme_override_font_sizes/font_size = 14
+text = "If you do not have an account, "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SignUpHere" type="Button" parent="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/SignUpHereContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.145098, 0.419608, 0.984314, 1)
+theme_override_fonts/font = SubResource("Font_oqr4b")
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = ExtResource("17_i5gqh")
+theme_override_styles/hover = ExtResource("18_hffas")
+text = "sign up here"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/SignInMenu/MarginContainer/LoginContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="GoogleLogin" type="TextureButton" parent="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/HBoxContainer"]
+layout_mode = 2
+texture_normal = ExtResource("13_qlee5")
+
+[node name="DiscordLogin" type="TextureButton" parent="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+texture_normal = ExtResource("14_67dg5")
+
+[node name="FacebookLogin" type="TextureButton" parent="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+texture_normal = ExtResource("15_4esbn")
+
+[node name="LineSeparator" type="HSeparator" parent="VBoxContainer/SignInMenu/MarginContainer/LoginContainer"]
+custom_minimum_size = Vector2(450, 1)
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_secha")
+
+[node name="DevLoginOptions" type="OptionButton" parent="VBoxContainer/SignInMenu/MarginContainer/LoginContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="Username" type="LineEdit" parent="VBoxContainer/SignInMenu/MarginContainer/LoginContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+placeholder_text = "Email"
+caret_blink = true
+
+[node name="Password" type="LineEdit" parent="VBoxContainer/SignInMenu/MarginContainer/LoginContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+placeholder_text = "Password"
+secret = true
+caret_blink = true
+
+[node name="RememberMe" type="CheckBox" parent="VBoxContainer/SignInMenu/MarginContainer/LoginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("16_jhpgq")
+button_pressed = true
+text = "  Remember Me"
+
+[node name="SignIn" type="Button" parent="VBoxContainer/SignInMenu/MarginContainer/LoginContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_fonts/font = SubResource("Font_3a6vw")
+text = "Sign In"
+
+[node name="LoginAnonymously" type="Button" parent="VBoxContainer/SignInMenu/MarginContainer/LoginContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_fonts/font = SubResource("Font_3a6vw")
+text = "Join as Guest"
+
+[node name="ForgotPassword" type="Button" parent="VBoxContainer/SignInMenu/MarginContainer/LoginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.145098, 0.419608, 0.984314, 1)
+theme_override_fonts/font = SubResource("Font_oqr4b")
+theme_override_styles/normal = ExtResource("17_i5gqh")
+theme_override_styles/hover = ExtResource("18_hffas")
+text = "Forgot Password?"
+
+[node name="RegisterContainer" type="VBoxContainer" parent="VBoxContainer/SignInMenu/MarginContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(450, 0)
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="Label" type="Label" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("Font_mbwka")
+theme_override_font_sizes/font_size = 40
+text = "Create Account
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SignInHereContainer" type="HBoxContainer" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer"]
+layout_direction = 2
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/SignInHereContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("Font_d5673")
+theme_override_font_sizes/font_size = 14
+text = "Already have an account?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SignInHere" type="Button" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/SignInHereContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.145098, 0.419608, 0.984314, 1)
+theme_override_fonts/font = SubResource("Font_oqr4b")
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = ExtResource("17_i5gqh")
+theme_override_styles/hover = ExtResource("18_hffas")
+text = "Sign in here"
+
+[node name="LineSeparator" type="HSeparator" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer"]
+visible = false
+custom_minimum_size = Vector2(450, 1)
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_secha")
+
+[node name="DisplayName" type="LineEdit" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+placeholder_text = "Display Name"
+caret_blink = true
+
+[node name="ErrorLabel" type="Label" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/DisplayName"]
+visible = false
+layout_mode = 2
+offset_top = 44.0
+offset_right = 450.0
+offset_bottom = 67.0
+theme_override_colors/font_color = Color(0.972549, 0.443137, 0.443137, 1)
+text = "Please enter your display name"
+
+[node name="Email" type="LineEdit" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+placeholder_text = "Email"
+caret_blink = true
+
+[node name="ErrorLabel" type="Label" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/Email"]
+visible = false
+layout_mode = 0
+offset_top = 44.0
+offset_right = 450.0
+offset_bottom = 67.0
+theme_override_colors/font_color = Color(0.972549, 0.443137, 0.443137, 1)
+text = "Please enter your email"
+
+[node name="Password" type="LineEdit" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+placeholder_text = "Password"
+secret = true
+caret_blink = true
+
+[node name="ErrorLabel" type="Label" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/Password"]
+visible = false
+layout_mode = 0
+offset_top = 44.0
+offset_right = 450.0
+offset_bottom = 67.0
+theme_override_colors/font_color = Color(0.972549, 0.443137, 0.443137, 1)
+text = "Please enter your password"
+
+[node name="ConfirmPassword" type="LineEdit" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+placeholder_text = "Confirm Password"
+secret = true
+caret_blink = true
+
+[node name="ErrorLabel" type="Label" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/ConfirmPassword"]
+visible = false
+layout_mode = 0
+offset_top = 44.0
+offset_right = 450.0
+offset_bottom = 67.0
+theme_override_colors/font_color = Color(0.972549, 0.443137, 0.443137, 1)
+text = "Passwords must match"
+
+[node name="ToS" type="HBoxContainer" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer"]
+layout_mode = 2
+
+[node name="ToSCheckbox" type="CheckBox" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/ToS"]
+layout_mode = 2
+theme = ExtResource("16_jhpgq")
+theme_override_constants/h_separation = 4
+text = "I agree to the"
+
+[node name="ErrorLabel" type="Label" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/ToS/ToSCheckbox"]
+visible = false
+layout_mode = 0
+offset_top = 22.0
+offset_right = 450.0
+offset_bottom = 45.0
+theme_override_colors/font_color = Color(0.972549, 0.443137, 0.443137, 1)
+theme_override_fonts/font = ExtResource("17_hawul")
+theme_override_font_sizes/font_size = 15
+text = "You must agree to the Terms of Service and Privacy Policy"
+
+[node name="ToSLink" type="Button" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/ToS"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.145098, 0.419608, 0.984314, 1)
+theme_override_fonts/font = SubResource("Font_oqr4b")
+theme_override_styles/normal = ExtResource("17_i5gqh")
+theme_override_styles/hover = ExtResource("18_hffas")
+text = "Terms of Service"
+
+[node name="Label2" type="Label" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/ToS"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("Font_d5673")
+theme_override_font_sizes/font_size = 14
+text = "and"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PrivacyLink" type="Button" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/ToS"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.145098, 0.419608, 0.984314, 1)
+theme_override_fonts/font = SubResource("Font_oqr4b")
+theme_override_styles/normal = ExtResource("17_i5gqh")
+theme_override_styles/hover = ExtResource("18_hffas")
+text = "Privacy Policy"
+
+[node name="SignUp" type="Button" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_fonts/font = SubResource("Font_3a6vw")
+text = "Sign Up"
+
+[node name="ConnectPopup" type="Panel" parent="VBoxContainer"]
+visible = false
+material = SubResource("ShaderMaterial_a3r7x")
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_7twde")
+metadata/_edit_layout_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ConnectPopup"]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -204.0
+offset_top = -115.0
+offset_right = 205.0
+offset_bottom = 115.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 50
+metadata/_edit_layout_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ConnectPopup/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/ConnectPopup/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(155, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Logging in...."
+horizontal_alignment = 1
+
+[node name="ConnectCancelButton" type="Button" parent="VBoxContainer/ConnectPopup/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Cancel"
+
+[node name="ButtonSound" parent="." instance=ExtResource("17_5bdl5")]
+
+[connection signal="pressed" from="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/SignUpHereContainer/SignUpHere" to="." method="_on_sign_up_here_pressed"]
+[connection signal="pressed" from="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/HBoxContainer/GoogleLogin" to="." method="_on_google_login_pressed"]
+[connection signal="pressed" from="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/HBoxContainer/DiscordLogin" to="." method="_on_discord_login_pressed"]
+[connection signal="pressed" from="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/HBoxContainer/FacebookLogin" to="." method="_on_facebook_login_pressed"]
+[connection signal="item_selected" from="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/DevLoginOptions" to="." method="_on_dev_login_options_item_selected"]
+[connection signal="text_submitted" from="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/Username" to="." method="_on_text_submitted"]
+[connection signal="text_submitted" from="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/Password" to="." method="_on_text_submitted"]
+[connection signal="toggled" from="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/RememberMe" to="." method="_on_remember_me_changed"]
+[connection signal="pressed" from="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/SignIn" to="." method="_on_sign_in_pressed"]
+[connection signal="pressed" from="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/LoginAnonymously" to="." method="_on_login_anonymously_pressed"]
+[connection signal="pressed" from="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/ForgotPassword" to="." method="_on_forgot_password_pressed"]
+[connection signal="pressed" from="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/SignInHereContainer/SignInHere" to="." method="_on_sign_in_here_pressed"]
+[connection signal="text_submitted" from="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/DisplayName" to="." method="_on_text_submitted"]
+[connection signal="text_submitted" from="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/Email" to="." method="_on_text_submitted"]
+[connection signal="text_submitted" from="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/Password" to="." method="_on_text_submitted"]
+[connection signal="text_submitted" from="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/ConfirmPassword" to="." method="_on_text_submitted"]
+[connection signal="toggled" from="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/ToS/ToSCheckbox" to="." method="_on_remember_me_changed"]
+[connection signal="pressed" from="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/ToS/ToSLink" to="." method="_on_tos_link_pressed"]
+[connection signal="pressed" from="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/ToS/PrivacyLink" to="." method="_on_privacy_link_pressed"]
+[connection signal="pressed" from="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/SignUp" to="." method="_on_sign_up_pressed"]
+[connection signal="pressed" from="VBoxContainer/ConnectPopup/MarginContainer/VBoxContainer/ConnectCancelButton" to="." method="_on_connect_cancel_button_pressed"]

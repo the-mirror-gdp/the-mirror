@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cbdg88qf5lj37"]
+
+[ext_resource type="Script" path="res://scripts/entities/data_store_globals.gd" id="1_6bcvb"]
+
+[node name="KeyedDataStore" type="Node"]
+script = ExtResource("1_6bcvb")

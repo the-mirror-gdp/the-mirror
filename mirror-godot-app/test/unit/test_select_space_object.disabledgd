@@ -1,0 +1,30 @@
+extends GutTest
+
+
+var zone_space_scene_packed_scene: PackedScene
+var space_object_dictionary: Dictionary
+
+
+func before_all():
+	var test_constants = load("res://test/utils/test_constants.gd").new()
+	space_object_dictionary = test_constants.fake_space_object_dictionary.duplicate()
+	zone_space_scene_packed_scene = load("res://scenes/space_scene.tscn")
+	Zone.Scene = zone_space_scene_packed_scene.instantiate() as SpaceScene
+
+
+func after_all():
+	Zone.Scene.queue_free()
+	Zone.Scene = null
+	for space_object in Zone.instance_manager.get_all_instances():
+		Zone.instance_manager.remove_space_object(space_object)
+
+
+func test_select_space_object():
+	Zone.instance_manager.create_space_object(space_object_dictionary)
+	var new_space_object: SpaceObject = Zone.instance_manager.get_instance(space_object_dictionary["_id"])
+	GameUI.creator_ui.select_object(new_space_object)
+	assert_eq(
+			GameUI.creator_ui.selection_helper.is_object_selected(new_space_object.get_instance_id()),
+			true,
+			"Selection helper failed to select a new space object (instance ids don't match!)"
+	)

@@ -1,0 +1,59 @@
+[gd_scene load_steps=5 format=3 uid="uid://b1rl24kbbmeq3"]
+
+[ext_resource type="Theme" uid="uid://chpmeyn2g6o6r" path="res://script/visual/editor/script_editor.theme.tres" id="1_0fe6a"]
+[ext_resource type="Script" path="res://script/visual/editor/graph/script_comment_graph_node.gd" id="1_1qqx0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w02o4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y0png"]
+
+[node name="ScriptCommentGraphNode" type="GraphNode"]
+custom_minimum_size = Vector2(160, 80)
+offset_right = 160.0
+offset_bottom = 80.0
+theme = ExtResource("1_0fe6a")
+resizable = true
+title = "Comment"
+slot/0/left_enabled = false
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = false
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+script = ExtResource("1_1qqx0")
+
+[node name="Holder" type="Control" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BodyTextEdit" type="TextEdit" parent="Holder"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxEmpty_w02o4")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_y0png")
+scroll_fit_content_height = true
+scroll_fit_content_width = true
+
+[node name="TitleLineEdit" type="LineEdit" parent="Holder"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+offset_top = -42.0
+offset_bottom = -11.6667
+grow_horizontal = 2
+grow_vertical = 0
+
+[connection signal="position_offset_changed" from="." to="." method="_on_position_offset_changed"]
+[connection signal="resize_request" from="." to="." method="_on_resize_request"]
+[connection signal="text_changed" from="Holder/BodyTextEdit" to="." method="_on_body_text_changed"]
+[connection signal="focus_exited" from="Holder/TitleLineEdit" to="." method="_on_title_line_edit_focus_exited"]
+[connection signal="text_submitted" from="Holder/TitleLineEdit" to="." method="_on_title_line_edit_text_submitted"]

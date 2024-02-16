@@ -1,0 +1,128 @@
+[gd_scene load_steps=11 format=3 uid="uid://dkxqj3l0xm8uw"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_8wb4u"]
+[ext_resource type="Script" path="res://creator/selection/inspector/categories/inspector_category_base.gd" id="2_sxq8q"]
+[ext_resource type="Script" path="res://creator/selection/inspector/categories/inspector_category_toggle_button.gd" id="3_h53yp"]
+[ext_resource type="Texture2D" uid="uid://kpcb4jb5hto6" path="res://ui/art/accordian_close.png" id="4_fk4ov"]
+[ext_resource type="Texture2D" uid="uid://cbl1xcmq3sicl" path="res://ui/art/accordian_open.png" id="5_x0lxr"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="6_1idof"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_703kt"]
+line_spacing = 0.0
+font = ExtResource("6_1idof")
+font_size = 11
+
+[sub_resource type="StyleBoxFlat" id="41"]
+
+[sub_resource type="Theme" id="42"]
+ScrollContainer/styles/bg = null
+VScrollBar/icons/decrement = null
+VScrollBar/icons/decrement_highlight = null
+VScrollBar/icons/decrement_pressed = null
+VScrollBar/icons/increment = null
+VScrollBar/icons/increment_highlight = null
+VScrollBar/icons/increment_pressed = null
+VScrollBar/styles/grabber = null
+VScrollBar/styles/grabber_highlight = null
+VScrollBar/styles/grabber_pressed = null
+VScrollBar/styles/scroll = SubResource("41")
+VScrollBar/styles/scroll_focus = null
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_msl5f"]
+content_margin_top = 2.0
+color = Color(0.239216, 0.254902, 0.290196, 1)
+grow_begin = 0.0
+grow_end = 0.0
+
+[node name="InspectorCategoryBase" type="VBoxContainer"]
+clip_contents = true
+offset_right = 400.0
+offset_bottom = 30.0
+theme = ExtResource("1_8wb4u")
+theme_override_constants/separation = 0
+script = ExtResource("2_sxq8q")
+
+[node name="CategoryTitle" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="ToggleButton" type="Button" parent="CategoryTitle" node_paths=PackedStringArray("properties")]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("3_h53yp")
+properties = NodePath("../../Properties")
+_item_paths = Array[NodePath]([NodePath("Name/Plus"), NodePath("Name/Minus"), NodePath("Name/Text")])
+_hover_color = Color(0.0705882, 1, 0.843137, 1)
+
+[node name="Name" type="HBoxContainer" parent="CategoryTitle/ToggleButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Spacer" type="Control" parent="CategoryTitle/ToggleButton/Name"]
+custom_minimum_size = Vector2(15, 0)
+layout_mode = 2
+
+[node name="Plus" type="TextureRect" parent="CategoryTitle/ToggleButton/Name"]
+modulate = Color(0.505882, 0.517647, 0.568627, 1)
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("4_fk4ov")
+expand_mode = 1
+
+[node name="Minus" type="TextureRect" parent="CategoryTitle/ToggleButton/Name"]
+visible = false
+modulate = Color(0.505882, 0.517647, 0.568627, 1)
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("5_x0lxr")
+expand_mode = 1
+
+[node name="Text" type="Label" parent="CategoryTitle/ToggleButton/Name"]
+modulate = Color(0.505882, 0.517647, 0.568627, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "CATEGORY NAME"
+label_settings = SubResource("LabelSettings_703kt")
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="Properties" type="Control" parent="."]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="Properties"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+offset_bottom = 16.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="PropertyList" type="VBoxContainer" parent="Properties/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme = SubResource("42")
+
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+theme_override_styles/separator = SubResource("StyleBoxLine_msl5f")
+
+[connection signal="pressed" from="CategoryTitle/ToggleButton" to="CategoryTitle/ToggleButton" method="_on_toggle_button_pressed"]

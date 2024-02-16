@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=3 uid="uid://dr4g6e8b4buc6"]
+
+[ext_resource type="Script" path="res://ui/main_menu/pages/view_space/view_space_progressbar.gd" id="1_snl0e"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uqqkp"]
+bg_color = Color(0.85098, 0.85098, 0.85098, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5y0h0"]
+bg_color = Color(1, 0, nan, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ncjkd"]
+content_margin_left = 10.0
+content_margin_right = 10.0
+
+[node name="ColoredProgressBar" type="HBoxContainer"]
+theme_override_constants/separation = 0
+script = ExtResource("1_snl0e")
+
+[node name="progress_bar" type="ProgressBar" parent="."]
+custom_minimum_size = Vector2(50, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_uqqkp")
+theme_override_styles/fill = SubResource("StyleBoxFlat_5y0h0")
+value = 50.0
+show_percentage = false
+
+[node name="value_label" type="Label" parent="."]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ncjkd")
+text = "0/0"
+vertical_alignment = 1
+
+[connection signal="value_changed" from="progress_bar" to="." method="_on_progress_bar_value_changed"]

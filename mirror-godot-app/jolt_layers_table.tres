@@ -1,0 +1,21 @@
+[gd_resource type="JLayersTable" format=3 uid="uid://i66et26ct62x"]
+
+[resource]
+layers_count = 8
+layers/0/collides_with/GIZMO = false
+layers/1/collides_with/GIZMO = false
+layers/2/collides_with/GIZMO = false
+layers/3/collides_with/GIZMO = false
+layers/4/collides_with/GIZMO = false
+layers/5/collides_with/GIZMO = false
+layers/6/collides_with/GIZMO = false
+layers/7/name = &"GIZMO"
+layers/7/broad_phase = 0
+layers/7/collides_with/ = false
+layers/7/collides_with/NO_COLLIDE = false
+layers/7/collides_with/STATIC = false
+layers/7/collides_with/KINEMATIC = false
+layers/7/collides_with/CHARACTER = false
+layers/7/collides_with/DYNAMIC = false
+layers/7/collides_with/TRIGGER = false
+layers/7/collides_with/GIZMO = false

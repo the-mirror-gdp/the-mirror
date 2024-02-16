@@ -1,0 +1,63 @@
+[gd_scene load_steps=9 format=3 uid="uid://dkowcs24a0rg"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_bd3wk"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/my_spaces.gd" id="1_x3esm"]
+[ext_resource type="PackedScene" uid="uid://b6kuvk63etfpw" path="res://ui/main_menu/pages/space_select.tscn" id="2_38vl8"]
+[ext_resource type="Script" path="res://ui/common/modulo_sized_control.gd" id="3_064cr"]
+[ext_resource type="PackedScene" uid="uid://bxip7xuk82fsr" path="res://ui/main_menu/pages/view_space.tscn" id="4_01gef"]
+[ext_resource type="PackedScene" uid="uid://co7hvwwi4fncn" path="res://ui/main_menu/select_template.tscn" id="4_lc766"]
+[ext_resource type="PackedScene" uid="uid://uhdper5hhdb7" path="res://ui/main_menu/pages/create_space.tscn" id="5_08tdw"]
+[ext_resource type="PackedScene" uid="uid://brrda4tvbd43x" path="res://ui/main_menu/pages/edit_space/edit_space.tscn" id="10_mf0dp"]
+
+[node name="My_Spaces" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_bd3wk")
+script = ExtResource("1_x3esm")
+
+[node name="Pages" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_064cr")
+items_container_path = NodePath("MySpaceSelect/VBoxContainer")
+item_width = 376
+
+[node name="MySpaceSelect" parent="Pages" instance=ExtResource("2_38vl8")]
+layout_mode = 1
+_data_source = 0
+
+[node name="NewButton" type="Button" parent="Pages/MySpaceSelect/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" index="2"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "+ New Space"
+
+[node name="ViewSpace" parent="Pages" instance=ExtResource("4_01gef")]
+visible = false
+layout_mode = 1
+offset_top = 80.0
+
+[node name="SelectTemplate" parent="Pages" instance=ExtResource("4_lc766")]
+visible = false
+layout_mode = 1
+
+[node name="CreateSpace" parent="Pages" instance=ExtResource("5_08tdw")]
+visible = false
+layout_mode = 1
+
+[node name="EditSpace" parent="Pages" instance=ExtResource("10_mf0dp")]
+visible = false
+layout_mode = 1
+offset_top = 80.0
+
+[connection signal="pressed" from="Pages/MySpaceSelect/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/NewButton" to="." method="_on_new_button_pressed"]
+
+[editable path="Pages/MySpaceSelect"]
+[editable path="Pages/MySpaceSelect/VBoxContainer/Panel/MarginContainer/EndlessScrollFlowContainer"]

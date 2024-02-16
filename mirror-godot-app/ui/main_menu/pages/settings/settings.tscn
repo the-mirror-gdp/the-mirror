@@ -1,0 +1,114 @@
+[gd_scene load_steps=13 format=3 uid="uid://cx2mo1w80rpi6"]
+
+[ext_resource type="Script" path="res://ui/main_menu/pages/settings/settings.gd" id="1_c8mju"]
+[ext_resource type="FontFile" uid="uid://s44wjlc18fo7" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_bold.ttf" id="2_q88gx"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/settings/tab_manager.gd" id="2_xa3nj"]
+[ext_resource type="PackedScene" uid="uid://bp0y24nv35rn3" path="res://ui/main_menu/pages/settings/tab_button.tscn" id="3_uaoxo"]
+[ext_resource type="StyleBox" uid="uid://43d3jpcs74m2" path="res://ui/common/panels/glass_rounded/glass_rounded.stylebox.tres" id="3_wa5vr"]
+[ext_resource type="StyleBox" uid="uid://djssw830bfpcw" path="res://ui/new_player_ui/inventory/panel_dark_blue_left_rounded.tres" id="6_g6uc1"]
+[ext_resource type="PackedScene" uid="uid://ues6ooi7657v" path="res://ui/main_menu/pages/settings/sections/graphics/settings_section_graphics.tscn" id="7_1f207"]
+[ext_resource type="PackedScene" uid="uid://cxgqg52wih3kl" path="res://ui/main_menu/pages/settings/sections/audio/settings_section_audio.tscn" id="8_2r4y4"]
+[ext_resource type="PackedScene" uid="uid://dyugpif50dqac" path="res://ui/main_menu/pages/settings/sections/interface/settings_section_interface.tscn" id="8_liiil"]
+[ext_resource type="PackedScene" uid="uid://bl7uhjoiuskhk" path="res://ui/main_menu/pages/settings/sections/controls/settings_section_controls.tscn" id="9_g1xcj"]
+[ext_resource type="PackedScene" uid="uid://bfgp4fuvvwsip" path="res://ui/main_menu/pages/settings/sections/advanced/settings_section_advanced.tscn" id="9_jjjjm"]
+[ext_resource type="PackedScene" uid="uid://c4otrnhcvyyyi" path="res://ui/main_menu/pages/settings/sections/script/settings_section_script.tscn" id="11_lp0ux"]
+
+[node name="Settings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_c8mju")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -689.0
+offset_top = -386.0
+offset_right = 689.0
+offset_bottom = 386.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 50
+metadata/_edit_layout_mode = 1
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_q88gx")
+theme_override_font_sizes/font_size = 40
+text = "Settings"
+horizontal_alignment = 1
+
+[node name="TabManager" type="Panel" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = ExtResource("3_wa5vr")
+script = ExtResource("2_xa3nj")
+tab_button = ExtResource("3_uaoxo")
+metadata/_edit_layout_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabManager"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+metadata/_edit_layout_mode = 1
+
+[node name="SettingsTabs" type="Panel" parent="VBoxContainer/TabManager/HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = ExtResource("6_g6uc1")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TabManager/HBoxContainer/SettingsTabs"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 50
+
+[node name="Tabs" type="VBoxContainer" parent="VBoxContainer/TabManager/HBoxContainer/SettingsTabs/MarginContainer"]
+layout_mode = 2
+
+[node name="Pages" type="MarginContainer" parent="VBoxContainer/TabManager/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="Graphics" parent="VBoxContainer/TabManager/HBoxContainer/Pages" instance=ExtResource("7_1f207")]
+layout_mode = 2
+
+[node name="Interface" parent="VBoxContainer/TabManager/HBoxContainer/Pages" instance=ExtResource("8_liiil")]
+visible = false
+layout_mode = 2
+
+[node name="Controls" parent="VBoxContainer/TabManager/HBoxContainer/Pages" instance=ExtResource("9_g1xcj")]
+visible = false
+layout_mode = 2
+
+[node name="Audio" parent="VBoxContainer/TabManager/HBoxContainer/Pages" instance=ExtResource("8_2r4y4")]
+visible = false
+layout_mode = 2
+
+[node name="Script" parent="VBoxContainer/TabManager/HBoxContainer/Pages" instance=ExtResource("11_lp0ux")]
+layout_mode = 2
+
+[node name="Advanced" parent="VBoxContainer/TabManager/HBoxContainer/Pages" instance=ExtResource("9_jjjjm")]
+visible = false
+layout_mode = 2

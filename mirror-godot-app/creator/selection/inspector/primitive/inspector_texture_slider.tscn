@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=3 uid="uid://c0x6ltck45348"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_oyxk7"]
+[ext_resource type="PackedScene" uid="uid://cccvxoqmskggl" path="res://creator/selection/inspector/primitive/inspector_local_texture.tscn" id="2_va6pi"]
+[ext_resource type="FontFile" uid="uid://cv5tkor0qdxqq" path="res://ui/common/fonts/fontawesome-free-6/Font Awesome 6 Free-Solid-900.otf" id="4_8g8d5"]
+[ext_resource type="PackedScene" uid="uid://7fra83sagq5p" path="res://creator/selection/inspector/primitive/inspector_number_slider.tscn" id="4_b8vm2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fm5qm"]
+
+[node name="InspectorPropertyTextureSlider" type="HBoxContainer"]
+custom_minimum_size = Vector2(256, 30)
+offset_right = 256.0
+offset_bottom = 32.0
+size_flags_horizontal = 3
+theme = ExtResource("1_oyxk7")
+theme_override_constants/separation = 0
+
+[node name="InspectorPropertyTexture" parent="." instance=ExtResource("2_va6pi")]
+layout_mode = 2
+
+[node name="TextureName" parent="InspectorPropertyTexture/HBoxContainer" index="1"]
+visible = false
+
+[node name="InspectorNumberSlider" parent="InspectorPropertyTexture/HBoxContainer" index="2" instance=ExtResource("4_b8vm2")]
+custom_minimum_size = Vector2(200, 30)
+layout_mode = 2
+
+[node name="LabelHolder" parent="InspectorPropertyTexture/HBoxContainer/InspectorNumberSlider" index="0"]
+visible = false
+
+[node name="ResetButton" parent="InspectorPropertyTexture/HBoxContainer/InspectorNumberSlider" index="2"]
+visible = false
+
+[node name="InvertButton" type="Button" parent="InspectorPropertyTexture/HBoxContainer/InspectorNumberSlider"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/font = ExtResource("4_8g8d5")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_fm5qm")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_fm5qm")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_fm5qm")
+toggle_mode = true
+text = "circle-half-stroke"
+
+[editable path="InspectorPropertyTexture"]
+[editable path="InspectorPropertyTexture/HBoxContainer/InspectorNumberSlider"]

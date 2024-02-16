@@ -1,0 +1,159 @@
+[gd_scene load_steps=28 format=3 uid="uid://bpn5kipaabot1"]
+
+[ext_resource type="Script" path="res://ui/game/game_ui.gd" id="1_2ryxh"]
+[ext_resource type="PackedScene" uid="uid://pdt3sfnghnqp" path="res://ui/login/login_ui.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://vep713eampf5" path="res://creator/drag_input/drag_detector.tscn" id="2_455td"]
+[ext_resource type="PackedScene" uid="uid://bompdcbpjbtli" path="res://ui/chat/chat_ui.tscn" id="2_a0jw6"]
+[ext_resource type="PackedScene" uid="uid://dn52ly5dcp6l2" path="res://ui/game/crosshair/crosshair.tscn" id="2_vf1id"]
+[ext_resource type="PackedScene" uid="uid://qf7nqg1kppey" path="res://ui/game/loading_ui.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://c60m08p0m42of" path="res://ui/game/health/health_display.tscn" id="4_22tmw"]
+[ext_resource type="PackedScene" uid="uid://cia2ldlulkhdb" path="res://creator/asset_inventory/hotbar/hotbar.tscn" id="4_hagte"]
+[ext_resource type="PackedScene" uid="uid://ch0uw2fa08s6a" path="res://ui/main_menu/main_menu_ui.tscn" id="4_yhji7"]
+[ext_resource type="PackedScene" uid="uid://dbf3q0negw3bw" path="res://ui/game/page_transition.tscn" id="7_newab"]
+[ext_resource type="PackedScene" uid="uid://gw3vl1demthm" path="res://ui/user_tutorial/user_tutorial.tscn" id="7_sxnd1"]
+[ext_resource type="PackedScene" uid="uid://bx8ft0igi70y3" path="res://creator/creator_ui.tscn" id="9_il3el"]
+[ext_resource type="Script" path="res://ui/game/fps_label.gd" id="9_llert"]
+[ext_resource type="Script" path="res://ui/game/menu_ambience.gd" id="10_5ifej"]
+[ext_resource type="Script" path="res://ui/game/global_menu.gd" id="11_5j4cr"]
+[ext_resource type="PackedScene" uid="uid://byuapxuq5cky6" path="res://ui/global_version_label/version_label.tscn" id="12_cnoc0"]
+[ext_resource type="PackedScene" uid="uid://272eysigoacq" path="res://ui/notifications/notifications_ui.tscn" id="13_gvu03"]
+[ext_resource type="Script" path="res://ui/game/object_outlines.gd" id="13_p4cjf"]
+[ext_resource type="Script" path="res://ui/floating_text/floating_text.gd" id="14_x2a8f"]
+[ext_resource type="PackedScene" uid="uid://5qlvifhg3hts" path="res://ui/game/cinematic_mode.tscn" id="17_bcb1b"]
+[ext_resource type="PackedScene" uid="uid://bply16etkan2c" path="res://ui/teams/team_handler.tscn" id="19_5pn3j"]
+[ext_resource type="PackedScene" uid="uid://dnf2na6m4jduu" path="res://creator/tools/normal/normal_mode_hotkeys.tscn" id="19_ttafm"]
+[ext_resource type="PackedScene" uid="uid://mh7yc1w0drne" path="res://ui/teams/scoreboard_window.tscn" id="21_dpfph"]
+[ext_resource type="PackedScene" uid="uid://d3132smeon84n" path="res://ui/hover_text/hover_text.tscn" id="21_p8uhr"]
+[ext_resource type="PackedScene" uid="uid://b7v8026760qqs" path="res://creator/asset_inventory/browser/file_search.tscn" id="22_0ljsg"]
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="25_7pbh6"]
+[ext_resource type="Script" path="res://ui/game/connect_by_ip_ui.gd" id="26_viw1y"]
+
+[node name="GameUI" type="CanvasLayer"]
+script = ExtResource("1_2ryxh")
+
+[node name="Crosshair" parent="." instance=ExtResource("2_vf1id")]
+
+[node name="HealthDisplay" parent="." instance=ExtResource("4_22tmw")]
+visible = false
+
+[node name="NormalModeHotkeys" parent="." instance=ExtResource("19_ttafm")]
+visible = false
+offset_right = 256.0
+
+[node name="DragDetector" parent="." instance=ExtResource("2_455td")]
+visible = false
+
+[node name="ChatUI" parent="." instance=ExtResource("2_a0jw6")]
+visible = false
+
+[node name="Hotbar" parent="." instance=ExtResource("4_hagte")]
+visible = false
+offset_top = -108.0
+
+[node name="CreatorUI" parent="." instance=ExtResource("9_il3el")]
+visible = false
+
+[node name="TeamHandler" parent="." instance=ExtResource("19_5pn3j")]
+visible = false
+
+[node name="ScoreboardWindow" parent="." instance=ExtResource("21_dpfph")]
+visible = false
+
+[node name="MainMenuUI" parent="." instance=ExtResource("4_yhji7")]
+visible = false
+
+[node name="LoginUI" parent="." instance=ExtResource("2")]
+visible = false
+
+[node name="NotificationsUI" parent="." instance=ExtResource("13_gvu03")]
+
+[node name="UserTutorial" parent="." instance=ExtResource("7_sxnd1")]
+offset_top = -2.0
+offset_bottom = -2.0
+
+[node name="LoadingUI" parent="." instance=ExtResource("3")]
+visible = false
+
+[node name="PageTransition" parent="." instance=ExtResource("7_newab")]
+visible = false
+
+[node name="FPSLabel" type="Label" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -90.0
+offset_top = -26.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "FPSLabel"
+horizontal_alignment = 2
+vertical_alignment = 2
+script = ExtResource("9_llert")
+
+[node name="MenuAmbience" type="AudioStreamPlayer" parent="."]
+volume_db = -20.0
+script = ExtResource("10_5ifej")
+_target_node_paths = Array[NodePath]([NodePath("../MainMenuUI"), NodePath("../LoginUI"), NodePath("../LoadingUI")])
+
+[node name="GlobalMenu" type="Node" parent="."]
+script = ExtResource("11_5j4cr")
+
+[node name="VersionLabel" parent="." instance=ExtResource("12_cnoc0")]
+custom_minimum_size = Vector2(400, 0)
+
+[node name="HoverText" parent="." instance=ExtResource("21_p8uhr")]
+visible = false
+
+[node name="ObjectOutlines" type="Node" parent="."]
+script = ExtResource("13_p4cjf")
+
+[node name="FloatingText" type="Node" parent="."]
+script = ExtResource("14_x2a8f")
+
+[node name="CinematicMode" parent="." instance=ExtResource("17_bcb1b")]
+visible = false
+
+[node name="FileSearch" parent="." instance=ExtResource("22_0ljsg")]
+visible = false
+
+[node name="ConnectByIPDevOnly" type="Panel" parent="."]
+visible = false
+custom_minimum_size = Vector2(300, 60)
+anchors_preset = -1
+anchor_right = 0.117188
+anchor_bottom = 0.0416667
+theme = ExtResource("25_7pbh6")
+script = ExtResource("26_viw1y")
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="ConnectByIPDevOnly"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ConnectByIPDevOnly/MarginContainer"]
+layout_mode = 2
+
+[node name="LineEdit" type="LineEdit" parent="ConnectByIPDevOnly/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(192, 0)
+layout_mode = 2
+placeholder_text = "127.0.0.1:27015"
+
+[node name="Button" type="Button" parent="ConnectByIPDevOnly/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "connect"
+
+[connection signal="select_asset_id" from="DragDetector" to="CreatorUI" method="_on_drag_detector_select_asset_id"]
+[connection signal="toggle_main_menu_open" from="CreatorUI" to="MainMenuUI" method="toggle_main_menu_open"]
+[connection signal="toggle_teams_editor_open" from="CreatorUI" to="TeamHandler" method="toggle_teams_editor"]
+[connection signal="page_changed" from="MainMenuUI" to="PageTransition" method="play_fade_animation"]
+[connection signal="subpage_changed" from="MainMenuUI" to="PageTransition" method="play_fade_animation"]
+[connection signal="login_succeeded" from="LoginUI" to="MainMenuUI" method="show"]
+[connection signal="login_succeeded" from="LoginUI" to="PageTransition" method="play_fade_animation"]
+[connection signal="pressed" from="ConnectByIPDevOnly/MarginContainer/HBoxContainer/Button" to="ConnectByIPDevOnly" method="_on_connect_pressed"]

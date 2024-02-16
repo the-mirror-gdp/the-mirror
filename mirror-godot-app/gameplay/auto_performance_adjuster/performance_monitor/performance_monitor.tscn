@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://btfnejgmwgbdx"]
+
+[ext_resource type="Script" path="res://gameplay/auto_performance_adjuster/performance_monitor/performance_monitor.gd" id="1_u12pe"]
+
+[node name="PerformanceMonitor" type="Node"]
+script = ExtResource("1_u12pe")

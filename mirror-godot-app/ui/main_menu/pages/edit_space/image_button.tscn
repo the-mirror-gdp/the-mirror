@@ -1,0 +1,61 @@
+[gd_scene load_steps=7 format=3 uid="uid://un78b1xd3lc"]
+
+[ext_resource type="Script" path="res://ui/main_menu/pages/edit_space/image_button.gd" id="1_s7w7f"]
+[ext_resource type="Texture2D" uid="uid://cuqq3ychrk642" path="res://ui/common/images/space-default.jpg" id="2_omv2j"]
+[ext_resource type="FontFile" uid="uid://cv5tkor0qdxqq" path="res://ui/common/fonts/fontawesome-free-6/Font Awesome 6 Free-Solid-900.otf" id="3_t7s7t"]
+[ext_resource type="Script" path="res://ui/main_menu/common/UrlTextureRect.gd" id="3_xkbv3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8of3i"]
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wnpda"]
+bg_color = Color(0, 0, 0, 0.694118)
+
+[node name="ImageButton1" type="Button"]
+custom_minimum_size = Vector2(232, 130)
+flat = true
+script = ExtResource("1_s7w7f")
+
+[node name="CornerClipContainer" type="PanelContainer" parent="."]
+clip_children = 2
+clip_contents = true
+custom_minimum_size = Vector2(232, 130)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_8of3i")
+metadata/_edit_group_ = true
+
+[node name="SpaceImage" type="TextureRect" parent="CornerClipContainer"]
+layout_mode = 2
+texture = ExtResource("2_omv2j")
+expand_mode = 2
+stretch_mode = 6
+script = ExtResource("3_xkbv3")
+
+[node name="UploadIcon" type="PanelContainer" parent="CornerClipContainer"]
+visible = false
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_wnpda")
+
+[node name="Label" type="Label" parent="CornerClipContainer/UploadIcon"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_fonts/font = ExtResource("3_t7s7t")
+theme_override_font_sizes/font_size = 64
+text = "arrow-up-from-bracket"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

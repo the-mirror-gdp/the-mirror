@@ -1,0 +1,99 @@
+[gd_scene load_steps=6 format=3 uid="uid://dm136o3efeoqo"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_nm4jv"]
+[ext_resource type="Script" path="res://creator/selection/inspector/primitive/inspector_asset.gd" id="2_ptpvo"]
+[ext_resource type="PackedScene" uid="uid://cy566ld7k03ue" path="res://creator/selection/inspector/primitive/inspector_reset_button.tscn" id="3_wmcqf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sim58"]
+bg_color = Color(0.109804, 0.121569, 0.141176, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.109804, 0.121569, 0.141176, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5cdk3"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.3)
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 0.3)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 5
+
+[node name="InspectorPropertyAsset" type="HBoxContainer"]
+custom_minimum_size = Vector2(256, 30)
+offset_right = 256.0
+offset_bottom = 32.0
+size_flags_horizontal = 3
+theme = ExtResource("1_nm4jv")
+theme_override_constants/separation = 0
+script = ExtResource("2_ptpvo")
+
+[node name="LabelHolder" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.75
+theme_override_constants/margin_left = 4
+
+[node name="Label" type="Label" parent="LabelHolder"]
+clip_contents = true
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "E"
+vertical_alignment = 1
+clip_text = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AssetButton" type="Button" parent="HBoxContainer"]
+clip_children = 2
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_sim58")
+theme_override_styles/hover = SubResource("StyleBoxFlat_sim58")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_sim58")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_sim58")
+theme_override_styles/focus = SubResource("StyleBoxFlat_sim58")
+
+[node name="Preview" type="TextureRect" parent="HBoxContainer/AssetButton"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 50.0
+offset_bottom = 50.0
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+
+[node name="AssetName" type="LineEdit" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_styles/read_only = SubResource("StyleBoxFlat_5cdk3")
+placeholder_text = "No asset"
+editable = false
+shortcut_keys_enabled = false
+middle_mouse_paste_enabled = false
+
+[node name="ResetButton" parent="." instance=ExtResource("3_wmcqf")]
+layout_mode = 2
+
+[connection signal="pressed" from="HBoxContainer/AssetButton" to="." method="_on_asset_button_pressed"]
+[connection signal="pressed" from="ResetButton" to="." method="_on_reset_button_pressed"]

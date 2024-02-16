@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://bklbklegx68ix"]
+
+[ext_resource type="FontFile" uid="uid://cv5tkor0qdxqq" path="res://ui/common/fonts/fontawesome-free-6/Font Awesome 6 Free-Solid-900.otf" id="1_4tqqk"]
+[ext_resource type="PackedScene" uid="uid://dujwxto2lxn3u" path="res://creator/asset_inventory/filter/filter_menu.tscn" id="2_bxrkg"]
+[ext_resource type="Script" path="res://creator/asset_inventory/filter/filter_button.gd" id="2_fl6kv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_joiuq"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[node name="FilterButton" type="Button"]
+custom_minimum_size = Vector2(20, 0)
+size_flags_horizontal = 8
+theme_override_fonts/font = ExtResource("1_4tqqk")
+theme_override_font_sizes/font_size = 13
+text = ""
+script = ExtResource("2_fl6kv")
+_filter_empty_text = ""
+_filter_inuse_text = ""
+
+[node name="PopupPanel" type="PopupPanel" parent="."]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(188, 168)
+transparent = true
+theme_override_styles/panel = SubResource("StyleBoxFlat_joiuq")
+
+[node name="FilterMenu" parent="PopupPanel" instance=ExtResource("2_bxrkg")]
+offset_right = 188.0
+offset_bottom = 168.0
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]
+[connection signal="changed" from="PopupPanel/FilterMenu" to="." method="_on_filter_menu_changed"]

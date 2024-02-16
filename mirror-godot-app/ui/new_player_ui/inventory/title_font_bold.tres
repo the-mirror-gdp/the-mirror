@@ -1,0 +1,6 @@
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://bwp6hb31ol8la"]
+
+[ext_resource type="FontFile" uid="uid://cgyrixnr8bppj" path="res://ui/common/fonts/montserrat/montserrat_medium.ttf" id="1_g3tg5"]
+
+[resource]
+base_font = ExtResource("1_g3tg5")

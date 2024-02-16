@@ -1,0 +1,8 @@
+export enum TAG_TYPE {
+  MATERIAL = 'MATERIAL',
+  THEME = 'THEME',
+  THIRD_PARTY_SOURCE = 'THIRD_PARTY_SOURCE',
+  AI_GENERATED_BY_TM = 'AI_GENERATED_BY_TM',
+  SPACE_GENRE = 'SPACE_GENRE',
+  USER_GENERATED = 'USER_GENERATED' // TBD: when should we allow for users to create tags?
+}

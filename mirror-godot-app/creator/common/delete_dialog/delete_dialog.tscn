@@ -1,0 +1,60 @@
+[gd_scene load_steps=5 format=3 uid="uid://cdxdqom4buex"]
+
+[ext_resource type="Script" path="res://creator/common/delete_dialog/delete_dialog.gd" id="1_pb1an"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ulbqu"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.3, 0.1258, 0.099, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lwq5t"]
+content_margin_left = 10.0
+content_margin_top = 28.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+bg_color = Color(0.4, 0.168627, 0.133333, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+expand_margin_left = 8.0
+expand_margin_top = 32.0
+expand_margin_right = 8.0
+expand_margin_bottom = 6.0
+
+[sub_resource type="Theme" id="Theme_w81lc"]
+AcceptDialog/styles/panel = SubResource("StyleBoxFlat_ulbqu")
+Window/styles/embedded_border = SubResource("StyleBoxFlat_lwq5t")
+
+[node name="DeleteDialog" type="ConfirmationDialog"]
+title = "Delete Script Instance"
+position = Vector2i(100, 100)
+size = Vector2i(220, 135)
+min_size = Vector2i(220, 70)
+theme = SubResource("Theme_w81lc")
+ok_button_text = "Delete"
+dialog_autowrap = true
+cancel_button_text = "Keep"
+script = ExtResource("1_pb1an")
+
+[node name="DeleteAreYouSure" type="Label" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -49.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Are you sure you wish to delete this script instance? This cannot be undone."
+horizontal_alignment = 1
+autowrap_mode = 3

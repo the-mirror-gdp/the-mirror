@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://y6wlhqrs1lj5"]
+
+[ext_resource type="Script" path="res://addons/mirror_internal/toolbar_panel/toolbar_panel.gd" id="1_e1ilk"]
+
+[node name="ToolbarPanel" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_e1ilk")
+
+[node name="ClearCacheBtn" type="Button" parent="."]
+layout_mode = 2
+text = "Clear Cache"
+
+[node name="ClearClientAssets" type="Button" parent="."]
+layout_mode = 2
+tooltip_text = "Removes client files, helpful when there is need to simulate the scenario where client is entering zone for the first time"
+text = "Clear Client Files"
+
+[connection signal="pressed" from="ClearCacheBtn" to="." method="_on_clear_cache_btn_pressed"]
+[connection signal="pressed" from="ClearClientAssets" to="." method="_on_clear_client_assets_pressed"]

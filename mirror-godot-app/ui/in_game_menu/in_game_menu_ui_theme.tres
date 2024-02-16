@@ -1,0 +1,15 @@
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://6eru14yfat8d"]
+
+[ext_resource type="FontVariation" uid="uid://bj5iactb2ulqq" path="res://ui/new_player_ui/inventory/title_font_regular.tres" id="1_lyvt4"]
+[ext_resource type="StyleBox" uid="uid://bmjnajha0jeoa" path="res://ui/common/buttons/transparent_dark_blue/transparent_blue_focus.stylebox.tres" id="2_1sc0j"]
+[ext_resource type="StyleBox" uid="uid://gft60on1e1qj" path="res://ui/common/buttons/transparent_dark_blue/transparent_blue_hover.stylebox.tres" id="3_enhjd"]
+[ext_resource type="StyleBox" uid="uid://bcbsgxo1xb5bm" path="res://ui/common/buttons/transparent_dark_blue/transparent_blue_normal.stylebox.tres" id="4_npjwd"]
+[ext_resource type="StyleBox" uid="uid://b0hteyxnxest5" path="res://ui/common/buttons/transparent_dark_blue/transparent_blue_pressed.stylebox.tres" id="5_j25mo"]
+
+[resource]
+default_font = ExtResource("1_lyvt4")
+Button/fonts/font = ExtResource("1_lyvt4")
+Button/styles/focus = ExtResource("2_1sc0j")
+Button/styles/hover = ExtResource("3_enhjd")
+Button/styles/normal = ExtResource("4_npjwd")
+Button/styles/pressed = ExtResource("5_j25mo")

@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://daao2175g5dbx"]
+
+[ext_resource type="PackedScene" uid="uid://dkxqj3l0xm8uw" path="res://creator/selection/inspector/categories/inspector_category_base.tscn" id="1_amxtn"]
+[ext_resource type="Script" path="res://creator/selection/inspector/script/inspector_script_entry_inputs.gd" id="2_adill"]
+[ext_resource type="PackedScene" uid="uid://wamxb61ceng7" path="res://creator/selection/inspector/script/add_input_button.tscn" id="3_7qgep"]
+
+[node name="InspectorScriptEntryInputs" instance=ExtResource("1_amxtn")]
+script = ExtResource("2_adill")
+
+[node name="Text" parent="CategoryTitle/ToggleButton/Name" index="3"]
+text = ""
+
+[node name="AddInputButton" parent="CategoryTitle/ToggleButton/Name" index="4" instance=ExtResource("3_7qgep")]
+visible = false
+layout_mode = 2
+text = "Add Input"
+
+[connection signal="inspector_category_visibility_changed" from="CategoryTitle/ToggleButton" to="." method="_on_toggle_button_inspector_category_visibility_changed"]
+[connection signal="create_parameter" from="CategoryTitle/ToggleButton/Name/AddInputButton" to="." method="_on_create_parameter"]

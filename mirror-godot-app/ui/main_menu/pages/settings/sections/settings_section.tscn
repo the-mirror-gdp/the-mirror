@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://7r8pofugnpkb"]
+
+[ext_resource type="Script" path="res://ui/main_menu/pages/settings/sections/settings_section.gd" id="1_btbg7"]
+
+[node name="SettingsSection" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_btbg7")
+
+[node name="Options" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="."]
+layout_mode = 2
+size_flags_vertical = 3

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cokn2bqu63fg6"]
+
+[ext_resource type="Script" path="res://prefabs/autoload/zone/collision_shape_generator/collision_shape_generator.gd" id="1_144ph"]
+
+[node name="CollisionShapeGenerator" type="Node"]
+script = ExtResource("1_144ph")

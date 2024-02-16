@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="PlayerAudioSetResource" load_steps=5 format=3 uid="uid://lp8is08jqhtv"]
+
+[ext_resource type="Script" path="res://player/audio/player_audio_set_resource.gd" id="1_k20am"]
+[ext_resource type="AudioStream" uid="uid://c3cry3nh757mc" path="res://player/audio/metal_surface/footstep_stream.tres" id="1_tvq0k"]
+[ext_resource type="AudioStream" uid="uid://bwfba6vnlwk7i" path="res://player/audio/metal_surface/jump_stream.tres" id="2_r0ht1"]
+[ext_resource type="AudioStream" uid="uid://bl765ebg5lnp4" path="res://player/audio/metal_surface/land_stream.tres" id="3_pl84f"]
+
+[resource]
+script = ExtResource("1_k20am")
+land_audio_stream = ExtResource("3_pl84f")
+jump_audio_stream = ExtResource("2_r0ht1")
+footsteps_audio_stream = ExtResource("1_tvq0k")

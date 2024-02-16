@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://dithyy2niqke3"]
+
+[ext_resource type="Theme" uid="uid://chpmeyn2g6o6r" path="res://script/visual/editor/script_editor.theme.tres" id="1_yb48g"]
+[ext_resource type="Script" path="res://creator/selection/add_script/add_script_dialog.gd" id="2_0inmy"]
+[ext_resource type="PackedScene" uid="uid://b5v3xh8qmijeq" path="res://creator/selection/add_script/add_script_menu.tscn" id="3_gnh34"]
+[ext_resource type="AudioStream" uid="uid://n37ajirwk2ga" path="res://creator/selection/audio/place_script.wav" id="4_hq4wk"]
+
+[node name="AddScriptDialog" type="ConfirmationDialog"]
+title = "Create Script"
+position = Vector2i(0, 36)
+size = Vector2i(366, 100)
+visible = true
+min_size = Vector2i(350, 100)
+theme = ExtResource("1_yb48g")
+ok_button_text = "Attach Existing"
+script = ExtResource("2_0inmy")
+
+[node name="AddScriptMenu" parent="." instance=ExtResource("3_gnh34")]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 358.0
+offset_bottom = 56.0
+
+[node name="AudioStreamPlayerScriptAttached" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_hq4wk")
+volume_db = -10.0
+
+[connection signal="confirmed" from="." to="." method="_on_confirmed"]
+[connection signal="focus_entered" from="." to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="request_attach_existing_script" from="AddScriptMenu" to="." method="_attach_existing_script"]
+[connection signal="request_gd_script_creation" from="AddScriptMenu" to="." method="_create_new_gd_script"]
+[connection signal="request_visual_script_creation" from="AddScriptMenu" to="." method="_create_new_visual_script"]
+[connection signal="script_id_selected" from="AddScriptMenu" to="." method="_on_script_id_selected"]

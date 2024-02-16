@@ -1,0 +1,193 @@
+[gd_scene load_steps=26 format=3 uid="uid://bx8ft0igi70y3"]
+
+[ext_resource type="PackedScene" uid="uid://cxs04kgxb5u1t" path="res://creator/context_menu/context_menu.tscn" id="2_gucyd"]
+[ext_resource type="Script" path="res://creator/creator_ui.gd" id="2_rfxxb"]
+[ext_resource type="PackedScene" uid="uid://cvm2d4qbgd8uj" path="res://creator/tools/undo_redo/undo_list.tscn" id="3_3fpny"]
+[ext_resource type="PackedScene" uid="uid://bmm7c4akkef68" path="res://creator/tools/undo_redo/redo_list.tscn" id="4_5a65r"]
+[ext_resource type="Script" path="res://creator/asset_inventory/object_creation.gd" id="4_ovs45"]
+[ext_resource type="PackedScene" uid="uid://wb01ha7hrvw0" path="res://creator/tools/tool_options/tool_options.tscn" id="4_poi3l"]
+[ext_resource type="PackedScene" uid="uid://bqsty0yvnwplw" path="res://creator/asset_inventory/asset_detail_window/asset_detail_window.tscn" id="5_ssq3s"]
+[ext_resource type="PackedScene" uid="uid://cu3agfy1miwry" path="res://creator/tools/build_bar/build_bar.tscn" id="6_gh2le"]
+[ext_resource type="PackedScene" uid="uid://chwnp0r1q1t4r" path="res://creator/selection/object_selection.tscn" id="7_8wqhq"]
+[ext_resource type="PackedScene" uid="uid://bkavjgcegrk6u" path="res://creator/tools/normal/normal_mode_toolbar.tscn" id="7_f1emv"]
+[ext_resource type="PackedScene" uid="uid://djtr54n2qbf16" path="res://creator/asset_inventory/browser/asset_browser.tscn" id="7_hptiv"]
+[ext_resource type="PackedScene" uid="uid://b58iveuspbtyj" path="res://ui/button_sound/button_sound.tscn" id="9_71mcu"]
+[ext_resource type="Script" path="res://creator/tools/map/tool_map.gd" id="14_me6yt"]
+[ext_resource type="Script" path="res://addons/draggable_container/draggable_container.gd" id="16_3si1k"]
+[ext_resource type="PackedScene" uid="uid://261c0tsj1hr4" path="res://creator/tools/material_browser/material_window.tscn" id="16_bl7wl"]
+[ext_resource type="PackedScene" uid="uid://dci25saqi5cgf" path="res://creator/tools/material_creator/material_creator_window.tscn" id="16_dvmlg"]
+[ext_resource type="PackedScene" uid="uid://c4mk6qq8peelk" path="res://script/editor/script_editor.tscn" id="16_lbs05"]
+[ext_resource type="Script" path="res://creator/tools/terrain/tool_terrain.gd" id="16_si36c"]
+[ext_resource type="PackedScene" uid="uid://cx2ptclxpp58e" path="res://creator/tools/terrain/material_browser.tscn" id="17_dqeon"]
+[ext_resource type="PackedScene" uid="uid://2fycjbu6yn3l" path="res://script/editor/variable/variable_editor.tscn" id="17_lgntn"]
+[ext_resource type="Script" path="res://prefabs/ui/undo_redo_system.gd" id="17_r8m2v"]
+[ext_resource type="PackedScene" uid="uid://vkjivpbf7bfi" path="res://ui/in_game_menu/readycheck_popup.tscn" id="18_iq1a8"]
+[ext_resource type="PackedScene" uid="uid://clpkop8mwppa1" path="res://ui/publish_space/publish_space_window.tscn" id="20_ke81j"]
+[ext_resource type="PackedScene" uid="uid://ch1hev25h7jhv" path="res://ui/restore_space/restore_space_window.tscn" id="24_gried"]
+[ext_resource type="PackedScene" uid="uid://cwurtihmdgfqf" path="res://ui/save_version/save_version_window.tscn" id="25_xlepj"]
+
+[node name="CreatorUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_rfxxb")
+
+[node name="ObjectCreation" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("4_ovs45")
+metadata/_edit_use_custom_anchors = true
+
+[node name="Sidebar" type="VBoxContainer" parent="ObjectCreation"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_top = 40.0
+offset_right = 426.0
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="UndoList" parent="ObjectCreation/Sidebar" instance=ExtResource("3_3fpny")]
+visible = false
+layout_mode = 2
+
+[node name="RedoList" parent="ObjectCreation/Sidebar" instance=ExtResource("4_5a65r")]
+visible = false
+layout_mode = 2
+
+[node name="ToolOptions" parent="ObjectCreation/Sidebar" instance=ExtResource("4_poi3l")]
+visible = false
+layout_mode = 2
+
+[node name="AssetBrowser" parent="ObjectCreation/Sidebar" instance=ExtResource("7_hptiv")]
+layout_mode = 2
+
+[node name="BuildToolbar" parent="." instance=ExtResource("6_gh2le")]
+layout_mode = 1
+
+[node name="ObjectSelection" parent="." instance=ExtResource("7_8wqhq")]
+layout_mode = 1
+offset_top = 42.0
+
+[node name="NormalModeToolbar" parent="." instance=ExtResource("7_f1emv")]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+offset_left = -414.0
+offset_top = 64.0
+offset_right = -64.0
+offset_bottom = 164.0
+
+[node name="UndoRedoSystem" type="Node" parent="."]
+script = ExtResource("17_r8m2v")
+
+[node name="ButtonSound" parent="." instance=ExtResource("9_71mcu")]
+
+[node name="TerrainTool" type="Node" parent="."]
+script = ExtResource("16_si36c")
+
+[node name="MapTool" type="Node" parent="."]
+script = ExtResource("14_me6yt")
+
+[node name="TerrainMaterialBrowser" parent="." instance=ExtResource("17_dqeon")]
+visible = false
+layout_mode = 1
+
+[node name="MaterialBrowser" parent="." instance=ExtResource("16_bl7wl")]
+
+[node name="MaterialCreatorWindow" parent="." instance=ExtResource("16_dvmlg")]
+
+[node name="ScriptEditorHolder" type="Container" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 500.0
+offset_top = 50.0
+offset_right = -400.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("16_3si1k")
+start_dragger_ratio = 0.55
+end_dragger_visible = false
+end_dragger_ratio = 1.0
+auto_dragger_visible = true
+
+[node name="ScriptEditor" parent="ScriptEditorHolder" instance=ExtResource("16_lbs05")]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+
+[node name="ScriptVariableEditor" parent="." instance=ExtResource("17_lgntn")]
+visible = false
+layout_mode = 1
+offset_left = 500.0
+offset_top = 100.0
+offset_right = 500.0
+offset_bottom = -500.0
+
+[node name="AssetDetailWindow" parent="." node_paths=PackedStringArray("sidebar", "object_selection") instance=ExtResource("5_ssq3s")]
+visible = false
+layout_mode = 1
+sidebar = NodePath("../ObjectCreation/Sidebar")
+object_selection = NodePath("../ObjectSelection")
+
+[node name="ContextMenu" parent="." instance=ExtResource("2_gucyd")]
+visible = false
+layout_mode = 0
+
+[node name="ReadyCheckPopup" parent="." instance=ExtResource("18_iq1a8")]
+visible = false
+layout_mode = 1
+
+[node name="PublishSpaceWindow" parent="." instance=ExtResource("20_ke81j")]
+visible = false
+layout_mode = 1
+
+[node name="RestoreSpaceWindow" parent="." instance=ExtResource("24_gried")]
+visible = false
+layout_mode = 1
+
+[node name="SaveVersionWindow" parent="." instance=ExtResource("25_xlepj")]
+visible = false
+layout_mode = 1
+
+[connection signal="resized" from="." to="." method="_on_resized"]
+[connection signal="request_edit_script_instance" from="ObjectCreation/Sidebar/AssetBrowser" to="ScriptEditorHolder/ScriptEditor" method="load_from_script_instance"]
+[connection signal="request_script_asset_edit" from="ObjectCreation/Sidebar/AssetBrowser" to="ScriptEditorHolder/ScriptEditor" method="load_from_asset_data"]
+[connection signal="request_show_asset_details_editor" from="ObjectCreation/Sidebar/AssetBrowser" to="AssetDetailWindow" method="_on_asset_browser_request_show_details_editor"]
+[connection signal="selected_asset_slot_changed" from="ObjectCreation/Sidebar/AssetBrowser" to="." method="_on_asset_browser_selected_asset_slot_changed"]
+[connection signal="gizmo_button_pressed" from="BuildToolbar" to="." method="set_gizmo_type"]
+[connection signal="is_expanded_changed" from="BuildToolbar" to="ObjectCreation" method="_on_build_toolbar_is_expanded_changed"]
+[connection signal="is_expanded_changed" from="BuildToolbar" to="ObjectSelection" method="_on_build_toolbar_is_expanded_changed"]
+[connection signal="map_button_pressed" from="BuildToolbar" to="." method="_on_build_toolbar_map_button_pressed"]
+[connection signal="model_builder_button_pressed" from="BuildToolbar" to="." method="_on_build_toolbar_model_builder_button_pressed"]
+[connection signal="publish_button_pressed" from="BuildToolbar" to="." method="_on_build_toolbar_publish_button_pressed"]
+[connection signal="redo_button_toggled" from="BuildToolbar" to="." method="_on_build_toolbar_redo_button_toggled"]
+[connection signal="relative_check_pressed" from="BuildToolbar" to="." method="set_gizmo_relative"]
+[connection signal="restore_button_pressed" from="BuildToolbar" to="." method="_on_build_toolbar_restore_button_pressed"]
+[connection signal="save_version_button_pressed" from="BuildToolbar" to="." method="_on_build_toolbar_save_version_button_pressed"]
+[connection signal="snap_check_pressed" from="BuildToolbar" to="." method="set_gizmo_snap_checked"]
+[connection signal="snap_value_changed" from="BuildToolbar" to="." method="_on_build_toolbar_snap_value_changed"]
+[connection signal="terrain_button_pressed" from="BuildToolbar" to="." method="_on_build_toolbar_terrain_button_pressed"]
+[connection signal="toggle_main_menu_pressed" from="BuildToolbar" to="." method="_on_toggle_main_menu_pressed"]
+[connection signal="toggle_teams_editor_pressed" from="BuildToolbar" to="." method="_on_toggle_teams_editor_pressed"]
+[connection signal="toggle_variable_editor_pressed" from="BuildToolbar" to="ScriptVariableEditor" method="toggle_variable_editor"]
+[connection signal="undo_button_toggled" from="BuildToolbar" to="." method="_on_build_toolbar_undo_button_toggled"]
+[connection signal="request_script_edit" from="ObjectSelection" to="ObjectCreation/Sidebar/AssetBrowser" method="track_recently_used_space_script"]
+[connection signal="request_script_edit" from="ObjectSelection" to="ScriptEditorHolder/ScriptEditor" method="load_from_script_instance"]
+[connection signal="actions_updated" from="UndoRedoSystem" to="ObjectCreation/Sidebar/UndoList" method="_on_undo_redo_system_actions_updated"]
+[connection signal="actions_updated" from="UndoRedoSystem" to="ObjectCreation/Sidebar/RedoList" method="_on_undo_redo_system_actions_updated"]
+[connection signal="request_track_recently_used_space_script" from="ScriptEditorHolder/ScriptEditor" to="ObjectCreation/Sidebar/AssetBrowser" method="track_recently_used_space_script"]
+[connection signal="script_editor_editing_script_instance" from="ScriptEditorHolder/ScriptEditor" to="ObjectCreation/Sidebar/AssetBrowser" method="_on_script_editor_editing_script_instance"]
+[connection signal="request_edit_script_asset" from="AssetDetailWindow" to="ScriptEditorHolder/ScriptEditor" method="load_from_asset_data"]

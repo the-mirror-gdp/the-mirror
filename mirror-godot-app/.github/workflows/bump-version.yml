@@ -1,0 +1,39 @@
+name: 📈 Bump Version
+
+on:
+  push:
+    branches:
+      - 'dev'
+
+jobs:
+  bump-version:
+    name: 'Bump version on dev merge'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+
+      - name: 'cat package.json'
+        run: cat ./package.json
+
+      - name: Automated Version Bump
+        id: version_bump
+        uses: 'phips28/gh-action-bump-version@master'
+        with:
+          tag-prefix: 'v'
+          major-wording: 'release-major'
+          minor-wording: 'release-minor'
+          #   # defaults to a patch bump.
+          rc-wording: 'rc'
+        env:
+          GITHUB_TOKEN: ${{ secrets.CI_TOKEN_GITHUB }}
+
+      - name: cat package.json
+        run: cat ./package.json
+
+      - name: Output Step
+        env:
+          NEW_TAG: ${{ steps.version_bump.outputs.newTag }}
+        run: echo "new tag $NEW_TAG"

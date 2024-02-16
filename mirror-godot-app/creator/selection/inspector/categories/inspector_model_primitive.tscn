@@ -1,0 +1,63 @@
+[gd_scene load_steps=7 format=3 uid="uid://ihbuno6fxy1k"]
+
+[ext_resource type="PackedScene" uid="uid://dkxqj3l0xm8uw" path="res://creator/selection/inspector/categories/inspector_category_base.tscn" id="1_mh8he"]
+[ext_resource type="Script" path="res://creator/selection/inspector/categories/inspector_model_primitive.gd" id="2_rcndo"]
+[ext_resource type="PackedScene" uid="uid://cv5dw53tu538o" path="res://creator/selection/inspector/primitive/inspector_color.tscn" id="3_b1ksn"]
+[ext_resource type="PackedScene" uid="uid://dbpxgjpuqb2x2" path="res://creator/selection/inspector/primitive/inspector_vector3.tscn" id="4_lc6jb"]
+[ext_resource type="PackedScene" uid="uid://yl2tfblvbyak" path="res://creator/selection/inspector/primitive/inspector_number_field.tscn" id="5_xylcj"]
+[ext_resource type="PackedScene" uid="uid://7fra83sagq5p" path="res://creator/selection/inspector/primitive/inspector_number_slider.tscn" id="6_vpafa"]
+
+[node name="InspectorModelPrimitive" instance=ExtResource("1_mh8he")]
+offset_bottom = 386.0
+script = ExtResource("2_rcndo")
+
+[node name="Text" parent="CategoryTitle/ToggleButton/Name" index="3"]
+text = "MODEL PRIMITIVE"
+
+[node name="Properties" parent="." index="1"]
+visible = true
+
+[node name="MarginContainer" parent="Properties" index="0"]
+offset_bottom = 48.0
+
+[node name="AlbedoColor" parent="Properties/MarginContainer/PropertyList" index="0" instance=ExtResource("3_b1ksn")]
+layout_mode = 2
+label_text = "Color"
+
+[node name="Size" parent="Properties/MarginContainer/PropertyList" index="1" instance=ExtResource("4_lc6jb")]
+visible = false
+layout_mode = 2
+reset_value = Vector3(1, 1, 1)
+unit_suffix = "m"
+label_text = "Size"
+
+[node name="Radius" parent="Properties/MarginContainer/PropertyList" index="2" instance=ExtResource("5_xylcj")]
+visible = false
+layout_mode = 2
+reset_value = 1.0
+current_value = 1.0
+unit_suffix = "m"
+label_text = "Radius"
+
+[node name="Height" parent="Properties/MarginContainer/PropertyList" index="3" instance=ExtResource("5_xylcj")]
+visible = false
+layout_mode = 2
+reset_value = 1.0
+current_value = 1.0
+unit_suffix = "m"
+label_text = "Height"
+
+[node name="Slide" parent="Properties/MarginContainer/PropertyList" index="4" instance=ExtResource("6_vpafa")]
+visible = false
+layout_mode = 2
+reset_value = 0.5
+current_value = 0.5
+allow_greater = true
+allow_lesser = true
+label_text = "Slide"
+
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/AlbedoColor" to="." method="_on_albedo_color_value_changed"]
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/Size" to="." method="_on_size_value_changed"]
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/Radius" to="." method="_on_radius_value_changed"]
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/Height" to="." method="_on_height_value_changed"]
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/Slide" to="." method="_on_slide_value_changed"]

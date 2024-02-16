@@ -1,0 +1,94 @@
+[gd_scene load_steps=9 format=3 uid="uid://beseishculvpd"]
+
+[ext_resource type="FontFile" uid="uid://bpw8ywxvp8ctj" path="res://ui/common/fonts/montserrat/montserrat_regular.ttf" id="1_32or2"]
+[ext_resource type="Script" path="res://ui/common/components/additional_button_input_field.gd" id="2_7i0hb"]
+[ext_resource type="Texture2D" uid="uid://cfj5qvqoc6s7u" path="res://art/ui/plus-icon.svg" id="2_l6fcw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_36ga8"]
+bg_color = Color(0.0431373, 0.0627451, 0.129412, 1)
+border_width_left = 12
+border_width_top = 12
+border_width_right = 12
+border_width_bottom = 12
+border_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hv8xh"]
+bg_color = Color(0.0980392, 0.0980392, 0.0980392, 1)
+border_color = Color(0.8, 0.8, 0.8, 0)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4xexl"]
+bg_color = Color(0.0431373, 0.0627451, 0.129412, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.145098, 0.419608, 0.984314, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Theme" id="Theme_smamx"]
+default_font = ExtResource("1_32or2")
+default_font_size = 21
+Button/colors/font_color = Color(0.372549, 0.372549, 0.372549, 1)
+Button/colors/font_focus_color = Color(0.521569, 0.521569, 0.521569, 1)
+Button/colors/font_hover_color = Color(0.521569, 0.521569, 0.521569, 1)
+Button/styles/disabled = SubResource("StyleBoxFlat_36ga8")
+Button/styles/focus = SubResource("StyleBoxFlat_36ga8")
+Button/styles/hover = SubResource("StyleBoxFlat_36ga8")
+Button/styles/normal = SubResource("StyleBoxFlat_36ga8")
+Button/styles/pressed = SubResource("StyleBoxFlat_hv8xh")
+LineEdit/constants/outline_size = 0
+LineEdit/font_sizes/font_size = 21
+LineEdit/styles/focus = SubResource("StyleBoxFlat_36ga8")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_36ga8")
+LineEdit/styles/read_only = SubResource("StyleBoxFlat_36ga8")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_4xexl")
+
+[sub_resource type="Theme" id="Theme_43p0n"]
+
+[node name="AdditionButtonInputField" type="Control"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -2192.0
+offset_bottom = -1240.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_smamx")
+script = ExtResource("2_7i0hb")
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -30.0
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_43p0n")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Panel/HBoxContainer"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+icon = ExtResource("2_l6fcw")
+icon_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="Panel/HBoxContainer"]
+custom_minimum_size = Vector2(0.005, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Example Text Placeholder"

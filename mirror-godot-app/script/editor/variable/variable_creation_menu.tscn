@@ -1,0 +1,76 @@
+[gd_scene load_steps=3 format=3 uid="uid://ddi50hxac0soi"]
+
+[ext_resource type="Script" path="res://script/editor/variable/variable_creation_menu.gd" id="1_k65g4"]
+[ext_resource type="PackedScene" uid="uid://bcn5yv8dwccr3" path="res://script/visual/editor/type_selection_button_all.tscn" id="2_3c8o2"]
+
+[node name="VariableCreationMenu" type="VBoxContainer"]
+custom_minimum_size = Vector2(350, 100)
+offset_right = 300.0
+offset_bottom = 100.0
+script = ExtResource("1_k65g4")
+
+[node name="VariableName" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="LabelHolder" type="MarginContainer" parent="VariableName"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.75
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 2
+
+[node name="Label" type="Label" parent="VariableName/LabelHolder"]
+clip_contents = true
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Name"
+vertical_alignment = 1
+clip_text = true
+
+[node name="NameLineEdit" type="LineEdit" parent="VariableName"]
+layout_mode = 2
+size_flags_horizontal = 3
+select_all_on_focus = true
+caret_blink = true
+caret_blink_interval = 0.5
+
+[node name="Spacer" type="Control" parent="VariableName"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="DataType" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="LabelHolder" type="MarginContainer" parent="DataType"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.75
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 2
+
+[node name="Label" type="Label" parent="DataType/LabelHolder"]
+clip_contents = true
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Data Type"
+vertical_alignment = 1
+clip_text = true
+
+[node name="DataTypeDropdown" parent="DataType" instance=ExtResource("2_3c8o2")]
+layout_mode = 2
+item_count = 8
+
+[node name="Spacer" type="Control" parent="DataType"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[connection signal="focus_entered" from="VariableName/NameLineEdit" to="." method="_on_name_line_edit_focus_entered"]
+[connection signal="item_selected" from="DataType/DataTypeDropdown" to="." method="_on_data_type_selected"]

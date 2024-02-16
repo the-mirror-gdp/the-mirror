@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3 uid="uid://dt13umbkef7va"]
+
+[ext_resource type="Script" path="res://creator/context_menu/player_options.gd" id="1_40el4"]
+[ext_resource type="PackedScene" uid="uid://c6did4ni1basa" path="res://creator/context_menu/context_option.tscn" id="2_bnra4"]
+[ext_resource type="Texture2D" uid="uid://g7ikhwlvgwky" path="res://ui/art/copy.svg" id="3_21lug"]
+[ext_resource type="Texture2D" uid="uid://bfm1o8w2h4wsv" path="res://ui/art/deconstruct.svg" id="3_ukxgd"]
+[ext_resource type="Texture2D" uid="uid://dbh6pi6vogo8m" path="res://ui/art/linked.svg" id="4_bgfug"]
+
+[node name="PlayerOptions" type="VBoxContainer"]
+theme_override_constants/separation = 0
+script = ExtResource("1_40el4")
+
+[node name="Focus" parent="." instance=ExtResource("2_bnra4")]
+layout_mode = 2
+
+[node name="Teleport" parent="." instance=ExtResource("2_bnra4")]
+layout_mode = 2
+text = "Teleport"
+icon = ExtResource("3_ukxgd")
+
+[node name="CopyUserId" parent="." instance=ExtResource("2_bnra4")]
+layout_mode = 2
+text = "Copy User ID"
+icon = ExtResource("3_21lug")
+
+[node name="CopyDisplayName" parent="." instance=ExtResource("2_bnra4")]
+layout_mode = 2
+text = "Copy Display Name"
+icon = ExtResource("4_bgfug")
+
+[connection signal="pressed" from="Focus" to="." method="_on_focus_pressed"]
+[connection signal="pressed" from="Teleport" to="." method="_on_teleport_pressed"]
+[connection signal="pressed" from="CopyUserId" to="." method="_on_copy_user_id_pressed"]
+[connection signal="pressed" from="CopyDisplayName" to="." method="_on_copy_display_name_pressed"]

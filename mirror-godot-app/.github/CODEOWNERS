@@ -1,0 +1,8 @@
+# Lines starting with '#' are comments.
+# Each line is a file pattern followed by one or more owners.
+# Owners can be @users, @org/teams or emails
+
+/.github/                     @the-mirror-megaverse/buildsystem
+/addons/mirror_gltf/          @the-mirror-megaverse/gltf
+/creator/selection/model/     @the-mirror-megaverse/primitive-builder
+/script/                      @the-mirror-megaverse/scripting

@@ -1,0 +1,15 @@
+[gd_resource type="StyleBox" script_class="StyleBoxMulti" load_steps=4 format=3 uid="uid://dsesybbd5f7ro"]
+
+[ext_resource type="Script" path="res://script/visual/editor/theme/style_box_multi.gd" id="1_485eb"]
+[ext_resource type="StyleBox" uid="uid://c8wr6qvjer13a" path="res://script/visual/editor/theme/graph_node_selected_base.stylebox.tres" id="2_1i3ph"]
+[ext_resource type="StyleBox" uid="uid://bweg5vslf2f7j" path="res://script/visual/editor/theme/graph_node_selected_outline.stylebox.tres" id="3_lr2vq"]
+
+[resource]
+resource_local_to_scene = false
+resource_name = ""
+content_margin_left = 16.0
+content_margin_top = 42.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+script = ExtResource("1_485eb")
+style_boxes = Array[StyleBox]([ExtResource("2_1i3ph"), ExtResource("3_lr2vq")])

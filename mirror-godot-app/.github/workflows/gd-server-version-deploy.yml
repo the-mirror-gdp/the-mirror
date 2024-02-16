@@ -1,0 +1,24 @@
+# tell mirror server about our new version number
+name: Setting godot server version
+on:
+  workflow_call:
+    inputs:
+      url:
+        required: true
+        type: string
+      version:
+        required: true
+        type: string
+    secrets:
+      WSS_TOKEN:
+        required: true
+
+jobs:
+  upload:
+    name: updating mirror-server to ${{ inputs.version }}
+    runs-on: ["self-hosted", "Linux"]
+    timeout-minutes: 10
+    steps:
+      - id: update-via-curl
+        run: |
+          curl --location --request PATCH '${{inputs.url}}/mirror-server-config' --header 'Accept: application/json' --header 'Content-Type: application/json' --header 'Authorization: Bearer ${{secrets.WSS_TOKEN}}' --data '{"gdServerVersion": "${{ inputs.version }}"}'

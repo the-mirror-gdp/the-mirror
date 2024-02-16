@@ -1,0 +1,48 @@
+[gd_scene load_steps=4 format=3 uid="uid://d20ywphmiq3n6"]
+
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="1_leasp"]
+[ext_resource type="Script" path="res://player/vr/emoji_menu/emoji_item.gd" id="1_o02fx"]
+[ext_resource type="Texture2D" uid="uid://btqnv4hwpgduk" path="res://ui/art/circle.svg" id="2_43fmy"]
+
+[node name="Emoji" type="Button"]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(138, 138)
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+script = ExtResource("1_o02fx")
+
+[node name="Circle" type="TextureRect" parent="."]
+visible = false
+self_modulate = Color(0, 0, 0, 0.392157)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(64, 64)
+texture = ExtResource("2_43fmy")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="."]
+custom_minimum_size = Vector2(138, 138)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(69, 69)
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_fonts/font = ExtResource("1_leasp")
+theme_override_font_sizes/font_size = 100
+text = "😆 "
+vertical_alignment = 1
+clip_text = true
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="pressed" from="." to="." method="_on_pressed"]

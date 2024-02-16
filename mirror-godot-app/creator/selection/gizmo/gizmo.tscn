@@ -1,0 +1,19 @@
+[gd_scene load_steps=6 format=3 uid="uid://c2y3rwko7lsge"]
+
+[ext_resource type="Script" path="res://creator/selection/gizmo/gizmo.gd" id="1_7aw08"]
+[ext_resource type="PackedScene" uid="uid://6kifssyg0uh2" path="res://creator/selection/gizmo/parts/translation_scale/translation_gizmo.tscn" id="2_7sm3i"]
+[ext_resource type="PackedScene" uid="uid://5hqkhv5vfbxw" path="res://creator/selection/gizmo/parts/rotation/rotation_gizmo.tscn" id="3_ow5hd"]
+[ext_resource type="PackedScene" uid="uid://c244flwpgdfsd" path="res://creator/selection/gizmo/parts/translation_scale/scale_gizmo.tscn" id="4_x3jj3"]
+[ext_resource type="AudioStream" uid="uid://0sknjo7cjln7" path="res://creator/selection/audio/click_hold.wav" id="5_wl5s0"]
+
+[node name="Gizmo" type="Node3D"]
+script = ExtResource("1_7aw08")
+
+[node name="TranslationGizmo" parent="." instance=ExtResource("2_7sm3i")]
+
+[node name="RotationGizmo" parent="." instance=ExtResource("3_ow5hd")]
+
+[node name="ScaleGizmo" parent="." instance=ExtResource("4_x3jj3")]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_wl5s0")

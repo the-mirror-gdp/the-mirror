@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://fjwrsyi88nif"]
+
+[ext_resource type="Script" path="res://gameplay/space_object/heightmap/quad_tree_chunk.gd" id="1_v4l7e"]
+
+[node name="QuadTreeChunk" type="MeshInstance3D"]
+script = ExtResource("1_v4l7e")

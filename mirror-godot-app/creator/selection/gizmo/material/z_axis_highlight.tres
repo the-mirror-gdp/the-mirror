@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://iempen7gi22a"]
+
+[resource]
+render_priority = 10
+cull_mode = 2
+no_depth_test = true
+shading_mode = 0
+albedo_color = Color(0.432, 0.6872, 0.96, 1)

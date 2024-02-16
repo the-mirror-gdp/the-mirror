@@ -1,0 +1,137 @@
+[gd_scene load_steps=9 format=3 uid="uid://chbho7riip6y"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_he05o"]
+[ext_resource type="Script" path="res://creator/selection/inspector/primitive/inspector_material.gd" id="2_wrqjo"]
+[ext_resource type="PackedScene" uid="uid://cy566ld7k03ue" path="res://creator/selection/inspector/primitive/inspector_reset_button.tscn" id="3_uv12t"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sim58"]
+bg_color = Color(0.109804, 0.121569, 0.141176, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.109804, 0.121569, 0.141176, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3ivr3"]
+bg_color = Color(0.109804, 0.121569, 0.141176, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.0705882, 1, 0.843137, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_trad2"]
+bg_color = Color(0.109804, 0.121569, 0.141176, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.0705882, 1, 0.843137, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ex55k"]
+bg_color = Color(0.109804, 0.121569, 0.141176, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.0705882, 1, 0.843137, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3slw7"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.3)
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 0.3)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 5
+
+[node name="InspectorPropertyMaterial" type="HBoxContainer"]
+custom_minimum_size = Vector2(256, 30)
+offset_right = 256.0
+offset_bottom = 32.0
+size_flags_horizontal = 3
+theme = ExtResource("1_he05o")
+theme_override_constants/separation = 0
+script = ExtResource("2_wrqjo")
+
+[node name="LabelHolder" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.75
+theme_override_constants/margin_left = 4
+
+[node name="Label" type="Label" parent="LabelHolder"]
+clip_contents = true
+custom_minimum_size = Vector2(50, 20)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "E"
+vertical_alignment = 1
+clip_text = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="Button" type="Button" parent="HBoxContainer"]
+clip_children = 2
+clip_contents = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_sim58")
+theme_override_styles/hover = SubResource("StyleBoxFlat_3ivr3")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_trad2")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_sim58")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ex55k")
+
+[node name="Preview" type="TextureRect" parent="HBoxContainer/Button"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+
+[node name="MaterialName" type="LineEdit" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_styles/read_only = SubResource("StyleBoxFlat_3slw7")
+placeholder_text = "No material"
+editable = false
+shortcut_keys_enabled = false
+middle_mouse_paste_enabled = false
+
+[node name="ResetButton" parent="." instance=ExtResource("3_uv12t")]
+layout_mode = 2
+
+[connection signal="pressed" from="HBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="ResetButton" to="." method="_on_reset_button_pressed"]

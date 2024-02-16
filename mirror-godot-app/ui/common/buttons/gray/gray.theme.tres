@@ -1,0 +1,10 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://d3isoxw65g1rm"]
+
+[ext_resource type="StyleBox" uid="uid://6nrnb066lnpu" path="res://ui/common/buttons/gray/gray_focus.stylebox.tres" id="1_w3rea"]
+[ext_resource type="StyleBox" uid="uid://bbs54ft14uu3q" path="res://ui/common/buttons/gray/gray_normal.stylebox.tres" id="3_osxcm"]
+
+[resource]
+Button/styles/focus = ExtResource("1_w3rea")
+Button/styles/hover = ExtResource("1_w3rea")
+Button/styles/normal = ExtResource("3_osxcm")
+Button/styles/pressed = ExtResource("3_osxcm")

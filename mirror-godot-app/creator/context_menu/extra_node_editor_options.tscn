@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://clodokvwasgku"]
+
+[ext_resource type="Script" path="res://creator/context_menu/extra_node_editor_options.gd" id="1_841cn"]
+[ext_resource type="PackedScene" uid="uid://c6did4ni1basa" path="res://creator/context_menu/context_option.tscn" id="2_nlu1r"]
+[ext_resource type="Texture2D" uid="uid://pyiiu7es8s11" path="res://ui/art/close.svg" id="9_cd1y6"]
+
+[node name="ExtraNodeEditorOptions" type="VBoxContainer"]
+theme_override_constants/separation = 0
+script = ExtResource("1_841cn")
+
+[node name="Focus" parent="." instance=ExtResource("2_nlu1r")]
+layout_mode = 2
+
+[node name="Label" parent="Focus" index="0"]
+text = "C"
+
+[node name="CloseEditor" parent="." instance=ExtResource("2_nlu1r")]
+layout_mode = 2
+text = "Close Editor"
+icon = ExtResource("9_cd1y6")
+
+[connection signal="pressed" from="Focus" to="." method="_on_focus_pressed"]
+[connection signal="pressed" from="CloseEditor" to="." method="_on_close_editor_pressed"]
+
+[editable path="Focus"]

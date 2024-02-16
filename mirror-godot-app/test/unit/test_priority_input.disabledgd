@@ -1,0 +1,190 @@
+extends GutTest
+
+const PRIORITY_INPUT_SCRIPT := preload("res://scripts/autoload/priority_input.gd")
+var priority_input
+
+const action1_name := &"action1"
+signal action1_register
+signal action1_unregister
+
+const action2_name := &"action2"
+signal action2_register
+signal action2_unregister
+
+const action3_name := &"action3"
+signal action3_register
+signal action3_unregister
+
+const space_action_name := &"space_action"
+signal space_action_register
+signal space_action_unregister
+
+const action_names = [action1_name, action2_name, action3_name]
+
+
+func before_all():
+	var escape_press = escape_press_event()
+	var previous_size = InputMap.get_actions().size()
+	for name in action_names:
+		InputMap.add_action(name)
+		InputMap.action_add_event(name, escape_press)
+		assert_eq(InputMap.action_get_events(name).size(), 1,
+			"We should have correctly put the escape key as a key event for %s" % name)
+
+
+func escape_press_event():
+	var escape_press := InputEventKey.new()
+	escape_press.physical_keycode = KEY_ESCAPE
+	escape_press.pressed = true
+	return escape_press
+
+
+func space_press_event():
+	var space_press := InputEventKey.new()
+	space_press.physical_keycode = KEY_SPACE
+	space_press.pressed = true
+	return space_press
+
+
+func before_each():
+	priority_input = PRIORITY_INPUT_SCRIPT.new()
+	add_child(priority_input)
+
+
+func after_each():
+	remove_child(priority_input)
+	priority_input.queue_free()
+
+
+func test_single_action():
+	var actions1: Array[StringName] = [action1_name]
+	priority_input.register_actions(actions1, action1_register, action1_unregister)
+
+	var escape_press = escape_press_event()
+	Input.parse_input_event(escape_press)
+	await get_tree().process_frame
+
+	assert_eq(Input.is_physical_key_pressed(KEY_ESCAPE), true,
+		"Sanity checkiority_input_to_keys.has(action_name):: this should only trigger if implementation of parse_input_event changes")
+
+	assert_eq(Input.is_action_pressed(action1_name), true,
+		"Sanity check: this should only trigger if implementation of parse_input_event changes")
+
+	assert_eq(priority_input.is_action_pressed(action1_name), false,
+		"The action must NOT be registered until its register signal is emitted")
+
+	action1_register.emit()
+
+	assert_eq(priority_input.is_action_pressed(action1_name), true,
+		"The action must be registered as soon as its register signal is emitted")
+
+	action1_unregister.emit()
+
+	assert_eq(priority_input.is_action_pressed(action1_name), false,
+		"The action must NOT be registered once its unregister signal is emitted")
+
+	action1_register.emit()
+
+	assert_eq(priority_input.is_action_pressed(action1_name), true,
+		"The action must be registered as soon as its register signal is emitted, every time")
+
+	action1_unregister.emit()
+
+	assert_eq(priority_input.is_action_pressed(action1_name), false,
+		"The action must NOT be registered once its unregister signal is emitted, every time")
+
+	# Test cleanup
+	var escape_released = escape_press_event()
+	escape_released.pressed = false
+	Input.parse_input_event(escape_released)
+
+
+func test_multiple_actions():
+	var actions1: Array[StringName] = [action1_name]
+	priority_input.register_actions(actions1, action1_register, action1_unregister)
+	var actions2: Array[StringName] = [action2_name]
+	priority_input.register_actions(actions2, action2_register, action2_unregister)
+	var actions3: Array[StringName] = [action3_name]
+	priority_input.register_actions(actions3, action3_register, action3_unregister)
+
+	var escape_press = escape_press_event()
+	Input.parse_input_event(escape_press)
+	await get_tree().process_frame
+
+	assert_eq(pressed_actions.call(action_names), [false, false, false],
+		"The action must be registered as soon as its register signal is emitted")
+
+	action1_register.emit()
+
+	assert_eq(pressed_actions.call(action_names), [true, false, false],
+		"The action1 must be the only registered on their shared event")
+
+	action2_register.emit()
+
+	assert_eq(pressed_actions.call(action_names), [false, true, false],
+		"The action2 must be registered on top of the previous action1 on their shared event (key, etc)")
+
+	action3_register.emit()
+
+	assert_eq(pressed_actions.call(action_names), [false, false, true],
+		"The action3 must be registered on top of the previous action2 on their shared event (key, etc)")
+
+	action2_unregister.emit()
+
+	assert_eq(pressed_actions.call(action_names), [false, false, true],
+		"The action3 must still be registered on top of the previous action1 on their shared event (key, etc)")
+
+
+func pressed_actions(action_names):
+	return action_names.map(func (name): return priority_input.is_action_pressed(name))
+
+
+func test_actions_with_different_event_should_not_block_each_other():
+	add_space_action_to_input_map(space_action_name)
+	var test_action_names = action_names.duplicate()
+	test_action_names.append(space_action_name)
+
+	var actions1: Array[StringName] = [action1_name]
+	priority_input.register_actions(actions1, action1_register, action1_unregister)
+	var actions2: Array[StringName] = [action2_name]
+	priority_input.register_actions(actions2, action2_register, action2_unregister)
+	var space_actions: Array[StringName] = [space_action_name]
+	priority_input.register_actions(space_actions, space_action_register, space_action_unregister)
+
+	action1_register.emit()
+	action2_register.emit()
+	space_action_register.emit()
+
+	var escape_press = escape_press_event()
+	Input.parse_input_event(escape_press)
+	await get_tree().process_frame
+
+	assert_eq(pressed_actions.call(test_action_names), [false, true, false, false],
+		"The escape_action is not sharing any key event with the others, so it should be a separate key stack.")
+
+	var space_press: InputEventKey = space_press_event()
+	Input.parse_input_event(space_press)
+	var escape_released = escape_press
+	escape_released.pressed = false
+	Input.parse_input_event(escape_released)
+	await get_tree().process_frame
+
+	assert_eq(pressed_actions.call(test_action_names), [false, false, false, true],
+		"The space_action is not sharing any key event with the others, so, as Space is pressed, and we have the top of the priority on it")
+
+	# clean up
+	var space_released: InputEventKey = space_press_event()
+	space_released.pressed = false
+	Input.parse_input_event(space_released)
+
+
+func add_space_action_to_input_map(space_action_name: StringName):
+	var space_key_event: InputEventKey= space_press_event()
+
+	InputMap.add_action(space_action_name)
+	InputMap.action_add_event(space_action_name, space_key_event)
+
+	assert_eq(InputMap.action_get_events(space_action_name).map(
+			func (event): return OS.get_keycode_string(event.physical_keycode)
+		), ["Space"],
+		"We should have correctly put the space key as a key event for %s" % space_action_name)

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://brmnmegnycvpe"]
+
+[ext_resource type="Script" path="res://test/scene_packer_test/scene_packer_test.gd" id="1"]
+
+[node name="ScenePackerTest" type="Node"]
+script = ExtResource("1")

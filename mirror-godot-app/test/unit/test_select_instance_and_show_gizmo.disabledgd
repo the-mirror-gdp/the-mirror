@@ -1,0 +1,77 @@
+extends GutTest
+
+
+var zone_space_scene_packed_scene: PackedScene
+
+var hierarchy: SceneHierarchy
+var gizmo: Gizmo
+var space_object_dictionary: Dictionary
+
+
+func before_all():
+	var test_constants = load("res://test/utils/test_constants.gd").new()
+	space_object_dictionary = test_constants.fake_space_object_dictionary.duplicate()
+	zone_space_scene_packed_scene = load("res://scenes/space_scene.tscn")
+	Zone.Scene = zone_space_scene_packed_scene.instantiate() as SpaceScene
+	hierarchy = GameUI.creator_ui.scene_hierarchy
+	gizmo = GameUI.get_node(^"CreatorUI/ObjectSelection/Gizmo")
+	PlayerData._cached_local_user_id = &"test-user"
+
+
+func before_each():
+	PlayerData.game_mode.set_game_mode(GameMode.Mode.BUILD)
+
+
+func after_each():
+	hierarchy.clear_selected_nodes()
+	gizmo.set_gizmo_type(Enums.GIZMO_TYPE.GRAB)
+
+
+func after_all():
+	Zone.Scene.queue_free()
+	Zone.Scene = null
+	PlayerData._cached_local_user_id = PlayerData.USER_ID_UNKNOWN
+	for space_object in Zone.instance_manager.get_all_instances():
+		Zone.instance_manager.remove_space_object(space_object)
+
+
+func test_show_gizmo_after_an_object_is_selected():
+	Zone.instance_manager.create_space_object(space_object_dictionary)
+	var new_space_object: SpaceObject = Zone.instance_manager.get_instance(space_object_dictionary["_id"])
+	GameUI.creator_ui.select_object(new_space_object)
+	gizmo.set_gizmo_type(Enums.GIZMO_TYPE.MOVE)
+	assert_true(gizmo.visible, "Gizmo should be visible after selecting a space object.")
+
+
+func test_show_gizmo_after_an_object_is_created():
+	space_object_dictionary["receipt"] = { "created_by_user": "test-user", "auto_select": true }
+	Zone.instance_manager.create_space_object(space_object_dictionary)
+	var new_space_object: SpaceObject = Zone.instance_manager.get_instance(space_object_dictionary["_id"])
+	GameUI.creator_ui.select_object(new_space_object)
+	gizmo.set_gizmo_type(Enums.GIZMO_TYPE.MOVE)
+	assert_true(gizmo.visible, "Gizmo should be visible after creating a space object.")
+
+
+func test_hide_gizmo_after_build_to_normal_mode_transition():
+	Zone.instance_manager.create_space_object(space_object_dictionary)
+	var new_space_object: SpaceObject = Zone.instance_manager.get_instance(space_object_dictionary["_id"])
+	GameUI.creator_ui.select_object(new_space_object)
+	gizmo.set_gizmo_type(Enums.GIZMO_TYPE.MOVE)
+	assert_false(GameUI.creator_ui.selection_helper.is_selection_empty(),
+				"Object should be selected in BUILD mode")
+	PlayerData.game_mode.set_game_mode(GameMode.Mode.NORMAL)
+	assert_false(GameUI.creator_ui.selection_helper.is_selection_empty(),
+				"Object should be selected after switching to NORMAL mode")
+	assert_false(gizmo.visible, "Gizmo should be hidden after switching to NORMAL mode")
+
+
+func test_gizmo_still_hidden_after_tool_change_normal_mode():
+	Zone.instance_manager.create_space_object(space_object_dictionary)
+	var new_space_object: SpaceObject = Zone.instance_manager.get_instance(space_object_dictionary["_id"])
+	GameUI.creator_ui.select_object(new_space_object)
+	gizmo.set_gizmo_type(Enums.GIZMO_TYPE.MOVE)
+	assert_true(gizmo.visible, "Gizmo should be visible after selecting a space object.")
+	PlayerData.game_mode.set_game_mode(GameMode.Mode.NORMAL)
+	assert_false(gizmo.visible, "Gizmo should be hidden after switching to NORMAL mode")
+	gizmo.set_gizmo_type(Enums.GIZMO_TYPE.ROTATE)
+	assert_false(gizmo.visible, "Gizmo should be hidden after switching type in NORMAL mode")

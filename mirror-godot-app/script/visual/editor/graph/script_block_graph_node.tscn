@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://tenfybck27hn"]
+
+[ext_resource type="Script" path="res://script/visual/editor/graph/script_block_graph_node.gd" id="1_qqidy"]
+[ext_resource type="Theme" uid="uid://chpmeyn2g6o6r" path="res://script/visual/editor/script_editor.theme.tres" id="1_qt58e"]
+
+[node name="ScriptBlockGraphNode" type="GraphNode"]
+custom_minimum_size = Vector2(220, 100)
+offset_right = 36.0
+offset_bottom = 54.0
+theme = ExtResource("1_qt58e")
+title = "Script Block"
+script = ExtResource("1_qqidy")
+
+[connection signal="mouse_entered" from="." to="." method="_on_hoverable_script_block_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_hoverable_script_block_mouse_exited"]

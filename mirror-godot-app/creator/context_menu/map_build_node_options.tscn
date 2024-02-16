@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://2a12qwonnnlb"]
+
+[ext_resource type="Script" path="res://creator/context_menu/map_build_node_options.gd" id="1_mtlcl"]
+[ext_resource type="PackedScene" uid="uid://c6did4ni1basa" path="res://creator/context_menu/context_option.tscn" id="2_m62ja"]
+[ext_resource type="Texture2D" uid="uid://g7ikhwlvgwky" path="res://ui/art/copy.svg" id="3_j0gbq"]
+
+[node name="MapBuildNodeOptions" type="VBoxContainer"]
+theme_override_constants/separation = 0
+script = ExtResource("1_mtlcl")
+
+[node name="CopyNodeName" parent="." instance=ExtResource("2_m62ja")]
+layout_mode = 2
+text = "Copy Node Name"
+icon = ExtResource("3_j0gbq")
+
+[connection signal="pressed" from="CopyNodeName" to="." method="_on_copy_node_name_pressed"]

@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://b71qr3g838s8b"]
+
+[ext_resource type="FontVariation" uid="uid://bwp6hb31ol8la" path="res://ui/new_player_ui/inventory/title_font_bold.tres" id="1_d01tb"]
+[ext_resource type="Script" path="res://ui/hover_text/scripts/hoverable_checkbox.gd" id="3_45b43"]
+
+[node name="HoverableCheckBox" type="CheckBox"]
+custom_minimum_size = Vector2(32, 32)
+offset_right = 89.0
+offset_bottom = 32.0
+size_flags_horizontal = 0
+size_flags_vertical = 4
+focus_mode = 1
+theme_override_constants/h_separation = 12
+theme_override_fonts/font = ExtResource("1_d01tb")
+theme_override_font_sizes/font_size = 12
+text = "Checkbox"
+flat = true
+alignment = 1
+script = ExtResource("3_45b43")
+
+[connection signal="mouse_entered" from="." to="." method="_on_hoverable_checkbox_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_hoverable_checkbox_mouse_exited"]

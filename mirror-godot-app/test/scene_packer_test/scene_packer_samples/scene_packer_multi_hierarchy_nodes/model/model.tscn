@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://btliqawp82qis"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_vl61x"]
+
+[node name="Model" type="Node3D"]
+
+[node name="MeshInstance" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_vl61x")
+skeleton = NodePath("../..")

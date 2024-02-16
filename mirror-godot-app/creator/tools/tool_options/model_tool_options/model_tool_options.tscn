@@ -1,0 +1,172 @@
+[gd_scene load_steps=14 format=3 uid="uid://v0vqpj300onq"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_uvd7k"]
+[ext_resource type="Script" path="res://creator/tools/tool_options/model_tool_options/model_tool_options.gd" id="2_u5cj6"]
+[ext_resource type="StyleBox" uid="uid://biwid7pf726cm" path="res://ui/new_player_ui/inventory/panel_light_blue_rounded.tres" id="3_ra2aj"]
+[ext_resource type="StyleBox" uid="uid://c4ig2wlac32fb" path="res://ui/new_player_ui/inventory/panel_light_blue_rounded_unselected.tres" id="4_htj0t"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="5_p3b8h"]
+[ext_resource type="FontVariation" uid="uid://bwp6hb31ol8la" path="res://ui/new_player_ui/inventory/title_font_bold.tres" id="6_w8wmq"]
+[ext_resource type="PackedScene" uid="uid://nqtj3k1bv6uh" path="res://creator/tools/buttons/toolbar_button.tscn" id="7_mjmui"]
+[ext_resource type="Texture2D" uid="uid://dlic00wymxphj" path="res://creator/tools/tool_options/model_tool_options/shape_cube.svg" id="8_2dy6x"]
+[ext_resource type="Texture2D" uid="uid://dkr07agxl2pa4" path="res://creator/tools/tool_options/model_tool_options/shape_sphere.svg" id="9_l4opf"]
+[ext_resource type="Texture2D" uid="uid://cnd6xo0ol1er1" path="res://creator/tools/tool_options/model_tool_options/shape_cylinder.svg" id="10_w085r"]
+[ext_resource type="Texture2D" uid="uid://c5rjfl6ks6t5t" path="res://creator/tools/tool_options/model_tool_options/shape_cone.svg" id="11_ji1w6"]
+[ext_resource type="Texture2D" uid="uid://dg2aymvqodjwr" path="res://creator/tools/tool_options/model_tool_options/shape_triangle.svg" id="12_ek3be"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_pa7pd"]
+line_spacing = 0.0
+font = ExtResource("5_p3b8h")
+font_size = 11
+
+[node name="ModelToolOptions" type="MarginContainer" node_paths=PackedStringArray("_current_model_label", "_create_button", "_settings_container", "_box_mesh_button", "_sphere_mesh_button", "_capsule_mesh_button", "_cylinder_mesh_button", "_cone_mesh_button", "_triangle_mesh_button", "_grid_size_option_button", "_color_picker")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_uvd7k")
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+script = ExtResource("2_u5cj6")
+button_selected_style = ExtResource("3_ra2aj")
+button_deselected_style = ExtResource("4_htj0t")
+_current_model_label = NodePath("VBoxContainer/CurrentModelLabel")
+_create_button = NodePath("VBoxContainer/InstanceButtons/CreateButton")
+_settings_container = NodePath("VBoxContainer/VBoxContainer")
+_box_mesh_button = NodePath("VBoxContainer/VBoxContainer/PrimitiveType/BoxMeshButton")
+_sphere_mesh_button = NodePath("VBoxContainer/VBoxContainer/PrimitiveType/SphereMeshButton")
+_capsule_mesh_button = NodePath("VBoxContainer/VBoxContainer/PrimitiveType/CapsuleMeshButton")
+_cylinder_mesh_button = NodePath("VBoxContainer/VBoxContainer/PrimitiveType/CylinderMeshButton")
+_cone_mesh_button = NodePath("VBoxContainer/VBoxContainer/PrimitiveType/ConeMeshButton")
+_triangle_mesh_button = NodePath("VBoxContainer/VBoxContainer/PrimitiveType/TriangleMeshButton")
+_grid_size_option_button = NodePath("VBoxContainer/VBoxContainer/GridSize/GridSizeOption")
+_color_picker = NodePath("VBoxContainer/VBoxContainer/Color/ColorPickerButton")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CurrentModelLabel" type="Label" parent="VBoxContainer"]
+modulate = Color(0.0705882, 1, 0.843137, 1)
+custom_minimum_size = Vector2(256, 30)
+layout_mode = 2
+text = "Currently Editing: ModelRoot"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="InstanceButtons" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="CreateButton" type="Button" parent="VBoxContainer/InstanceButtons"]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("5_p3b8h")
+text = "Create New"
+
+[node name="SaveButton" type="Button" parent="VBoxContainer/InstanceButtons"]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("5_p3b8h")
+text = "Save"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="PrimitiveType" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+
+[node name="PrimitiveTypeLabel" type="Label" parent="VBoxContainer/VBoxContainer/PrimitiveType"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("6_w8wmq")
+theme_override_font_sizes/font_size = 14
+text = "Type"
+label_settings = SubResource("LabelSettings_pa7pd")
+vertical_alignment = 1
+
+[node name="BoxMeshButton" parent="VBoxContainer/VBoxContainer/PrimitiveType" instance=ExtResource("7_mjmui")]
+layout_mode = 2
+icon = ExtResource("8_2dy6x")
+hover_tooltip_text = "Box Mesh"
+
+[node name="SphereMeshButton" parent="VBoxContainer/VBoxContainer/PrimitiveType" instance=ExtResource("7_mjmui")]
+layout_mode = 2
+icon = ExtResource("9_l4opf")
+hover_tooltip_text = "Sphere Mesh"
+
+[node name="CapsuleMeshButton" parent="VBoxContainer/VBoxContainer/PrimitiveType" instance=ExtResource("7_mjmui")]
+layout_mode = 2
+icon = ExtResource("10_w085r")
+hover_tooltip_text = "Capsule Mesh"
+
+[node name="CylinderMeshButton" parent="VBoxContainer/VBoxContainer/PrimitiveType" instance=ExtResource("7_mjmui")]
+layout_mode = 2
+icon = ExtResource("10_w085r")
+hover_tooltip_text = "Cylinder Mesh"
+
+[node name="ConeMeshButton" parent="VBoxContainer/VBoxContainer/PrimitiveType" instance=ExtResource("7_mjmui")]
+layout_mode = 2
+icon = ExtResource("11_ji1w6")
+hover_tooltip_text = "Cone Mesh"
+
+[node name="TriangleMeshButton" parent="VBoxContainer/VBoxContainer/PrimitiveType" instance=ExtResource("7_mjmui")]
+layout_mode = 2
+icon = ExtResource("12_ek3be")
+hover_tooltip_text = "Triangle Mesh"
+
+[node name="GridSize" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="GridSizeLabel" type="Label" parent="VBoxContainer/VBoxContainer/GridSize"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("6_w8wmq")
+theme_override_font_sizes/font_size = 14
+text = "Grid Size"
+label_settings = SubResource("LabelSettings_pa7pd")
+vertical_alignment = 1
+
+[node name="GridSizeOption" type="OptionButton" parent="VBoxContainer/VBoxContainer/GridSize"]
+custom_minimum_size = Vector2(200, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Color" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ColorLabel" type="Label" parent="VBoxContainer/VBoxContainer/Color"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("6_w8wmq")
+theme_override_font_sizes/font_size = 14
+text = "Color"
+label_settings = SubResource("LabelSettings_pa7pd")
+vertical_alignment = 1
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="VBoxContainer/VBoxContainer/Color"]
+custom_minimum_size = Vector2(200, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(1, 1, 1, 1)
+
+[connection signal="pressed" from="VBoxContainer/InstanceButtons/CreateButton" to="." method="_on_create_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/InstanceButtons/SaveButton" to="." method="_on_save_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/PrimitiveType/BoxMeshButton" to="." method="_on_box_mesh_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/PrimitiveType/SphereMeshButton" to="." method="_on_sphere_mesh_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/PrimitiveType/CapsuleMeshButton" to="." method="_on_capsule_mesh_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/PrimitiveType/CylinderMeshButton" to="." method="_on_cylinder_mesh_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/PrimitiveType/ConeMeshButton" to="." method="_on_cone_mesh_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/VBoxContainer/PrimitiveType/TriangleMeshButton" to="." method="_on_triangle_mesh_button_pressed"]
+[connection signal="item_selected" from="VBoxContainer/VBoxContainer/GridSize/GridSizeOption" to="." method="_on_grid_size_option_selected"]
+[connection signal="color_changed" from="VBoxContainer/VBoxContainer/Color/ColorPickerButton" to="." method="_on_color_picker_changed"]

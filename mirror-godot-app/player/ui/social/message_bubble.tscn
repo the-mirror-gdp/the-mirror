@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://bvnggepkfhy40"]
+
+[ext_resource type="Script" path="res://player/ui/social/message_bubble.gd" id="1_77l1o"]
+[ext_resource type="FontFile" uid="uid://wnq6gpmrsr6v" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_medium.ttf" id="2_plo54"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_fqyuv"]
+font = ExtResource("2_plo54")
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+
+[node name="MessageBubble" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 32)
+offset_right = 108.0
+offset_bottom = 31.0
+size_flags_horizontal = 4
+script = ExtResource("1_77l1o")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="Label" type="Label" parent="MarginContainer"]
+layout_mode = 2
+text = "Hello World!"
+label_settings = SubResource("LabelSettings_fqyuv")
+horizontal_alignment = 1
+vertical_alignment = 1

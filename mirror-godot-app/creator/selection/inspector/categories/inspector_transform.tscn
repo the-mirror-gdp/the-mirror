@@ -1,0 +1,46 @@
+[gd_scene load_steps=4 format=3 uid="uid://b3uqasv7fgqwq"]
+
+[ext_resource type="PackedScene" uid="uid://dkxqj3l0xm8uw" path="res://creator/selection/inspector/categories/inspector_category_base.tscn" id="1_vvtpa"]
+[ext_resource type="Script" path="res://creator/selection/inspector/categories/inspector_transform.gd" id="2_bev4v"]
+[ext_resource type="PackedScene" uid="uid://dbpxgjpuqb2x2" path="res://creator/selection/inspector/primitive/inspector_vector3.tscn" id="3_rwy6j"]
+
+[node name="InspectorTransform" instance=ExtResource("1_vvtpa")]
+offset_bottom = 504.0
+script = ExtResource("2_bev4v")
+
+[node name="Text" parent="CategoryTitle/ToggleButton/Name" index="3"]
+text = "TRANSFORM"
+
+[node name="Properties" parent="." index="1"]
+visible = true
+
+[node name="Position" parent="Properties/MarginContainer/PropertyList" index="0" instance=ExtResource("3_rwy6j")]
+layout_mode = 2
+unit_suffix = "m"
+label_text = "Position"
+
+[node name="Rotation" parent="Properties/MarginContainer/PropertyList" index="1" instance=ExtResource("3_rwy6j")]
+layout_mode = 2
+unit_suffix = "°"
+label_text = "Rotation"
+
+[node name="Scale" parent="Properties/MarginContainer/PropertyList" index="2" instance=ExtResource("3_rwy6j")]
+layout_mode = 2
+reset_value = Vector3(1, 1, 1)
+label_text = "Scale"
+
+[node name="ModelOffset" parent="Properties/MarginContainer/PropertyList" index="3" instance=ExtResource("3_rwy6j")]
+visible = false
+layout_mode = 2
+label_text = "Offset"
+
+[node name="CenterModel" type="Button" parent="Properties/MarginContainer/PropertyList" index="4"]
+visible = false
+layout_mode = 2
+text = "Center Model"
+
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/Position" to="." method="_on_transform_changed"]
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/Rotation" to="." method="_on_transform_changed"]
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/Scale" to="." method="_on_transform_changed"]
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/ModelOffset" to="." method="_on_transform_changed"]
+[connection signal="pressed" from="Properties/MarginContainer/PropertyList/CenterModel" to="." method="_on_center_model_pressed"]

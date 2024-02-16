@@ -1,0 +1,162 @@
+[gd_scene load_steps=10 format=3 uid="uid://dacr8ad8b62aw"]
+
+[ext_resource type="Script" path="res://creator/common/base_asset_slot.gd" id="1_6li0m"]
+[ext_resource type="Texture2D" uid="uid://pyiiu7es8s11" path="res://ui/art/close.svg" id="2_7ma3o"]
+[ext_resource type="StyleBox" uid="uid://bd8ph5tqojh8w" path="res://creator/common/theme/panel_slot_hover.stylebox.tres" id="2_lps3w"]
+[ext_resource type="StyleBox" uid="uid://uqa5bs2gkql3" path="res://creator/common/theme/panel_slot_active.stylebox.tres" id="3_db5lr"]
+[ext_resource type="Texture2D" uid="uid://bpdhjrlxnx4ta" path="res://ui/art/rolling_spinner.svg" id="3_ffjok"]
+[ext_resource type="Texture2D" uid="uid://cteekfq55aa4g" path="res://ui/art/asset.svg" id="4_3nl7b"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_grtcc"]
+bg_color = Color(0.109804, 0.121569, 0.141176, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.109804, 0.121569, 0.141176, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="Animation" id="Animation_n4yvx"]
+resource_name = "Roll"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2nhbe"]
+_data = {
+"Roll": SubResource("Animation_n4yvx")
+}
+
+[node name="BaseAssetSlot" type="Control"]
+custom_minimum_size = Vector2(84, 84)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 84.0
+offset_bottom = 84.0
+script = ExtResource("1_6li0m")
+
+[node name="Panel" type="Panel" parent="."]
+texture_filter = 2
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_grtcc")
+metadata/_edit_layout_mode = 1
+
+[node name="HoverState" type="Panel" parent="Panel"]
+visible = false
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("2_lps3w")
+
+[node name="ActiveState" type="Panel" parent="Panel"]
+visible = false
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("3_db5lr")
+
+[node name="Preview" type="TextureRect" parent="Panel"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+
+[node name="InvalidIcon" type="TextureRect" parent="Panel"]
+visible = false
+modulate = Color(1, 0, 0.0941176, 1)
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 26.0
+offset_top = 26.0
+offset_right = 18.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+mouse_filter = 2
+texture = ExtResource("2_7ma3o")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+
+[node name="LoadingSpinner" type="TextureRect" parent="Panel"]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(20, 20)
+mouse_filter = 2
+texture = ExtResource("3_ffjok")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Panel/LoadingSpinner"]
+autoplay = "Roll"
+libraries = {
+"": SubResource("AnimationLibrary_2nhbe")
+}
+
+[node name="NeedsDownload" type="TextureRect" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -20.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+texture = ExtResource("4_3nl7b")
+expand_mode = 1
+
+[connection signal="gui_input" from="." to="." method="_on_asset_slot_gui_input"]
+[connection signal="mouse_entered" from="." to="." method="_on_asset_slot_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_asset_slot_mouse_exited"]

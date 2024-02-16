@@ -1,0 +1,368 @@
+[gd_scene load_steps=24 format=3 uid="uid://bqsty0yvnwplw"]
+
+[ext_resource type="Script" path="res://creator/asset_inventory/asset_detail_window/asset_detail_window.gd" id="1_cqxdx"]
+[ext_resource type="Texture2D" uid="uid://15cvus520agc" path="res://ui/common/images/logo-icon.svg" id="1_gunys"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="2_065ve"]
+[ext_resource type="Texture2D" uid="uid://cueecuijx36ja" path="res://ui/art/share.svg" id="3_543fy"]
+[ext_resource type="PackedScene" uid="uid://cdxdqom4buex" path="res://creator/common/delete_dialog/delete_dialog.tscn" id="3_jjewv"]
+[ext_resource type="Material" uid="uid://de88hevdyb04k" path="res://ui/common/shaders/dark_blue_blur.mat.tres" id="3_rbccr"]
+[ext_resource type="Texture2D" uid="uid://g7ikhwlvgwky" path="res://ui/art/copy.svg" id="4_1235e"]
+[ext_resource type="Texture2D" uid="uid://48rhepqcbd3b" path="res://player/equipable/equipable_icon.svg" id="5_hpt7g"]
+[ext_resource type="PackedScene" uid="uid://dwjt0d6crg2la" path="res://creator/asset_inventory/asset_detail_window/pill_badge_blue.tscn" id="8_3bmkh"]
+[ext_resource type="Script" path="res://ui/hover_text/scripts/hoverable_button.gd" id="8_6qvgm"]
+[ext_resource type="Texture2D" uid="uid://m6alkokfgbih" path="res://ui/art/download.svg" id="8_khh4g"]
+[ext_resource type="Theme" uid="uid://ggwm8asxintx" path="res://ui/common/themes/menu_ui.theme.tres" id="9_o2xfw"]
+[ext_resource type="PackedScene" uid="uid://fshct6l288g3" path="res://ui/common/components/tags_editor.tscn" id="10_fahj8"]
+[ext_resource type="Texture2D" uid="uid://cwinr5i6f8577" path="res://creator/selection/scene_hierarchy/icons/script_tab_icon.svg" id="10_y6rpk"]
+[ext_resource type="Theme" uid="uid://dl2k8atj5vtpo" path="res://ui/common/themes/menu_ui_button_accent_2.theme.tres" id="15_dorvj"]
+[ext_resource type="Theme" uid="uid://bjdtuw56lro3h" path="res://ui/common/themes/menu_ui_button_accent.theme.tres" id="15_hy2ec"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1h0b8"]
+bg_color = Color(0.152941, 0.164706, 0.188235, 1)
+border_color = Color(0.0705882, 1, 0.843137, 1)
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4i6dw"]
+bg_color = Color(0.0705882, 1, 0.843137, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wrs1p"]
+content_margin_left = 13.0
+content_margin_top = 13.0
+content_margin_right = 13.0
+content_margin_bottom = 13.0
+bg_color = Color(0.207843, 0.219608, 0.247059, 0.607843)
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bp661"]
+bg_color = Color(0.109804, 0.121569, 0.141176, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6yxqj"]
+content_margin_left = 12.0
+content_margin_top = 22.0
+content_margin_right = 22.0
+content_margin_bottom = 20.0
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ku7nm"]
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wo6l4"]
+content_margin_left = 12.0
+content_margin_top = 22.0
+content_margin_right = 22.0
+content_margin_bottom = 20.0
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+
+[node name="AssetDetailWindow" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_cqxdx")
+
+[node name="DeleteDialog" parent="." instance=ExtResource("3_jjewv")]
+size = Vector2i(220, 161)
+
+[node name="AssetDetail" type="PanelContainer" parent="."]
+material = ExtResource("3_rbccr")
+layout_mode = 1
+offset_right = 530.0
+offset_bottom = 336.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_1h0b8")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AssetDetail"]
+layout_mode = 2
+
+[node name="DecorBorder" type="Panel" parent="AssetDetail/VBoxContainer"]
+custom_minimum_size = Vector2(0, 3)
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_4i6dw")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="AssetDetail/VBoxContainer"]
+clip_children = 2
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MetadataPanelContainer" type="PanelContainer" parent="AssetDetail/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(191, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_wrs1p")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer"]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer"]
+clip_children = 2
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bp661")
+
+[node name="Preview" type="TextureRect" parent="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/PanelContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 140)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("1_gunys")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="IsEquipable" type="TextureRect" parent="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/PanelContainer/Preview"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -22.0
+offset_top = -37.0
+offset_right = 10.0
+offset_bottom = -5.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("5_hpt7g")
+expand_mode = 1
+
+[node name="CreatorContainer" type="HBoxContainer" parent="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="LabelTitle" type="Label" parent="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/CreatorContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_065ve")
+theme_override_font_sizes/font_size = 11
+text = "Creator:"
+
+[node name="CreatorLabelValue" type="Label" parent="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/CreatorContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 0
+theme_override_font_sizes/font_size = 11
+text = "John A"
+text_overrun_behavior = 3
+
+[node name="OwnerContainer" type="HBoxContainer" parent="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="LabelTitle" type="Label" parent="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/OwnerContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_065ve")
+theme_override_font_sizes/font_size = 11
+text = "Owner:"
+
+[node name="OwnerLabelValue" type="Label" parent="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/OwnerContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 0
+theme_override_font_sizes/font_size = 11
+text = "John B"
+text_overrun_behavior = 3
+
+[node name="CreatedAtContainer3" type="HBoxContainer" parent="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="LabelTitle" type="Label" parent="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/CreatedAtContainer3"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_065ve")
+theme_override_font_sizes/font_size = 11
+text = "Create Date:"
+
+[node name="CreatedAtLabelValue" type="Label" parent="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/CreatedAtContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "02/15/23"
+
+[node name="AssetTypeContainer4" type="HBoxContainer" parent="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="LabelTitle" type="Label" parent="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/AssetTypeContainer4"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_065ve")
+theme_override_font_sizes/font_size = 11
+text = "Asset Type:"
+
+[node name="AssetTypeLabelValue" type="Label" parent="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/AssetTypeContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "MESH"
+
+[node name="Spacer" type="Control" parent="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ShareButton" type="Button" parent="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/icon_max_width = 22
+icon = ExtResource("3_543fy")
+flat = true
+script = ExtResource("8_6qvgm")
+hover_tooltip_text = "Copy Asset URL"
+
+[node name="CopyButton" type="Button" parent="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/icon_max_width = 20
+icon = ExtResource("4_1235e")
+flat = true
+script = ExtResource("8_6qvgm")
+hover_tooltip_text = "Copy Asset ID"
+
+[node name="DownloadButton" type="Button" parent="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/icon_max_width = 27
+icon = ExtResource("8_khh4g")
+flat = true
+script = ExtResource("8_6qvgm")
+hover_tooltip_text = "Download"
+
+[node name="ScriptButton" type="Button" parent="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/icon_max_width = 27
+icon = ExtResource("10_y6rpk")
+flat = true
+script = ExtResource("8_6qvgm")
+hover_tooltip_text = "Open Script"
+
+[node name="MarginContainer" type="MarginContainer" parent="AssetDetail/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 13
+theme_override_constants/margin_top = 13
+theme_override_constants/margin_right = 13
+theme_override_constants/margin_bottom = 13
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AssetDetail/VBoxContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 13
+
+[node name="AssetNameLineEdit" type="LineEdit" parent="AssetDetail/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 39)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 12
+theme_override_styles/focus = SubResource("StyleBoxFlat_6yxqj")
+theme_override_styles/read_only = SubResource("StyleBoxFlat_ku7nm")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ku7nm")
+text = "Space Object Name"
+select_all_on_focus = true
+
+[node name="Label" type="Label" parent="AssetDetail/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/AssetNameLineEdit"]
+layout_mode = 1
+offset_left = 12.0
+offset_top = 1.0
+offset_right = 384.0
+offset_bottom = 16.0
+theme_override_colors/font_color = Color(0.415686, 0.454902, 0.52549, 1)
+theme_override_font_sizes/font_size = 8
+text = "Name"
+
+[node name="DescritpionTextEdit" type="TextEdit" parent="AssetDetail/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_wo6l4")
+theme_override_styles/focus = SubResource("StyleBoxFlat_6yxqj")
+theme_override_styles/read_only = SubResource("StyleBoxFlat_wo6l4")
+text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam orci nunc, dignissim sed justo id, varius porta sapien. Maecenas nec euismod odio. Phasellus felis velit, iaculis nec ultrices et, tincidunt eu turpis. Cras fringilla, nisl ac hendrerit egestas, orci erat fermentum neque, eu sollicitudin est metus eget arcu. Suspendisse tincidunt felis sapien, bibendum tincidunt metus aliquam ut. Phasellus ac nunc et nunc ultricies facilisis. Nam at metus eget justo eleifend auctor faucibus a lacus. Nulla a aliquam tellus, sit amet egestas metus. Pellentesque scelerisque eu turpis a sagittis. Fusce ultrices lorem eu diam mollis, non pretium metus luctus. Donec auctor felis ut commodo ultricies. Vivamus sed risus diam. Etiam at nunc condimentum velit aliquet pellentesque. Sed efficitur blandit tincidunt. Vestibulum tristique molestie erat, et fermentum leo suscipit nec. Nulla hendrerit dignissim nibh sit amet posuere."
+placeholder_text = "No description was provided for this asset."
+wrap_mode = 1
+
+[node name="Label" type="Label" parent="AssetDetail/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/DescritpionTextEdit"]
+layout_mode = 0
+offset_left = 12.0
+offset_top = 1.0
+offset_right = 384.0
+offset_bottom = 16.0
+theme_override_colors/font_color = Color(0.415686, 0.454902, 0.52549, 1)
+theme_override_font_sizes/font_size = 8
+text = "Description"
+
+[node name="TagsEditor" parent="AssetDetail/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer" instance=ExtResource("10_fahj8")]
+unique_name_in_owner = true
+layout_mode = 2
+tag_panel = ExtResource("8_3bmkh")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="AssetDetail/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme = ExtResource("9_o2xfw")
+theme_override_constants/separation = 24
+
+[node name="DeleteButton" type="Button" parent="AssetDetail/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(90, 24)
+layout_mode = 2
+theme = ExtResource("15_dorvj")
+text = "Delete"
+
+[node name="Spacer" type="Control" parent="AssetDetail/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CancelButton" type="Button" parent="AssetDetail/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(70, 24)
+layout_mode = 2
+theme = ExtResource("15_hy2ec")
+text = "Cancel
+"
+
+[node name="SaveButton" type="Button" parent="AssetDetail/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 24)
+layout_mode = 2
+text = "Save"
+
+[connection signal="confirmed" from="DeleteDialog" to="." method="_on_delete_dialog_confirmed"]
+[connection signal="mouse_entered" from="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/HBoxContainer/ShareButton" to="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/HBoxContainer/ShareButton" method="_on_hoverable_button_mouse_entered"]
+[connection signal="mouse_exited" from="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/HBoxContainer/ShareButton" to="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/HBoxContainer/ShareButton" method="_on_hoverable_button_mouse_exited"]
+[connection signal="pressed" from="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/HBoxContainer/ShareButton" to="." method="_on_share_button_pressed"]
+[connection signal="mouse_entered" from="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/HBoxContainer/CopyButton" to="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/HBoxContainer/CopyButton" method="_on_hoverable_button_mouse_entered"]
+[connection signal="mouse_exited" from="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/HBoxContainer/CopyButton" to="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/HBoxContainer/CopyButton" method="_on_hoverable_button_mouse_exited"]
+[connection signal="pressed" from="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/HBoxContainer/CopyButton" to="." method="_on_copy_button_pressed"]
+[connection signal="mouse_entered" from="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/HBoxContainer/DownloadButton" to="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/HBoxContainer/DownloadButton" method="_on_hoverable_button_mouse_entered"]
+[connection signal="mouse_exited" from="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/HBoxContainer/DownloadButton" to="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/HBoxContainer/DownloadButton" method="_on_hoverable_button_mouse_exited"]
+[connection signal="pressed" from="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/HBoxContainer/DownloadButton" to="." method="_on_download_button_pressed"]
+[connection signal="mouse_entered" from="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/HBoxContainer/ScriptButton" to="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/HBoxContainer/ScriptButton" method="_on_hoverable_button_mouse_entered"]
+[connection signal="mouse_exited" from="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/HBoxContainer/ScriptButton" to="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/HBoxContainer/ScriptButton" method="_on_hoverable_button_mouse_exited"]
+[connection signal="pressed" from="AssetDetail/VBoxContainer/HBoxContainer/MetadataPanelContainer/VBoxContainer/HBoxContainer/ScriptButton" to="." method="_on_script_button_pressed"]
+[connection signal="text_changed" from="AssetDetail/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/AssetNameLineEdit" to="." method="_on_asset_name_line_edit_text_changed"]
+[connection signal="text_changed" from="AssetDetail/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/DescritpionTextEdit" to="." method="_on_descritpion_text_edit_text_changed"]
+[connection signal="pressed" from="AssetDetail/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/DeleteButton" to="." method="_on_delete_button_pressed"]
+[connection signal="pressed" from="AssetDetail/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
+[connection signal="pressed" from="AssetDetail/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/SaveButton" to="." method="_on_save_button_pressed"]

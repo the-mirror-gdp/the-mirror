@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://dci25saqi5cgf"]
+
+[ext_resource type="PackedScene" uid="uid://blmjh8573m68k" path="res://creator/tools/material_creator/material_creator.tscn" id="1_c4fo8"]
+[ext_resource type="Script" path="res://creator/tools/material_creator/material_creator_window.gd" id="1_dapps"]
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_nsoun"]
+
+[node name="MaterialCreatorWindow" type="Window"]
+size = Vector2i(1120, 730)
+visible = false
+min_size = Vector2i(1120, 730)
+theme = ExtResource("1_nsoun")
+script = ExtResource("1_dapps")
+
+[node name="MaterialCreator" parent="." instance=ExtResource("1_c4fo8")]
+
+[connection signal="close_requested" from="." to="." method="_on_close_requested"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]

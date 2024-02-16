@@ -1,0 +1,29 @@
+node_modules
+.DS_Store
+dist
+package-lock.json
+
+.env
+.env.local
+*service.json
+*env.json
+
+the-mirror-backend-dev-key.json
+
+# GCP Firebase credentials
+*firebase-creds.json
+*firebase-admin.json
+firebase-creds.json
+
+coverage
+
+# IDE Settings
+.idea/
+
+src/scripts/inputs
+src/manual-scripts/inputs
+
+# Additional ignores are for some safety in case the json gets moved a folder up
+scripts/gcs-credentials
+scripts/gcs.json
+scripts/inputs

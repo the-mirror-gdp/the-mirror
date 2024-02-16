@@ -1,0 +1,14 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=4 format=3 uid="uid://bl765ebg5lnp4"]
+
+[ext_resource type="AudioStream" uid="uid://d10ru0og4w0ua" path="res://player/audio/metal_surface/land/Land_FPS-001.wav" id="1_okvca"]
+[ext_resource type="AudioStream" uid="uid://bopblse5iyoju" path="res://player/audio/metal_surface/land/Land_FPS-002.wav" id="2_wq2se"]
+[ext_resource type="AudioStream" uid="uid://djkjg8bc0g2rb" path="res://player/audio/metal_surface/land/Land_FPS-003.wav" id="3_giahr"]
+
+[resource]
+streams_count = 3
+stream_0/stream = ExtResource("1_okvca")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("2_wq2se")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("3_giahr")
+stream_2/weight = 1.0

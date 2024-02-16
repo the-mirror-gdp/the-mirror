@@ -1,0 +1,62 @@
+[gd_scene load_steps=6 format=3 uid="uid://bsd4pn3u2v5yg"]
+
+[ext_resource type="Script" path="res://prefabs/autoload/zone/collision_shape_generator/_collision_shape_generator_playground/_collision_shape_generator_playground.gd" id="1_ko47m"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1vl3p"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.180392)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_i7d1a"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_vh1gp"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_qtgnt"]
+
+[node name="CollisionShapeGeneratorPlayground" type="Node"]
+script = ExtResource("1_ko47m")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.2, 0, 0, 0, 0.85, 0, 0, 0, 0.77, 4.88158, 1.48466, 0.521523)
+material_override = SubResource("StandardMaterial3D_1vl3p")
+mesh = SubResource("CapsuleMesh_i7d1a")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+
+[node name="rock" type="Node3D" parent="."]
+transform = Transform3D(0.54, 0, 0, 0, 0.255, 0, 0, 0, 0.308, 3.73041, 1.48466, 0.521523)
+
+[node name="rock2" type="MeshInstance3D" parent="rock"]
+transform = Transform3D(0.461176, 3.42727e-07, -0.887309, 0.219239, 0.968994, 0.113949, 0.859797, -0.247083, 0.446877, -4.77158, 9.53674e-07, 0.0632677)
+material_override = SubResource("StandardMaterial3D_1vl3p")
+mesh = SubResource("BoxMesh_vh1gp")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="rock"]
+
+[node name="rock_02" type="Node3D" parent="."]
+transform = Transform3D(0.45, 0, 0, 0, 0.3, 0, 0, 0, 0.4, 0, 0, 0)
+
+[node name="rock_022" type="MeshInstance3D" parent="rock_02"]
+transform = Transform3D(0.461176, 3.42727e-07, -0.887309, 0.219239, 0.968994, 0.113949, 0.859797, -0.247083, 0.446877, -4.77158, 9.53674e-07, 0.0632677)
+material_override = SubResource("StandardMaterial3D_1vl3p")
+mesh = SubResource("BoxMesh_vh1gp")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="rock_02"]
+
+[node name="rock_03" type="Node3D" parent="."]
+transform = Transform3D(-0.243728, 0, 0.182099, 0, 0.3, 0, -0.160923, 0, -0.2758, 5.1887, 0, -5.96949)
+
+[node name="rock_022" type="MeshInstance3D" parent="rock_03"]
+transform = Transform3D(0.461176, 3.42727e-07, -0.887309, 0.219239, 0.968994, 0.113949, 0.859797, -0.247083, 0.446877, -4.77158, 9.53674e-07, 0.0632677)
+material_override = SubResource("StandardMaterial3D_1vl3p")
+mesh = SubResource("BoxMesh_qtgnt")
+skeleton = NodePath("")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="rock_03"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.963794, 0.26665, 0, -0.26665, 0.963794, 0, 4.47994, 7.09486)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.963551, -0.15696, 0.21664, 0, 0.809796, 0.586712, -0.267524, -0.565327, 0.78028, 8.69509, 0, 20.5391)

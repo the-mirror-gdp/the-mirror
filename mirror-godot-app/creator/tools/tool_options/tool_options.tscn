@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=3 uid="uid://wb01ha7hrvw0"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_42emd"]
+[ext_resource type="Script" path="res://creator/tools/tool_options/tool_options.gd" id="1_cplv6"]
+[ext_resource type="PackedScene" uid="uid://c05b20xy8h380" path="res://creator/tools/tool_options/terrain_options/terrain_options.tscn" id="2_uqu6u"]
+[ext_resource type="PackedScene" uid="uid://c3n3csc8l72co" path="res://creator/common/creator_title_tab.tscn" id="3_1h72w"]
+[ext_resource type="PackedScene" uid="uid://v0vqpj300onq" path="res://creator/tools/tool_options/model_tool_options/model_tool_options.tscn" id="3_3dj6o"]
+[ext_resource type="PackedScene" uid="uid://dv58prr4q06no" path="res://creator/tools/tool_options/map_options/map_options.tscn" id="6_le7ov"]
+
+[node name="ToolOptions" type="PanelContainer"]
+custom_minimum_size = Vector2(350, 0)
+offset_right = 40.0
+offset_bottom = 40.0
+theme = ExtResource("1_42emd")
+script = ExtResource("1_cplv6")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+
+[node name="CreatorTitleTab" parent="." instance=ExtResource("3_1h72w")]
+layout_mode = 2
+primary_name = "TOOL OPTIONS"
+
+[node name="TerrainOptions" parent="CreatorTitleTab" instance=ExtResource("2_uqu6u")]
+layout_mode = 2
+
+[node name="ModelToolOptions" parent="CreatorTitleTab" instance=ExtResource("3_3dj6o")]
+visible = false
+layout_mode = 2
+
+[node name="MapOptions" parent="CreatorTitleTab" instance=ExtResource("6_le7ov")]
+visible = false
+layout_mode = 2
+
+[connection signal="close_button_pressed" from="CreatorTitleTab" to="." method="_on_creator_title_tab_close_button_pressed"]

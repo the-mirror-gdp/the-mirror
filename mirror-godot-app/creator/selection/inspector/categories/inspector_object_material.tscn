@@ -1,0 +1,59 @@
+[gd_scene load_steps=8 format=3 uid="uid://bn0oh3dqqu65i"]
+
+[ext_resource type="PackedScene" uid="uid://dkxqj3l0xm8uw" path="res://creator/selection/inspector/categories/inspector_category_base.tscn" id="1_jd5wq"]
+[ext_resource type="Script" path="res://creator/selection/inspector/categories/inspector_object_material.gd" id="2_itadt"]
+[ext_resource type="PackedScene" uid="uid://chbho7riip6y" path="res://creator/selection/inspector/primitive/inspector_material.tscn" id="4_au4n0"]
+[ext_resource type="PackedScene" uid="uid://cv5dw53tu538o" path="res://creator/selection/inspector/primitive/inspector_color.tscn" id="6_6tk2l"]
+[ext_resource type="PackedScene" uid="uid://do06amnviaflr" path="res://creator/selection/inspector/primitive/inspector_vector_scalar.tscn" id="6_xurph"]
+[ext_resource type="PackedScene" uid="uid://bcf0ujxlveqjm" path="res://creator/selection/inspector/primitive/inspector_texture.tscn" id="7_cm727"]
+[ext_resource type="PackedScene" uid="uid://cdctwmtu1ot17" path="res://creator/selection/inspector/primitive/inspector_bool.tscn" id="8_c73x0"]
+
+[node name="InspectorObjectMaterial" instance=ExtResource("1_jd5wq")]
+offset_bottom = 449.0
+script = ExtResource("2_itadt")
+
+[node name="Text" parent="CategoryTitle/ToggleButton/Name" index="3"]
+text = "MATERIAL"
+
+[node name="Properties" parent="." index="1"]
+visible = true
+
+[node name="BaseMaterial" parent="Properties/MarginContainer/PropertyList" index="0" instance=ExtResource("4_au4n0")]
+layout_mode = 2
+label_text = "Base Material"
+
+[node name="Texture" parent="Properties/MarginContainer/PropertyList" index="1" instance=ExtResource("7_cm727")]
+layout_mode = 2
+label_text = "Texture Color Override"
+
+[node name="AlbedoColor" parent="Properties/MarginContainer/PropertyList" index="2" instance=ExtResource("6_6tk2l")]
+layout_mode = 2
+label_text = "Color"
+
+[node name="UVScale" parent="Properties/MarginContainer/PropertyList" index="3" instance=ExtResource("6_xurph")]
+layout_mode = 2
+reset_value = Vector3(1, 1, 1)
+label_text = "UV Scale"
+
+[node name="UVOffset" parent="Properties/MarginContainer/PropertyList" index="4" instance=ExtResource("6_xurph")]
+layout_mode = 2
+label_text = "UV Offset"
+
+[node name="Triplanar" parent="Properties/MarginContainer/PropertyList" index="5" instance=ExtResource("8_c73x0")]
+layout_mode = 2
+label_text = "Triplanar"
+
+[node name="TextureRepeat" parent="Properties/MarginContainer/PropertyList" index="6" instance=ExtResource("8_c73x0")]
+layout_mode = 2
+reset_value = true
+label_text = "Texture Repeat"
+
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/BaseMaterial" to="." method="_on_base_material_value_changed"]
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/Texture" to="." method="_on_texture_value_changed"]
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/AlbedoColor" to="." method="_on_albedo_color_value_changed"]
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/UVScale" to="." method="_on_uv_scale_value_changed"]
+[connection signal="value_preview" from="Properties/MarginContainer/PropertyList/UVScale" to="." method="_on_uv_scale_value_preview"]
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/UVOffset" to="." method="_on_uv_offset_value_changed"]
+[connection signal="value_preview" from="Properties/MarginContainer/PropertyList/UVOffset" to="." method="_on_uv_offset_value_preview"]
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/Triplanar" to="." method="_on_triplanar_value_changed"]
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/TextureRepeat" to="." method="_on_texture_repeat_value_changed"]

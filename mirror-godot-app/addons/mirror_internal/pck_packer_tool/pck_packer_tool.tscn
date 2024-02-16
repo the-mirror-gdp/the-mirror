@@ -1,0 +1,121 @@
+[gd_scene load_steps=2 format=3 uid="uid://d2v2v1b77w6vn"]
+
+[ext_resource type="Script" path="res://addons/mirror_internal/pck_packer_tool/pck_packer_tool.gd" id="1_dxtcm"]
+
+[node name="PckPackerTool" type="MarginContainer"]
+custom_minimum_size = Vector2(300, 250)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -125.0
+offset_right = 150.0
+offset_bottom = 125.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dxtcm")
+
+[node name="ChooseFileDialog" type="FileDialog" parent="."]
+title = "Open a File"
+ok_button_text = "Open"
+file_mode = 0
+
+[node name="ChoosePckFileDialog" type="FileDialog" parent="."]
+title = "Open a File"
+size = Vector2i(312, 160)
+ok_button_text = "Open"
+file_mode = 0
+filters = PackedStringArray("*.pck")
+
+[node name="ChooseDirectoryDialog" type="FileDialog" parent="."]
+title = "Open a Directory"
+size = Vector2i(312, 160)
+ok_button_text = "Select Current Folder"
+file_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Title1" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Prepare pck"
+horizontal_alignment = 1
+
+[node name="ChooseFile" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="ChooseFileBtn" type="Button" parent="VBoxContainer/ChooseFile"]
+layout_mode = 2
+text = "Choose file to pack"
+
+[node name="ChoosenFileText" type="Label" parent="VBoxContainer/ChooseFile"]
+layout_mode = 2
+text = "[empty]"
+
+[node name="bg" type="TextureRect" parent="VBoxContainer/ChooseFile/ChoosenFileText"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ChooseDirectory" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="ChooseDirBtn" type="Button" parent="VBoxContainer/ChooseDirectory"]
+layout_mode = 2
+text = "Choose directory to save pck"
+
+[node name="ChoosenDirText" type="Label" parent="VBoxContainer/ChooseDirectory"]
+layout_mode = 2
+text = "[empty]"
+
+[node name="bg" type="TextureRect" parent="VBoxContainer/ChooseDirectory/ChoosenDirText"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Pack" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Pack"
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Title2" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Test Unpack"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="TestUnpackChooseBtn" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Choose pck to test unpack"
+
+[node name="SelectedPck" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "[empty]"
+
+[node name="Unpack" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Unpack Test"
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.80797)
+
+[node name="unpackedInstances" type="Node3D" parent="."]
+
+[connection signal="pressed" from="VBoxContainer/ChooseFile/ChooseFileBtn" to="." method="_on_choose_file_btn_pressed"]
+[connection signal="pressed" from="VBoxContainer/ChooseDirectory/ChooseDirBtn" to="." method="_on_choose_dir_btn_pressed"]
+[connection signal="pressed" from="VBoxContainer/Pack" to="." method="_on_pack_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/TestUnpackChooseBtn" to="." method="_on_test_unpack_choose_btn_pressed"]
+[connection signal="pressed" from="VBoxContainer/Unpack" to="." method="_on_unpack_pressed"]

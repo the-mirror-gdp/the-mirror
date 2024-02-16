@@ -1,0 +1,50 @@
+[gd_scene load_steps=5 format=3 uid="uid://5qlvifhg3hts"]
+
+[ext_resource type="Texture2D" uid="uid://n00hlaoyd4dj" path="res://ui/art/camera.svg" id="1_4enoh"]
+[ext_resource type="Script" path="res://ui/game/cinematic_mode.gd" id="1_tsao0"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="2_encmh"]
+[ext_resource type="AudioStream" uid="uid://d31dopd5bvcvl" path="res://audio/camerashutter.wav" id="3_k3m2m"]
+
+[node name="CinematicMode" type="CanvasLayer"]
+layer = 2
+script = ExtResource("1_tsao0")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("1_4enoh")
+expand_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_encmh")
+theme_override_font_sizes/font_size = 24
+text = "Cinema Mode: Left Click to Capture, Backslash to Exit"
+vertical_alignment = 1
+
+[node name="ScreenshotPathLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_encmh")
+theme_override_font_sizes/font_size = 18
+text = "Saving screenshots to - "
+vertical_alignment = 1
+
+[node name="CameraShutterSound" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("3_k3m2m")
+volume_db = -2.0

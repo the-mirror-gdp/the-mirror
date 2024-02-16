@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=3 uid="uid://q0ej2myktxhq"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_6writ"]
+[ext_resource type="Script" path="res://creator/selection/inspector/primitive/inspector_button.gd" id="2_kte0f"]
+[ext_resource type="Theme" uid="uid://dm7mf4jfy2m1y" path="res://ui/common/dark_button.theme.tres" id="3_xt254"]
+[ext_resource type="PackedScene" uid="uid://cy566ld7k03ue" path="res://creator/selection/inspector/primitive/inspector_reset_button.tscn" id="4_etmwt"]
+
+[node name="InspectorButton" type="HBoxContainer"]
+custom_minimum_size = Vector2(256, 26)
+offset_right = 256.0
+offset_bottom = 20.0
+size_flags_horizontal = 3
+theme = ExtResource("1_6writ")
+theme_override_constants/separation = 0
+script = ExtResource("2_kte0f")
+label_text = "Button"
+
+[node name="LabelHolder" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 8
+
+[node name="Label" type="Label" parent="LabelHolder"]
+clip_contents = true
+custom_minimum_size = Vector2(50, 18)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Button"
+clip_text = true
+
+[node name="MainButton" type="Button" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_xt254")
+text = "Push the button"
+
+[node name="ResetButton" parent="." instance=ExtResource("4_etmwt")]
+layout_mode = 2
+
+[connection signal="pressed" from="MainButton" to="." method="_on_main_button_pressed"]

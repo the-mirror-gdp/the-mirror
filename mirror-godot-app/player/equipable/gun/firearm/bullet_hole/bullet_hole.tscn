@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://dbg0p11x6vbuj"]
+
+[ext_resource type="Texture2D" uid="uid://cceqqklu2booq" path="res://player/equipable/gun/firearm/bullet_hole/bullet_hole.webp" id="1_ta8o6"]
+[ext_resource type="Script" path="res://player/equipable/gun/firearm/bullet_hole/bullet_hole.gd" id="2_6jj4r"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a8hml"]
+transparency = 1
+albedo_texture = ExtResource("1_ta8o6")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_smwqt"]
+material = SubResource("StandardMaterial3D_a8hml")
+flip_faces = true
+size = Vector2(0.05, 0.05)
+orientation = 2
+
+[node name="__BulletHole" type="MeshInstance3D"]
+mesh = SubResource("PlaneMesh_smwqt")
+script = ExtResource("2_6jj4r")
+
+[node name="__Audio" type="AudioStreamPlayer3D" parent="."]
+max_db = 0.0
+
+[connection signal="finished" from="__Audio" to="." method="_on_audio_finished"]

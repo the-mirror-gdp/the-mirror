@@ -1,0 +1,399 @@
+[gd_scene load_steps=20 format=3 uid="uid://bet1cctglmseb"]
+
+[ext_resource type="Script" path="res://creator/tools/material_creator/material_inspector.gd" id="1_68poq"]
+[ext_resource type="PackedScene" uid="uid://cv5dw53tu538o" path="res://creator/selection/inspector/primitive/inspector_color.tscn" id="1_us5n8"]
+[ext_resource type="PackedScene" uid="uid://dmp4m417qn0vh" path="res://creator/selection/inspector/primitive/inspector_local_texture.tscn" id="2_511gl"]
+[ext_resource type="PackedScene" uid="uid://bs1x5ic38xnvh" path="res://creator/tools/material_creator/material_template_list.tscn" id="2_gnaao"]
+[ext_resource type="PackedScene" uid="uid://yl2tfblvbyak" path="res://creator/selection/inspector/primitive/inspector_number_field.tscn" id="3_isl87"]
+[ext_resource type="PackedScene" uid="uid://7fra83sagq5p" path="res://creator/selection/inspector/primitive/inspector_number_slider.tscn" id="3_m6438"]
+[ext_resource type="PackedScene" uid="uid://cigpns5k3w4m8" path="res://creator/selection/inspector/primitive/inspector_dropdown.tscn" id="3_te0jk"]
+[ext_resource type="PackedScene" uid="uid://c0x6ltck45348" path="res://creator/selection/inspector/primitive/inspector_texture_slider.tscn" id="4_1hv7b"]
+[ext_resource type="PackedScene" uid="uid://b1scl85jhehe4" path="res://creator/selection/inspector/primitive/inspector_vector2.tscn" id="4_lhppd"]
+[ext_resource type="PackedScene" uid="uid://do06amnviaflr" path="res://creator/selection/inspector/primitive/inspector_vector_scalar.tscn" id="5_02274"]
+[ext_resource type="PackedScene" uid="uid://dbpxgjpuqb2x2" path="res://creator/selection/inspector/primitive/inspector_vector3.tscn" id="5_dfqwa"]
+[ext_resource type="PackedScene" uid="uid://cdctwmtu1ot17" path="res://creator/selection/inspector/primitive/inspector_bool.tscn" id="6_jnmen"]
+[ext_resource type="PackedScene" uid="uid://c4l0ash8mptsd" path="res://ui/new_player_ui/asset_preview/asset_preview.tscn" id="7_3dboe"]
+[ext_resource type="PackedScene" uid="uid://upty54ne3rjh" path="res://creator/selection/inspector/primitive/inspector_button_no_text.tscn" id="8_6wv7y"]
+[ext_resource type="PackedScene" uid="uid://q0ej2myktxhq" path="res://creator/selection/inspector/primitive/inspector_button.tscn" id="10_iq8x7"]
+[ext_resource type="PackedScene" uid="uid://po22xdo6f6vx" path="res://creator/tools/material_creator/inspector_shader.tscn" id="10_kcgqd"]
+[ext_resource type="PackedScene" uid="uid://cyf8lr874knjd" path="res://creator/selection/inspector/primitive/inspector_line_edit_field.tscn" id="11_7kkxs"]
+
+[sub_resource type="StyleBoxFlat" id="41"]
+
+[sub_resource type="Theme" id="Theme_eukpq"]
+ScrollContainer/styles/bg = null
+VScrollBar/icons/decrement = null
+VScrollBar/icons/decrement_highlight = null
+VScrollBar/icons/decrement_pressed = null
+VScrollBar/icons/increment = null
+VScrollBar/icons/increment_highlight = null
+VScrollBar/icons/increment_pressed = null
+VScrollBar/styles/grabber = null
+VScrollBar/styles/grabber_highlight = null
+VScrollBar/styles/grabber_pressed = null
+VScrollBar/styles/scroll = SubResource("41")
+VScrollBar/styles/scroll_focus = null
+
+[node name="MaterialInspector" type="MarginContainer"]
+size_flags_horizontal = 3
+theme_override_constants/margin_top = 8
+script = ExtResource("1_68poq")
+_texture_inspector_template = ExtResource("2_511gl")
+_float_template = ExtResource("3_isl87")
+_vec2_template = ExtResource("4_lhppd")
+_vec3_template = ExtResource("5_dfqwa")
+_color_template = ExtResource("1_us5n8")
+
+[node name="AssetPreview" parent="." instance=ExtResource("7_3dboe")]
+layout_mode = 2
+
+[node name="MaterialTemplateList" parent="." instance=ExtResource("2_gnaao")]
+visible = false
+layout_mode = 2
+
+[node name="PropertyList" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+theme = SubResource("Theme_eukpq")
+theme_override_constants/separation = 12
+
+[node name="ChangeTypeButton" parent="PropertyList" instance=ExtResource("10_iq8x7")]
+layout_mode = 2
+button_text = "Standard"
+enabled = true
+label_text = "Type"
+
+[node name="LabelHolder" parent="PropertyList/ChangeTypeButton" index="0"]
+size_flags_stretch_ratio = 0.75
+
+[node name="Label" parent="PropertyList/ChangeTypeButton/LabelHolder" index="0"]
+text = "Type"
+
+[node name="MainButton" parent="PropertyList/ChangeTypeButton" index="1"]
+text = "Standard"
+
+[node name="Name" parent="PropertyList" instance=ExtResource("11_7kkxs")]
+layout_mode = 2
+label_text = "Instance Name"
+
+[node name="MaterialTypeDropdown" parent="PropertyList" instance=ExtResource("3_te0jk")]
+visible = false
+layout_mode = 2
+values = ["Standard", "Opacity Masked"]
+current_value = 0
+label_text = "Type"
+
+[node name="AlbedoColor" parent="PropertyList" instance=ExtResource("1_us5n8")]
+layout_mode = 2
+label_text = "Base Color"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PropertyList"]
+layout_mode = 2
+
+[node name="Line" type="VSeparator" parent="PropertyList/HBoxContainer"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PropertyList/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AlbedoTexture" parent="PropertyList/HBoxContainer/VBoxContainer" instance=ExtResource("2_511gl")]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+label_text = "Base Color Map"
+
+[node name="LabelHolder" parent="PropertyList/HBoxContainer/VBoxContainer/AlbedoTexture" index="0"]
+size_flags_stretch_ratio = 0.65
+
+[node name="Label" parent="PropertyList/HBoxContainer/VBoxContainer/AlbedoTexture/LabelHolder" index="0"]
+text = "Base Color Map"
+
+[node name="InspectorNumberSlider" parent="PropertyList/HBoxContainer/VBoxContainer" instance=ExtResource("3_m6438")]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+reset_value = 1.0
+current_value = 1.0
+label_text = "Base Color Mix"
+metadata/_edit_group_ = true
+
+[node name="LabelHolder" parent="PropertyList/HBoxContainer/VBoxContainer/InspectorNumberSlider" index="0"]
+size_flags_stretch_ratio = 0.65
+
+[node name="Label" parent="PropertyList/HBoxContainer/VBoxContainer/InspectorNumberSlider/LabelHolder" index="0"]
+text = "Base Color Mix"
+
+[node name="SpinBox" parent="PropertyList/HBoxContainer/VBoxContainer/InspectorNumberSlider/Content/SpinBoxHolder" index="0"]
+value = 1.0
+
+[node name="Slider" parent="PropertyList/HBoxContainer/VBoxContainer/InspectorNumberSlider/Content/SliderHolder" index="0"]
+value = 1.0
+
+[node name="AlphaThresholdSlider" parent="PropertyList/HBoxContainer/VBoxContainer" instance=ExtResource("3_m6438")]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+reset_value = 0.5
+current_value = 0.5
+label_text = "Alpha Threshold"
+
+[node name="LabelHolder" parent="PropertyList/HBoxContainer/VBoxContainer/AlphaThresholdSlider" index="0"]
+size_flags_stretch_ratio = 0.65
+
+[node name="Label" parent="PropertyList/HBoxContainer/VBoxContainer/AlphaThresholdSlider/LabelHolder" index="0"]
+text = "Alpha Threshold"
+
+[node name="SpinBox" parent="PropertyList/HBoxContainer/VBoxContainer/AlphaThresholdSlider/Content/SpinBoxHolder" index="0"]
+value = 0.5
+
+[node name="Slider" parent="PropertyList/HBoxContainer/VBoxContainer/AlphaThresholdSlider/Content/SliderHolder" index="0"]
+value = 0.5
+
+[node name="Albedo2Color" parent="PropertyList" instance=ExtResource("1_us5n8")]
+layout_mode = 2
+label_text = "Base Color Shallow"
+
+[node name="NormalTexture" parent="PropertyList" instance=ExtResource("4_1hv7b")]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+
+[node name="InspectorPropertyTexture" parent="PropertyList/NormalTexture" index="0"]
+label_text = "Normal"
+
+[node name="Label" parent="PropertyList/NormalTexture/InspectorPropertyTexture/LabelHolder" index="0"]
+text = "Normal"
+
+[node name="InspectorNumberSlider" parent="PropertyList/NormalTexture/InspectorPropertyTexture/HBoxContainer" index="2"]
+reset_value = 1.0
+current_value = 1.0
+min_value = -4.0
+max_value = 4.0
+allow_greater = true
+allow_lesser = true
+
+[node name="SpinBox" parent="PropertyList/NormalTexture/InspectorPropertyTexture/HBoxContainer/InspectorNumberSlider/Content/SpinBoxHolder" index="0"]
+min_value = -4.0
+max_value = 4.0
+value = 1.0
+allow_greater = true
+allow_lesser = true
+
+[node name="Slider" parent="PropertyList/NormalTexture/InspectorPropertyTexture/HBoxContainer/InspectorNumberSlider/Content/SliderHolder" index="0"]
+min_value = -4.0
+max_value = 4.0
+value = 1.0
+
+[node name="RoughnessTexture" parent="PropertyList" instance=ExtResource("4_1hv7b")]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+
+[node name="InspectorPropertyTexture" parent="PropertyList/RoughnessTexture" index="0"]
+label_text = "Roughness"
+
+[node name="Label" parent="PropertyList/RoughnessTexture/InspectorPropertyTexture/LabelHolder" index="0"]
+text = "Roughness"
+
+[node name="InspectorNumberSlider" parent="PropertyList/RoughnessTexture/InspectorPropertyTexture/HBoxContainer" index="2"]
+reset_value = 1.0
+current_value = 1.0
+max_value = 2.0
+allow_greater = true
+
+[node name="SpinBox" parent="PropertyList/RoughnessTexture/InspectorPropertyTexture/HBoxContainer/InspectorNumberSlider/Content/SpinBoxHolder" index="0"]
+max_value = 2.0
+value = 1.0
+allow_greater = true
+
+[node name="Slider" parent="PropertyList/RoughnessTexture/InspectorPropertyTexture/HBoxContainer/InspectorNumberSlider/Content/SliderHolder" index="0"]
+max_value = 2.0
+value = 1.0
+
+[node name="MetallicTexture" parent="PropertyList" instance=ExtResource("4_1hv7b")]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+
+[node name="InspectorPropertyTexture" parent="PropertyList/MetallicTexture" index="0"]
+label_text = "Metallic"
+
+[node name="Label" parent="PropertyList/MetallicTexture/InspectorPropertyTexture/LabelHolder" index="0"]
+text = "Metallic"
+
+[node name="DepthTexture" parent="PropertyList" instance=ExtResource("4_1hv7b")]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+
+[node name="InspectorPropertyTexture" parent="PropertyList/DepthTexture" index="0"]
+label_text = "Depth"
+
+[node name="Label" parent="PropertyList/DepthTexture/InspectorPropertyTexture/LabelHolder" index="0"]
+text = "Depth"
+
+[node name="InspectorNumberSlider" parent="PropertyList/DepthTexture/InspectorPropertyTexture/HBoxContainer" index="2"]
+reset_value = 0.5
+current_value = 0.5
+allow_greater = true
+allow_lesser = true
+
+[node name="SpinBox" parent="PropertyList/DepthTexture/InspectorPropertyTexture/HBoxContainer/InspectorNumberSlider/Content/SpinBoxHolder" index="0"]
+value = 0.5
+allow_greater = true
+allow_lesser = true
+
+[node name="Slider" parent="PropertyList/DepthTexture/InspectorPropertyTexture/HBoxContainer/InspectorNumberSlider/Content/SliderHolder" index="0"]
+value = 0.5
+
+[node name="HBoxContainerMetallic" type="HBoxContainer" parent="PropertyList"]
+layout_mode = 2
+
+[node name="Line" type="VSeparator" parent="PropertyList/HBoxContainerMetallic"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="SpecularSlider" parent="PropertyList/HBoxContainerMetallic" instance=ExtResource("3_m6438")]
+layout_mode = 2
+reset_value = 0.5
+current_value = 0.5
+label_text = "Specular"
+
+[node name="EmissionTexture" parent="PropertyList" instance=ExtResource("4_1hv7b")]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+
+[node name="InspectorPropertyTexture" parent="PropertyList/EmissionTexture" index="0"]
+label_text = "Emission"
+
+[node name="Label" parent="PropertyList/EmissionTexture/InspectorPropertyTexture/LabelHolder" index="0"]
+text = "Emission"
+
+[node name="InspectorNumberSlider" parent="PropertyList/EmissionTexture/InspectorPropertyTexture/HBoxContainer" index="2"]
+reset_value = 1.0
+current_value = 1.0
+max_value = 16.0
+
+[node name="SpinBox" parent="PropertyList/EmissionTexture/InspectorPropertyTexture/HBoxContainer/InspectorNumberSlider/Content/SpinBoxHolder" index="0"]
+max_value = 16.0
+value = 1.0
+
+[node name="Slider" parent="PropertyList/EmissionTexture/InspectorPropertyTexture/HBoxContainer/InspectorNumberSlider/Content/SliderHolder" index="0"]
+max_value = 16.0
+value = 1.0
+
+[node name="Refraction" parent="PropertyList" instance=ExtResource("3_m6438")]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+label_text = "Refraction"
+
+[node name="WaveStormy" parent="PropertyList" instance=ExtResource("3_m6438")]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+reset_value = 0.5
+current_value = 0.5
+allow_greater = true
+allow_lesser = true
+label_text = "Stormy"
+
+[node name="BeersValue" parent="PropertyList" instance=ExtResource("3_m6438")]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+reset_value = 1.13
+current_value = 1.13
+max_value = 5.0
+allow_greater = true
+allow_lesser = true
+label_text = "Beers value"
+
+[node name="UVLabelHolder" type="MarginContainer" parent="PropertyList"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.75
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 2
+
+[node name="UVLabel" type="Label" parent="PropertyList/UVLabelHolder"]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+size_flags_vertical = 1
+text = "UV Mapping"
+vertical_alignment = 1
+clip_text = true
+
+[node name="UVSection" type="HBoxContainer" parent="PropertyList"]
+layout_mode = 2
+
+[node name="Line" type="VSeparator" parent="PropertyList/UVSection"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PropertyList/UVSection"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="UVScale" parent="PropertyList/UVSection/VBoxContainer" instance=ExtResource("5_02274")]
+layout_mode = 2
+reset_value = Vector3(1, 1, 1)
+label_text = "Scale"
+
+[node name="UVOffset" parent="PropertyList/UVSection/VBoxContainer" instance=ExtResource("5_02274")]
+layout_mode = 2
+label_text = "Offset"
+
+[node name="Triplanar" parent="PropertyList/UVSection/VBoxContainer" instance=ExtResource("6_jnmen")]
+layout_mode = 2
+label_text = "Triplanar"
+
+[node name="TextureRepeat" parent="PropertyList" instance=ExtResource("6_jnmen")]
+visible = false
+layout_mode = 2
+reset_value = true
+label_text = "Texture Repeat"
+
+[node name="ShaderButton" parent="PropertyList" instance=ExtResource("10_kcgqd")]
+layout_mode = 2
+
+[node name="ShaderUpdateDelay" type="Timer" parent="PropertyList/ShaderButton"]
+wait_time = 3.0
+one_shot = true
+
+[node name="CustomShaderParameters" type="VBoxContainer" parent="PropertyList"]
+layout_mode = 2
+
+[node name="ConvertButton" parent="PropertyList" instance=ExtResource("8_6wv7y")]
+layout_mode = 2
+button_text = "Save to My Library"
+
+[node name="CustomShaderPropertiesUpdateDelay" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[node name="ParameterUpdateDelay" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[connection signal="on_template_selected" from="MaterialTemplateList" to="." method="_on_material_template_list_on_template_selected"]
+[connection signal="inspector_button_pressed" from="PropertyList/ChangeTypeButton" to="." method="_on_change_type_button_inspector_button_pressed"]
+[connection signal="value_changed" from="PropertyList/Name" to="." method="_on_name_value_changed"]
+[connection signal="value_changed" from="PropertyList/HBoxContainer/VBoxContainer/AlbedoTexture" to="." method="_on_albedo_texture_value_changed"]
+[connection signal="toggled" from="PropertyList/NormalTexture/InspectorPropertyTexture/HBoxContainer/InspectorNumberSlider/InvertButton" to="." method="_on_normalmap_invert_button_toggled"]
+[connection signal="value_changed" from="PropertyList/ShaderButton" to="." method="_on_shader_button_value_changed"]
+[connection signal="timeout" from="PropertyList/ShaderButton/ShaderUpdateDelay" to="." method="_on_shader_update_delay_timeout"]
+[connection signal="inspector_button_pressed" from="PropertyList/ConvertButton" to="." method="create_asset_from_instance"]
+[connection signal="timeout" from="CustomShaderPropertiesUpdateDelay" to="." method="_on_custom_shader_properties_update_delay_timeout"]
+
+[editable path="PropertyList/ChangeTypeButton"]
+[editable path="PropertyList/HBoxContainer/VBoxContainer/AlbedoTexture"]
+[editable path="PropertyList/HBoxContainer/VBoxContainer/InspectorNumberSlider"]
+[editable path="PropertyList/HBoxContainer/VBoxContainer/AlphaThresholdSlider"]
+[editable path="PropertyList/NormalTexture"]
+[editable path="PropertyList/NormalTexture/InspectorPropertyTexture"]
+[editable path="PropertyList/NormalTexture/InspectorPropertyTexture/HBoxContainer/InspectorNumberSlider"]
+[editable path="PropertyList/RoughnessTexture"]
+[editable path="PropertyList/RoughnessTexture/InspectorPropertyTexture"]
+[editable path="PropertyList/RoughnessTexture/InspectorPropertyTexture/HBoxContainer/InspectorNumberSlider"]
+[editable path="PropertyList/MetallicTexture"]
+[editable path="PropertyList/MetallicTexture/InspectorPropertyTexture"]
+[editable path="PropertyList/MetallicTexture/InspectorPropertyTexture/HBoxContainer/InspectorNumberSlider"]
+[editable path="PropertyList/DepthTexture"]
+[editable path="PropertyList/DepthTexture/InspectorPropertyTexture"]
+[editable path="PropertyList/DepthTexture/InspectorPropertyTexture/HBoxContainer/InspectorNumberSlider"]
+[editable path="PropertyList/EmissionTexture"]
+[editable path="PropertyList/EmissionTexture/InspectorPropertyTexture"]
+[editable path="PropertyList/EmissionTexture/InspectorPropertyTexture/HBoxContainer/InspectorNumberSlider"]

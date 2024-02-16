@@ -1,0 +1,88 @@
+[gd_scene load_steps=8 format=3 uid="uid://cskikxbfe4x0w"]
+
+[ext_resource type="Script" path="res://script/visual/editor/graph/script_block_graph_slot.gd" id="1_1verx"]
+[ext_resource type="Script" path="res://creator/selection/inspector/primitive/droppable_field.gd" id="2_nis0n"]
+[ext_resource type="StyleBox" uid="uid://ce6bj8yjra40t" path="res://script/visual/editor/theme/graph_slot_button_normal.stylebox.tres" id="2_wkj72"]
+[ext_resource type="StyleBox" uid="uid://b2ej5g2gen5n5" path="res://script/visual/editor/theme/graph_slot_button_hover.stylebox.tres" id="3_fkvjn"]
+[ext_resource type="StyleBox" uid="uid://5y3wh2rn873c" path="res://script/visual/editor/theme/graph_slot_button_pressed.stylebox.tres" id="4_7011e"]
+[ext_resource type="StyleBox" uid="uid://rxp6773h4miv" path="res://script/visual/editor/theme/graph_slot_button_disabled.stylebox.tres" id="5_den0u"]
+[ext_resource type="StyleBox" uid="uid://2308xhkvkvjc" path="res://script/visual/editor/theme/graph_slot_button_focus.stylebox.tres" id="6_081xd"]
+
+[node name="BlockGraphSlot" type="HBoxContainer"]
+custom_minimum_size = Vector2(120, 50)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -78.0
+offset_top = -24.0
+offset_right = 78.0
+offset_bottom = 24.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_1verx")
+
+[node name="LeftIcon" type="TextureButton" parent="."]
+custom_minimum_size = Vector2(40, 26)
+layout_mode = 2
+size_flags_vertical = 4
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="LeftValue" type="Button" parent="."]
+visible = false
+custom_minimum_size = Vector2(50, 20)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/normal = ExtResource("2_wkj72")
+theme_override_styles/hover = ExtResource("3_fkvjn")
+theme_override_styles/pressed = ExtResource("4_7011e")
+theme_override_styles/disabled = ExtResource("5_den0u")
+theme_override_styles/focus = ExtResource("6_081xd")
+script = ExtResource("2_nis0n")
+
+[node name="LeftLabel" type="Label" parent="."]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+vertical_alignment = 1
+
+[node name="CenterSpacer" type="Control" parent="."]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="ErrorLabel" type="Label" parent="CenterSpacer"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = -144.0
+offset_bottom = -44.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.25098, 0.25098, 1)
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="RightLabel" type="Label" parent="."]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="RightIcon" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(40, 26)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[connection signal="mouse_entered" from="LeftIcon" to="." method="_on_left_sequence_run_icon_mouse_entered"]
+[connection signal="mouse_exited" from="LeftIcon" to="." method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="LeftValue" to="." method="_on_left_value_mouse_entered"]
+[connection signal="mouse_exited" from="LeftValue" to="." method="_on_mouse_exited"]

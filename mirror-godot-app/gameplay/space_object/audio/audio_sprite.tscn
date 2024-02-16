@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://8m7sjlsig8x3"]
+
+[ext_resource type="Texture2D" uid="uid://bbplaj4lfjo2f" path="res://gameplay/space_object/audio/AudioStreamPlayer3D.svg" id="1_v2qs8"]
+
+[node name="_AudioSprite" type="Sprite3D"]
+cast_shadow = 0
+pixel_size = 0.005
+billboard = 1
+alpha_cut = 1
+texture = ExtResource("1_v2qs8")

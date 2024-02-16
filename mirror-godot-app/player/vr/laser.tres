@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://nv2lyirekar0"]
+
+[resource]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0, 0.784314, 1, 0.784314)
+disable_receive_shadows = true
+proximity_fade_distance = 0.0

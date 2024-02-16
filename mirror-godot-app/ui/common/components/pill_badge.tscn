@@ -1,0 +1,79 @@
+[gd_scene load_steps=10 format=3 uid="uid://bth2e2qf81jg5"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_lqrxc"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="2_2yqy6"]
+[ext_resource type="Script" path="res://ui/common/components/pill_badge.gd" id="2_jloeo"]
+[ext_resource type="FontFile" uid="uid://cgyrixnr8bppj" path="res://ui/common/fonts/montserrat/montserrat_medium.ttf" id="3_3v78y"]
+[ext_resource type="Texture2D" uid="uid://pyiiu7es8s11" path="res://ui/art/close.svg" id="4_vkfsy"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1lfce"]
+content_margin_left = 8.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.262745, 0.278431, 0.309804, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.337255, 0.356863, 0.4, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i1xgw"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bcack"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r8f8i"]
+
+[node name="PillBadge" type="PanelContainer"]
+theme = ExtResource("1_lqrxc")
+theme_override_styles/panel = SubResource("StyleBoxFlat_1lfce")
+script = ExtResource("2_jloeo")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Title" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_2yqy6")
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxEmpty_i1xgw")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_i1xgw")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_i1xgw")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_i1xgw")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_i1xgw")
+flat = true
+
+[node name="Text" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_3v78y")
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxEmpty_bcack")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_bcack")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_bcack")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_bcack")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_bcack")
+flat = true
+
+[node name="CloseButton" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(12, 0)
+layout_mode = 2
+theme_override_constants/icon_max_width = 12
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_r8f8i")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_r8f8i")
+icon = ExtResource("4_vkfsy")
+flat = true
+expand_icon = true
+
+[connection signal="pressed" from="HBoxContainer/Title" to="." method="_on_pressed"]
+[connection signal="pressed" from="HBoxContainer/Text" to="." method="_on_pressed"]
+[connection signal="pressed" from="HBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]

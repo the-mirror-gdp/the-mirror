@@ -1,0 +1,499 @@
+[gd_scene load_steps=29 format=3 uid="uid://25u6rk0q26kp"]
+
+[ext_resource type="Theme" uid="uid://ggwm8asxintx" path="res://ui/common/themes/menu_ui.theme.tres" id="1_lv30l"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/edit_space/permissions_settings.gd" id="2_f6lvf"]
+[ext_resource type="PackedScene" uid="uid://bahpo436m8hut" path="res://creator/asset_inventory/browser/search_field.tscn" id="3_adk0y"]
+[ext_resource type="Texture2D" uid="uid://k11o2wueu67r" path="res://art/ui/plus-icon-white.svg" id="4_3qcll"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="4_80ijk"]
+[ext_resource type="Script" path="res://scripts/ui/table.gd" id="6_hktcl"]
+[ext_resource type="PackedScene" uid="uid://nnphdtunua76" path="res://creator/common/dropdown_search/dropdown_filter_menu.tscn" id="7_ieaoy"]
+[ext_resource type="Texture2D" uid="uid://bpdhjrlxnx4ta" path="res://ui/art/rolling_spinner.svg" id="7_jbeb7"]
+[ext_resource type="FontFile" uid="uid://cv5tkor0qdxqq" path="res://ui/common/fonts/fontawesome-free-6/Font Awesome 6 Free-Solid-900.otf" id="8_qcr4k"]
+[ext_resource type="FontFile" uid="uid://bpw8ywxvp8ctj" path="res://ui/common/fonts/montserrat/montserrat_regular.ttf" id="9_1sopu"]
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="9_cxw80"]
+[ext_resource type="Script" path="res://scripts/ui/table_variant_entry.gd" id="10_aq60a"]
+[ext_resource type="Script" path="res://scripts/ui/table_optionbutton_entry.gd" id="12_4r1sm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cd5ml"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7wmu7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_oa487"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_excs0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aby87"]
+
+[sub_resource type="Animation" id="Animation_n4yvx"]
+resource_name = "Roll"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2nhbe"]
+_data = {
+"Roll": SubResource("Animation_n4yvx")
+}
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_s4geq"]
+content_margin_right = 12.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m5qxu"]
+bg_color = Color(0.0627451, 0.0627451, 0.0666667, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0bro2"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.133333)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dci2v"]
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mvfym"]
+content_margin_left = 10.0
+content_margin_right = 10.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rushx"]
+content_margin_left = 10.0
+content_margin_right = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hjrne"]
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.427451, 0.427451, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_162si"]
+color = Color(1, 1, 1, 0.2)
+
+[node name="PermissionSettings" type="VBoxContainer"]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_lv30l")
+theme_override_constants/separation = 24
+script = ExtResource("2_f6lvf")
+
+[node name="PageNamesContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="PageName" type="Label" parent="PageNamesContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.333333, 1, 0.831373, 1)
+theme_override_fonts/font = ExtResource("4_80ijk")
+theme_override_font_sizes/font_size = 13
+text = "Space Settings & Permissions"
+clip_text = true
+uppercase = true
+
+[node name="SubPageName" type="Label" parent="PageNamesContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_80ijk")
+theme_override_font_sizes/font_size = 32
+text = "Permissions"
+autowrap_mode = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="SearchField" parent="HBoxContainer" instance=ExtResource("3_adk0y")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme = ExtResource("9_cxw80")
+placeholder_text = "Add User"
+text_changed_delay = 0.1
+
+[node name="SearchIcon" parent="HBoxContainer/SearchField/Panel/HBoxContainer" index="0"]
+theme_override_styles/normal = SubResource("StyleBoxEmpty_cd5ml")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_7wmu7")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_oa487")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_excs0")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_aby87")
+flat = false
+
+[node name="Icon" parent="HBoxContainer/SearchField/Panel/HBoxContainer/SearchIcon" index="0"]
+texture = ExtResource("4_3qcll")
+
+[node name="LoadingSpinner" type="TextureRect" parent="HBoxContainer/SearchField/Panel" index="1"]
+visible = false
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -70.0
+offset_top = -15.0
+offset_right = -40.0
+offset_bottom = 15.0
+grow_horizontal = 0
+grow_vertical = 2
+pivot_offset = Vector2(15, 15)
+texture = ExtResource("7_jbeb7")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HBoxContainer/SearchField/Panel/LoadingSpinner"]
+autoplay = "Roll"
+libraries = {
+"": SubResource("AnimationLibrary_2nhbe")
+}
+
+[node name="Spacer" type="Control" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_80ijk")
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxEmpty_s4geq")
+text = "Public Permissions"
+
+[node name="PublicPermissions" type="OptionButton" parent="HBoxContainer"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+item_count = 3
+selected = 0
+popup/item_0/text = "PRIVATE"
+popup/item_0/id = 0
+popup/item_1/text = "MANAGER"
+popup/item_1/id = 1
+popup/item_2/text = "CONTRIBUTOR"
+popup/item_2/id = 2
+
+[node name="FilterMenu" parent="." instance=ExtResource("7_ieaoy")]
+visible = false
+top_level = true
+custom_minimum_size = Vector2(500, 240)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_m5qxu")
+
+[node name="SearchField" parent="FilterMenu/MarginContainer/FilterMenu" index="0"]
+visible = false
+
+[node name="UsersTable" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(1200, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("9_cxw80")
+script = ExtResource("6_hktcl")
+
+[node name="MarginContainer" type="MarginContainer" parent="UsersTable"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Scrollbar" type="ScrollContainer" parent="UsersTable/MarginContainer"]
+custom_minimum_size = Vector2(0, 260)
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UsersTable/MarginContainer/Scrollbar"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="table_header" type="Control" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="title_name" type="Label" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/table_header"]
+layout_mode = 0
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_0bro2")
+text = "NAME"
+horizontal_alignment = 1
+
+[node name="title_blank" type="Label" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/table_header"]
+layout_mode = 0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_0bro2")
+
+[node name="title_role" type="Label" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/table_header"]
+layout_mode = 0
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_0bro2")
+text = "ROLE"
+horizontal_alignment = 1
+
+[node name="title_permissions" type="Label" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/table_header"]
+layout_mode = 0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_0bro2")
+text = "PERMISSIONS"
+horizontal_alignment = 1
+
+[node name="title_remove" type="Label" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/table_header"]
+layout_mode = 0
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_0bro2")
+text = "REMOVE"
+
+[node name="new_row" type="Control" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="user_id" type="Control" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("10_aq60a")
+
+[node name="user_icon" type="Label" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 0
+offset_right = 48.0
+offset_bottom = 48.0
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("8_qcr4k")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxFlat_dci2v")
+text = "user"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="user_name" type="Label" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxEmpty_mvfym")
+text = "JAN KOWALSKI"
+vertical_alignment = 1
+
+[node name="role_user" type="OptionButton" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 0
+size_flags_horizontal = 0
+size_flags_vertical = 4
+item_count = 2
+selected = 0
+popup/item_0/text = "CONTRIBUTOR"
+popup/item_0/id = 700
+popup/item_1/text = "OWNER"
+popup/item_1/id = 1000
+script = ExtResource("12_4r1sm")
+
+[node name="permissions_text" type="RichTextLabel" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+offset_right = 21.0
+offset_bottom = 36.0
+size_flags_vertical = 4
+theme_override_fonts/normal_font = ExtResource("9_1sopu")
+theme_override_fonts/bold_font = ExtResource("4_80ijk")
+theme_override_font_sizes/normal_font_size = 14
+theme_override_font_sizes/bold_font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxEmpty_rushx")
+bbcode_enabled = true
+text = "[b]Can:[/b] Enter Space, Add Objects, Modify Any Object, Modify Environment, Remove Any Object
+[b]Cannot:[/b] Change Space Ownership, Publish"
+fit_content = true
+scroll_active = false
+
+[node name="remove_user" type="Button" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+custom_minimum_size = Vector2(44, 30)
+layout_mode = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(1, 0.427451, 0.427451, 1)
+theme_override_fonts/font = ExtResource("8_qcr4k")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_hjrne")
+text = "X"
+
+[node name="HSeparator" type="HSeparator" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+theme_override_styles/separator = SubResource("StyleBoxLine_162si")
+
+[node name="HSeparator2" type="HSeparator" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+theme_override_styles/separator = SubResource("StyleBoxLine_162si")
+
+[node name="HSeparator3" type="HSeparator" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+theme_override_styles/separator = SubResource("StyleBoxLine_162si")
+
+[node name="HSeparator4" type="HSeparator" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+theme_override_styles/separator = SubResource("StyleBoxLine_162si")
+
+[node name="HSeparator5" type="HSeparator" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+theme_override_styles/separator = SubResource("StyleBoxLine_162si")
+
+[node name="table" type="GridContainer" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("9_cxw80")
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 8
+columns = 5
+
+[node name="title_name" type="Label" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_0bro2")
+text = "NAME"
+horizontal_alignment = 1
+
+[node name="title_blank" type="Label" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_0bro2")
+
+[node name="title_role" type="Label" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_0bro2")
+text = "ROLE"
+horizontal_alignment = 1
+
+[node name="title_permissions" type="Label" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_0bro2")
+text = "PERMISSIONS"
+horizontal_alignment = 1
+
+[node name="title_remove" type="Label" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_0bro2")
+text = "REMOVE"
+
+[node name="user_id" type="Control" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/table"]
+visible = false
+layout_mode = 2
+script = ExtResource("10_aq60a")
+
+[node name="user_icon" type="Label" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/table"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("8_qcr4k")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxFlat_dci2v")
+text = "user"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="user_name" type="Label" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxEmpty_mvfym")
+text = "JAN KOWALSKI"
+vertical_alignment = 1
+
+[node name="role_user" type="OptionButton" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/table"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+item_count = 1
+selected = 0
+popup/item_0/text = "CONTRIBUTOR"
+popup/item_0/id = 0
+
+[node name="permissions_text" type="RichTextLabel" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_fonts/normal_font = ExtResource("9_1sopu")
+theme_override_fonts/bold_font = ExtResource("4_80ijk")
+theme_override_font_sizes/normal_font_size = 14
+theme_override_font_sizes/bold_font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxEmpty_rushx")
+bbcode_enabled = true
+text = "[b]Can:[/b] Enter Space, Add Objects, Modify Any Object, Modify Environment, Remove Any Object
+[b]Cannot:[/b] Change Space Ownership, Publish"
+fit_content = true
+scroll_active = false
+
+[node name="remove_user" type="Button" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/table"]
+custom_minimum_size = Vector2(44, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(1, 0.427451, 0.427451, 1)
+theme_override_fonts/font = ExtResource("8_qcr4k")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_hjrne")
+text = "X"
+
+[node name="HSeparator" type="HSeparator" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_162si")
+
+[node name="HSeparator2" type="HSeparator" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_162si")
+
+[node name="HSeparator3" type="HSeparator" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_162si")
+
+[node name="HSeparator4" type="HSeparator" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_162si")
+
+[node name="HSeparator5" type="HSeparator" parent="UsersTable/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_162si")
+
+[node name="UserSearchTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="search_gui_input" from="HBoxContainer/SearchField" to="FilterMenu" method="_on_search_field_search_gui_input"]
+[connection signal="text_changed" from="HBoxContainer/SearchField" to="." method="_on_search_field_text_changed"]
+[connection signal="text_submitted" from="HBoxContainer/SearchField" to="FilterMenu" method="_on_search_field_text_submitted"]
+[connection signal="item_selected" from="HBoxContainer/PublicPermissions" to="." method="_on_public_permissions_item_selected"]
+[connection signal="item_selected" from="FilterMenu" to="." method="_on_filter_menu_item_selected"]
+[connection signal="timeout" from="UserSearchTimer" to="." method="_on_user_search_timer_timeout"]
+
+[editable path="HBoxContainer/SearchField"]
+[editable path="FilterMenu"]

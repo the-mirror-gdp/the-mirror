@@ -1,0 +1,52 @@
+[gd_scene load_steps=6 format=3 uid="uid://b8jcsyvbb8pc5"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_djasm"]
+[ext_resource type="StyleBox" uid="uid://duh0pbhsd0c24" path="res://ui/new_player_ui/inventory/panel_opaque_blue_rounded.tres" id="2_2whsm"]
+[ext_resource type="Script" path="res://creator/context_menu/rename_popup.gd" id="3_hhrtb"]
+[ext_resource type="Texture2D" uid="uid://cdcvojixjjpx2" path="res://ui/art/edit.svg" id="4_nc3q0"]
+[ext_resource type="FontFile" uid="uid://bjwepurchoc75" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_semi_bold.ttf" id="5_ffei1"]
+
+[node name="RenamePopup" type="PanelContainer"]
+custom_minimum_size = Vector2(200, 0)
+offset_right = 208.0
+offset_bottom = 52.0
+theme = ExtResource("1_djasm")
+theme_override_styles/panel = ExtResource("2_2whsm")
+script = ExtResource("3_hhrtb")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+self_modulate = Color(0.588235, 0.588235, 0.588235, 1)
+layout_mode = 2
+texture = ExtResource("4_nc3q0")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 18)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_ffei1")
+text = "Rename"
+vertical_alignment = 1
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 24)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_ffei1")
+text = "Skeleton (gltf)"
+placeholder_text = "Object name"
+select_all_on_focus = true

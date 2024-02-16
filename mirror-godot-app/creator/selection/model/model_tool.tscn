@@ -1,0 +1,88 @@
+[gd_scene load_steps=15 format=3 uid="uid://6llh2y2ib484"]
+
+[ext_resource type="Script" path="res://creator/selection/model/model_tool.gd" id="1_tnn07"]
+[ext_resource type="Script" path="res://creator/selection/model/model_builder.gd" id="2_suyfa"]
+[ext_resource type="Script" path="res://creator/selection/model/audio/model_builder_sounds.gd" id="3_nybh4"]
+[ext_resource type="AudioStream" uid="uid://cba4l4b7k6d4b" path="res://creator/selection/model/audio/drag.wav" id="4_4ko4r"]
+[ext_resource type="AudioStream" uid="uid://bkljpn7pvdeha" path="res://creator/selection/model/audio/extrude.wav" id="5_06gkv"]
+[ext_resource type="AudioStream" uid="uid://dwfduhkra35tg" path="res://creator/selection/model/audio/finish.wav" id="6_7q06k"]
+[ext_resource type="AudioStream" uid="uid://dqbdd3b1ueyi3" path="res://creator/selection/model/audio/fail.wav" id="7_xl5bg"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="8_k4sut"]
+[ext_resource type="Script" path="res://creator/selection/model/model_grid_plane.gd" id="9_bsutm"]
+[ext_resource type="Shader" path="res://creator/selection/model/model_tool_grid.gdshader" id="10_x0mxe"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_yceah"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sygdj"]
+transparency = 1
+no_depth_test = true
+shading_mode = 0
+albedo_color = Color(0, 0, 1, 0.784314)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_12m3w"]
+render_priority = 0
+shader = ExtResource("10_x0mxe")
+shader_parameter/color = Color(0, 0, 1, 0.588235)
+shader_parameter/scale = 1.0
+shader_parameter/grid_size = 0.5
+shader_parameter/line_thickness = 0.01
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_0aevq"]
+size = Vector2(1, 1)
+
+[node name="ModelTool" type="Node"]
+script = ExtResource("1_tnn07")
+
+[node name="ModelBuilder" type="Node" parent="."]
+script = ExtResource("2_suyfa")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="ModelBuilder"]
+volume_db = -10.0
+script = ExtResource("3_nybh4")
+_sound_drag = ExtResource("4_4ko4r")
+_sound_extrude = ExtResource("5_06gkv")
+_sound_finish = ExtResource("6_7q06k")
+_sound_fail = ExtResource("7_xl5bg")
+
+[node name="X" type="Label" parent="ModelBuilder"]
+offset_right = 83.0
+offset_bottom = 43.0
+theme_override_colors/font_color = Color(0.0705882, 1, 0.843137, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("8_k4sut")
+
+[node name="Y" type="Label" parent="ModelBuilder"]
+offset_right = 83.0
+offset_bottom = 43.0
+theme_override_colors/font_color = Color(0.0705882, 1, 0.843137, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("8_k4sut")
+
+[node name="Z" type="Label" parent="ModelBuilder"]
+offset_right = 83.0
+offset_bottom = 43.0
+theme_override_colors/font_color = Color(0.0705882, 1, 0.843137, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("8_k4sut")
+
+[node name="ModelGridPlane" type="Node" parent="ModelBuilder"]
+script = ExtResource("9_bsutm")
+
+[node name="RaycastPositionIndicator" type="MeshInstance3D" parent="ModelBuilder/ModelGridPlane"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+visible = false
+mesh = SubResource("SphereMesh_yceah")
+surface_material_override/0 = SubResource("StandardMaterial3D_sygdj")
+
+[node name="PlaneMesh" type="MeshInstance3D" parent="ModelBuilder/ModelGridPlane"]
+visible = false
+material_override = SubResource("ShaderMaterial_12m3w")
+mesh = SubResource("PlaneMesh_0aevq")
+
+[connection signal="placement_failed" from="ModelBuilder" to="ModelBuilder/AudioStreamPlayer" method="_on_placement_failed"]
+[connection signal="placement_finished" from="ModelBuilder" to="ModelBuilder/AudioStreamPlayer" method="_on_placement_finished"]
+[connection signal="request_primitive_placement" from="ModelBuilder" to="." method="_on_model_builder_request_primitive_placement"]
+[connection signal="state_changed" from="ModelBuilder" to="ModelBuilder/AudioStreamPlayer" method="_on_state_changed"]

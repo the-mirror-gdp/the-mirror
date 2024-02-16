@@ -1,0 +1,56 @@
+[gd_scene load_steps=7 format=3 uid="uid://c01pv0umclcsu"]
+
+[ext_resource type="PackedScene" uid="uid://btliqawp82qis" path="res://test/scene_packer_test/scene_packer_samples/scene_packer_multi_hierarchy_nodes/model/model.tscn" id="1"]
+[ext_resource type="Script" path="res://test/scene_packer_test/scene_packer_samples/scene_packer_multi_hierarchy_nodes/scene_packer_multi_hierarchy_nodes.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://cv4r25faa1yhc" path="res://test/scene_packer_test/scene_packer_samples/scene_packer_multi_hierarchy_nodes/assets/test_ico.png" id="3"]
+
+[sub_resource type="Animation" id="1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.5, 0)]
+}
+
+[sub_resource type="Animation" id="2"]
+resource_name = "idle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Vector3(0, 0.5, 0), Vector3(0, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_m23rh"]
+_data = {
+"RESET": SubResource("1"),
+"idle": SubResource("2")
+}
+
+[node name="ScenePackerScriptedScnSample" type="Node3D"]
+script = ExtResource("2")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+texture = ExtResource("3")
+
+[node name="Model" parent="." instance=ExtResource("1")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_m23rh")
+}

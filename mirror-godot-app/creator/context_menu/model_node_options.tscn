@@ -1,0 +1,40 @@
+[gd_scene load_steps=7 format=3 uid="uid://bt6vmsw5oy0is"]
+
+[ext_resource type="Script" path="res://creator/context_menu/model_node_options.gd" id="1_db34n"]
+[ext_resource type="PackedScene" uid="uid://c6did4ni1basa" path="res://creator/context_menu/context_option.tscn" id="2_ckl62"]
+[ext_resource type="Texture2D" uid="uid://g7ikhwlvgwky" path="res://ui/art/copy.svg" id="3_rlg4d"]
+[ext_resource type="Texture2D" uid="uid://kpcb4jb5hto6" path="res://ui/art/accordian_close.png" id="4_jyc2l"]
+[ext_resource type="Texture2D" uid="uid://c5x7xk60yadr3" path="res://ui/art/effect.svg" id="5_rdmg8"]
+[ext_resource type="Texture2D" uid="uid://cqnycive6oia8" path="res://script/visual/editor/icons/trash.svg" id="6_alu3o"]
+
+[node name="ModelNodeOptions" type="VBoxContainer"]
+theme_override_constants/separation = 0
+script = ExtResource("1_db34n")
+
+[node name="CopyNodeName" parent="." instance=ExtResource("2_ckl62")]
+layout_mode = 2
+text = "Copy Node Name"
+icon = ExtResource("3_rlg4d")
+
+[node name="VisualNodeEditor" parent="." instance=ExtResource("2_ckl62")]
+layout_mode = 2
+text = "Visual Node Editor"
+icon = ExtResource("5_rdmg8")
+
+[node name="CreateExtraNode" parent="." instance=ExtResource("2_ckl62")]
+layout_mode = 2
+text = "Create Extra Node"
+icon = ExtResource("4_jyc2l")
+
+[node name="DeleteNode" parent="." instance=ExtResource("2_ckl62")]
+layout_mode = 2
+theme_override_colors/icon_normal_color = Color(1, 0.419608, 0.329412, 0.501961)
+theme_override_colors/icon_pressed_color = Color(1, 0.419608, 0.329412, 0.784314)
+theme_override_colors/icon_hover_color = Color(1, 0.419608, 0.329412, 0.784314)
+text = "Delete Node"
+icon = ExtResource("6_alu3o")
+
+[connection signal="pressed" from="CopyNodeName" to="." method="_on_copy_node_name_pressed"]
+[connection signal="pressed" from="VisualNodeEditor" to="." method="_on_visual_node_editor_pressed"]
+[connection signal="pressed" from="CreateExtraNode" to="." method="_on_create_extra_node_pressed"]
+[connection signal="pressed" from="DeleteNode" to="." method="_on_delete_node_pressed"]

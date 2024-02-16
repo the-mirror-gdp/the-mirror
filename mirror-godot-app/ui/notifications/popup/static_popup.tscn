@@ -1,0 +1,125 @@
+[gd_scene load_steps=8 format=3 uid="uid://p4h20kloa714"]
+
+[ext_resource type="Theme" uid="uid://cxlukwwcd2wrt" path="res://ui/notifications/popup/base_popup.theme.tres" id="1_o5kau"]
+[ext_resource type="Script" path="res://ui/notifications/popup/static_popup.gd" id="2_ylwhf"]
+[ext_resource type="Texture2D" uid="uid://c2q0pg4sn4j4l" path="res://ui/notifications/popup/info_icon.png" id="3_85fs4"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="4_udcto"]
+[ext_resource type="Texture2D" uid="uid://pyiiu7es8s11" path="res://ui/art/close.svg" id="5_fouhl"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v6j2s"]
+bg_color = Color(0.0392157, 0.0588235, 0.129412, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="LabelSettings" id="LabelSettings_2ce1i"]
+font = ExtResource("4_udcto")
+font_size = 28
+
+[node name="StaticPopup" type="Panel"]
+custom_minimum_size = Vector2(600, 400)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 1
+theme = ExtResource("1_o5kau")
+theme_override_styles/panel = SubResource("StyleBoxFlat_v6j2s")
+script = ExtResource("2_ylwhf")
+
+[node name="TopBorder" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 0
+anchor_right = 1.0
+offset_bottom = 5.0
+grow_horizontal = 2
+color = Color(0.145098, 0.419608, 0.984314, 1)
+
+[node name="ContentContainer" type="MarginContainer" parent="."]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 25
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ContentContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Icon" type="Control" parent="ContentContainer/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+
+[node name="Circle" type="TextureRect" parent="ContentContainer/HBoxContainer/Icon"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_85fs4")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ContentContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="Title" type="Label" parent="ContentContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+text = "Title Text"
+label_settings = SubResource("LabelSettings_2ce1i")
+autowrap_mode = 3
+
+[node name="Description" type="RichTextLabel" parent="ContentContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+focus_mode = 2
+theme_override_fonts/normal_font = ExtResource("4_udcto")
+theme_override_font_sizes/normal_font_size = 18
+bbcode_enabled = true
+text = "[center]Description[/center]"
+fit_content = true
+selection_enabled = true
+
+[node name="CloseButton" type="TextureButton" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -17.0
+offset_top = 12.0
+offset_right = -7.0
+offset_bottom = 22.0
+grow_horizontal = 0
+texture_normal = ExtResource("5_fouhl")
+ignore_texture_size = true
+stretch_mode = 5
+
+[connection signal="mouse_entered" from="." to="." method="_on_popup_message_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_popup_message_mouse_exited"]
+[connection signal="meta_clicked" from="ContentContainer/HBoxContainer/VBoxContainer/Description" to="." method="_clicked_url_handler"]
+[connection signal="pressed" from="CloseButton" to="." method="_close_popup"]

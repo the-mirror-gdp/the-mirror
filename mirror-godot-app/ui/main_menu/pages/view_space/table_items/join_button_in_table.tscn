@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://c4lw66trpp8xm"]
+
+[ext_resource type="Script" path="res://ui/main_menu/pages/view_space/table_items/join_button_in_table.gd" id="1_3gan2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8no3h"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.85098, 0.85098, 0.85098, 0.129412)
+
+[node name="JoinButtonInTable" type="PanelContainer"]
+theme_override_styles/panel = SubResource("StyleBoxFlat_8no3h")
+script = ExtResource("1_3gan2")
+
+[node name="join_button" type="Button" parent="."]
+custom_minimum_size = Vector2(80, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 16
+text = "JOIN"
+
+[connection signal="pressed" from="join_button" to="." method="_on_join_button_pressed"]

@@ -1,0 +1,12 @@
+module name,licenses,repository,licenseUrl
+@cmfcmf/docusaurus-search-local,MIT,https://github.com/cmfcmf/docusaurus-search-local,https://github.com/cmfcmf/docusaurus-search-local/raw/master/LICENSE
+@docusaurus/core,MIT,https://github.com/facebook/docusaurus,https://github.com/facebook/docusaurus/raw/master/LICENSE
+@docusaurus/preset-classic,MIT,https://github.com/facebook/docusaurus,https://github.com/facebook/docusaurus/raw/master/LICENSE
+@mdx-js/react,MIT,https://github.com/mdx-js/mdx,https://github.com/mdx-js/mdx/raw/master/license
+clsx,MIT,https://github.com/lukeed/clsx,https://github.com/lukeed/clsx/raw/master/license
+posthog-js,MIT,https://github.com/PostHog/posthog-js,https://github.com/PostHog/posthog-js/raw/master/LICENSE
+prism-react-renderer,MIT,https://github.com/FormidableLabs/prism-react-renderer,https://github.com/FormidableLabs/prism-react-renderer/raw/master/LICENSE
+react-dom,MIT,https://github.com/facebook/react,https://github.com/facebook/react/raw/master/LICENSE
+react-twitter-embed,MIT,https://github.com/saurabhnemade/react-twitter-embed,https://github.com/saurabhnemade/react-twitter-embed
+react-youtube,MIT,https://github.com/tjallingt/react-youtube,https://github.com/tjallingt/react-youtube
+react,MIT,https://github.com/facebook/react,https://github.com/facebook/react/raw/master/LICENSE

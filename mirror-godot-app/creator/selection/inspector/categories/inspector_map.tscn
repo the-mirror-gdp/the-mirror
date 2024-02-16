@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://btm3ud27av7fw"]
+
+[ext_resource type="PackedScene" uid="uid://dkxqj3l0xm8uw" path="res://creator/selection/inspector/categories/inspector_category_base.tscn" id="1_nqll7"]
+[ext_resource type="Script" path="res://creator/selection/inspector/categories/inspector_map.gd" id="2_mf465"]
+[ext_resource type="PackedScene" uid="uid://cyf8lr874knjd" path="res://creator/selection/inspector/primitive/inspector_line_edit_field.tscn" id="3_syva0"]
+
+[node name="InspectorMap" instance=ExtResource("1_nqll7")]
+offset_bottom = 509.0
+script = ExtResource("2_mf465")
+
+[node name="Text" parent="CategoryTitle/ToggleButton/Name" index="3"]
+text = "MAP"
+
+[node name="Properties" parent="." index="1"]
+visible = true
+
+[node name="AssetName" parent="Properties/MarginContainer/PropertyList" index="0" instance=ExtResource("3_syva0")]
+layout_mode = 2
+enabled = false
+label_text = "Asset Name"

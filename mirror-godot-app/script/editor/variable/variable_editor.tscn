@@ -1,0 +1,753 @@
+[gd_scene load_steps=36 format=3 uid="uid://2fycjbu6yn3l"]
+
+[ext_resource type="Script" path="res://script/editor/variable/variable_editor.gd" id="1_ufex4"]
+[ext_resource type="Script" path="res://scripts/ui/table.gd" id="2_rj3ih"]
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="3_eevtj"]
+[ext_resource type="Theme" uid="uid://chpmeyn2g6o6r" path="res://script/visual/editor/script_editor.theme.tres" id="4_1rn6v"]
+[ext_resource type="Script" path="res://script/editor/variable/variable_creation_dialog.gd" id="4_8to40"]
+[ext_resource type="PackedScene" uid="uid://ddi50hxac0soi" path="res://script/editor/variable/variable_creation_menu.tscn" id="5_st1a7"]
+[ext_resource type="Script" path="res://script/editor/variable/variable_type_editor_dialog.gd" id="6_4mpwo"]
+[ext_resource type="PackedScene" uid="uid://biq6r23v8gsfy" path="res://script/editor/variable/type_selection_button_var_editor.tscn" id="7_c4uig"]
+[ext_resource type="FontFile" uid="uid://bpw8ywxvp8ctj" path="res://ui/common/fonts/montserrat/montserrat_regular.ttf" id="7_muvsd"]
+[ext_resource type="Script" path="res://ui/common/keyboard_grabbing/keyboard_grabbing_line_edit.gd" id="8_daeoo"]
+[ext_resource type="Script" path="res://script/editor/variable/variable_value_editor_dialog.gd" id="8_r15t6"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="8_xq63g"]
+[ext_resource type="Texture2D" uid="uid://pyiiu7es8s11" path="res://ui/art/close.svg" id="9_saqkx"]
+[ext_resource type="Texture2D" uid="uid://cbl2uky823r1l" path="res://script/editor/variable/icons/add.svg" id="10_iv8dc"]
+[ext_resource type="Script" path="res://scripts/ui/table_variant_entry.gd" id="16_7gqj5"]
+[ext_resource type="Script" path="res://script/editor/variable/variable_editor_button.gd" id="16_dtxss"]
+[ext_resource type="Script" path="res://scripts/ui/universal_drag_drop.gd" id="17_b7tn3"]
+[ext_resource type="Texture2D" uid="uid://u361dwcka5fh" path="res://script/editor/variable/icons/object.svg" id="19_cpf1a"]
+[ext_resource type="Texture2D" uid="uid://b1042nn1fsgiu" path="res://script/editor/variable/icons/edit.svg" id="20_2pyi5"]
+[ext_resource type="Texture2D" uid="uid://bq8bae1xexupy" path="res://script/editor/variable/icons/trash.svg" id="20_l52si"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ypp5p"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.133333)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hl5qh"]
+content_margin_left = 5.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.133333)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wr537"]
+content_margin_left = 5.0
+content_margin_right = 5.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_si8cf"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2lsls"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3sqh1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y5jj0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ofroh"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q8y3m"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sqsjx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2bycn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ipl64"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_m0nif"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wfoff"]
+border_width_top = 1
+border_color = Color(0.8, 0.8, 0.8, 0.207843)
+border_blend = true
+
+[sub_resource type="LabelSettings" id="LabelSettings_r34k8"]
+font_size = 14
+
+[node name="ScriptVariableEditor" type="Panel"]
+custom_minimum_size = Vector2(600, 200)
+anchors_preset = -1
+anchor_left = 0.4
+anchor_right = 0.6
+anchor_bottom = 1.0
+offset_top = 16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ufex4")
+
+[node name="VariableCreationDialog" type="ConfirmationDialog" parent="."]
+title = "Create Variable"
+initial_position = 3
+size = Vector2i(366, 152)
+current_screen = 0
+theme = ExtResource("4_1rn6v")
+script = ExtResource("4_8to40")
+
+[node name="VariableCreationMenu" parent="VariableCreationDialog" instance=ExtResource("5_st1a7")]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 358.0
+offset_bottom = 108.0
+convert_any_data = true
+
+[node name="VariableTypeEditorDialog" type="ConfirmationDialog" parent="."]
+title = "Edit Type"
+initial_position = 3
+size = Vector2i(200, 77)
+current_screen = 0
+theme = ExtResource("4_1rn6v")
+script = ExtResource("6_4mpwo")
+
+[node name="Container" type="MarginContainer" parent="VariableTypeEditorDialog"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = 33.0
+grow_horizontal = 2
+theme_override_constants/margin_top = 0
+
+[node name="TypeSelectionButtonVarEditor" parent="VariableTypeEditorDialog/Container" instance=ExtResource("7_c4uig")]
+layout_mode = 2
+
+[node name="VariableValueEditorDialog" type="ConfirmationDialog" parent="."]
+title = "Edit Value"
+initial_position = 3
+current_screen = 0
+theme = ExtResource("4_1rn6v")
+script = ExtResource("8_r15t6")
+
+[node name="VariableTable" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(484, 188)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopBar" type="HBoxContainer" parent="VariableTable"]
+layout_mode = 2
+
+[node name="Search" type="LineEdit" parent="VariableTable/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Type here to search..."
+select_all_on_focus = true
+caret_blink = true
+caret_blink_interval = 0.5
+script = ExtResource("8_daeoo")
+
+[node name="CloseButton" type="Button" parent="VariableTable/TopBar"]
+custom_minimum_size = Vector2(24, 30)
+layout_mode = 2
+icon = ExtResource("9_saqkx")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VariableTable"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VariableTable/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="GlobalVariables" type="HBoxContainer" parent="VariableTable/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+script = ExtResource("2_rj3ih")
+
+[node name="table_header" type="Control" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="title_variable_name" type="Label" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/table_header"]
+layout_mode = 0
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ypp5p")
+text = "Global Variables"
+
+[node name="title_empty1" type="Label" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/table_header"]
+layout_mode = 0
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_hl5qh")
+
+[node name="title_empty2" type="Label" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/table_header"]
+layout_mode = 0
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_hl5qh")
+
+[node name="title_add_button" type="Button" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/table_header"]
+layout_mode = 0
+theme_override_constants/icon_max_width = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_hl5qh")
+icon = ExtResource("10_iv8dc")
+icon_alignment = 1
+
+[node name="add_data_row" type="Control" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables"]
+visible = false
+layout_mode = 2
+
+[node name="new_row" type="Control" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="data_margin" type="MarginContainer" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/new_row"]
+layout_mode = 0
+offset_right = 26.0
+offset_bottom = 3830.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = -5
+theme_override_constants/margin_bottom = -5
+
+[node name="data" type="RichTextLabel" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/new_row/data_margin"]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("7_muvsd")
+theme_override_fonts/bold_font = ExtResource("8_xq63g")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_wr537")
+bbcode_enabled = true
+text = "This sample data is cleared on _ready().
+It is used to ensure that content is working correctly here via visual inspection in the editor.
+It is also for updating the design as time progresses."
+fit_content = true
+scroll_active = false
+script = ExtResource("17_b7tn3")
+
+[node name="data_type" type="Button" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/new_row"]
+custom_minimum_size = Vector2(32, 16)
+layout_mode = 0
+offset_right = 32.0
+offset_bottom = 16.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/icon_max_width = 32
+theme_override_styles/normal = SubResource("StyleBoxEmpty_si8cf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_2lsls")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3sqh1")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_y5jj0")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ofroh")
+icon = ExtResource("19_cpf1a")
+expand_icon = true
+script = ExtResource("16_dtxss")
+
+[node name="edit_button" type="Button" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/new_row"]
+layout_mode = 2
+offset_left = 5.0
+offset_right = 23.0
+offset_bottom = 18.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/icon_max_width = 18
+theme_override_styles/normal = SubResource("StyleBoxEmpty_q8y3m")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_sqsjx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_2bycn")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ipl64")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_m0nif")
+icon = ExtResource("20_2pyi5")
+script = ExtResource("16_dtxss")
+
+[node name="data_margin_remove" type="MarginContainer" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/new_row"]
+layout_mode = 0
+offset_right = 18.0
+offset_bottom = 18.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="remove_button" type="Button" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/new_row/data_margin_remove"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/icon_max_width = 18
+theme_override_styles/normal = SubResource("StyleBoxEmpty_q8y3m")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_sqsjx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_2bycn")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ipl64")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_m0nif")
+icon = ExtResource("20_l52si")
+script = ExtResource("16_dtxss")
+
+[node name="data_key" type="Label" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/new_row"]
+visible = false
+layout_mode = 0
+offset_right = 1.0
+offset_bottom = 22.3333
+
+[node name="data_key" type="Label" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/new_row/data_key"]
+visible = false
+layout_mode = 0
+offset_right = 1.0
+offset_bottom = 22.3333
+
+[node name="data_value" type="Control" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/new_row"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("16_7gqj5")
+
+[node name="visual separator7" type="HSeparator" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/new_row"]
+layout_mode = 0
+theme_override_styles/separator = SubResource("StyleBoxFlat_wfoff")
+
+[node name="visual separator9" type="HSeparator" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/new_row"]
+layout_mode = 0
+theme_override_styles/separator = SubResource("StyleBoxFlat_wfoff")
+
+[node name="visual separator8" type="HSeparator" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/new_row"]
+layout_mode = 0
+theme_override_styles/separator = SubResource("StyleBoxFlat_wfoff")
+
+[node name="visual separator10" type="HSeparator" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/new_row"]
+layout_mode = 0
+theme_override_styles/separator = SubResource("StyleBoxFlat_wfoff")
+
+[node name="table" type="GridContainer" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme = ExtResource("3_eevtj")
+theme_override_constants/h_separation = 0
+columns = 4
+
+[node name="title_variable_name" type="Label" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/table"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ypp5p")
+text = "Global Variables"
+
+[node name="title_empty1" type="Label" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/table"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_hl5qh")
+
+[node name="title_empty2" type="Label" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/table"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_hl5qh")
+
+[node name="title_add_button" type="Button" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/table"]
+layout_mode = 2
+theme_override_constants/icon_max_width = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_hl5qh")
+icon = ExtResource("10_iv8dc")
+icon_alignment = 1
+
+[node name="data_margin" type="MarginContainer" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/table"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = -5
+theme_override_constants/margin_bottom = -5
+
+[node name="data" type="RichTextLabel" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/table/data_margin"]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("7_muvsd")
+theme_override_fonts/bold_font = ExtResource("8_xq63g")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_wr537")
+bbcode_enabled = true
+text = "This sample data is cleared on _ready().
+It is used to ensure that content is working correctly here via visual inspection in the editor.
+It is also for updating the design as time progresses."
+fit_content = true
+scroll_active = false
+script = ExtResource("17_b7tn3")
+
+[node name="data_type" type="Button" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/table"]
+custom_minimum_size = Vector2(32, 16)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/icon_max_width = 32
+theme_override_styles/normal = SubResource("StyleBoxEmpty_si8cf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_2lsls")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3sqh1")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_y5jj0")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ofroh")
+icon = ExtResource("19_cpf1a")
+expand_icon = true
+
+[node name="edit_button" type="Button" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/table"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/icon_max_width = 18
+theme_override_styles/normal = SubResource("StyleBoxEmpty_q8y3m")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_sqsjx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_2bycn")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ipl64")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_m0nif")
+icon = ExtResource("20_2pyi5")
+
+[node name="data_margin_remove" type="MarginContainer" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/table"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="remove_button" type="Button" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/table/data_margin_remove"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/icon_max_width = 18
+theme_override_styles/normal = SubResource("StyleBoxEmpty_q8y3m")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_sqsjx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_2bycn")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ipl64")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_m0nif")
+icon = ExtResource("20_l52si")
+
+[node name="data_key" type="Label" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/table"]
+visible = false
+layout_mode = 2
+
+[node name="data_value" type="Control" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/table"]
+visible = false
+layout_mode = 2
+script = ExtResource("16_7gqj5")
+
+[node name="visual separator7" type="HSeparator" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/table"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_wfoff")
+
+[node name="visual separator9" type="HSeparator" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/table"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_wfoff")
+
+[node name="visual separator8" type="HSeparator" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/table"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_wfoff")
+
+[node name="visual separator10" type="HSeparator" parent="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/table"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_wfoff")
+
+[node name="SpaceObjects" type="HBoxContainer" parent="VariableTable/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+script = ExtResource("2_rj3ih")
+
+[node name="table_header" type="Control" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="title_variable_name" type="Label" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/table_header"]
+layout_mode = 0
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ypp5p")
+text = "Space Object Variables"
+
+[node name="title_empty1" type="Label" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/table_header"]
+layout_mode = 0
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_hl5qh")
+
+[node name="title_empty2" type="Label" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/table_header"]
+layout_mode = 0
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_hl5qh")
+
+[node name="title_empty3" type="Label" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/table_header"]
+layout_mode = 0
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_hl5qh")
+
+[node name="add_data_row" type="Control" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects"]
+visible = false
+layout_mode = 2
+
+[node name="new_row" type="Control" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="data_margin" type="MarginContainer" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/new_row"]
+layout_mode = 0
+offset_right = 26.0
+offset_bottom = 3830.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = -5
+theme_override_constants/margin_bottom = -5
+
+[node name="data" type="RichTextLabel" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/new_row/data_margin"]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("7_muvsd")
+theme_override_fonts/bold_font = ExtResource("8_xq63g")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_wr537")
+bbcode_enabled = true
+text = "This sample data is cleared on _ready().
+It is used to ensure that content is working correctly here via visual inspection in the editor.
+It is also for updating the design as time progresses."
+fit_content = true
+scroll_active = false
+script = ExtResource("17_b7tn3")
+
+[node name="data_type" type="Button" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/new_row"]
+custom_minimum_size = Vector2(32, 16)
+layout_mode = 0
+offset_right = 32.0
+offset_bottom = 16.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/icon_max_width = 32
+theme_override_styles/normal = SubResource("StyleBoxEmpty_si8cf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_2lsls")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3sqh1")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_y5jj0")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ofroh")
+icon = ExtResource("19_cpf1a")
+expand_icon = true
+script = ExtResource("16_dtxss")
+
+[node name="data_margin_edit" type="MarginContainer" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/new_row"]
+layout_mode = 0
+offset_right = 28.0
+offset_bottom = 18.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_right = 5
+
+[node name="edit_button" type="Button" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/new_row/data_margin_edit"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/icon_max_width = 18
+theme_override_styles/normal = SubResource("StyleBoxEmpty_q8y3m")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_sqsjx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_2bycn")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ipl64")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_m0nif")
+icon = ExtResource("20_2pyi5")
+script = ExtResource("16_dtxss")
+
+[node name="data_margin_remove" type="MarginContainer" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/new_row"]
+layout_mode = 0
+offset_right = 18.0
+offset_bottom = 18.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="remove_button" type="Button" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/new_row/data_margin_remove"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/icon_max_width = 18
+theme_override_styles/normal = SubResource("StyleBoxEmpty_q8y3m")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_sqsjx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_2bycn")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ipl64")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_m0nif")
+icon = ExtResource("20_l52si")
+script = ExtResource("16_dtxss")
+
+[node name="data_key" type="Label" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/new_row"]
+visible = false
+layout_mode = 0
+offset_right = 1.0
+offset_bottom = 22.3333
+
+[node name="data_key" type="Label" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/new_row/data_key"]
+visible = false
+layout_mode = 0
+offset_right = 1.0
+offset_bottom = 22.3333
+
+[node name="data_value" type="Control" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/new_row"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("16_7gqj5")
+
+[node name="data_node" type="Control" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/new_row"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("16_7gqj5")
+
+[node name="visual separator7" type="HSeparator" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/new_row"]
+layout_mode = 0
+theme_override_styles/separator = SubResource("StyleBoxFlat_wfoff")
+
+[node name="visual separator9" type="HSeparator" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/new_row"]
+layout_mode = 0
+theme_override_styles/separator = SubResource("StyleBoxFlat_wfoff")
+
+[node name="visual separator8" type="HSeparator" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/new_row"]
+layout_mode = 0
+theme_override_styles/separator = SubResource("StyleBoxFlat_wfoff")
+
+[node name="visual separator10" type="HSeparator" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/new_row"]
+layout_mode = 0
+theme_override_styles/separator = SubResource("StyleBoxFlat_wfoff")
+
+[node name="table" type="GridContainer" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme = ExtResource("3_eevtj")
+theme_override_constants/h_separation = 0
+columns = 4
+
+[node name="title_variable_name" type="Label" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/table"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ypp5p")
+text = "Space Object Variables"
+
+[node name="title_empty1" type="Label" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/table"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_hl5qh")
+
+[node name="title_empty2" type="Label" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/table"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_hl5qh")
+
+[node name="title_empty3" type="Label" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/table"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_hl5qh")
+
+[node name="data_margin" type="MarginContainer" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/table"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = -5
+theme_override_constants/margin_bottom = -5
+
+[node name="data" type="RichTextLabel" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/table/data_margin"]
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("7_muvsd")
+theme_override_fonts/bold_font = ExtResource("8_xq63g")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_wr537")
+bbcode_enabled = true
+text = "This sample data is cleared on _ready().
+It is used to ensure that content is working correctly here via visual inspection in the editor.
+It is also for updating the design as time progresses."
+fit_content = true
+scroll_active = false
+script = ExtResource("17_b7tn3")
+
+[node name="data_type" type="Button" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/table"]
+custom_minimum_size = Vector2(32, 16)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/icon_max_width = 32
+theme_override_styles/normal = SubResource("StyleBoxEmpty_si8cf")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_2lsls")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3sqh1")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_y5jj0")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ofroh")
+icon = ExtResource("19_cpf1a")
+expand_icon = true
+
+[node name="data_margin_edit" type="MarginContainer" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/table"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_right = 5
+
+[node name="edit_button" type="Button" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/table/data_margin_edit"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/icon_max_width = 18
+theme_override_styles/normal = SubResource("StyleBoxEmpty_q8y3m")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_sqsjx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_2bycn")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ipl64")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_m0nif")
+icon = ExtResource("20_2pyi5")
+
+[node name="data_margin_remove" type="MarginContainer" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/table"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="remove_button" type="Button" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/table/data_margin_remove"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/icon_max_width = 18
+theme_override_styles/normal = SubResource("StyleBoxEmpty_q8y3m")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_sqsjx")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_2bycn")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ipl64")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_m0nif")
+icon = ExtResource("20_l52si")
+
+[node name="data_key" type="Label" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/table"]
+visible = false
+layout_mode = 2
+
+[node name="data_node" type="Control" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/table"]
+visible = false
+layout_mode = 2
+script = ExtResource("16_7gqj5")
+
+[node name="visual separator7" type="HSeparator" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/table"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_wfoff")
+
+[node name="visual separator9" type="HSeparator" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/table"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_wfoff")
+
+[node name="visual separator8" type="HSeparator" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/table"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_wfoff")
+
+[node name="visual separator10" type="HSeparator" parent="VariableTable/ScrollContainer/VBoxContainer/SpaceObjects/table"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_wfoff")
+
+[node name="Instructions" type="Label" parent="VariableTable"]
+layout_mode = 2
+text = "Double-click to edit. Drag-and-drop for a getter. Hold shift for a setter."
+label_settings = SubResource("LabelSettings_r34k8")
+horizontal_alignment = 1
+
+[connection signal="confirmed" from="VariableCreationDialog" to="VariableCreationDialog" method="_on_confirmed"]
+[connection signal="focus_entered" from="VariableCreationDialog" to="VariableCreationDialog" method="_on_focus_entered"]
+[connection signal="focus_exited" from="VariableCreationDialog" to="VariableCreationDialog" method="_on_focus_exited"]
+[connection signal="confirmed" from="VariableTypeEditorDialog" to="VariableTypeEditorDialog" method="_on_confirmed"]
+[connection signal="focus_entered" from="VariableTypeEditorDialog" to="VariableTypeEditorDialog" method="_on_focus_entered"]
+[connection signal="focus_exited" from="VariableTypeEditorDialog" to="VariableTypeEditorDialog" method="_on_focus_exited"]
+[connection signal="canceled" from="VariableValueEditorDialog" to="VariableValueEditorDialog" method="cleanup_and_close" flags=18]
+[connection signal="close_requested" from="VariableValueEditorDialog" to="VariableValueEditorDialog" method="cleanup_and_close" flags=18]
+[connection signal="confirmed" from="VariableValueEditorDialog" to="VariableValueEditorDialog" method="_on_confirmed" flags=18]
+[connection signal="focus_entered" from="VariableValueEditorDialog" to="VariableValueEditorDialog" method="_on_focus_entered"]
+[connection signal="focus_exited" from="VariableValueEditorDialog" to="VariableValueEditorDialog" method="_on_focus_exited"]
+[connection signal="focus_entered" from="VariableTable/TopBar/Search" to="VariableTable/TopBar/Search" method="_on_focus_entered"]
+[connection signal="focus_exited" from="VariableTable/TopBar/Search" to="VariableTable/TopBar/Search" method="_on_focus_exited"]
+[connection signal="text_changed" from="VariableTable/TopBar/Search" to="." method="search_for_text"]
+[connection signal="pressed" from="VariableTable/TopBar/CloseButton" to="." method="close_variable_editor"]
+[connection signal="pressed" from="VariableTable/ScrollContainer/VBoxContainer/GlobalVariables/table_header/title_add_button" to="." method="create_new_variable"]

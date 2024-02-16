@@ -1,0 +1,55 @@
+extends GutTest
+
+var zone_space_scene_packed_scene: PackedScene
+
+var hierarchy: SceneHierarchy
+var selection_helper: SelectionHelper
+var space_object_dictionary: Dictionary
+
+
+func before_all():
+	var test_constants = load("res://test/utils/test_constants.gd").new()
+	space_object_dictionary = test_constants.fake_space_object_dictionary.duplicate()
+	zone_space_scene_packed_scene = load("res://scenes/space_scene.tscn")
+	Zone.Scene = zone_space_scene_packed_scene.instantiate() as SpaceScene
+	hierarchy = GameUI.creator_ui.scene_hierarchy
+	selection_helper = GameUI.creator_ui.object_selection.get_selection_helper()
+	PlayerData._cached_local_user_id = &"test-user"
+
+
+func before_each():
+	for instance in Zone.instance_manager.get_all_instances():
+		Zone.instance_manager.remove_space_object(instance)
+
+
+func after_each():
+	hierarchy.clear_selected_nodes()
+	selection_helper.clear_selected_nodes()
+	for space_object in Zone.instance_manager.get_all_instances():
+		Zone.instance_manager.remove_space_object(space_object)
+
+
+func after_all():
+	Zone.Scene.queue_free()
+	Zone.Scene = null
+	PlayerData._cached_local_user_id = PlayerData.USER_ID_UNKNOWN
+
+
+func test_select_an_object():
+	Zone.instance_manager.create_space_object(space_object_dictionary)
+	var new_space_object: SpaceObject = Zone.instance_manager.get_instance(space_object_dictionary["_id"])
+	GameUI.creator_ui.select_object(new_space_object)
+	var result = selection_helper._selected_nodes.filter(func has_instance_id(node: Node):
+		return node.get_instance_id() == new_space_object.get_instance_id())
+
+	assert_eq(result.size(), 1, "Space object was not selected or was selected more than once")
+
+
+func test_object_selection_after_creation():
+	space_object_dictionary["receipt"] = { "created_by_user": "test-user", "auto_select": true }
+	Zone.instance_manager.create_space_object(space_object_dictionary)
+	var new_space_object: SpaceObject = Zone.instance_manager.get_instance(space_object_dictionary["_id"])
+	var result = selection_helper._selected_nodes.filter(func has_instance_id(node: Node):
+		return node.get_instance_id() == new_space_object.get_instance_id())
+
+	assert_eq(result.size(), 1, "Space object was not selected or was selected more than once")

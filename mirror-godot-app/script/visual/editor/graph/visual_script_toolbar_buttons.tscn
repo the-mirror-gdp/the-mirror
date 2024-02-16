@@ -1,0 +1,124 @@
+[gd_scene load_steps=8 format=3 uid="uid://bnrx42q1un8ve"]
+
+[ext_resource type="Theme" uid="uid://chpmeyn2g6o6r" path="res://script/visual/editor/script_editor.theme.tres" id="1_v2y7t"]
+[ext_resource type="Script" path="res://script/visual/editor/graph/visual_script_toolbar_buttons.gd" id="2_bpdns"]
+[ext_resource type="Script" path="res://script/visual/editor/graph/auto_close_check_box.gd" id="3_kebki"]
+[ext_resource type="Texture2D" uid="uid://pyiiu7es8s11" path="res://ui/art/close.svg" id="4_6eet0"]
+[ext_resource type="PackedScene" uid="uid://bdodsov86tpj1" path="res://script/editor/usage/script_usage.tscn" id="4_bo2rn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_31pb8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iorl5"]
+bg_color = Color(0.6, 0.6, 0.6, 0.133333)
+
+[node name="VisualScriptToolbarButtons" type="Control"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 50.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+script = ExtResource("2_bpdns")
+
+[node name="HFlow" type="HFlowContainer" parent="."]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -50.0
+offset_bottom = 40.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme = ExtResource("1_v2y7t")
+theme_override_constants/h_separation = 5
+theme_override_constants/v_separation = 8
+
+[node name="ScriptNameLineEdit" type="LineEdit" parent="HFlow"]
+custom_minimum_size = Vector2(240, 30)
+layout_mode = 2
+placeholder_text = "Please name your script..."
+
+[node name="SaveAsAssetButton" type="Button" parent="HFlow"]
+layout_mode = 2
+text = "Save As New Script"
+
+[node name="VSeparator1" type="VSeparator" parent="HFlow"]
+layout_mode = 2
+
+[node name="AddEntryButton" type="Button" parent="HFlow"]
+visible = false
+layout_mode = 2
+text = "Add Entry"
+
+[node name="AddScriptBlockButton" type="Button" parent="HFlow"]
+layout_mode = 2
+text = "Add Script Block"
+
+[node name="AddCommentButton" type="Button" parent="HFlow"]
+layout_mode = 2
+text = "Add Comment"
+
+[node name="VSeparator2" type="VSeparator" parent="HFlow"]
+layout_mode = 2
+
+[node name="VariablesButton" type="Button" parent="HFlow"]
+layout_mode = 2
+text = "Variables"
+
+[node name="AutoCloseCheckBoxHolder" type="Control" parent="HFlow"]
+custom_minimum_size = Vector2(120, 24)
+layout_mode = 2
+
+[node name="AutoCloseCheckBox" type="CheckBox" parent="HFlow/AutoCloseCheckBoxHolder"]
+custom_minimum_size = Vector2(110, 24)
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -103.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_31pb8")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_31pb8")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_31pb8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_iorl5")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_iorl5")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_31pb8")
+button_pressed = true
+text = "Auto Close"
+script = ExtResource("3_kebki")
+
+[node name="Spacer" type="Control" parent="HFlow"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="ScriptUsage" parent="HFlow" instance=ExtResource("4_bo2rn")]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CloseButton" type="Button" parent="."]
+custom_minimum_size = Vector2(40, 30)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -48.0
+offset_top = 10.0
+offset_right = -8.0
+offset_bottom = 40.0
+grow_horizontal = 0
+icon = ExtResource("4_6eet0")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[connection signal="text_changed" from="HFlow/ScriptNameLineEdit" to="HFlow" method="_on_script_name_text_changed"]
+[connection signal="toggled" from="HFlow/AutoCloseCheckBoxHolder/AutoCloseCheckBox" to="HFlow/AutoCloseCheckBoxHolder/AutoCloseCheckBox" method="_on_toggled"]

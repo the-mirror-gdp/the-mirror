@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://degms63wigj84"]
+
+[ext_resource type="Script" path="res://script/editor/entry_creation/parameter_add_button.gd" id="1_vx51g"]
+[ext_resource type="Theme" uid="uid://chpmeyn2g6o6r" path="res://script/visual/editor/script_editor.theme.tres" id="2_2ucqc"]
+[ext_resource type="PackedScene" uid="uid://ddi50hxac0soi" path="res://script/editor/variable/variable_creation_menu.tscn" id="3_sx5wp"]
+
+[node name="ParameterAddButton" type="Button"]
+custom_minimum_size = Vector2(100, 20)
+size_flags_horizontal = 4
+text = "Add Parameter"
+script = ExtResource("1_vx51g")
+
+[node name="ParameterCreationDialog" type="ConfirmationDialog" parent="."]
+title = "Create Parameter"
+theme = ExtResource("2_2ucqc")
+
+[node name="ParameterCreationMenu" parent="ParameterCreationDialog" instance=ExtResource("3_sx5wp")]
+custom_minimum_size = Vector2(400, 100)
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]
+[connection signal="confirmed" from="ParameterCreationDialog" to="." method="_on_parameter_creation_dialog_confirmed"]
+[connection signal="focus_entered" from="ParameterCreationDialog" to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="ParameterCreationDialog" to="." method="_on_focus_exited"]

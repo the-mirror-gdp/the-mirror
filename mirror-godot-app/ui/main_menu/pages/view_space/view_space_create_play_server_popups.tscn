@@ -1,0 +1,445 @@
+[gd_scene load_steps=24 format=3 uid="uid://bqcpmdy2h3mau"]
+
+[ext_resource type="Theme" uid="uid://ggwm8asxintx" path="res://ui/common/themes/menu_ui.theme.tres" id="1_j33w7"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/view_space/view_space_create_play_server_popups.gd" id="2_1yufc"]
+[ext_resource type="Shader" path="res://ui/common/shaders/ui_blurr.gdshader" id="2_6e1dw"]
+[ext_resource type="StyleBox" uid="uid://nen4cpg1225q" path="res://ui/common/panels/panel_basic_rounded.stylebox.tres" id="3_a4u8y"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="4_w4v3f"]
+[ext_resource type="FontFile" uid="uid://cgyrixnr8bppj" path="res://ui/common/fonts/montserrat/montserrat_medium.ttf" id="5_nrt4c"]
+[ext_resource type="PackedScene" uid="uid://d3nipcgjwg7j5" path="res://ui/common/components/window_close_button.tscn" id="6_lhpks"]
+[ext_resource type="Texture2D" uid="uid://bpdhjrlxnx4ta" path="res://ui/art/rolling_spinner.svg" id="7_6nvdl"]
+[ext_resource type="Texture2D" uid="uid://cueecuijx36ja" path="res://ui/art/share.svg" id="7_wdphr"]
+[ext_resource type="FontFile" uid="uid://cv5tkor0qdxqq" path="res://ui/common/fonts/fontawesome-free-6/Font Awesome 6 Free-Solid-900.otf" id="8_nn01a"]
+[ext_resource type="PackedScene" uid="uid://b6ox2gq4sespi" path="res://ui/hover_text/hoverable_label.tscn" id="11_f5idr"]
+[ext_resource type="Theme" uid="uid://bjdtuw56lro3h" path="res://ui/common/themes/menu_ui_button_accent.theme.tres" id="12_njniw"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gubj3"]
+shader = ExtResource("2_6e1dw")
+shader_parameter/blur = 0.7
+shader_parameter/color = Color(0, 0, 0, 1)
+shader_parameter/strength = 0.6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pd4xg"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g4b0g"]
+shader = ExtResource("2_6e1dw")
+shader_parameter/blur = 4.0
+shader_parameter/color = Color(0.584314, 0.607843, 0.631373, 1)
+shader_parameter/strength = 0.25
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pmw6n"]
+content_margin_left = 8.0
+content_margin_top = 12.0
+content_margin_right = 8.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r2os5"]
+content_margin_left = 8.0
+content_margin_top = 12.0
+content_margin_right = 8.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0.831373)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="LabelSettings" id="LabelSettings_b2fci"]
+line_spacing = 0.0
+font = ExtResource("4_w4v3f")
+font_size = 10
+font_color = Color(0.415686, 0.454902, 0.52549, 1)
+
+[sub_resource type="Animation" id="Animation_n4yvx"]
+resource_name = "Roll"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2nhbe"]
+_data = {
+"Roll": SubResource("Animation_n4yvx")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_85c51"]
+content_margin_left = 12.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.145098, 0.419608, 0.984314, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+anti_aliasing_size = 1.5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e2bqh"]
+content_margin_left = 16.0
+content_margin_top = 11.0
+content_margin_right = 12.0
+content_margin_bottom = 9.0
+bg_color = Color(0.847059, 0.847059, 0.847059, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+expand_margin_top = 1.0
+expand_margin_right = 4.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7eyq2"]
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[node name="CreatePlayServer" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_j33w7")
+script = ExtResource("2_1yufc")
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+copy_mode = 2
+
+[node name="Overlay" type="Panel" parent="."]
+material = SubResource("ShaderMaterial_gubj3")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pd4xg")
+
+[node name="CreateWindow" type="PanelContainer" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_g4b0g")
+custom_minimum_size = Vector2(560, 350)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.389844
+anchor_top = 0.4
+anchor_right = 0.608594
+anchor_bottom = 0.659722
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("3_a4u8y")
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="CreateWindow"]
+layout_mode = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_right = 48
+
+[node name="body" type="VBoxContainer" parent="CreateWindow/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CreateWindow/MarginContainer/body"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_constants/separation = 12
+
+[node name="Spacer" type="Control" parent="CreateWindow/MarginContainer/body/VBoxContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="CreateWindow/MarginContainer/body/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Create Server"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CreateWindow/MarginContainer/body/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="CreateWindow/MarginContainer/body/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 16
+text = "Space:"
+horizontal_alignment = 2
+vertical_alignment = 1
+uppercase = true
+
+[node name="SpaceNameLabel" type="Label" parent="CreateWindow/MarginContainer/body/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.333333, 1, 0.831373, 1)
+theme_override_font_sizes/font_size = 16
+text = "MARS JOURNEY MARS JOURNEY MARS JOURNEY MARS JOURNEY"
+vertical_alignment = 1
+uppercase = true
+max_lines_visible = 1
+visible_characters = 33
+visible_ratio = 0.66
+
+[node name="Spacer2" type="Control" parent="CreateWindow/MarginContainer/body/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="ServerNameEdit" type="LineEdit" parent="CreateWindow/MarginContainer/body/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+theme_override_styles/normal = SubResource("StyleBoxFlat_pmw6n")
+theme_override_styles/focus = SubResource("StyleBoxFlat_r2os5")
+caret_blink = true
+
+[node name="Label" type="Label" parent="CreateWindow/MarginContainer/body/VBoxContainer/ServerNameEdit"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 4.0
+offset_right = 41.0
+offset_bottom = 18.0
+text = "Server Name"
+label_settings = SubResource("LabelSettings_b2fci")
+
+[node name="CreateServerButton" type="Button" parent="CreateWindow/MarginContainer/body/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 40)
+layout_mode = 2
+focus_mode = 0
+theme_override_fonts/font = ExtResource("5_nrt4c")
+text = "Create Server"
+
+[node name="LoadingSpinner" type="TextureRect" parent="CreateWindow/MarginContainer/body/VBoxContainer/CreateServerButton"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+rotation = 3.55167
+pivot_offset = Vector2(20, 20)
+texture = ExtResource("7_6nvdl")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CreateWindow/MarginContainer/body/VBoxContainer/CreateServerButton/LoadingSpinner"]
+autoplay = "Roll"
+libraries = {
+"": SubResource("AnimationLibrary_2nhbe")
+}
+
+[node name="Spacer3" type="Control" parent="CreateWindow/MarginContainer/body/VBoxContainer"]
+layout_mode = 2
+
+[node name="close_button" parent="CreateWindow" instance=ExtResource("6_lhpks")]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="CloseButton" parent="CreateWindow/close_button/MarginContainer" index="0"]
+custom_minimum_size = Vector2(16, 16)
+
+[node name="ShareWindow" type="PanelContainer" parent="."]
+material = SubResource("ShaderMaterial_g4b0g")
+custom_minimum_size = Vector2(560, 350)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.389844
+anchor_top = 0.4
+anchor_right = 0.608594
+anchor_bottom = 0.659722
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("3_a4u8y")
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="ShareWindow"]
+layout_mode = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_right = 48
+
+[node name="body" type="VBoxContainer" parent="ShareWindow/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ShareWindow/MarginContainer/body"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_constants/separation = 12
+
+[node name="Spacer" type="Control" parent="ShareWindow/MarginContainer/body/VBoxContainer"]
+layout_mode = 2
+
+[node name="SpaceNameLabel" type="Label" parent="ShareWindow/MarginContainer/body/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.333333, 1, 0.831373, 1)
+theme_override_font_sizes/font_size = 16
+text = "Server Created!"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+max_lines_visible = 1
+
+[node name="PlayServerNameLabel" type="Label" parent="ShareWindow/MarginContainer/body/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "New Player Server Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+text_overrun_behavior = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ShareWindow/MarginContainer/body/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="ShareWindow/MarginContainer/body/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 16
+text = "Space:"
+horizontal_alignment = 2
+vertical_alignment = 1
+uppercase = true
+
+[node name="SpaceNameLabel" type="Label" parent="ShareWindow/MarginContainer/body/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.333333, 1, 0.831373, 1)
+theme_override_font_sizes/font_size = 16
+text = "MARS JOURNEY MARS JOURNEY MARS JOURNEY MARS JOURNEY"
+vertical_alignment = 1
+uppercase = true
+max_lines_visible = 1
+visible_characters = 33
+visible_ratio = 0.66
+
+[node name="Spacer2" type="Control" parent="ShareWindow/MarginContainer/body/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="ShareButton" type="Button" parent="ShareWindow/MarginContainer/body/VBoxContainer"]
+custom_minimum_size = Vector2(0, 53)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_85c51")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ShareWindow/MarginContainer/body/VBoxContainer/ShareButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 4
+
+[node name="IconLabel" type="TextureRect" parent="ShareWindow/MarginContainer/body/VBoxContainer/ShareButton/HBoxContainer"]
+custom_minimum_size = Vector2(54, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("7_wdphr")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PanelContainer" type="PanelContainer" parent="ShareWindow/MarginContainer/body/VBoxContainer/ShareButton/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_e2bqh")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ShareWindow/MarginContainer/body/VBoxContainer/ShareButton/HBoxContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="UrlLabel" type="Label" parent="ShareWindow/MarginContainer/body/VBoxContainer/ShareButton/HBoxContainer/PanelContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+text = "In.mirror.space/marsjourney/#199782"
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="CopyUrlButton" parent="ShareWindow/MarginContainer/body/VBoxContainer/ShareButton/HBoxContainer/PanelContainer/HBoxContainer" instance=ExtResource("11_f5idr")]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("8_nn01a")
+theme_override_styles/normal = SubResource("StyleBoxFlat_7eyq2")
+text = "copy"
+horizontal_alignment = 1
+vertical_alignment = 1
+hover_tooltip_text = "Copy Space URL"
+
+[node name="Spacer4" type="Control" parent="ShareWindow/MarginContainer/body/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="ShareWindow/MarginContainer/body/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="BackToServersButton" type="Button" parent="ShareWindow/MarginContainer/body/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(128, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme = ExtResource("12_njniw")
+theme_override_fonts/font = ExtResource("5_nrt4c")
+text = "Back to Servers"
+
+[node name="LaunchSpaceButton" type="Button" parent="ShareWindow/MarginContainer/body/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(128, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_fonts/font = ExtResource("5_nrt4c")
+text = "Join"
+
+[node name="Spacer3" type="Control" parent="ShareWindow/MarginContainer/body/VBoxContainer"]
+layout_mode = 2
+
+[node name="close_button" parent="ShareWindow" instance=ExtResource("6_lhpks")]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="CloseButton" parent="ShareWindow/close_button/MarginContainer" index="0"]
+custom_minimum_size = Vector2(16, 16)
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed" flags=18]
+[connection signal="pressed" from="CreateWindow/MarginContainer/body/VBoxContainer/CreateServerButton" to="." method="_on_create_server_button_pressed"]
+[connection signal="pressed" from="CreateWindow/close_button/MarginContainer/CloseButton" to="." method="_on_close_button_pressed" flags=18]
+[connection signal="pressed" from="ShareWindow/MarginContainer/body/VBoxContainer/ShareButton" to="." method="_on_share_button_pressed"]
+[connection signal="pressed" from="ShareWindow/MarginContainer/body/VBoxContainer/HBoxContainer2/BackToServersButton" to="." method="_on_close_button_pressed"]
+[connection signal="pressed" from="ShareWindow/MarginContainer/body/VBoxContainer/HBoxContainer2/LaunchSpaceButton" to="." method="_on_launch_space_button_pressed"]
+[connection signal="pressed" from="ShareWindow/close_button/MarginContainer/CloseButton" to="." method="_on_close_button_pressed" flags=18]
+
+[editable path="CreateWindow/close_button"]
+[editable path="ShareWindow/close_button"]

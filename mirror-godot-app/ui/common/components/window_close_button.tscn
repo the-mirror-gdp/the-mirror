@@ -1,0 +1,34 @@
+[gd_scene load_steps=2 format=3 uid="uid://d3nipcgjwg7j5"]
+
+[ext_resource type="Texture2D" uid="uid://bn74d2ev0q14a" path="res://art/ui/close-icon.svg" id="1_flkdb"]
+
+[node name="CloseButton" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1760.0
+offset_bottom = -840.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_direction = 2
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -48.0
+offset_top = -9.0
+offset_bottom = 39.0
+grow_horizontal = 0
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+
+[node name="CloseButton" type="TextureButton" parent="MarginContainer"]
+layout_mode = 2
+texture_normal = ExtResource("1_flkdb")
+ignore_texture_size = true
+stretch_mode = 0

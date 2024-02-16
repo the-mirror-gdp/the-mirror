@@ -1,0 +1,100 @@
+[gd_scene load_steps=4 format=3 uid="uid://b8wq1oe1dn7pd"]
+
+[ext_resource type="Script" path="res://creator/tools/material_browser/instance_slot.gd" id="1_4xv6y"]
+[ext_resource type="FontFile" uid="uid://cv5tkor0qdxqq" path="res://ui/common/fonts/fontawesome-free-6/Font Awesome 6 Free-Solid-900.otf" id="2_lnhhe"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_grtcc"]
+bg_color = Color(0.109804, 0.121569, 0.141176, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.109804, 0.121569, 0.141176, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="MaterialInstanceSlot" type="Control"]
+custom_minimum_size = Vector2(84, 84)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 84.0
+offset_bottom = 84.0
+mouse_filter = 1
+script = ExtResource("1_4xv6y")
+
+[node name="Panel" type="Panel" parent="."]
+clip_children = 2
+texture_filter = 2
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_grtcc")
+metadata/_edit_layout_mode = 1
+
+[node name="HoverState" type="Panel" parent="Panel"]
+visible = false
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"PanelSlotHover"
+
+[node name="ActiveState" type="Panel" parent="Panel"]
+visible = false
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"PanelSlotActive"
+
+[node name="Preview" type="TextureRect" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+
+[node name="SpaceInstanceLabel" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -15.0
+offset_top = -22.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("2_lnhhe")
+text = "thumbtack"
+
+[node name="CustomShaderLabel" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -21.0
+offset_top = 3.0
+offset_right = -3.0
+offset_bottom = 25.0
+grow_horizontal = 0
+theme_override_fonts/font = ExtResource("2_lnhhe")
+text = "wand-magic-sparkles"
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

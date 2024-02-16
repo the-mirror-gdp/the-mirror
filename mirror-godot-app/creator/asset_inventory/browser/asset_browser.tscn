@@ -1,0 +1,249 @@
+[gd_scene load_steps=23 format=3 uid="uid://djtr54n2qbf16"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_jiy4c"]
+[ext_resource type="Script" path="res://creator/asset_inventory/browser/asset_browser.gd" id="2_vmph5"]
+[ext_resource type="Texture2D" uid="uid://dwols7kkjmb7u" path="res://creator/common/draggable_icon.svg" id="3_cfbbb"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="6_8fba7"]
+[ext_resource type="Texture2D" uid="uid://cc6y2h6nb8ahq" path="res://ui/art/chevron_close.svg" id="7_i1rgo"]
+[ext_resource type="Texture2D" uid="uid://cvnsm6ykoj4xq" path="res://ui/art/upload_arrow.svg" id="8_070dj"]
+[ext_resource type="Texture2D" uid="uid://pyiiu7es8s11" path="res://ui/art/close.svg" id="8_nj1x6"]
+[ext_resource type="Material" uid="uid://de88hevdyb04k" path="res://ui/common/shaders/dark_blue_blur.mat.tres" id="8_prd36"]
+[ext_resource type="Theme" uid="uid://dcdayhoxjwduq" path="res://creator/tools/theme/creator_ui_button_large.theme.tres" id="8_rn8mp"]
+[ext_resource type="FontFile" uid="uid://dh4xtfcbcu8ur" path="res://ui/common/fonts/TheMirrorIcons.otf" id="9_v2w2y"]
+[ext_resource type="StyleBox" uid="uid://dcdx4uxyjvmqv" path="res://ui/new_player_ui/inventory/panel_transparent_bg.tres" id="10_x1k15"]
+[ext_resource type="PackedScene" uid="uid://bl58q264gnym" path="res://creator/asset_inventory/browser/browser_section.tscn" id="11_77txj"]
+[ext_resource type="Script" path="res://creator/asset_inventory/browser/asset_browser_sections.gd" id="11_ywy4q"]
+[ext_resource type="PackedScene" uid="uid://cogjtrae8alkf" path="res://creator/asset_inventory/browser/recent/recents_browser_section.tscn" id="13_bdipw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ifhnq"]
+draw_center = false
+
+[sub_resource type="FontVariation" id="FontVariation_f1kvq"]
+base_font = ExtResource("6_8fba7")
+variation_embolden = 0.48
+spacing_glyph = 2
+
+[sub_resource type="LabelSettings" id="LabelSettings_47kq7"]
+line_spacing = 0.0
+font = SubResource("FontVariation_f1kvq")
+font_size = 13
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p1m02"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lukbj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r8tti"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_50mv2"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_x7ond"]
+font = ExtResource("9_v2w2y")
+font_size = 32
+
+[node name="AssetBrowser" type="Panel"]
+material = ExtResource("8_prd36")
+clip_contents = true
+custom_minimum_size = Vector2(426, 0)
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 426.0
+grow_vertical = 2
+size_flags_vertical = 3
+theme = ExtResource("1_jiy4c")
+script = ExtResource("2_vmph5")
+metadata/_edit_use_custom_anchors = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="Line" type="ColorRect" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+color = Color(0.145098, 0.419608, 0.984314, 1)
+
+[node name="Title" type="MarginContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Title"]
+layout_mode = 2
+
+[node name="DragButton" type="TextureRect" parent="VBoxContainer/Title/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("3_cfbbb")
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/Title/HBoxContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_ifhnq")
+
+[node name="Label" type="Label" parent="VBoxContainer/Title/HBoxContainer"]
+self_modulate = Color(0.223529, 0.478431, 1, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+text = "ASSETS"
+label_settings = SubResource("LabelSettings_47kq7")
+vertical_alignment = 1
+
+[node name="CloseButton" type="Button" parent="VBoxContainer/Title/HBoxContainer"]
+custom_minimum_size = Vector2(30, 10)
+layout_mode = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_p1m02")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_lukbj")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_r8tti")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_50mv2")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Title/HBoxContainer/CloseButton"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="Chevron" type="TextureRect" parent="VBoxContainer/Title/HBoxContainer/CloseButton/HBoxContainer"]
+modulate = Color(0.435294, 0.462745, 0.494118, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("7_i1rgo")
+expand_mode = 1
+stretch_mode = 5
+flip_h = true
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/Title/HBoxContainer/CloseButton/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="CloseIcon" type="TextureRect" parent="VBoxContainer/Title/HBoxContainer/CloseButton/HBoxContainer"]
+modulate = Color(0.145098, 0.419608, 0.984314, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("8_nj1x6")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Separator3" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="TopButtons" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TopButtons"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="ShowUploadAssetButton" type="CheckButton" parent="VBoxContainer/TopButtons/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("8_rn8mp")
+theme_override_constants/h_separation = 6
+theme_override_constants/outline_size = 0
+text = "Upload Asset"
+icon = ExtResource("8_070dj")
+expand_icon = true
+
+[node name="Separator1" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="UploadAsset" type="MarginContainer" parent="VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 32
+
+[node name="UploadButton" type="Button" parent="VBoxContainer/UploadAsset"]
+custom_minimum_size = Vector2(0, 85)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme = ExtResource("8_rn8mp")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/UploadAsset/UploadButton"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="LabelIcon" type="Label" parent="VBoxContainer/UploadAsset/UploadButton/VBoxContainer"]
+layout_mode = 2
+text = "I"
+label_settings = SubResource("LabelSettings_x7ond")
+horizontal_alignment = 1
+
+[node name="UploadLabel" type="Label" parent="VBoxContainer/UploadAsset/UploadButton/VBoxContainer"]
+layout_mode = 2
+focus_mode = 1
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = ExtResource("10_x1k15")
+text = "Drop asset(s) here or browse"
+horizontal_alignment = 1
+
+[node name="Separator2" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Sections" type="Container" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("11_ywy4q")
+
+[node name="Library" parent="VBoxContainer/Sections" instance=ExtResource("11_77txj")]
+layout_mode = 2
+_asset_source = 2
+_section_name = "LIBRARY"
+
+[node name="MyAssets" parent="VBoxContainer/Sections" instance=ExtResource("11_77txj")]
+layout_mode = 2
+_asset_source = 1
+_section_name = "MY ASSETS"
+
+[node name="Recents" parent="VBoxContainer/Sections" instance=ExtResource("13_bdipw")]
+layout_mode = 2
+_section_name = "RECENTS"
+
+[node name="Details" type="MarginContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 20
+
+[node name="AssetName" type="Label" parent="VBoxContainer/Details"]
+layout_mode = 2
+text = "Placeholder Name"
+horizontal_alignment = 1
+text_overrun_behavior = 3
+
+[connection signal="pressed" from="VBoxContainer/Title/HBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="toggled" from="VBoxContainer/TopButtons/HBoxContainer/ShowUploadAssetButton" to="." method="_on_show_upload_asset_button_toggled"]
+[connection signal="pressed" from="VBoxContainer/UploadAsset/UploadButton" to="." method="_show_asset_upload_dialog"]
+[connection signal="asset_deleted" from="VBoxContainer/Sections/Recents" to="VBoxContainer/Sections" method="reset_sections"]
+[connection signal="request_edit_script_instance" from="VBoxContainer/Sections/Recents" to="." method="_on_recents_request_edit_script_instance"]

@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8spbpw4p085l"]
+
+[ext_resource type="Script" path="res://gameplay/space_object/audio/audio_player.gd" id="1_q4y8s"]
+
+[node name="AudioPlayer" type="TMAudioPlayer3D"]
+max_db = 3.522
+script = ExtResource("1_q4y8s")

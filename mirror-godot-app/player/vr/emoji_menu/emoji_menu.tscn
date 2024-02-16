@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=3 uid="uid://b318aj1k6sw1p"]
+
+[ext_resource type="PackedScene" uid="uid://du226mia7mdf" path="res://player/vr/emoji_menu/emoji_menu_ui.tscn" id="1_0ejav"]
+[ext_resource type="Script" path="res://player/vr/emoji_menu/emoji_menu.gd" id="1_dhsy1"]
+
+[sub_resource type="JBoxShape3D" id="JBoxShape3D_63uwe"]
+size = Vector3(0.2, 0.2, 0.005)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_gdqvs"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hhpc7"]
+resource_local_to_scene = true
+transparency = 1
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_gdqvs")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_eg0n5"]
+size = Vector2(0.2, 0.2)
+orientation = 2
+
+[node name="EmojiMenu" type="JBody3D"]
+body_mode = 1
+shape = SubResource("JBoxShape3D_63uwe")
+layer_name = &"KINEMATIC"
+script = ExtResource("1_dhsy1")
+
+[node name="RenderPanel" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_hhpc7")
+mesh = SubResource("PlaneMesh_eg0n5")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+
+[node name="EmojiMenuUI" parent="SubViewport" instance=ExtResource("1_0ejav")]

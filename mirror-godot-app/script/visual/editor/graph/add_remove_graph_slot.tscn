@@ -1,0 +1,83 @@
+[gd_scene load_steps=8 format=3 uid="uid://dspmibfdhyori"]
+
+[ext_resource type="Script" path="res://script/visual/editor/graph/add_remove_graph_slot.gd" id="1_6x6sk"]
+[ext_resource type="Texture2D" uid="uid://kpcb4jb5hto6" path="res://ui/art/accordian_close.png" id="1_wnfgg"]
+[ext_resource type="Texture2D" uid="uid://cbl1xcmq3sicl" path="res://ui/art/accordian_open.png" id="2_gmw6p"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rn7g5"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.15, 0.42, 0.98, 0.25)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.15, 0.42, 0.98, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xrolt"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.15, 0.42, 0.98, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dojg5"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.15, 0.42, 0.98, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="Theme" id="Theme_4do0o"]
+Button/font_sizes/font_size = 12
+Button/styles/focus = SubResource("StyleBoxFlat_rn7g5")
+Button/styles/hover = SubResource("StyleBoxFlat_xrolt")
+Button/styles/normal = SubResource("StyleBoxFlat_dojg5")
+Button/styles/pressed = SubResource("StyleBoxFlat_rn7g5")
+
+[node name="AddRemoveGraphSlot" type="HBoxContainer"]
+custom_minimum_size = Vector2(240, 0)
+offset_right = 240.0
+offset_bottom = 29.0
+theme = SubResource("Theme_4do0o")
+theme_override_constants/separation = 10
+alignment = 1
+script = ExtResource("1_6x6sk")
+
+[node name="AddSlotButton" type="Button" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Add Slot"
+icon = ExtResource("1_wnfgg")
+expand_icon = true
+
+[node name="RemoveSlotButton" type="Button" parent="."]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Remove Slot"
+icon = ExtResource("2_gmw6p")
+expand_icon = true

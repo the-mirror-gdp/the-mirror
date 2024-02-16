@@ -1,0 +1,9 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://bh8yrbn5ro73t"]
+
+[ext_resource type="StyleBox" uid="uid://ctlpeq34dhy3j" path="res://ui/common/buttons/mirror_blue/mirror_blue_normal.stylebox.tres" id="1_8gh1i"]
+[ext_resource type="StyleBox" uid="uid://nen4cpg1225q" path="res://ui/common/panels/panel_basic_rounded.stylebox.tres" id="2_jbsk1"]
+
+[resource]
+Button/styles/hover = ExtResource("1_8gh1i")
+Button/styles/normal = ExtResource("2_jbsk1")
+Panel/styles/panel = ExtResource("2_jbsk1")

@@ -1,0 +1,48 @@
+[gd_scene load_steps=10 format=3 uid="uid://cg5crtsjvrn3d"]
+
+[ext_resource type="Texture2D" uid="uid://7rm3afj38sv0" path="res://player/equipable/gun/firearm/blood/blood.png" id="1_dd7jy"]
+[ext_resource type="Script" path="res://player/equipable/gun/firearm/blood/blood_particles.gd" id="2_npt20"]
+[ext_resource type="AudioStream" uid="uid://eyywnjmpuahi" path="res://player/equipable/gun/firearm/blood/player_hit_01.wav" id="3_pj2vk"]
+[ext_resource type="AudioStream" uid="uid://dse3md0nfcqec" path="res://player/equipable/gun/firearm/blood/player_hit_02.wav" id="4_7kkgl"]
+[ext_resource type="AudioStream" uid="uid://di5itdnd8xcc7" path="res://player/equipable/gun/firearm/blood/player_hit_03.wav" id="5_0uwl8"]
+[ext_resource type="AudioStream" uid="uid://cf30r70qars7c" path="res://player/equipable/gun/firearm/blood/player_hit_04.wav" id="6_yn7m0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ltp2n"]
+transparency = 1
+cull_mode = 2
+albedo_texture = ExtResource("1_dd7jy")
+metallic_specular = 0.0
+roughness = 0.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_3ju2v"]
+material = SubResource("StandardMaterial3D_ltp2n")
+
+[sub_resource type="Curve" id="Curve_3elsp"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="BloodParticles" type="CPUParticles3D"]
+emitting = false
+amount = 16
+one_shot = true
+speed_scale = 1.25
+explosiveness = 1.0
+local_coords = true
+mesh = SubResource("QuadMesh_3ju2v")
+particle_flag_align_y = true
+direction = Vector3(0, 1, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 4.0
+angular_velocity_min = 2.0
+angular_velocity_max = 5.0
+angle_min = 2.0
+angle_max = 4.0
+scale_amount_min = 0.05
+scale_amount_max = 0.3
+scale_amount_curve = SubResource("Curve_3elsp")
+script = ExtResource("2_npt20")
+_hit_sounds = [ExtResource("3_pj2vk"), ExtResource("4_7kkgl"), ExtResource("5_0uwl8"), ExtResource("6_yn7m0")]
+
+[node name="Audio" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("3_pj2vk")
+volume_db = -3.0

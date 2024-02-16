@@ -1,0 +1,58 @@
+[gd_scene load_steps=4 format=3 uid="uid://td3d1noaer8j"]
+
+[ext_resource type="Texture2D" uid="uid://t1a1ea5cirgh" path="res://ui/art/folder.svg" id="1_dmcwg"]
+[ext_resource type="FontVariation" uid="uid://bwp6hb31ol8la" path="res://ui/new_player_ui/inventory/title_font_bold.tres" id="2_5nnp6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aawoi"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+
+[node name="NormalModeHotkeyItem" type="VBoxContainer"]
+custom_minimum_size = Vector2(54, 66)
+size_flags_horizontal = 4
+size_flags_vertical = 8
+focus_mode = 1
+theme_override_constants/separation = 0
+alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(48, 40)
+layout_mode = 2
+size_flags_vertical = 2
+texture = ExtResource("1_dmcwg")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="Panel" type="Panel" parent="."]
+custom_minimum_size = Vector2(23, 18)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_aawoi")
+
+[node name="InputLabel" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1.0
+offset_top = -2.0
+offset_bottom = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_5nnp6")
+text = "B"
+horizontal_alignment = 1
+vertical_alignment = 1

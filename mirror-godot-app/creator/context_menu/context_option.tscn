@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=3 uid="uid://c6did4ni1basa"]
+
+[ext_resource type="FontFile" uid="uid://bjwepurchoc75" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_semi_bold.ttf" id="1_cpwud"]
+[ext_resource type="Texture2D" uid="uid://dekum7rgbj6f2" path="res://ui/art/select.svg" id="1_gn826"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pg6ny"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n27wq"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 1)
+
+[node name="Button" type="Button"]
+custom_minimum_size = Vector2(150, 16)
+theme_override_colors/icon_normal_color = Color(0.588235, 0.588235, 0.588235, 1)
+theme_override_constants/h_separation = 5
+theme_override_constants/icon_max_width = 14
+theme_override_fonts/font = ExtResource("1_cpwud")
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxEmpty_pg6ny")
+theme_override_styles/hover = SubResource("StyleBoxFlat_n27wq")
+text = "Focus"
+icon = ExtResource("1_gn826")
+alignment = 0
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.98
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.392157, 0.392157, 0.392157, 1)
+theme_override_font_sizes/font_size = 11
+horizontal_alignment = 2
+vertical_alignment = 1

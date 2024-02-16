@@ -1,0 +1,82 @@
+[gd_scene load_steps=5 format=3 uid="uid://bahpo436m8hut"]
+
+[ext_resource type="Script" path="res://creator/asset_inventory/browser/search_field.gd" id="1_cp0er"]
+[ext_resource type="Texture2D" uid="uid://tjfub6oen3u7" path="res://ui/art/search_input.png" id="2_a5jif"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kqiav"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hclib"]
+bg_color = Color(0.254902, 0.254902, 0.254902, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="SearchField" type="MarginContainer"]
+offset_right = 350.0
+offset_bottom = 36.0
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+script = ExtResource("1_cp0er")
+style_enabled = SubResource("StyleBoxFlat_kqiav")
+style_disabled = SubResource("StyleBoxFlat_hclib")
+
+[node name="Panel" type="Panel" parent="."]
+custom_minimum_size = Vector2(150, 36)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_kqiav")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="SearchIcon" type="Button" parent="Panel/HBoxContainer"]
+custom_minimum_size = Vector2(33, 30)
+layout_mode = 2
+flat = true
+
+[node name="Icon" type="TextureRect" parent="Panel/HBoxContainer/SearchIcon"]
+custom_minimum_size = Vector2(13, 13)
+layout_mode = 2
+offset_left = 10.0
+offset_top = 11.0
+offset_right = 23.0
+offset_bottom = 24.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_a5jif")
+expand_mode = 1
+
+[node name="SearchField" type="MarginContainer" parent="Panel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_right = 4
+
+[node name="LineEdit" type="LineEdit" parent="Panel/HBoxContainer/SearchField"]
+layout_mode = 2
+focus_mode = 1
+theme_type_variation = &"LineEditSearch"
+theme_override_font_sizes/font_size = 13
+placeholder_text = "search over 5000+ assets"
+clear_button_enabled = true
+flat = true
+caret_blink = true
+
+[connection signal="pressed" from="Panel/HBoxContainer/SearchIcon" to="." method="_on_search_icon_pressed"]
+[connection signal="gui_input" from="Panel/HBoxContainer/SearchField/LineEdit" to="." method="_on_line_edit_gui_input"]
+[connection signal="text_changed" from="Panel/HBoxContainer/SearchField/LineEdit" to="." method="_on_line_edit_text_changed"]
+[connection signal="text_submitted" from="Panel/HBoxContainer/SearchField/LineEdit" to="." method="_on_line_edit_text_submitted"]

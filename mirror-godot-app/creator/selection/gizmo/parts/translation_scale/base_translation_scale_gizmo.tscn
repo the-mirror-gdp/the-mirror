@@ -1,0 +1,233 @@
+[gd_scene load_steps=28 format=3 uid="uid://cx3cuhqnehql1"]
+
+[ext_resource type="Script" path="res://creator/selection/gizmo/parts/gizmo_handle.gd" id="1_35d8d"]
+[ext_resource type="Material" uid="uid://ceu4aoa4kdxmk" path="res://creator/selection/gizmo/material/x_axis_highlight.tres" id="2_xquw6"]
+[ext_resource type="Material" uid="uid://p2vlt37ahm4i" path="res://creator/selection/gizmo/material/x_axis.tres" id="3_1g4h4"]
+[ext_resource type="Material" uid="uid://b4igy7qd57l3w" path="res://creator/selection/gizmo/material/y_axis_highlight.tres" id="4_hdono"]
+[ext_resource type="Material" uid="uid://xgv2bye8gtts" path="res://creator/selection/gizmo/material/y_axis.tres" id="4_skwak"]
+[ext_resource type="Material" uid="uid://kv4p22wgy5j0" path="res://creator/selection/gizmo/material/z_axis.tres" id="5_6p5od"]
+[ext_resource type="Material" uid="uid://cnmi8ygf00tuf" path="res://creator/selection/gizmo/material/origin.tres" id="5_dcqe4"]
+[ext_resource type="Material" uid="uid://iempen7gi22a" path="res://creator/selection/gizmo/material/z_axis_highlight.tres" id="6_hh2lx"]
+[ext_resource type="Material" uid="uid://d1pxtqd3dbwev" path="res://creator/selection/gizmo/material/origin_highlight.tres" id="8_egejy"]
+
+[sub_resource type="JBoxShape3D" id="JBoxShape3D_3y2ho"]
+size = Vector3(0.25, 0.25, 0.06)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7wq82"]
+size = Vector3(0.25, 0.25, 0.06)
+
+[sub_resource type="PlaneMesh" id="6"]
+size = Vector2(0.2, 0.2)
+orientation = 2
+
+[sub_resource type="JCapsuleShape3D" id="JCapsuleShape3D_yteef"]
+radius = 0.1
+height = 1.0
+
+[sub_resource type="JCompoundShape3D" id="JStaticCompoundShape3D_a7768"]
+shapes = [SubResource("JCapsuleShape3D_yteef")]
+transforms = [Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0.5)]
+count = 1
+0/translation = Vector3(0, 0, 0.5)
+0/rotation = Vector3(90, 0, 0)
+0/scale = Vector3(1, 1, 1)
+0/shape = SubResource("JCapsuleShape3D_yteef")
+
+[sub_resource type="CylinderMesh" id="9"]
+top_radius = 0.0
+bottom_radius = 0.08
+height = 0.3
+
+[sub_resource type="CylinderMesh" id="5"]
+top_radius = 0.03
+bottom_radius = 0.03
+height = 0.75
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sl45g"]
+radius = 0.1
+height = 1.0
+
+[sub_resource type="JCapsuleShape3D" id="JCapsuleShape3D_fthye"]
+radius = 0.1
+height = 1.0
+
+[sub_resource type="JCompoundShape3D" id="JStaticCompoundShape3D_xq0fa"]
+shapes = [SubResource("JCapsuleShape3D_fthye")]
+transforms = [Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0.5)]
+count = 1
+0/translation = Vector3(0, 0, 0.5)
+0/rotation = Vector3(90, 0, 0)
+0/scale = Vector3(1, 1, 1)
+0/shape = SubResource("JCapsuleShape3D_fthye")
+
+[sub_resource type="CylinderShape3D" id="3"]
+height = 1.0
+radius = 0.1
+
+[sub_resource type="CylinderMesh" id="10"]
+top_radius = 0.0
+bottom_radius = 0.1
+height = 0.3
+
+[sub_resource type="JCapsuleShape3D" id="JCapsuleShape3D_jthp5"]
+radius = 0.1
+height = 1.0
+
+[sub_resource type="JCompoundShape3D" id="JStaticCompoundShape3D_qdwqd"]
+shapes = [SubResource("JCapsuleShape3D_jthp5")]
+transforms = [Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0.5)]
+count = 1
+0/translation = Vector3(0, 0, 0.5)
+0/rotation = Vector3(90, 0, 0)
+0/scale = Vector3(1, 1, 1)
+0/shape = SubResource("JCapsuleShape3D_jthp5")
+
+[sub_resource type="CylinderMesh" id="11"]
+top_radius = 0.0
+bottom_radius = 0.1
+height = 0.3
+
+[sub_resource type="JBoxShape3D" id="JBoxShape3D_k3dt3"]
+size = Vector3(0.3, 0.3, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_81x17"]
+size = Vector3(0.3, 0.3, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_2vkcg"]
+size = Vector3(0.15, 0.15, 0.15)
+
+[node name="TranslationScaleBaseGizmo" type="Node3D"]
+
+[node name="XPlane" type="JBody3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0.3, 0.3)
+manual_body_creation = true
+body_mode = 1
+layer_name = &"GIZMO"
+shape = SubResource("JBoxShape3D_3y2ho")
+script = ExtResource("1_35d8d")
+highlight_material = ExtResource("2_xquw6")
+
+[node name="CollisionShape" type="CollisionShape3D" parent="XPlane"]
+shape = SubResource("BoxShape3D_7wq82")
+
+[node name="MeshInstance" type="MeshInstance3D" parent="XPlane"]
+mesh = SubResource("6")
+surface_material_override/0 = ExtResource("3_1g4h4")
+
+[node name="YPlane" type="JBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.3, 0, 0.3)
+manual_body_creation = true
+body_mode = 1
+layer_name = &"GIZMO"
+shape = SubResource("JBoxShape3D_3y2ho")
+script = ExtResource("1_35d8d")
+highlight_material = ExtResource("4_hdono")
+
+[node name="CollisionShape" type="CollisionShape3D" parent="YPlane"]
+shape = SubResource("BoxShape3D_7wq82")
+
+[node name="MeshInstance" type="MeshInstance3D" parent="YPlane"]
+mesh = SubResource("6")
+surface_material_override/0 = ExtResource("4_skwak")
+
+[node name="ZPlane" type="JBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0.3, 0)
+manual_body_creation = true
+body_mode = 1
+layer_name = &"GIZMO"
+shape = SubResource("JBoxShape3D_3y2ho")
+script = ExtResource("1_35d8d")
+highlight_material = ExtResource("6_hh2lx")
+
+[node name="CollisionShape" type="CollisionShape3D" parent="ZPlane"]
+shape = SubResource("BoxShape3D_7wq82")
+
+[node name="MeshInstance" type="MeshInstance3D" parent="ZPlane"]
+mesh = SubResource("6")
+surface_material_override/0 = ExtResource("5_6p5od")
+
+[node name="XArrow" type="JBody3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+manual_body_creation = true
+body_mode = 1
+layer_name = &"GIZMO"
+shape = SubResource("JStaticCompoundShape3D_a7768")
+script = ExtResource("1_35d8d")
+highlight_material = ExtResource("2_xquw6")
+
+[node name="Tip" type="MeshInstance3D" parent="XArrow"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.875)
+mesh = SubResource("9")
+skeleton = NodePath("../..")
+surface_material_override/0 = ExtResource("3_1g4h4")
+
+[node name="Shaft" type="MeshInstance3D" parent="XArrow"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.45)
+mesh = SubResource("5")
+surface_material_override/0 = ExtResource("3_1g4h4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XArrow"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.486294)
+shape = SubResource("CapsuleShape3D_sl45g")
+
+[node name="YArrow" type="JBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+manual_body_creation = true
+body_mode = 1
+layer_name = &"GIZMO"
+shape = SubResource("JStaticCompoundShape3D_xq0fa")
+script = ExtResource("1_35d8d")
+highlight_material = ExtResource("4_hdono")
+
+[node name="CollisionShape" type="CollisionShape3D" parent="YArrow"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.5)
+shape = SubResource("3")
+
+[node name="Tip" type="MeshInstance3D" parent="YArrow"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.875)
+mesh = SubResource("10")
+skeleton = NodePath("../..")
+surface_material_override/0 = ExtResource("4_skwak")
+
+[node name="Shaft" type="MeshInstance3D" parent="YArrow"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.45)
+mesh = SubResource("5")
+surface_material_override/0 = ExtResource("4_skwak")
+
+[node name="ZArrow" type="JBody3D" parent="."]
+manual_body_creation = true
+shape = SubResource("JStaticCompoundShape3D_qdwqd")
+script = ExtResource("1_35d8d")
+highlight_material = ExtResource("6_hh2lx")
+
+[node name="CollisionShape" type="CollisionShape3D" parent="ZArrow"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.5)
+shape = SubResource("3")
+
+[node name="Tip" type="MeshInstance3D" parent="ZArrow"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.875)
+mesh = SubResource("11")
+skeleton = NodePath("../..")
+surface_material_override/0 = ExtResource("5_6p5od")
+
+[node name="Shaft" type="MeshInstance3D" parent="ZArrow"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.45)
+mesh = SubResource("5")
+surface_material_override/0 = ExtResource("5_6p5od")
+
+[node name="Center" type="JBody3D" parent="."]
+manual_body_creation = true
+body_mode = 1
+layer_name = &"GIZMO"
+shape = SubResource("JBoxShape3D_k3dt3")
+script = ExtResource("1_35d8d")
+highlight_material = ExtResource("8_egejy")
+
+[node name="CollisionShape" type="CollisionShape3D" parent="Center"]
+shape = SubResource("BoxShape3D_81x17")
+
+[node name="MeshInstance" type="MeshInstance3D" parent="Center"]
+mesh = SubResource("BoxMesh_2vkcg")
+surface_material_override/0 = ExtResource("5_dcqe4")
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]

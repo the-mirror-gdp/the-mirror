@@ -1,0 +1,17 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://j01h4e3vawyq"]
+
+[ext_resource type="Shader" path="res://art/sky/sky_cosmos_volumetric.gdshader" id="1_3lqhq"]
+
+[resource]
+shader = ExtResource("1_3lqhq")
+shader_parameter/sky_top_color = Color(0.313726, 0.137255, 0.54902, 1)
+shader_parameter/sky_horizon_color = Color(0.203922, 0.462745, 0.368627, 1)
+shader_parameter/sky_curve = 0.324
+shader_parameter/sky_energy = 1.0
+shader_parameter/fog_color = Color(0.172549, 0.462745, 0.188235, 1)
+shader_parameter/sky_stars_modulate = Color(1, 1, 1, 1)
+shader_parameter/sky_bottom_color = Color(0.203922, 0.462745, 0.368627, 1)
+shader_parameter/ground_curve = 0.112
+shader_parameter/ground_energy = 1.0
+shader_parameter/sun_angle_max = 0.497
+shader_parameter/sun_curve = 0.103

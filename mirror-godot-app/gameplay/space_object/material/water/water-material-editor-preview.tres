@@ -1,0 +1,43 @@
+[gd_resource type="ShaderMaterial" load_steps=8 format=3 uid="uid://blrijeg5ijn6b"]
+
+[ext_resource type="Shader" uid="uid://dxlw1j25t4mvo" path="res://gameplay/space_object/material/water/water-shader.tres" id="1_7skxr"]
+[ext_resource type="Texture2D" uid="uid://8rr3cbhmphes" path="res://gameplay/space_object/material/water/water-caustic.png" id="2_05svt"]
+[ext_resource type="Texture2D" uid="uid://dycgigwun3am6" path="res://gameplay/space_object/material/water/foam.png" id="2_dojtx"]
+[ext_resource type="Texture2D" uid="uid://3jkgsmlhvnhe" path="res://gameplay/space_object/material/water/lense-glare.png" id="3_rhqia"]
+[ext_resource type="Texture2D" uid="uid://dskkkmxab8fa2" path="res://gameplay/space_object/material/water/water-normal.png" id="5_5fx50"]
+[ext_resource type="Texture2D" uid="uid://bfw8flmtjhfp5" path="res://gameplay/space_object/material/water/water-normal2.png" id="5_rpa8g"]
+[ext_resource type="Texture2D" uid="uid://cktrynu8ec0ja" path="res://gameplay/space_object/material/water/flowmap-water.png" id="6_o3v2m"]
+
+[resource]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("1_7skxr")
+shader_parameter/albedo_shallow = Color(0.196078, 0.423529, 0.392157, 1)
+shader_parameter/albedo = Color(0.141176, 0.419608, 0.478431, 1)
+shader_parameter/detail_scale = 0.05
+shader_parameter/detail_foam_scale = 10.0
+shader_parameter/detail_dir = Vector2(0.05, 0.05)
+shader_parameter/detail_speed = 0.6
+shader_parameter/detail_strength = 0.25
+shader_parameter/detail_uv_deform = 0.02
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 0.05
+shader_parameter/sss_strength = 10.0
+shader_parameter/stormy = 1.0
+shader_parameter/foam_amount = 0.4
+shader_parameter/foam_leading_edge = 0.2
+shader_parameter/beers_value = 1.13
+shader_parameter/depth_blending_offset = -0.1
+shader_parameter/refraction = 0.15
+shader_parameter/_time = 0.55
+shader_parameter/ssr_resolution = 0.1
+shader_parameter/ssr_max_steps = 32
+shader_parameter/ssr_max_diff = 2.5
+shader_parameter/ssr_mix_strength = 1.0
+shader_parameter/normalmap1 = ExtResource("5_5fx50")
+shader_parameter/normalmap2 = ExtResource("5_rpa8g")
+shader_parameter/glare_lense_map = ExtResource("3_rhqia")
+shader_parameter/foam_map = ExtResource("2_dojtx")
+shader_parameter/caustic_map = ExtResource("2_05svt")
+shader_parameter/uv_sampler_map = ExtResource("6_o3v2m")

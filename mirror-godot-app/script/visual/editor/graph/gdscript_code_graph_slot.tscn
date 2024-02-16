@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://d1y0ki6bj5k3j"]
+
+[node name="GDScriptCodeGraphSlot" type="HBoxContainer"]
+custom_minimum_size = Vector2(260, 40)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -127.5
+offset_top = -20.0
+offset_right = 127.5
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="OpenCodeEditor" type="Button" parent="."]
+custom_minimum_size = Vector2(150, 2.08165e-12)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Open Code Editor"
+
+[node name="EditPorts" type="Button" parent="."]
+custom_minimum_size = Vector2(100, 2.08165e-12)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Edit Ports"

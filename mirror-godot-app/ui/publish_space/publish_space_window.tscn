@@ -1,0 +1,284 @@
+[gd_scene load_steps=20 format=3 uid="uid://clpkop8mwppa1"]
+
+[ext_resource type="Theme" uid="uid://ggwm8asxintx" path="res://ui/common/themes/menu_ui.theme.tres" id="1_7b48e"]
+[ext_resource type="Script" path="res://ui/publish_space/publish_space_window.gd" id="1_7tvgj"]
+[ext_resource type="Shader" path="res://ui/common/shaders/ui_blurr.gdshader" id="1_srhjh"]
+[ext_resource type="StyleBox" uid="uid://nen4cpg1225q" path="res://ui/common/panels/panel_basic_rounded.stylebox.tres" id="2_g4ucc"]
+[ext_resource type="PackedScene" uid="uid://d3nipcgjwg7j5" path="res://ui/common/components/window_close_button.tscn" id="3_papif"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="5_0i1ad"]
+[ext_resource type="FontFile" uid="uid://cgyrixnr8bppj" path="res://ui/common/fonts/montserrat/montserrat_medium.ttf" id="7_kp0hw"]
+[ext_resource type="Texture2D" uid="uid://bpdhjrlxnx4ta" path="res://ui/art/rolling_spinner.svg" id="7_q520u"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gubj3"]
+shader = ExtResource("1_srhjh")
+shader_parameter/blur = 0.7
+shader_parameter/color = Color(0, 0, 0, 1)
+shader_parameter/strength = 0.6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pd4xg"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g4b0g"]
+shader = ExtResource("1_srhjh")
+shader_parameter/blur = 4.0
+shader_parameter/color = Color(0.584314, 0.607843, 0.631373, 1)
+shader_parameter/strength = 0.25
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xfe3o"]
+content_margin_left = 13.0
+content_margin_top = 0.0
+content_margin_bottom = 0.0
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_0u6vq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ni373"]
+content_margin_left = 8.0
+content_margin_top = 12.0
+content_margin_right = 8.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0.831373)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fw1ef"]
+content_margin_left = 8.0
+content_margin_top = 12.0
+content_margin_right = 8.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7awat"]
+content_margin_left = 8.0
+content_margin_top = 12.0
+content_margin_right = 8.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0.8)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="LabelSettings" id="LabelSettings_3k616"]
+line_spacing = 0.0
+font = ExtResource("5_0i1ad")
+font_size = 10
+font_color = Color(0.415686, 0.454902, 0.52549, 1)
+
+[sub_resource type="Animation" id="Animation_n4yvx"]
+resource_name = "Roll"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2nhbe"]
+_data = {
+"Roll": SubResource("Animation_n4yvx")
+}
+
+[node name="PublishSpaceWindow" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_7b48e")
+script = ExtResource("1_7tvgj")
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+copy_mode = 2
+
+[node name="Overlay" type="Panel" parent="."]
+material = SubResource("ShaderMaterial_gubj3")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pd4xg")
+
+[node name="Control" type="PanelContainer" parent="."]
+material = SubResource("ShaderMaterial_g4b0g")
+custom_minimum_size = Vector2(560, 350)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.389844
+anchor_top = 0.4
+anchor_right = 0.608594
+anchor_bottom = 0.659722
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("2_g4ucc")
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
+layout_mode = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_right = 48
+
+[node name="body" type="VBoxContainer" parent="Control/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/body"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_constants/separation = 12
+
+[node name="Spacer" type="Control" parent="Control/MarginContainer/body/VBoxContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="Control/MarginContainer/body/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_0i1ad")
+theme_override_font_sizes/font_size = 40
+text = "Publish Space"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="Control/MarginContainer/body/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Choose the current version or a previously-saved version.
+
+This update will apply to all new servers for your Space."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 1
+
+[node name="Spacer2" type="Control" parent="Control/MarginContainer/body/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/body/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_right = 24
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer/body/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Control/MarginContainer/body/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CurrentVersionCheckBox" type="CheckBox" parent="Control/MarginContainer/body/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 14
+theme_override_constants/check_v_offset = 2
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxEmpty_xfe3o")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_xfe3o")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_xfe3o")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_xfe3o")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_xfe3o")
+button_pressed = true
+button_group = SubResource("ButtonGroup_0u6vq")
+text = "Current Version"
+flat = true
+vertical_icon_alignment = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Control/MarginContainer/body/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CustomVersionCheckBox" type="CheckBox" parent="Control/MarginContainer/body/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+button_group = SubResource("ButtonGroup_0u6vq")
+flat = true
+
+[node name="VersionOptionButton" type="OptionButton" parent="Control/MarginContainer/body/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 13
+theme_override_styles/focus = SubResource("StyleBoxFlat_ni373")
+theme_override_styles/normal = SubResource("StyleBoxFlat_fw1ef")
+theme_override_styles/hover = SubResource("StyleBoxFlat_7awat")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_7awat")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_fw1ef")
+item_count = 1
+selected = 0
+popup/item_0/text = "Latest (1.0.0)"
+popup/item_0/id = 0
+
+[node name="Label" type="Label" parent="Control/MarginContainer/body/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/VersionOptionButton"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 4.0
+offset_right = 41.0
+offset_bottom = 18.0
+text = "Version"
+label_settings = SubResource("LabelSettings_3k616")
+
+[node name="LoadingSpinner" type="TextureRect" parent="Control/MarginContainer/body/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/VersionOptionButton"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -70.0
+offset_top = -15.0
+offset_right = -40.0
+offset_bottom = 15.0
+grow_horizontal = 0
+grow_vertical = 2
+pivot_offset = Vector2(15, 15)
+texture = ExtResource("7_q520u")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Control/MarginContainer/body/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/VersionOptionButton/LoadingSpinner"]
+autoplay = "Roll"
+libraries = {
+"": SubResource("AnimationLibrary_2nhbe")
+}
+
+[node name="PublishButton" type="Button" parent="Control/MarginContainer/body/VBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 40)
+layout_mode = 2
+focus_mode = 0
+theme_override_fonts/font = ExtResource("7_kp0hw")
+text = "Publish"
+
+[node name="Spacer3" type="Control" parent="Control/MarginContainer/body/VBoxContainer"]
+layout_mode = 2
+
+[node name="close_button" parent="Control" instance=ExtResource("3_papif")]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="CloseButton" parent="Control/close_button/MarginContainer" index="0"]
+custom_minimum_size = Vector2(16, 16)
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="item_selected" from="Control/MarginContainer/body/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer3/VersionOptionButton" to="." method="_on_version_option_button_item_selected"]
+[connection signal="pressed" from="Control/MarginContainer/body/VBoxContainer/MarginContainer/VBoxContainer/PublishButton" to="." method="_on_publish_button_pressed"]
+[connection signal="pressed" from="Control/close_button/MarginContainer/CloseButton" to="." method="_on_close_button_pressed"]
+
+[editable path="Control/close_button"]

@@ -1,0 +1,119 @@
+[gd_scene load_steps=12 format=3 uid="uid://c3n3csc8l72co"]
+
+[ext_resource type="Script" path="res://creator/common/creator_title_tab.gd" id="1_uqsj4"]
+[ext_resource type="Texture2D" uid="uid://dwols7kkjmb7u" path="res://creator/common/draggable_icon.svg" id="2_b21sh"]
+[ext_resource type="FontVariation" uid="uid://bwp6hb31ol8la" path="res://ui/new_player_ui/inventory/title_font_bold.tres" id="2_w5o6p"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="3_bfbtp"]
+[ext_resource type="Texture2D" uid="uid://cc6y2h6nb8ahq" path="res://ui/art/chevron_close.svg" id="4_2rjy5"]
+[ext_resource type="Texture2D" uid="uid://pyiiu7es8s11" path="res://ui/art/close.svg" id="5_oulpp"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_47kq7"]
+line_spacing = 0.0
+font = ExtResource("3_bfbtp")
+font_size = 13
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p1m02"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lukbj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r8tti"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_50mv2"]
+
+[node name="CreatorTitleTab" type="VBoxContainer"]
+offset_right = 350.0
+offset_bottom = 43.0
+theme_override_constants/separation = 0
+script = ExtResource("1_uqsj4")
+
+[node name="Line" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+color = Color(0.145098, 0.419608, 0.984314, 1)
+
+[node name="Title" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Title"]
+custom_minimum_size = Vector2(100, 14)
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="DragButton" type="TextureRect" parent="Title/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("2_b21sh")
+
+[node name="PrimaryName" type="Label" parent="Title/HBoxContainer"]
+self_modulate = Color(0.223529, 0.478431, 1, 1)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 1
+theme_override_fonts/font = ExtResource("2_w5o6p")
+theme_override_font_sizes/font_size = 14
+text = "Creator Title Tab"
+label_settings = SubResource("LabelSettings_47kq7")
+vertical_alignment = 1
+uppercase = true
+
+[node name="SecondaryName" type="Label" parent="Title/HBoxContainer"]
+self_modulate = Color(0.0705882, 1, 0.843137, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_fonts/font = ExtResource("2_w5o6p")
+theme_override_font_sizes/font_size = 14
+text = "Secondary Name"
+label_settings = SubResource("LabelSettings_47kq7")
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+uppercase = true
+
+[node name="CloseButton" type="Button" parent="Title/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(32, 10)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_p1m02")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_lukbj")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_r8tti")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_50mv2")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Title/HBoxContainer/CloseButton"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="Chevron" type="TextureRect" parent="Title/HBoxContainer/CloseButton/HBoxContainer"]
+modulate = Color(0.435294, 0.462745, 0.494118, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("4_2rjy5")
+expand_mode = 1
+stretch_mode = 5
+flip_h = true
+
+[node name="VSeparator" type="VSeparator" parent="Title/HBoxContainer/CloseButton/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="CloseIcon" type="TextureRect" parent="Title/HBoxContainer/CloseButton/HBoxContainer"]
+modulate = Color(0.145098, 0.419608, 0.984314, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("5_oulpp")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Separator" type="HSeparator" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[connection signal="pressed" from="Title/HBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]

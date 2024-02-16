@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://tixquvgm7nyn"]
+
+[ext_resource type="Texture2D" uid="uid://eog088ejfujb" path="res://ui/game/health/damage_indicator.svg" id="1_3toug"]
+[ext_resource type="Script" path="res://ui/game/health/damage_indicator.gd" id="1_qn63k"]
+
+[node name="DamageIndicator" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -256.0
+offset_top = -256.0
+offset_right = 256.0
+offset_bottom = 256.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(256, 256)
+mouse_filter = 2
+script = ExtResource("1_qn63k")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -1.5708
+pivot_offset = Vector2(256, 256)
+mouse_filter = 2
+texture = ExtResource("1_3toug")
+expand_mode = 2
+stretch_mode = 5

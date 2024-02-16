@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://bqrebqj8e06xb"]
+
+[ext_resource type="PackedScene" uid="uid://nqtj3k1bv6uh" path="res://ui/hover_text/hoverable_button.tscn" id="1_qal2q"]
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="2_mm4ok"]
+[ext_resource type="Texture2D" uid="uid://dfeqvh2v2br2j" path="res://art/ui/line_trash.png" id="2_ymgbo"]
+
+[node name="EntryInputTrashButton" instance=ExtResource("1_qal2q")]
+custom_minimum_size = Vector2(20, 22)
+theme = ExtResource("2_mm4ok")
+icon = ExtResource("2_ymgbo")
+flat = true
+expand_icon = true
+hover_tooltip_text = "Delete this script entry input."

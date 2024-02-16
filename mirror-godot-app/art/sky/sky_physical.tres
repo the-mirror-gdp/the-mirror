@@ -1,0 +1,15 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dljt3u0s1ixvm"]
+
+[ext_resource type="Shader" path="res://art/sky/sky_physical.gdshader" id="1_7xtdb"]
+
+[resource]
+shader = ExtResource("1_7xtdb")
+shader_parameter/rayleigh = 2.0
+shader_parameter/mie = 0.005
+shader_parameter/mie_eccentricity = 0.8
+shader_parameter/turbidity = 5.0
+shader_parameter/sun_disk_scale = 8.0
+shader_parameter/exposure = 1.0
+shader_parameter/sky_top_color = Color(0.3, 0.405, 0.6, 1)
+shader_parameter/sky_horizon_color = Color(0.69, 0.729, 0.812, 1)
+shader_parameter/sky_bottom_color = Color(0.1, 0.07, 0.034, 1)

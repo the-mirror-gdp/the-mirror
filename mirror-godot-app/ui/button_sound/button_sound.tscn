@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://b58iveuspbtyj"]
+
+[ext_resource type="Script" path="res://ui/button_sound/button_sound.gd" id="1_wietj"]
+[ext_resource type="AudioStream" uid="uid://b1wqy8isen5sg" path="res://audio/mouseclick.wav" id="2_6rssb"]
+
+[node name="ButtonSound" type="Node"]
+script = ExtResource("1_wietj")
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_6rssb")
+volume_db = -20.0

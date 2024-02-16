@@ -1,0 +1,17 @@
+[
+    {
+        "space_id": "localhost",
+        "url": "localhost",
+        "name": "Localhost Dev Server"
+    },
+    {
+        "space_id": "zone01",
+        "url": "ws://34.135.212.238",
+        "name": "Zone Server 1"
+    },
+    {
+        "space_id": "zone02",
+        "url": "ws://34.133.141.204",
+        "name": "Zone Server 2"
+    }
+]

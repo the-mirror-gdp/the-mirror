@@ -1,0 +1,345 @@
+[gd_resource type="Shader" format=3 uid="uid://dxlw1j25t4mvo"]
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix,cull_back,diffuse_burley,specular_schlick_ggx, depth_draw_always;
+uniform vec4 albedo_shallow: source_color = vec4(0.196, 0.424, 0.392, 1.0);
+uniform vec4 albedo: source_color = vec4(0.141, 0.42, 0.478, 1.0);
+uniform sampler2D normalmap1: hint_normal, repeat_enable, filter_linear_mipmap_anisotropic;
+uniform sampler2D normalmap2: hint_normal, repeat_enable, filter_linear_mipmap_anisotropic;
+uniform sampler2D glare_lense_map: hint_default_black, repeat_enable;
+uniform sampler2D foam_map: hint_default_black, repeat_enable;
+uniform sampler2D caustic_map: hint_default_black, repeat_enable;
+uniform sampler2D uv_sampler_map: hint_default_black, repeat_enable;
+uniform float detail_scale = 0.05;
+uniform float detail_foam_scale = 10.0;
+uniform vec2 detail_dir = vec2(0.15,0.15);
+uniform float detail_speed = 0.6;
+uniform float detail_strength = 0.25;
+uniform float detail_uv_deform = 0.02;
+
+uniform float specular = 0.5;
+uniform float metallic = 0.0;
+uniform float roughness = 0.05;
+uniform float sss_strength = 10.0;
+
+uniform float stormy: hint_range(0.0, 1.0) = 0.3;
+uniform float foam_amount = 0.4;
+uniform float foam_leading_edge: hint_range(0.0, 1.0) = 0.2;
+
+uniform float beers_value = 1.13;
+uniform float depth_blending_offset = -0.1;
+uniform float refraction = 0.15;
+uniform float _time = 0.55;
+
+uniform sampler2D DEPTH_TEXTURE: hint_depth_texture, filter_linear_mipmap;
+uniform sampler2D SCREEN_TEXTURE: hint_screen_texture, filter_linear_mipmap;
+
+
+uniform float ssr_resolution   : hint_range(0.01, 10.0, 0.01)= 0.1;
+uniform int ssr_max_steps   : hint_range(0, 200) = 32;
+uniform float ssr_max_diff     : hint_range(0.1, 10.0, 0.1) = 2.5;
+uniform float ssr_mix_strength : hint_range(0.0, 1.0, 0.01) = 1.0;
+
+varying float wave_height_model;
+varying mat4 CAMERA;
+varying float foam_after_wave;
+varying vec2 uv_highlight_offset;
+
+
+struct WaterData {
+	float amplitude;
+	float speed;
+	vec2 direction;
+};
+
+//#include \"res://art/shaders/float_debugger.gdshaderinc\"
+
+vec3 gerstner_wave(WaterData wd, vec2 wpos, float t, float phi, inout vec3 _n, inout vec3 _t, inout vec3 _b, inout float _foam){
+	float g = 9.80665;
+
+	vec2 k_speed =wd.direction * wd.speed;
+
+	float k_x_m = k_speed.x;
+	float k_z_m = k_speed.y;
+	float k_m = sqrt(k_speed.x*k_speed.x + k_speed.y*k_speed.y);
+	float a_m = max(wd.amplitude, 0.0);
+	float h = 32.0; // depth fixed for now
+	float alpha = wpos.x;
+	float beta = wpos.y;
+	float w_m = sqrt(g*k_m*tanh(k_m*h));
+	float term_1 = k_x_m * alpha + k_z_m * beta - w_m * t - phi;
+	float term_2 = a_m/(tanh(k_m * h));
+
+	vec3 pos = vec3(
+		// ommit \"alpha\" as it is in added to coords
+		-k_x_m/k_m*term_2*sin(term_1) * w_m, // multiply by w_m for steepness
+		a_m * cos(term_1),
+		// ommit \"beta\" as it is in added to coords
+		-k_z_m/k_m * term_2*sin(term_1) * w_m // multiply by w_m for steepness
+	);
+
+	vec3 tangent = vec3(
+		1.0 - k_x_m*k_x_m/k_m*term_2*cos(term_1),
+		-a_m * k_x_m * sin(term_1),
+		-k_x_m*k_z_m/k_m*term_2*cos(term_1)
+	);
+	vec3 binormal = vec3(
+		-k_x_m*k_z_m/k_m*term_2*cos(term_1),
+		-a_m * k_z_m * sin(term_1),
+		1.0 - k_z_m*k_z_m/k_m*term_2*cos(term_1)
+	);
+
+	_t += normalize(tangent);
+	_b += normalize(binormal);
+	_n += normalize(cross(binormal, tangent));
+
+	float dir_foam = max(dot(wd.direction * 2.0, -_n.xz),0.0);
+	_foam += max(dir_foam + pos.y,0.0) ;
+	return pos;
+}
+
+vec2 rad_to_vec2(float rad){
+	return vec2(cos(rad), sin(rad));
+}
+
+void vertex() {
+
+	float amp_scale = mix(2.0, 8.0, 1.0 - stormy);
+	float wave_speed = mix(1.0,.7, stormy);
+
+	WaterData wd1;
+	wd1.amplitude = 1.05/amp_scale;
+	wd1.speed = 0.1 * wave_speed;
+	wd1.direction=rad_to_vec2(0.0);
+
+	WaterData wd2;
+	wd2.amplitude = 0.6/amp_scale;
+	wd2.speed = 0.3* wave_speed;
+	wd2.direction=rad_to_vec2(1.0);
+
+	WaterData wd3;
+	wd3.amplitude = 0.22/amp_scale;
+	wd3.speed = 1.37 * wave_speed;
+	wd3.direction=rad_to_vec2(2.0);
+
+	WaterData wd4;
+	wd4.amplitude = 0.1/amp_scale;
+	wd4.speed = 1.5 * wave_speed;
+	wd4.direction=rad_to_vec2(3.0);
+
+	WaterData wd5;
+	wd5.amplitude = 0.05/amp_scale;
+	wd5.speed = 2.3 * wave_speed;
+	wd5.direction=rad_to_vec2(4.0);
+
+	WaterData wd6;
+	wd6.amplitude = 0.15/amp_scale;
+	wd6.speed = 1.7 * wave_speed;
+	wd6.direction=rad_to_vec2(5.0);
+
+
+	vec2 wpos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xz;
+	vec3 _n = vec3(0.0);
+	vec3 _t = vec3(0.0);
+	vec3 _b = vec3(0.0);
+	float foam = 0.0;
+	float scaled_time = TIME * _time;
+	vec3 g1 = gerstner_wave(wd1, wpos, scaled_time, 0.0, _n, _t, _b, foam);
+	vec3 g2 = gerstner_wave(wd2, wpos, scaled_time, 0.15, _n, _t, _b, foam);
+	vec3 g3 = gerstner_wave(wd3, wpos, scaled_time, 0.33,  _n, _t, _b, foam);
+	vec3 g4 = gerstner_wave(wd4, wpos, scaled_time, 0.45, _n, _t, _b, foam);
+	vec3 g5 = gerstner_wave(wd5, wpos, scaled_time, 0.67, _n, _t, _b, foam);
+	vec3 g6 = gerstner_wave(wd6, wpos, scaled_time, 0.83, _n, _t, _b, foam);
+
+	VERTEX += g1 + g2 + g3 + g4 + g5 + g6;
+	NORMAL = normalize(_n);
+	BINORMAL = normalize(_b);
+	TANGENT = normalize(_t);
+	CAMERA = INV_VIEW_MATRIX;
+	//artistic effect on normals
+	NORMAL = normalize(vec3(NORMAL.x * (1.0 + stormy* 3.0), NORMAL.y, NORMAL.z * (1.0 + stormy* 3.0)));
+	UV = VERTEX.xz * detail_scale;
+
+	uv_highlight_offset = MODEL_MATRIX[3].xz;
+	foam_after_wave = smoothstep(0.15, 0.4, foam/6.0);
+}
+
+float calculate_depthblend(float depth, vec3 vertex){
+	float depth_blend = exp((depth+	vertex.z + depth_blending_offset) * -beers_value);
+	depth_blend = clamp(1.0-depth_blend, 0.0, 1.0);
+	return depth_blend;
+}
+
+// ssr
+vec2 view_space_to_uv(vec3 position_vs, mat4 proj_m)
+{
+	vec4 position_clip_space = proj_m * vec4(position_vs.xyz, 1.0);
+	vec2 ndc = position_clip_space.xy / position_clip_space.w;
+	return ndc.xy * 0.5 + 0.5; // <0,0;1,1>
+}
+
+vec3 uv_to_view_space(vec2 uv, float depth, mat4 inv_proj_m)
+{
+	vec4 ndc = vec4((uv * 2.0) - 1.0, depth, 1.0);
+	vec4 view_position = inv_proj_m * ndc;
+	return view_position.xyz /= view_position.w; // perspective corrected
+}
+
+bool is_on_screen(vec2 uv) {
+	return uv.x > 0.0 && uv.x < 1.0 && uv.y > 0.0 && uv.y < 1.0;
+}
+
+vec4 ssr_raymarch(vec3 surface_view_space, vec3 normal_view_space, vec3 view_view_space, mat4 proj_m, mat4 inv_proj_m)
+{
+	vec3 origin = surface_view_space;
+	vec3 view_direction_view_space = -view_view_space;
+	vec3 ray_direction = normalize(reflect(view_direction_view_space, normal_view_space));
+	vec2 current_uv = vec2(0.0);
+	vec3 result = vec3(-1.0);
+	int step_value = 0;
+	float step_size = ssr_resolution;
+	for(;step_value <= ssr_max_steps; step_value++)
+	{
+		origin += ray_direction * step_size;
+		step_size *= 1.2;
+		current_uv = view_space_to_uv(origin, proj_m);
+		float sampled_depth_log = texture(DEPTH_TEXTURE, current_uv).x;
+		vec3 sampled_view_position = uv_to_view_space(current_uv, sampled_depth_log, inv_proj_m);
+
+		float depth_diff = sampled_view_position.z - origin.z;
+		if(!is_on_screen(current_uv)){
+			continue;
+		}
+		if (depth_diff >= 0.0 && depth_diff < step_size * ssr_max_diff) {
+			result = texture(SCREEN_TEXTURE, current_uv.xy).rgb;
+			break;
+		}
+	}
+
+	return vec4(result, 1.0 - float(step_value)/float(ssr_max_steps));
+}
+
+vec2 get_refracted_uv(vec2 raw_screen_uv, float screen_depth_raw, vec3 view, vec3 normal, mat4 proj_m, mat4 inv_proj_m)
+{
+		vec3 screen_view_position_original = uv_to_view_space(raw_screen_uv, screen_depth_raw, inv_proj_m);
+		float screen_center_distance = clamp(abs(length(raw_screen_uv - vec2(0.5, 0.5))) * 2.0, 0.0, 1.0);
+		float refraction_intensity_deglitched = mix(1.0 - refraction, 1.0, screen_center_distance);
+		vec3 refraction_position_view_space = screen_view_position_original + normalize(refract(view, -normal, refraction_intensity_deglitched));
+		vec2 refraction_uv = view_space_to_uv(refraction_position_view_space, proj_m);
+		return refraction_uv;
+}
+// end of ssr
+
+float f_schlick(float u, float f0) {
+    float f = pow(1.0 - u, 5.0);
+    return f + f0 * (1.0 - f);
+}
+
+float fresnel_term(vec3 normal_world_space, vec3 view_direction_world_space, float distance)
+{
+    float  fresnel = f_schlick( dot(normal_world_space, view_direction_world_space), 0.1);
+    return fresnel* (1.0 - clamp(distance * 0.01, 0.0, 1.0) * 0.5);
+}
+
+vec3 apply_normalmap(vec3 normal_map, float strength, vec3 old_tang, vec3 old_binorm, vec3 old_norm){
+	normal_map.xy = normal_map.xy * 2.0 - 1.0;
+	normal_map.z = sqrt(max(0.0, 1.0 - dot(normal_map.xy, normal_map.xy))); //always ignore Z, as it can be RG packed, Z may be pos/neg, etc.
+	return normalize(mix(old_norm, old_tang * normal_map.x + old_binorm * normal_map.y + old_norm * normal_map.z, strength));
+}
+
+void fragment() {
+	vec2 uv_offset = detail_dir * TIME * detail_speed;
+	vec2 uv_sampler_uv = UV  + uv_offset;
+	vec2 uv_sampler_uv_offset = detail_uv_deform * texture(uv_sampler_map, uv_sampler_uv).rg  * 2.0 - 1.0;
+	vec2 uv = UV + uv_sampler_uv_offset;
+
+	vec3 normalmap = texture(normalmap2, uv * 4.0 + uv_offset * 4.0).rgb * 0.65;
+	normalmap += texture(normalmap1, uv - uv_offset * 1.5).rgb * 0.35;
+
+	//NORMAL_MAP = normalmap;
+	//NORMAL_MAP_DEPTH = detail_strength * (1.0 + stormy);
+	NORMAL = apply_normalmap(normalmap, detail_strength * (1.0 + stormy), TANGENT, BINORMAL, NORMAL);
+
+	float surface_depth = -VERTEX.z;
+
+	float depth_log = texture(DEPTH_TEXTURE, SCREEN_UV).x;
+	float depth_standard = -uv_to_view_space(SCREEN_UV, depth_log, INV_PROJECTION_MATRIX).z;
+
+	//vec2 refracted_uvs = SCREEN_UV + ((normalmap.xy - vec2(0.5, 0.5)) * refraction) * clamp((depth_standard + VERTEX.z)* 0.2, 0.0, 0.1);
+	vec2 refracted_uvs = SCREEN_UV + (normalmap.xy - vec2(0.5, 0.5)) * refraction;
+	float depth_ref_log = texture(DEPTH_TEXTURE, refracted_uvs).x;
+	float depth_ref = -uv_to_view_space(refracted_uvs, depth_ref_log, INV_PROJECTION_MATRIX).z;
+
+	float refraction_enabled = step(surface_depth - depth_ref, -0.005);
+
+	float depth = mix(depth_standard, depth_ref, refraction_enabled);
+	float depth_blend_standard = calculate_depthblend(depth_standard, VERTEX);
+	float depth_blend = calculate_depthblend(depth, VERTEX);
+	float depth_blend_pow = clamp(pow(depth_blend, 4.0), 0.0, 1.0);
+	refracted_uvs = clamp(mix(SCREEN_UV, refracted_uvs,  refraction_enabled), vec2(0.0), vec2(1.0));
+
+	vec3 world_norm = normalize(INV_VIEW_MATRIX * vec4(NORMAL, 0.0)).xyz;
+	vec3 world_view = normalize(INV_VIEW_MATRIX * vec4(VIEW, 0.0)).xyz;
+	vec3 world_pos = (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	float dist = distance(world_pos, CAMERA_POSITION_WORLD);
+	// TODO: Does it really need to be in world space?
+	float fresnel_term = fresnel_term(world_norm, world_view, dist);
+
+	vec3 screen_color = texture(SCREEN_TEXTURE, refracted_uvs).rgb * 0.9;
+	vec4 color = mix(albedo_shallow, albedo, clamp(depth_blend  - (1.0 - fresnel_term) * 0.25, 0.0,1.0)).rgba;
+	vec4 ref_color = mix(vec4(screen_color * 0.5 + 0.5 * color.rgb, 1.0), color, depth_blend_pow);
+	vec4 ssr_color = ssr_raymarch(VERTEX, NORMAL, VIEW, PROJECTION_MATRIX, INV_PROJECTION_MATRIX);
+
+	ssr_color = (ssr_color.r >= 0.0) ? mix(color, vec4(ssr_color.rgb, 1.0), ssr_mix_strength) : color;
+	ssr_color = clamp(ssr_color, vec4(0.0), vec4(1.0)); //TODO: for some reason makes blending better - investigate
+	color = mix(ref_color, ssr_color, fresnel_term);
+
+	//CAUSTICS
+	vec4 ndc = vec4((refracted_uvs * 2.0) - 1.0, depth_log, 1.0);
+	vec4 world = CAMERA * INV_PROJECTION_MATRIX * ndc;
+  	vec3 depth_world_position = world.xyz / world.w;
+
+	vec2 uv_underwater = depth_world_position.xz * detail_scale;
+	uv_underwater.x = uv_underwater.x + dot(INV_VIEW_MATRIX[1], vec4(1.0, 0.0, 0.0, 0.0)) * clamp(depth, 0.0, 1.0) * 0.1;
+	uv_underwater.y = uv_underwater.y + dot(INV_VIEW_MATRIX[2], vec4(0.0, 0.0, -1.0, 0.0)) * clamp(depth, 0.0, 1.0) * 0.1;
+
+	vec4 caustic_color = texture(caustic_map, uv_underwater+ (uv_sampler_uv_offset) );
+	color.rgb += pow(caustic_color.rgb, vec3(1.5, 1.5, 2.0)) * clamp(1.0-depth_blend_pow*3.0, 0.0, 1.0);
+
+	//FOAM NEAR OBJECTS
+	float leading_edge_foam_scale = foam_amount*foam_leading_edge;
+	float leading_edge_foam =  clamp(depth_blend_standard/leading_edge_foam_scale, 0.0, 1.0);
+	float edge_foam_full = 1.0 - clamp((depth_blend/foam_amount), 0.0, 1.0);
+	float edge_foam = clamp(edge_foam_full * leading_edge_foam, 0.0, 1.0);
+
+	float leading_edge_full_foam_scale = foam_amount * clamp(foam_leading_edge * 1.5, 0.0, 1.0);
+	float leading_edge_full_foam =  clamp(depth_blend_standard/leading_edge_full_foam_scale, 0.0, 1.0);
+	float foam_noise = clamp(pow(texture(foam_map, ( uv * detail_foam_scale) - uv_sampler_uv_offset ).r, 3.0 ) * (4.0 + foam_after_wave * 20.0 + (1.0 - leading_edge_full_foam) * 25.0), 0.0,1.0);
+
+	foam_noise = clamp(foam_noise, 0.0, 1.0);
+
+	float foam_mix = clamp( edge_foam + foam_after_wave, 0.0, 0.9);
+	color = mix(color,  mix(color, vec4(0.66), foam_noise) , foam_mix);
+	color = mix(color * 0.1, color, leading_edge_foam);
+	color += vec4(foam_after_wave * 0.2);
+
+	ALBEDO = color.rgb;
+	METALLIC = metallic;
+	ROUGHNESS = mix(roughness, 1.0, pow(foam_mix,4.0));
+	SPECULAR = specular;
+	ALPHA *= clamp(1.0-smoothstep(-depth_standard+0.01,-depth_standard,VERTEX.z),0.0,1.0);
+	ALPHA *= color.a * smoothstep(0.0, 0.1, leading_edge_foam);
+}
+
+void light() {
+	float water_highlight_mask_1 = texture(glare_lense_map, fract( UV - (uv_highlight_offset * 0.25) + TIME * 0.001031 ) * 5.5).x;
+	float water_highlight_mask_2 = texture(glare_lense_map, fract( UV - (uv_highlight_offset * 0.25) + TIME * -0.017854 ) * 2.0 ).x;
+	float sss = clamp( smoothstep(0.65, 0.7, dot(NORMAL , VIEW) * 0.5 + 0.5 ) * smoothstep(0.5, 1.0, (dot(-LIGHT, VIEW) * 0.5 + 0.5) ) * ( dot (-INV_VIEW_MATRIX[2].xyz, vec3(0.0, 1.0, 0.0)) * 0.5 + 0.5), 0.0, 1.0) * sss_strength;
+	float lambert = clamp(dot(NORMAL, LIGHT), 0.0, 1.0);
+	float spec = clamp( pow( dot( reflect(LIGHT, NORMAL), -VIEW), 1000.0), 0.0, 1.0) * 20.0 * specular ;
+	float spec_glare = clamp( pow( dot( reflect(LIGHT, NORMAL), -VIEW), 100.0), 0.0, 1.0) * smoothstep(0.0, 0.1, water_highlight_mask_1 * water_highlight_mask_2) * 30.0;
+	DIFFUSE_LIGHT += (LIGHT_COLOR * ALBEDO * ATTENUATION ) * lambert;
+	DIFFUSE_LIGHT += (LIGHT_COLOR * ALBEDO * ATTENUATION ) * sss;
+	DIFFUSE_LIGHT += LIGHT_COLOR * ATTENUATION * (spec + spec_glare);
+}"

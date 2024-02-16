@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=3 uid="uid://dqmxrquvyyu51"]
+
+[ext_resource type="Script" path="res://ui/common/components/window_header.gd" id="1_q3ycg"]
+
+[node name="window_header" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1760.0
+offset_bottom = -1240.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_q3ycg")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_right = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 52
+text = "TEAMS"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2

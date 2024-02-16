@@ -1,0 +1,251 @@
+[gd_scene load_steps=22 format=3 uid="uid://uhdper5hhdb7"]
+
+[ext_resource type="Script" path="res://ui/main_menu/pages/create_space.gd" id="1_1yivb"]
+[ext_resource type="Theme" uid="uid://ggwm8asxintx" path="res://ui/common/themes/menu_ui.theme.tres" id="1_7xlb8"]
+[ext_resource type="Shader" path="res://ui/common/shaders/ui_blurr.gdshader" id="2_bjr0e"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="3_56e4j"]
+[ext_resource type="FontFile" uid="uid://bpw8ywxvp8ctj" path="res://ui/common/fonts/montserrat/montserrat_regular.ttf" id="3_ddykr"]
+[ext_resource type="StyleBox" uid="uid://cfnh350gqlauw" path="res://ui/common/buttons/blue_underline/blue_underline_hover.stylebox.tres" id="5_ms8p0"]
+[ext_resource type="Texture2D" uid="uid://cuqq3ychrk642" path="res://ui/common/images/space-default.jpg" id="6_o8vr6"]
+[ext_resource type="FontFile" uid="uid://bjwepurchoc75" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_semi_bold.ttf" id="6_uc7v2"]
+[ext_resource type="Script" path="res://ui/main_menu/common/UrlTextureRect.gd" id="7_x3170"]
+[ext_resource type="Texture2D" uid="uid://k4oe0d3tax4n" path="res://ui/art/back.svg" id="8_sbt64"]
+
+[sub_resource type="FontVariation" id="FontVariation_fhmmk"]
+base_font = ExtResource("3_56e4j")
+spacing_glyph = 3
+
+[sub_resource type="LabelSettings" id="LabelSettings_ioxfs"]
+font = SubResource("FontVariation_fhmmk")
+font_size = 12
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3ns3p"]
+shader = ExtResource("2_bjr0e")
+shader_parameter/blur = 1.072
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/strength = 0.1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ldepy"]
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="FontVariation" id="FontVariation_kal44"]
+base_font = ExtResource("3_ddykr")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mp0vs"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i2qxc"]
+content_margin_bottom = 0.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_bottom = 1
+border_color = Color(0.388235, 0.580392, 0.968627, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0myho"]
+content_margin_bottom = 0.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_bottom = 1
+border_color = Color(0.282353, 0.505882, 0.968627, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ahxie"]
+content_margin_bottom = 0.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_bottom = 1
+border_color = Color(0.388235, 0.580392, 0.968627, 1)
+
+[sub_resource type="Theme" id="Theme_nj583"]
+Button/colors/font_color = Color(0.282353, 0.505882, 0.968627, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.388235, 0.580392, 0.968627, 1)
+Button/colors/font_hover_color = Color(0.388235, 0.580392, 0.968627, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(1, 1, 1, 1)
+Button/colors/font_pressed_color = Color(0.282353, 0.505882, 0.968627, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/h_separation = 2
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 16
+Button/fonts/font = SubResource("FontVariation_kal44")
+Button/styles/disabled = SubResource("StyleBoxEmpty_mp0vs")
+Button/styles/focus = SubResource("StyleBoxFlat_i2qxc")
+Button/styles/hover = ExtResource("5_ms8p0")
+Button/styles/normal = SubResource("StyleBoxFlat_0myho")
+Button/styles/pressed = SubResource("StyleBoxFlat_ahxie")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b2nky"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+draw_center = false
+border_width_top = 3
+border_color = Color(0.145098, 0.419608, 0.984314, 1)
+
+[node name="CreateSpace" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_7xlb8")
+script = ExtResource("1_1yivb")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = false
+
+[node name="Spacer2" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_56e4j")
+theme_override_font_sizes/font_size = 40
+text = "Create New Space"
+horizontal_alignment = 1
+
+[node name="Description" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Finalize your space details"
+label_settings = SubResource("LabelSettings_ioxfs")
+horizontal_alignment = 1
+uppercase = true
+
+[node name="BackButton" type="TextureButton" parent="."]
+modulate = Color(0.0705882, 1, 0.843137, 1)
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 65.0
+offset_bottom = 65.0
+texture_normal = ExtResource("8_sbt64")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Panel" type="Panel" parent="."]
+material = SubResource("ShaderMaterial_3ns3p")
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -618.0
+offset_top = -266.0
+offset_right = 618.0
+offset_bottom = 266.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ldepy")
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = false
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 70
+theme_override_constants/margin_top = 70
+theme_override_constants/margin_right = 70
+theme_override_constants/margin_bottom = 70
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 70
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+
+[node name="Spacer" type="Control" parent="Panel/MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="SpaceThemeLabel" type="Label" parent="Panel/MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.0705882, 1, 0.843137, 1)
+theme_override_fonts/font = ExtResource("3_56e4j")
+theme_override_font_sizes/font_size = 12
+text = "Empty Space Theme"
+horizontal_alignment = 1
+uppercase = true
+
+[node name="NameYourSpaceLabel" type="Label" parent="Panel/MarginContainer/HBoxContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("6_uc7v2")
+theme_override_font_sizes/font_size = 30
+text = "Name your space"
+horizontal_alignment = 1
+
+[node name="Spacer2" type="Control" parent="Panel/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SpaceNameEdit" type="LineEdit" parent="Panel/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+placeholder_text = "Reflection"
+alignment = 1
+
+[node name="AdvancedSettingsLabel" type="Label" parent="Panel/MarginContainer/HBoxContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.145098, 0.419608, 0.984314, 1)
+text = "Advanced Space Settings"
+horizontal_alignment = 1
+
+[node name="CreateSpace" type="Button" parent="Panel/MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Create Space"
+
+[node name="Cancel" type="Button" parent="Panel/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = SubResource("Theme_nj583")
+theme_override_colors/font_color = Color(0.145098, 0.419608, 0.984314, 1)
+theme_override_fonts/font = ExtResource("6_uc7v2")
+text = "Cancel"
+
+[node name="PanelContainer" type="PanelContainer" parent="Panel/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_b2nky")
+
+[node name="Preview" type="TextureRect" parent="Panel/MarginContainer/HBoxContainer/PanelContainer"]
+unique_name_in_owner = true
+clip_contents = true
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = ExtResource("6_o8vr6")
+expand_mode = 1
+stretch_mode = 6
+script = ExtResource("7_x3170")
+
+[connection signal="pressed" from="BackButton" to="." method="_on_cancel_pressed"]
+[connection signal="pressed" from="Panel/MarginContainer/HBoxContainer/VBoxContainer/CreateSpace" to="." method="_on_create_space_pressed"]
+[connection signal="pressed" from="Panel/MarginContainer/HBoxContainer/VBoxContainer/Cancel" to="." method="_on_cancel_pressed"]

@@ -1,0 +1,28 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bti7cdccesysr"]
+
+[sub_resource type="Shader" id="Shader_yxwkj"]
+code = "// NOTE: Shader automatically converted from Godot Engine 4.3.dev's StandardMaterial3D.
+
+shader_type spatial;
+render_mode blend_mix,depth_draw_never,cull_disabled,unshaded,depth_test_disabled,shadows_disabled;
+instance uniform vec4 albedo : source_color;
+instance uniform vec4 albedo_depth : source_color;
+uniform sampler2D depth_texture : source_color, hint_depth_texture;
+
+
+void fragment() {
+	ALBEDO = albedo.rgb;
+	float depth = texture(depth_texture, SCREEN_UV).x;
+	vec3 ndc = vec3(SCREEN_UV * 2.0 - 1.0, depth);
+	vec4 view = INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
+	view.xyz /= view.w;
+	float linear_depth = view.z;
+	if(linear_depth > VERTEX.z) {
+		ALBEDO = albedo_depth.rgb;
+	}
+}
+"
+
+[resource]
+render_priority = 0
+shader = SubResource("Shader_yxwkj")

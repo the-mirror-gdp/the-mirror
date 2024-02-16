@@ -1,0 +1,11 @@
+Model Information:
+* title:	Half-Life 2 error.mdl recreation
+* source:	https://sketchfab.com/3d-models/half-life-2-errormdl-recreation-c62b8d197dde404cbeb3d5b63390e4f5
+* author:	Mr. Snark (https://sketchfab.com/Mr-Snark)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Half-Life 2 error.mdl recreation" (https://sketchfab.com/3d-models/half-life-2-errormdl-recreation-c62b8d197dde404cbeb3d5b63390e4f5) by Mr. Snark (https://sketchfab.com/Mr-Snark) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

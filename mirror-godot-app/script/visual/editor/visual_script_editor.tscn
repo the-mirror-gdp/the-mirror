@@ -1,0 +1,130 @@
+[gd_scene load_steps=11 format=3 uid="uid://ct82xsgnyqqmb"]
+
+[ext_resource type="Script" path="res://script/visual/editor/visual_script_editor.gd" id="1_1yyvi"]
+[ext_resource type="Theme" uid="uid://chpmeyn2g6o6r" path="res://script/visual/editor/script_editor.theme.tres" id="1_pjeg1"]
+[ext_resource type="Script" path="res://script/visual/editor/graph/script_editor_graph.gd" id="1_y2ac5"]
+[ext_resource type="Script" path="res://script/visual/editor/block_creation/script_block_creation_dialog.gd" id="3_34lc4"]
+[ext_resource type="PackedScene" uid="uid://bwvqquifvwt0s" path="res://script/visual/editor/block_creation/script_block_creation_menu.tscn" id="3_rx1j5"]
+[ext_resource type="Script" path="res://script/visual/editor/graph/script_block_input_value_dialog.gd" id="5_ynfoy"]
+[ext_resource type="Script" path="res://script/visual/editor/gdscript_code_editor.gd" id="9_ybrsf"]
+[ext_resource type="Script" path="res://script/visual/editor/script_comment_color_picker_popup.gd" id="10_ha7rt"]
+[ext_resource type="Script" path="res://script/visual/editor/graph/script_block_input_enum_menu.gd" id="10_kfl1f"]
+[ext_resource type="PackedScene" uid="uid://nnphdtunua76" path="res://creator/common/dropdown_search/dropdown_filter_menu.tscn" id="10_ldyfd"]
+
+[node name="VisualScriptEditor" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_pjeg1")
+script = ExtResource("1_1yyvi")
+
+[node name="ScriptGraphEdit" type="GraphEdit" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/grid_minor = Color(0, 0, 0, 0)
+theme_override_colors/grid_major = Color(0, 0, 0, 0)
+minimap_size = Vector2(160, 100)
+arrange_nodes_button_hidden = true
+script = ExtResource("1_y2ac5")
+
+[node name="ScriptBlockCreationDialog" type="ConfirmationDialog" parent="."]
+title = "Create Script Block"
+size = Vector2i(388, 357)
+ok_button_text = "Create"
+script = ExtResource("3_34lc4")
+
+[node name="ScriptBlockCreationMenu" parent="ScriptBlockCreationDialog" instance=ExtResource("3_rx1j5")]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 380.0
+offset_bottom = 313.0
+
+[node name="ScriptBlockInputValueDialog" type="ConfirmationDialog" parent="."]
+title = "Edit Input Value"
+size = Vector2i(280, 84)
+ok_button_text = "Save"
+script = ExtResource("5_ynfoy")
+
+[node name="ScriptBlockInputEnumMenu" parent="." instance=ExtResource("10_ldyfd")]
+visible = false
+layout_mode = 0
+script = ExtResource("10_kfl1f")
+
+[node name="GDScriptCodeEditor" type="Window" parent="."]
+title = "GDScript Code Editor"
+initial_position = 2
+size = Vector2i(500, 500)
+visible = false
+script = ExtResource("9_ybrsf")
+
+[node name="GDScriptCodeEdit" type="CodeEdit" parent="GDScriptCodeEditor"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
+
+[node name="ScriptCommentColorPickerPopup" type="PopupPanel" parent="."]
+size = Vector2i(306, 582)
+script = ExtResource("10_ha7rt")
+
+[node name="ScriptCommentColorPicker" type="ColorPicker" parent="ScriptCommentColorPickerPopup"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 294.0
+offset_bottom = 570.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[connection signal="connection_from_empty" from="ScriptGraphEdit" to="ScriptGraphEdit" method="_on_connection_from_empty"]
+[connection signal="connection_request" from="ScriptGraphEdit" to="ScriptGraphEdit" method="_on_connection_request"]
+[connection signal="connection_to_empty" from="ScriptGraphEdit" to="ScriptGraphEdit" method="_on_connection_to_empty"]
+[connection signal="copy_nodes_request" from="ScriptGraphEdit" to="ScriptGraphEdit" method="copy_selected_script_blocks"]
+[connection signal="delete_nodes_request" from="ScriptGraphEdit" to="ScriptGraphEdit" method="_on_delete_nodes_request"]
+[connection signal="duplicate_nodes_request" from="ScriptGraphEdit" to="ScriptGraphEdit" method="duplicate_selected_script_blocks"]
+[connection signal="end_node_move" from="ScriptGraphEdit" to="ScriptGraphEdit" method="_on_end_node_move"]
+[connection signal="paste_nodes_request" from="ScriptGraphEdit" to="ScriptGraphEdit" method="paste_copied_script_blocks"]
+[connection signal="request_block_creation" from="ScriptGraphEdit" to="." method="_on_request_block_creation"]
+[connection signal="request_block_creation_for_data_drop" from="ScriptGraphEdit" to="ScriptBlockCreationDialog" method="create_block_from_data_drop"]
+[connection signal="request_close_script_editor" from="ScriptGraphEdit" to="." method="_cleanup_and_close_script_editor"]
+[connection signal="request_comment_color_edit" from="ScriptGraphEdit" to="." method="_on_script_comment_color_edit"]
+[connection signal="request_comment_creation" from="ScriptGraphEdit" to="." method="create_comment"]
+[connection signal="request_entry_creation" from="ScriptGraphEdit" to="." method="_on_request_entry_creation"]
+[connection signal="request_gdscript_code_edit" from="ScriptGraphEdit" to="GDScriptCodeEditor" method="edit_script_block"]
+[connection signal="request_input_value_edit" from="ScriptGraphEdit" to="." method="_on_request_input_value_edit"]
+[connection signal="request_save_script_as_asset" from="ScriptGraphEdit" to="." method="_on_request_save_script_as_asset"]
+[connection signal="request_toggle_variable_editor" from="ScriptGraphEdit" to="." method="_on_request_toggle_variable_editor"]
+[connection signal="request_track_recently_used_space_script" from="ScriptGraphEdit" to="." method="_on_request_track_recently_used_space_script"]
+[connection signal="confirmed" from="ScriptBlockCreationDialog" to="ScriptBlockCreationDialog" method="_on_confirmed"]
+[connection signal="create_block" from="ScriptBlockCreationDialog" to="." method="create_new_script_block_from_json"]
+[connection signal="focus_entered" from="ScriptBlockCreationDialog" to="ScriptBlockCreationDialog" method="_on_focus_entered"]
+[connection signal="focus_exited" from="ScriptBlockCreationDialog" to="ScriptBlockCreationDialog" method="_on_focus_exited"]
+[connection signal="request_reload_script_editor" from="ScriptBlockCreationDialog" to="." method="_on_request_reload_script_editor"]
+[connection signal="request_show_entry_creation_dialog" from="ScriptBlockCreationDialog" to="ScriptGraphEdit" method="create_new_script_entry_dialog"]
+[connection signal="canceled" from="ScriptBlockInputValueDialog" to="ScriptBlockInputValueDialog" method="_on_canceled"]
+[connection signal="confirmed" from="ScriptBlockInputValueDialog" to="ScriptBlockInputValueDialog" method="_on_confirmed"]
+[connection signal="focus_entered" from="ScriptBlockInputValueDialog" to="ScriptBlockInputValueDialog" method="_on_focus_entered"]
+[connection signal="focus_exited" from="ScriptBlockInputValueDialog" to="ScriptBlockInputValueDialog" method="_on_focus_exited"]
+[connection signal="input_value_changed" from="ScriptBlockInputValueDialog" to="." method="_on_input_value_changed"]
+[connection signal="input_value_changed" from="ScriptBlockInputEnumMenu" to="." method="_on_input_value_changed"]
+[connection signal="item_selected" from="ScriptBlockInputEnumMenu" to="ScriptBlockInputEnumMenu" method="_on_enum_value_selected"]
+[connection signal="close_requested" from="GDScriptCodeEditor" to="GDScriptCodeEditor" method="close_editor"]
+[connection signal="focus_entered" from="GDScriptCodeEditor" to="GDScriptCodeEditor" method="_on_focus_entered"]
+[connection signal="focus_exited" from="GDScriptCodeEditor" to="GDScriptCodeEditor" method="_on_focus_exited"]
+[connection signal="text_changed" from="GDScriptCodeEditor/GDScriptCodeEdit" to="GDScriptCodeEditor" method="_on_code_edit_text_changed"]
+[connection signal="focus_entered" from="ScriptCommentColorPickerPopup" to="ScriptCommentColorPickerPopup" method="_on_focus_entered"]
+[connection signal="focus_exited" from="ScriptCommentColorPickerPopup" to="ScriptCommentColorPickerPopup" method="_on_focus_exited"]
+[connection signal="popup_hide" from="ScriptCommentColorPickerPopup" to="." method="_on_script_comment_color_picker_popup_hide"]
+[connection signal="color_changed" from="ScriptCommentColorPickerPopup/ScriptCommentColorPicker" to="." method="_on_script_comment_color_picker_changed"]

@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://vep713eampf5"]
+
+[ext_resource type="Script" path="res://creator/drag_input/drag_detector.gd" id="1_noxcb"]
+[ext_resource type="Script" path="res://creator/drag_input/drag_selector.gd" id="3_g07vm"]
+
+[node name="DragDetector" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_noxcb")
+
+[node name="DragSelector" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("3_g07vm")
+selection_rectangle_color = Color(0.643137, 0.898039, 0.498039, 1)
+
+[connection signal="mouse_entered" from="." to="." method="_on_drag_asset_placement_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_drag_asset_placement_mouse_exited"]

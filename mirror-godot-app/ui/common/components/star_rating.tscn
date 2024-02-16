@@ -1,0 +1,61 @@
+[gd_scene load_steps=4 format=3 uid="uid://cfdvv6sru1mcm"]
+
+[ext_resource type="Texture2D" uid="uid://dxnfbblyy4syf" path="res://ui/common/components/star_rating_icons/star-empty.svg" id="1_4ofue"]
+[ext_resource type="Script" path="res://ui/common/components/star_rating.gd" id="1_rv8n2"]
+[ext_resource type="Texture2D" uid="uid://sfmsfqm36hlk" path="res://ui/common/components/star_rating_icons/star-full.svg" id="2_7anok"]
+
+[node name="StarRating" type="HBoxContainer"]
+custom_minimum_size = Vector2(130, 30)
+offset_right = 8.0
+offset_bottom = 8.0
+script = ExtResource("1_rv8n2")
+
+[node name="RateButton1" type="TextureButton" parent="."]
+custom_minimum_size = Vector2(41, 40)
+layout_mode = 2
+toggle_mode = true
+action_mode = 0
+texture_normal = ExtResource("1_4ofue")
+texture_pressed = ExtResource("2_7anok")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="RateButton2" type="TextureButton" parent="."]
+custom_minimum_size = Vector2(41, 40)
+layout_mode = 2
+toggle_mode = true
+action_mode = 0
+texture_normal = ExtResource("1_4ofue")
+texture_pressed = ExtResource("2_7anok")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="RateButton3" type="TextureButton" parent="."]
+custom_minimum_size = Vector2(41, 40)
+layout_mode = 2
+toggle_mode = true
+action_mode = 0
+texture_normal = ExtResource("1_4ofue")
+texture_pressed = ExtResource("2_7anok")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="RateButton4" type="TextureButton" parent="."]
+custom_minimum_size = Vector2(41, 40)
+layout_mode = 2
+toggle_mode = true
+action_mode = 0
+texture_normal = ExtResource("1_4ofue")
+texture_pressed = ExtResource("2_7anok")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="RateButton5" type="TextureButton" parent="."]
+custom_minimum_size = Vector2(41, 40)
+layout_mode = 2
+toggle_mode = true
+action_mode = 0
+texture_normal = ExtResource("1_4ofue")
+texture_pressed = ExtResource("2_7anok")
+ignore_texture_size = true
+stretch_mode = 0

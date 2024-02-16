@@ -1,0 +1,233 @@
+[gd_scene load_steps=13 format=3 uid="uid://bl58q264gnym"]
+
+[ext_resource type="PackedScene" uid="uid://cb78cuaotdwo2" path="res://creator/asset_inventory/browser/base_browser_section.tscn" id="1_yruvf"]
+[ext_resource type="Script" path="res://creator/asset_inventory/browser/browser_section.gd" id="2_od8yq"]
+[ext_resource type="FontVariation" uid="uid://bwp6hb31ol8la" path="res://ui/new_player_ui/inventory/title_font_bold.tres" id="4_76ata"]
+[ext_resource type="PackedScene" uid="uid://bahpo436m8hut" path="res://creator/asset_inventory/browser/search_field.tscn" id="9_spchq"]
+[ext_resource type="FontFile" uid="uid://cv5tkor0qdxqq" path="res://ui/common/fonts/fontawesome-free-6/Font Awesome 6 Free-Solid-900.otf" id="10_hrnjv"]
+[ext_resource type="PackedScene" uid="uid://w2yqlg0c2hvo" path="res://creator/common/asset_slot.tscn" id="10_k6bh6"]
+[ext_resource type="PackedScene" uid="uid://dugn8p8road1g" path="res://creator/asset_inventory/browser/category_preview.tscn" id="10_viep6"]
+[ext_resource type="Texture2D" uid="uid://bpdhjrlxnx4ta" path="res://ui/art/rolling_spinner.svg" id="11_x3ot1"]
+[ext_resource type="PackedScene" uid="uid://bgmeld1kk6xcw" path="res://creator/asset_inventory/filter/filter_with_pills.tscn" id="12_48q7s"]
+[ext_resource type="PackedScene" uid="uid://7geveyvf002c" path="res://ui/common/components/endless_scroll_flow_container.tscn" id="14_5jiga"]
+
+[sub_resource type="Animation" id="Animation_n4yvx"]
+resource_name = "Roll"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2nhbe"]
+_data = {
+"Roll": SubResource("Animation_n4yvx")
+}
+
+[node name="BrowserSection" instance=ExtResource("1_yruvf")]
+script = ExtResource("2_od8yq")
+_asset_source = 0
+
+[node name="SectionNameLabel" parent="SectionHeader/ToggleCollapse/MarginContainer/Header" index="3"]
+text = "Assets"
+
+[node name="NavigationContainer" type="MarginContainer" parent="SectionHolder/MarginContainer/SectionContainer" index="0"]
+layout_mode = 2
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="HBoxContainer" type="HFlowContainer" parent="SectionHolder/MarginContainer/SectionContainer/NavigationContainer" index="0"]
+layout_mode = 2
+theme_override_constants/h_separation = 7
+
+[node name="BackButton" type="Button" parent="SectionHolder/MarginContainer/SectionContainer/NavigationContainer/HBoxContainer" index="0"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("10_hrnjv")
+theme_override_font_sizes/font_size = 13
+text = ""
+
+[node name="AssetsLabel" type="Label" parent="SectionHolder/MarginContainer/SectionContainer/NavigationContainer/HBoxContainer" index="1"]
+layout_mode = 2
+theme_type_variation = &"LabelRegular"
+theme_override_constants/line_spacing = 1
+text = "Assets"
+
+[node name="Separator" type="Label" parent="SectionHolder/MarginContainer/SectionContainer/NavigationContainer/HBoxContainer" index="2"]
+layout_mode = 2
+theme_override_constants/line_spacing = 0
+theme_override_fonts/font = ExtResource("10_hrnjv")
+theme_override_font_sizes/font_size = 11
+text = ""
+
+[node name="SubCatLabel" type="Label" parent="SectionHolder/MarginContainer/SectionContainer/NavigationContainer/HBoxContainer" index="3"]
+self_modulate = Color(0.145098, 0.419608, 0.984314, 1)
+layout_mode = 2
+theme_override_constants/line_spacing = 1
+text = "SUBCATEGORY"
+
+[node name="SearchField" parent="SectionHolder/MarginContainer/SectionContainer" index="1" instance=ExtResource("9_spchq")]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_bottom = 17
+
+[node name="Categories" type="VBoxContainer" parent="SectionHolder/MarginContainer/SectionContainer" index="2"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Category1" parent="SectionHolder/MarginContainer/SectionContainer/Categories" index="0" instance=ExtResource("10_viep6")]
+layout_mode = 2
+size_flags_vertical = 3
+_category_name = "3D OBJECTS"
+_category_asset_type = "MESH"
+
+[node name="Category2" parent="SectionHolder/MarginContainer/SectionContainer/Categories" index="1" instance=ExtResource("10_viep6")]
+layout_mode = 2
+_category_name = "AUDIO"
+_category_asset_type = "AUDIO"
+
+[node name="Category3" parent="SectionHolder/MarginContainer/SectionContainer/Categories" index="2" instance=ExtResource("10_viep6")]
+layout_mode = 2
+_category_name = "IMAGES"
+_category_asset_type = "IMAGE"
+
+[node name="Category4" parent="SectionHolder/MarginContainer/SectionContainer/Categories" index="3" instance=ExtResource("10_viep6")]
+layout_mode = 2
+_category_name = "MAPS"
+_category_asset_type = "MAP"
+
+[node name="Category5" parent="SectionHolder/MarginContainer/SectionContainer/Categories" index="4" instance=ExtResource("10_viep6")]
+layout_mode = 2
+_category_name = "SCRIPTS"
+_category_asset_type = "SCRIPT"
+
+[node name="ResultsContainer" type="VBoxContainer" parent="SectionHolder/MarginContainer/SectionContainer" index="3"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SectionHolder/MarginContainer/SectionContainer/ResultsContainer" index="0"]
+layout_mode = 2
+
+[node name="FilterWithPills" parent="SectionHolder/MarginContainer/SectionContainer/ResultsContainer/HBoxContainer" index="0" instance=ExtResource("12_48q7s")]
+layout_mode = 2
+size_flags_stretch_ratio = 0.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SectionHolder/MarginContainer/SectionContainer/ResultsContainer/HBoxContainer/FilterWithPills/VBoxContainer" index="0"]
+layout_mode = 2
+
+[node name="LabelResultCount" type="Label" parent="SectionHolder/MarginContainer/SectionContainer/ResultsContainer/HBoxContainer/FilterWithPills/VBoxContainer/HBoxContainer" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"LabelRegular"
+horizontal_alignment = 2
+
+[node name="LabelResultKeyword" type="Label" parent="SectionHolder/MarginContainer/SectionContainer/ResultsContainer/HBoxContainer/FilterWithPills/VBoxContainer/HBoxContainer" index="1"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SortPillBadge" parent="SectionHolder/MarginContainer/SectionContainer/ResultsContainer/HBoxContainer/FilterWithPills/VBoxContainer/PillsContainer" index="0"]
+title = "Sort By"
+
+[node name="CategoryPillBadge" parent="SectionHolder/MarginContainer/SectionContainer/ResultsContainer/HBoxContainer/FilterWithPills/VBoxContainer/PillsContainer" index="1"]
+title = "Category"
+
+[node name="GraphicsPillBadge" parent="SectionHolder/MarginContainer/SectionContainer/ResultsContainer/HBoxContainer/FilterWithPills/VBoxContainer/PillsContainer" index="2"]
+title = "Graphics"
+
+[node name="AssetTypePillBadge" parent="SectionHolder/MarginContainer/SectionContainer/ResultsContainer/HBoxContainer/FilterWithPills/VBoxContainer/PillsContainer" index="3"]
+title = "Type"
+
+[node name="LoadingSpinner" type="Control" parent="SectionHolder/MarginContainer/SectionContainer/ResultsContainer" index="1"]
+visible = false
+custom_minimum_size = Vector2(96, 50)
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+
+[node name="Container" type="Control" parent="SectionHolder/MarginContainer/SectionContainer/ResultsContainer/LoadingSpinner" index="0"]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.0
+offset_top = -48.0
+offset_right = 48.0
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+metadata/_edit_layout_mode = 1
+
+[node name="LoadingSpinner" type="TextureRect" parent="SectionHolder/MarginContainer/SectionContainer/ResultsContainer/LoadingSpinner/Container" index="0"]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -21.0
+offset_top = -20.0
+offset_right = 19.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 5.79048
+pivot_offset = Vector2(20, 20)
+texture = ExtResource("11_x3ot1")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="SectionHolder/MarginContainer/SectionContainer/ResultsContainer/LoadingSpinner/Container/LoadingSpinner" index="0"]
+autoplay = "Roll"
+libraries = {
+"": SubResource("AnimationLibrary_2nhbe")
+}
+
+[node name="NoResultsLabel" type="Label" parent="SectionHolder/MarginContainer/SectionContainer/ResultsContainer" index="2"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("4_76ata")
+theme_override_font_sizes/font_size = 12
+text = "Looks like there's nothing here."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EndlessScrollFlowContainer" parent="SectionHolder/MarginContainer/SectionContainer/ResultsContainer" index="3" instance=ExtResource("14_5jiga")]
+layout_mode = 2
+size_flags_vertical = 3
+item_scene = ExtResource("10_k6bh6")
+rows_before_fetch_request = 3
+
+[node name="Control" type="Control" parent="SectionHolder/MarginContainer/SectionContainer" index="4"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+
+[connection signal="pressed" from="SectionHolder/MarginContainer/SectionContainer/NavigationContainer/HBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="text_changed" from="SectionHolder/MarginContainer/SectionContainer/SearchField" to="." method="_on_search_field_text_changed"]
+[connection signal="text_submitted" from="SectionHolder/MarginContainer/SectionContainer/SearchField" to="." method="_on_search_field_text_submitted"]
+[connection signal="view_all_pressed" from="SectionHolder/MarginContainer/SectionContainer/Categories/Category1" to="." method="_on_category_view_all_pressed"]
+[connection signal="view_all_pressed" from="SectionHolder/MarginContainer/SectionContainer/Categories/Category2" to="." method="_on_category_view_all_pressed"]
+[connection signal="view_all_pressed" from="SectionHolder/MarginContainer/SectionContainer/Categories/Category3" to="." method="_on_category_view_all_pressed"]
+[connection signal="view_all_pressed" from="SectionHolder/MarginContainer/SectionContainer/Categories/Category4" to="." method="_on_category_view_all_pressed"]
+[connection signal="view_all_pressed" from="SectionHolder/MarginContainer/SectionContainer/Categories/Category5" to="." method="_on_category_view_all_pressed"]
+
+[editable path="SectionHolder/MarginContainer/SectionContainer/ResultsContainer/HBoxContainer/FilterWithPills"]

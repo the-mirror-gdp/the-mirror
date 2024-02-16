@@ -1,0 +1,50 @@
+[gd_scene load_steps=12 format=3 uid="uid://b58bawcnuxpip"]
+
+[ext_resource type="Script" path="res://scripts/autoload/zone/zone.gd" id="1_qg1bc"]
+[ext_resource type="PackedScene" uid="uid://kppdkuhp00nu" path="res://scripts/space/social_manager.tscn" id="2_aendh"]
+[ext_resource type="Script" path="res://scripts/space/instance_manager.gd" id="3_fr06j"]
+[ext_resource type="PackedScene" uid="uid://drc3cpvtxm7rl" path="res://gameplay/space_object/space_object.tscn" id="4_wba8r"]
+[ext_resource type="Script" path="res://scripts/autoload/zone/match_round_system.gd" id="5_5htxb"]
+[ext_resource type="PackedScene" uid="uid://cokn2bqu63fg6" path="res://prefabs/autoload/zone/collision_shape_generator/collision_shape_generator.tscn" id="6_f1g5u"]
+[ext_resource type="Script" path="res://scripts/autoload/zone/client.gd" id="8_lc7cg"]
+[ext_resource type="Script" path="res://script/network_sync.gd" id="9_b6opk"]
+[ext_resource type="Script" path="res://scripts/autoload/zone/server.gd" id="9_hwxs7"]
+[ext_resource type="Script" path="res://scripts/space/material_manager.gd" id="10_po24g"]
+[ext_resource type="Script" path="res://scripts/autoload/zone/space_restore.gd" id="11_ohg0g"]
+
+[node name="Zone" type="Node"]
+script = ExtResource("1_qg1bc")
+
+[node name="SocialManager" parent="." instance=ExtResource("2_aendh")]
+
+[node name="InstanceManager" type="Node3D" parent="."]
+script = ExtResource("3_fr06j")
+_space_object_scene = ExtResource("4_wba8r")
+
+[node name="MatchRoundSystem" type="Node" parent="."]
+script = ExtResource("5_5htxb")
+
+[node name="CollisionShapeGenerator" parent="." instance=ExtResource("6_f1g5u")]
+
+[node name="ScriptNetworkSync" type="Timer" parent="."]
+wait_time = 2.0
+script = ExtResource("9_b6opk")
+
+[node name="MaterialManager" type="Node" parent="."]
+script = ExtResource("10_po24g")
+
+[node name="Client" type="Node" parent="."]
+script = ExtResource("8_lc7cg")
+
+[node name="Server" type="Node" parent="."]
+script = ExtResource("9_hwxs7")
+
+[node name="SpaceRestore" type="Node" parent="."]
+script = ExtResource("11_ohg0g")
+
+[connection signal="space_objects_created" from="InstanceManager" to="." method="_on_instance_manager_space_objects_created"]
+[connection signal="request_sync_variables_to_database" from="ScriptNetworkSync" to="." method="_sync_variables_to_database"]
+[connection signal="timeout" from="ScriptNetworkSync" to="ScriptNetworkSync" method="_serialize_variables_and_emit_sync_to_db"]
+[connection signal="disconnected" from="Client" to="ScriptNetworkSync" method="client_clear_pending_set_properties_and_variables"]
+[connection signal="space_data_received" from="Server" to="." method="_on_server_peer_space_data_received"]
+[connection signal="space_variables_received" from="Server" to="ScriptNetworkSync" method="load_variables_from_database"]

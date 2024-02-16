@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cp8rnckbrvxd1"]
+
+[ext_resource type="Shader" path="res://ui/common/shaders/ui_blurr.gdshader" id="1_jxj6o"]
+
+[resource]
+shader = ExtResource("1_jxj6o")
+shader_parameter/blur = 0.7
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/strength = 0.05

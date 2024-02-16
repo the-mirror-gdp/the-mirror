@@ -1,0 +1,275 @@
+[gd_scene load_steps=21 format=3 uid="uid://brrda4tvbd43x"]
+
+[ext_resource type="FontFile" uid="uid://cgyrixnr8bppj" path="res://ui/common/fonts/montserrat/montserrat_medium.ttf" id="1_0swwy"]
+[ext_resource type="Theme" uid="uid://ggwm8asxintx" path="res://ui/common/themes/menu_ui.theme.tres" id="1_winff"]
+[ext_resource type="Texture2D" uid="uid://k4oe0d3tax4n" path="res://ui/art/back.svg" id="2_fnj1w"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/edit_space/edit_space.gd" id="2_lrgrv"]
+[ext_resource type="Shader" path="res://ui/common/shaders/ui_blurr.gdshader" id="3_212f4"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="4_1o2du"]
+[ext_resource type="PackedScene" uid="uid://b7ypef5lmyuv7" path="res://ui/main_menu/pages/edit_space/basic_settings.tscn" id="7_0oja4"]
+[ext_resource type="PackedScene" uid="uid://25u6rk0q26kp" path="res://ui/main_menu/pages/edit_space/permissions_settings.tscn" id="8_xwcx6"]
+[ext_resource type="PackedScene" uid="uid://clpkop8mwppa1" path="res://ui/publish_space/publish_space_window.tscn" id="10_cfjg3"]
+[ext_resource type="Texture2D" uid="uid://bpdhjrlxnx4ta" path="res://ui/art/rolling_spinner.svg" id="10_ff4a7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w3h3x"]
+content_margin_left = 32.0
+content_margin_top = 32.0
+content_margin_right = 32.0
+content_margin_bottom = 32.0
+bg_color = Color(0.0431373, 0.0627451, 0.129412, 0.588235)
+corner_radius_top_left = 25
+corner_radius_bottom_left = 25
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ouuo"]
+draw_center = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nmcec"]
+bg_color = Color(1, 1, 1, 0.0588235)
+border_color = Color(0.145098, 0.419608, 0.984314, 1)
+expand_margin_left = 32.0
+expand_margin_right = 32.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s6j0a"]
+bg_color = Color(1, 1, 1, 0.0588235)
+border_width_left = 4
+border_color = Color(0.145098, 0.419608, 0.984314, 1)
+expand_margin_left = 32.0
+expand_margin_right = 32.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_13v42"]
+shader = ExtResource("3_212f4")
+shader_parameter/blur = 1.072
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/strength = 0.1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_evmyj"]
+content_margin_left = 48.0
+content_margin_top = 32.0
+content_margin_right = 24.0
+content_margin_bottom = 32.0
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5cxl2"]
+content_margin_right = 24.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y4ve7"]
+bg_color = Color(0, 0, 0, 0.564706)
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+expand_margin_left = 50.0
+expand_margin_top = 32.0
+expand_margin_right = 25.0
+expand_margin_bottom = 32.0
+
+[sub_resource type="Animation" id="Animation_76dw5"]
+resource_name = "Roll"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6u5x4"]
+_data = {
+"Roll": SubResource("Animation_76dw5")
+}
+
+[node name="EditSpace" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_winff")
+theme_override_constants/margin_left = 384
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 384
+theme_override_constants/margin_bottom = 32
+script = ExtResource("2_lrgrv")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 16
+
+[node name="BackButton" type="Button" parent="VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(270, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_type_variation = &"FlatButton"
+theme_override_fonts/font = ExtResource("1_0swwy")
+text = "BACK TO SPACE OVERVIEW"
+icon = ExtResource("2_fnj1w")
+flat = true
+expand_icon = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_w3h3x")
+
+[node name="LeftContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/PanelContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 16
+
+[node name="NameLabel" type="Label" parent="VBoxContainer/HBoxContainer/PanelContainer/LeftContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("4_1o2du")
+theme_override_font_sizes/font_size = 32
+text = "Space Name"
+text_overrun_behavior = 3
+
+[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer/PanelContainer/LeftContainer"]
+layout_mode = 2
+
+[node name="PageSubNameLabel" type="Label" parent="VBoxContainer/HBoxContainer/PanelContainer/LeftContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.333333, 1, 0.831373, 1)
+theme_override_fonts/font = ExtResource("4_1o2du")
+theme_override_font_sizes/font_size = 18
+text = "Settings & Details"
+clip_text = true
+uppercase = true
+
+[node name="TabPagesButtons" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/PanelContainer/LeftContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="BasicSpaceSettings" type="Button" parent="VBoxContainer/HBoxContainer/PanelContainer/LeftContainer/TabPagesButtons"]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+theme_override_colors/font_pressed_color = Color(0.145098, 0.419608, 0.984314, 1)
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_0ouuo")
+theme_override_styles/hover = SubResource("StyleBoxFlat_nmcec")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_s6j0a")
+theme_override_styles/focus = SubResource("StyleBoxFlat_nmcec")
+toggle_mode = true
+button_pressed = true
+text = "Basic Space Settings"
+alignment = 0
+
+[node name="PermissionSettings" type="Button" parent="VBoxContainer/HBoxContainer/PanelContainer/LeftContainer/TabPagesButtons"]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+theme_override_colors/font_pressed_color = Color(0.145098, 0.419608, 0.984314, 1)
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_0ouuo")
+theme_override_styles/hover = SubResource("StyleBoxFlat_nmcec")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_s6j0a")
+theme_override_styles/focus = SubResource("StyleBoxFlat_nmcec")
+toggle_mode = true
+text = "Permission & Users"
+alignment = 0
+
+[node name="Advanced" type="Button" parent="VBoxContainer/HBoxContainer/PanelContainer/LeftContainer/TabPagesButtons"]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+disabled = true
+toggle_mode = true
+text = "Advanced Settings"
+flat = true
+alignment = 0
+
+[node name="VersionHistory" type="Button" parent="VBoxContainer/HBoxContainer/PanelContainer/LeftContainer/TabPagesButtons"]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+disabled = true
+toggle_mode = true
+text = "Version History"
+flat = true
+alignment = 0
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="VBoxContainer/HBoxContainer"]
+copy_mode = 2
+
+[node name="Panel" type="PanelContainer" parent="VBoxContainer/HBoxContainer"]
+material = SubResource("ShaderMaterial_13v42")
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_evmyj")
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = false
+
+[node name="TabsScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/Panel"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_5cxl2")
+horizontal_scroll_mode = 0
+
+[node name="BasicSpaceSettings" parent="VBoxContainer/HBoxContainer/Panel/TabsScrollContainer" node_paths=PackedStringArray("_loading_overlay_panel") instance=ExtResource("7_0oja4")]
+unique_name_in_owner = false
+layout_mode = 2
+size_flags_vertical = 3
+_loading_overlay_panel = NodePath("../../LoadingOverlayPanel")
+
+[node name="PermissionSettings" parent="VBoxContainer/HBoxContainer/Panel/TabsScrollContainer" node_paths=PackedStringArray("_loading_overlay_panel") instance=ExtResource("8_xwcx6")]
+unique_name_in_owner = false
+visible = false
+layout_mode = 2
+_loading_overlay_panel = NodePath("../../LoadingOverlayPanel")
+
+[node name="LoadingOverlayPanel" type="Panel" parent="VBoxContainer/HBoxContainer/Panel"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_y4ve7")
+
+[node name="LoadingSpinner" type="TextureRect" parent="VBoxContainer/HBoxContainer/Panel/LoadingOverlayPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 6.2123
+pivot_offset = Vector2(20, 20)
+texture = ExtResource("10_ff4a7")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="VBoxContainer/HBoxContainer/Panel/LoadingOverlayPanel/LoadingSpinner"]
+autoplay = "Roll"
+libraries = {
+"": SubResource("AnimationLibrary_6u5x4")
+}
+
+[node name="PublishSpaceWindow" parent="." instance=ExtResource("10_cfjg3")]
+visible = false
+top_level = true
+layout_mode = 2
+
+[connection signal="pressed" from="VBoxContainer/MarginContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="publish_space_request" from="VBoxContainer/HBoxContainer/Panel/TabsScrollContainer/BasicSpaceSettings" to="." method="_on_basic_space_settings_publish_space_request"]

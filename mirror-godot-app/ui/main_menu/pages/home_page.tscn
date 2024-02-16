@@ -1,0 +1,160 @@
+[gd_scene load_steps=8 format=3 uid="uid://0mra323xtoht"]
+
+[ext_resource type="Script" path="res://ui/main_menu/pages/home_page.gd" id="1_g044v"]
+[ext_resource type="Texture2D" uid="uid://dado8tm3ai4q" path="res://ui/common/images/logo-default.svg" id="2_byxtm"]
+[ext_resource type="PackedScene" uid="uid://48n8qruuys5w" path="res://ui/main_menu/pages/home/home_spaces_section.tscn" id="2_l3jcy"]
+[ext_resource type="PackedScene" uid="uid://d0ritou4okory" path="res://ui/main_menu/pages/home/home_space_panel_empty.tscn" id="3_scd2x"]
+[ext_resource type="PackedScene" uid="uid://bxip7xuk82fsr" path="res://ui/main_menu/pages/view_space.tscn" id="4_57sjc"]
+[ext_resource type="PackedScene" uid="uid://brrda4tvbd43x" path="res://ui/main_menu/pages/edit_space/edit_space.tscn" id="6_duhnl"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tw1n3"]
+
+[node name="Home" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_g044v")
+
+[node name="Pages" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HomeSpaceSelect" type="MarginContainer" parent="Pages"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Pages/HomeSpaceSelect"]
+layout_mode = 2
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = false
+
+[node name="MarginContainer" type="MarginContainer" parent="Pages/HomeSpaceSelect/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 156
+theme_override_constants/margin_right = 176
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Pages/HomeSpaceSelect/VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(1280, 0)
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="Pages/HomeSpaceSelect/VBoxContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+
+[node name="MainLogo" type="TextureRect" parent="Pages/HomeSpaceSelect/VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("2_byxtm")
+stretch_mode = 3
+
+[node name="Description" type="Label" parent="Pages/HomeSpaceSelect/VBoxContainer/MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Explore Spaces in The Mirror"
+uppercase = true
+
+[node name="Panel" type="Panel" parent="Pages/HomeSpaceSelect/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_tw1n3")
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = false
+
+[node name="MarginContainer" type="MarginContainer" parent="Pages/HomeSpaceSelect/VBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer"]
+layout_mode = 2
+horizontal_scroll_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Title" type="Label" parent="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Welcome to The Mirror Alpha"
+horizontal_alignment = 1
+
+[node name="SpacesSectionPopular" parent="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("2_l3jcy")]
+layout_mode = 2
+empty_item_scene = ExtResource("3_scd2x")
+_include_localhost_item = true
+
+[node name="Create" type="Button" parent="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer/SpacesSectionPopular/TitleBar" index="1"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 10
+text = "+ New Space"
+
+[node name="SpacesSectionRecents" parent="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("2_l3jcy")]
+layout_mode = 2
+empty_item_scene = ExtResource("3_scd2x")
+_data_source = 2
+
+[node name="SpacesSectionFavorites" parent="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("2_l3jcy")]
+layout_mode = 2
+empty_item_scene = ExtResource("3_scd2x")
+_data_source = 1
+
+[node name="SpacesSectionMy" parent="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("2_l3jcy")]
+layout_mode = 2
+empty_item_scene = ExtResource("3_scd2x")
+_data_source = 3
+_include_new_space_item = true
+
+[node name="ViewMySpaces" type="Button" parent="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer/SpacesSectionMy/TitleBar" index="1"]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_colors/font_color = Color(0.333333, 1, 0.831373, 1)
+theme_override_colors/font_pressed_color = Color(0.333333, 1, 0.831373, 1)
+theme_override_colors/font_hover_color = Color(0.333333, 0.952941, 1, 1)
+theme_override_colors/font_focus_color = Color(0.333333, 1, 0.831373, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.333333, 1, 0.831373, 1)
+text = "VIEW ALL"
+flat = true
+
+[node name="ViewSpace" parent="Pages" instance=ExtResource("4_57sjc")]
+visible = false
+layout_mode = 1
+offset_top = 80.0
+
+[node name="EditSpace" parent="Pages" instance=ExtResource("6_duhnl")]
+visible = false
+layout_mode = 1
+offset_top = 80.0
+
+[connection signal="pressed" from="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer/SpacesSectionPopular/TitleBar/Create" to="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer/SpacesSectionPopular" method="_on_create_pressed"]
+[connection signal="pressed" from="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer/SpacesSectionMy/TitleBar/ViewMySpaces" to="." method="_on_view_my_spaces_pressed"]
+
+[editable path="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer/SpacesSectionPopular"]
+[editable path="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer/SpacesSectionMy"]

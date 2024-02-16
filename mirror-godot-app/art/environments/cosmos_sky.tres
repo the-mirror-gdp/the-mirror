@@ -1,0 +1,30 @@
+[gd_resource type="Environment" load_steps=3 format=3 uid="uid://dyo0icbd8at2u"]
+
+[ext_resource type="Material" uid="uid://j01h4e3vawyq" path="res://art/sky/sky_cosmos.tres" id="1_k4uml"]
+
+[sub_resource type="Sky" id="Sky_vde8w"]
+sky_material = ExtResource("1_k4uml")
+
+[resource]
+background_mode = 2
+sky = SubResource("Sky_vde8w")
+tonemap_mode = 3
+ssr_depth_tolerance = 1.7
+ssao_enabled = true
+ssao_power = 1.76
+ssao_light_affect = 1.0
+ssao_ao_channel_affect = 1.0
+ssil_enabled = true
+glow_enabled = true
+glow_hdr_threshold = 1.7
+fog_light_color = Color(0.803922, 0.592157, 0.564706, 1)
+fog_density = 0.1367
+fog_sky_affect = 0.0
+fog_height = 30.87
+fog_height_density = -3.3269
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0
+volumetric_fog_albedo = Color(0.729412, 0.345098, 0.0980392, 1)
+volumetric_fog_emission = Color(0.729412, 0.392157, 0.184314, 1)
+volumetric_fog_length = 1024.0
+volumetric_fog_ambient_inject = 1.0

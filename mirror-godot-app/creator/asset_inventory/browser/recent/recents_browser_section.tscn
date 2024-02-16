@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://cogjtrae8alkf"]
+
+[ext_resource type="Script" path="res://creator/asset_inventory/browser/recent/recents_browser_section.gd" id="1_my1mr"]
+[ext_resource type="PackedScene" uid="uid://cb78cuaotdwo2" path="res://creator/asset_inventory/browser/base_browser_section.tscn" id="1_n7kid"]
+[ext_resource type="Texture2D" uid="uid://cn8t73sjrqrjs" path="res://creator/asset_inventory/browser/recent/recent.svg" id="3_l2jnl"]
+
+[node name="RecentsBrowserSection" instance=ExtResource("1_n7kid")]
+script = ExtResource("1_my1mr")
+
+[node name="Icon" parent="SectionHeader/ToggleCollapse/MarginContainer/Header" index="2"]
+texture = ExtResource("3_l2jnl")
+
+[node name="SectionNameLabel" parent="SectionHeader/ToggleCollapse/MarginContainer/Header" index="3"]
+text = "Recents"
+
+[node name="SlotsFlowContainer" type="HFlowContainer" parent="SectionHolder/MarginContainer/SectionContainer" index="0"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Control" type="Control" parent="SectionHolder/MarginContainer/SectionContainer" index="1"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2

@@ -1,0 +1,59 @@
+[gd_scene load_steps=6 format=3 uid="uid://nnphdtunua76"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_gk6jx"]
+[ext_resource type="Script" path="res://creator/common/dropdown_search/dropdown_filter_menu.gd" id="2_4gi6s"]
+[ext_resource type="PackedScene" uid="uid://l15rxcwb7vmm" path="res://creator/common/dropdown_search/search_item.tscn" id="3_0r7j5"]
+[ext_resource type="PackedScene" uid="uid://bahpo436m8hut" path="res://creator/asset_inventory/browser/search_field.tscn" id="4_knkq3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rntwu"]
+bg_color = Color(0.0627451, 0.0627451, 0.0666667, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="FilterMenu" type="PanelContainer"]
+custom_minimum_size = Vector2(200, 240)
+offset_right = 200.0
+offset_bottom = 240.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_gk6jx")
+theme_override_styles/panel = SubResource("StyleBoxFlat_rntwu")
+script = ExtResource("2_4gi6s")
+search_item = ExtResource("3_0r7j5")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="FilterMenu" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="SearchField" parent="MarginContainer/FilterMenu" instance=ExtResource("4_knkq3")]
+layout_mode = 2
+placeholder_text = "Search..."
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/FilterMenu"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/FilterMenu/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_right = 5
+
+[node name="SearchResultContainer" type="VBoxContainer" parent="MarginContainer/FilterMenu/ScrollContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[connection signal="search_gui_input" from="MarginContainer/FilterMenu/SearchField" to="." method="_on_search_field_search_gui_input"]
+[connection signal="text_changed" from="MarginContainer/FilterMenu/SearchField" to="." method="_on_search_field_text_changed"]
+[connection signal="text_submitted" from="MarginContainer/FilterMenu/SearchField" to="." method="_on_search_field_text_submitted"]

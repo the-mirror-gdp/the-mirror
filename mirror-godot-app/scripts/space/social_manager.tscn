@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://kppdkuhp00nu"]
+
+[ext_resource type="Script" path="res://scripts/space/social_manager.gd" id="1_xqplx"]
+
+[node name="SocialManager" type="Node"]
+script = ExtResource("1_xqplx")
+
+[node name="players" type="Node" parent="."]

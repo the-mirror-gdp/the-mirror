@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://b06ajgyxe10gm"]
+
+[ext_resource type="Script" path="res://creator/selection/inspector/nodes/node_create_button.gd" id="1_0edxf"]
+[ext_resource type="PackedScene" uid="uid://dn3xwxng1fxt3" path="res://creator/selection/inspector/nodes/node_creation_menu.tscn" id="1_62iub"]
+
+[node name="ExtraNodeCreateButton" type="Button"]
+text = "Create Extra Node"
+script = ExtResource("1_0edxf")
+
+[node name="ExtraNodeCreationDialog" type="ConfirmationDialog" parent="."]
+title = "Create Extra Node"
+size = Vector2i(366, 346)
+ok_button_text = "Create"
+
+[node name="ExtraNodeCreationMenu" parent="ExtraNodeCreationDialog" instance=ExtResource("1_62iub")]
+
+[connection signal="pressed" from="." to="." method="open_extra_node_create_dialog"]
+[connection signal="confirmed" from="ExtraNodeCreationDialog" to="." method="_on_extra_node_creation_dialog_confirmed"]

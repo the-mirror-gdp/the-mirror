@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=3 uid="uid://d3132smeon84n"]
+
+[ext_resource type="StyleBox" uid="uid://cd25y0wnopb8g" path="res://ui/new_player_ui/inventory/panel_dark_blue_rounded.tres" id="1_rqyrp"]
+[ext_resource type="Script" path="res://ui/hover_text/scripts/hover_text.gd" id="2_o7ms2"]
+[ext_resource type="FontVariation" uid="uid://bj5iactb2ulqq" path="res://ui/new_player_ui/inventory/title_font_regular.tres" id="3_m3xbv"]
+
+[node name="HoverText" type="PanelContainer"]
+top_level = true
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_styles/panel = ExtResource("1_rqyrp")
+script = ExtResource("2_o7ms2")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="PrimaryText" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_fonts/font = ExtResource("3_m3xbv")
+theme_override_font_sizes/font_size = 14
+text = "Unnamed Asset"
+vertical_alignment = 1
+
+[node name="SecondaryText" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.552941, 0.552941, 0.639216, 1)
+theme_override_fonts/font = ExtResource("3_m3xbv")
+theme_override_font_sizes/font_size = 12
+text = "Unnamed Secodary Text"
+vertical_alignment = 1
+uppercase = true

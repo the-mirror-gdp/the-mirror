@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://cuhc3ht81pji4"]
+
+[ext_resource type="Script" path="res://test/manual/outlines/test_outlines.gd" id="1_8rlp6"]
+[ext_resource type="Script" path="res://ui/game/object_outlines.gd" id="1_538eb"]
+
+[node name="TestOutlines" type="Node3D"]
+script = ExtResource("1_8rlp6")
+
+[node name="ObjectOutlines" type="Node" parent="."]
+script = ExtResource("1_538eb")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.906308, -0.178606, 0.383022, 3.16108e-16, 0.906308, 0.422618, -0.422618, -0.383022, 0.821394, 1, 1, 2)

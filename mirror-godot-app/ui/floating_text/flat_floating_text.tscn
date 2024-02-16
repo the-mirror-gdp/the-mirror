@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://d2xnvyymieo5j"]
+
+[ext_resource type="Script" path="res://ui/floating_text/flat_floating_text.gd" id="1_kehid"]
+[ext_resource type="FontFile" uid="uid://wnq6gpmrsr6v" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_medium.ttf" id="2_2mx6h"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_qfqnr"]
+font = ExtResource("2_2mx6h")
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+
+[node name="FlatFloatingText" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_kehid")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Text"
+label_settings = SubResource("LabelSettings_qfqnr")
+horizontal_alignment = 1
+vertical_alignment = 1

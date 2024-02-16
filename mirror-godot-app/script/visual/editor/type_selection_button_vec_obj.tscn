@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://d103ggt4wtw5g"]
+
+[ext_resource type="Texture2D" uid="uid://ck2i6dfxr7son" path="res://script/visual/editor/icons/option_button/vector3.svg" id="7_i0jdu"]
+[ext_resource type="Texture2D" uid="uid://8emjxwy6egqf" path="res://script/visual/editor/icons/option_button/object.svg" id="9_dn4ow"]
+
+[node name="TypeSelectionButtonVecObj" type="OptionButton"]
+custom_minimum_size = Vector2(60, 25)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -30.0
+offset_top = -12.5
+offset_right = 30.0
+offset_bottom = 12.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+expand_icon = true
+item_count = 2
+selected = 0
+popup/item_0/text = ""
+popup/item_0/icon = ExtResource("7_i0jdu")
+popup/item_0/id = 9
+popup/item_1/text = ""
+popup/item_1/icon = ExtResource("9_dn4ow")
+popup/item_1/id = 24

@@ -1,0 +1,81 @@
+[gd_scene load_steps=16 format=3 uid="uid://bbmkaducew40q"]
+
+[ext_resource type="Script" path="res://player/player.gd" id="1_twy6b"]
+[ext_resource type="PackedScene" uid="uid://c1s82vpjmqhda" path="res://player/ui/social/social_ui.tscn" id="3_7bh5b"]
+[ext_resource type="PackedScene" uid="uid://ca03bets8mk8g" path="res://player/animations/animation_controller.tscn" id="3_krg7a"]
+[ext_resource type="Script" path="res://player/controller/input_controller.gd" id="6_2ipg4"]
+[ext_resource type="Script" path="res://player/controller/mouse_capture.gd" id="7_vo341"]
+[ext_resource type="Script" path="res://player/controller/movement_controller.gd" id="8_r8lau"]
+[ext_resource type="Script" path="res://player/controller/seat_controller.gd" id="9_3d7nb"]
+[ext_resource type="Script" path="res://player/equipable/equipable_controller.gd" id="10_fqj1r"]
+[ext_resource type="PackedScene" uid="uid://bqx5np6ckv4ri" path="res://player/audio/audio_controller.tscn" id="11_72pmq"]
+[ext_resource type="Script" path="res://scripts/entities/damage_handler.gd" id="11_i5smu"]
+[ext_resource type="Texture2D" uid="uid://cojynps3pm0s" path="res://player/ui/icons/microphone-solid.svg" id="12_8vxbp"]
+[ext_resource type="Script" path="res://scripts/entities/data_store_globals.gd" id="12_afp2a"]
+[ext_resource type="Script" path="res://player/audio/audio_input_controller.gd" id="13_3hv5i"]
+
+[sub_resource type="JCapsuleShape3D" id="JCapsuleShape3D_vgdpe"]
+radius = 0.3
+height = 1.75
+
+[sub_resource type="JCompoundShape3D" id="JStaticCompoundShape3D_2vlyd"]
+shapes = [SubResource("JCapsuleShape3D_vgdpe")]
+transforms = [Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)]
+count = 1
+0/translation = Vector3(0, 0.875, 0)
+0/rotation = Vector3(0, 0, 0)
+0/scale = Vector3(1, 1, 1)
+0/shape = SubResource("JCapsuleShape3D_vgdpe")
+
+[node name="Player" type="TMCharacter3D" groups=["Player"]]
+body_mode = 1
+shape = SubResource("JStaticCompoundShape3D_2vlyd")
+layer_name = &"CHARACTER"
+max_walking_slope_deg = 70.0
+step_height = 0.4
+max_push_strength_newton = 30000.0
+script = ExtResource("1_twy6b")
+
+[node name="PlayerModel" parent="." instance=ExtResource("3_krg7a")]
+
+[node name="SocialUI" parent="." instance=ExtResource("3_7bh5b")]
+mouse_filter = 2
+
+[node name="InputController" type="Node" parent="."]
+script = ExtResource("6_2ipg4")
+
+[node name="MouseCapture" type="Node" parent="."]
+script = ExtResource("7_vo341")
+
+[node name="MovementController" type="Node" parent="."]
+script = ExtResource("8_r8lau")
+
+[node name="SeatController" type="Node" parent="MovementController"]
+script = ExtResource("9_3d7nb")
+
+[node name="EquipableController" type="Node" parent="."]
+script = ExtResource("10_fqj1r")
+
+[node name="AudioController" parent="." instance=ExtResource("11_72pmq")]
+
+[node name="DamageHandler" type="Node" parent="."]
+script = ExtResource("11_i5smu")
+
+[node name="DataStore" type="Node" parent="."]
+script = ExtResource("12_afp2a")
+
+[node name="AudioInputController" type="Sprite3D" parent="."]
+transform = Transform3D(0.015, 0, 0, 0, 0.015, 0, 0, 0, 0.015, 0, 2.23309, 0)
+cast_shadow = 0
+billboard = 1
+fixed_size = true
+alpha_cut = 2
+alpha_antialiasing_mode = 1
+texture = ExtResource("12_8vxbp")
+script = ExtResource("13_3hv5i")
+
+[connection signal="avatar_changed" from="PlayerModel" to="." method="_on_player_model_avatar_changed"]
+[connection signal="death" from="DamageHandler" to="." method="_on_damage_handler_death"]
+[connection signal="health_changed" from="DamageHandler" to="." method="_on_damage_handler_health_changed"]
+[connection signal="health_changed" from="DamageHandler" to="PlayerModel" method="_on_damage_handler_health_changed"]
+[connection signal="server_revive" from="DamageHandler" to="." method="_on_damage_handler_server_revive"]

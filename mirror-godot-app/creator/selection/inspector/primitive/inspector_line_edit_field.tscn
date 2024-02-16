@@ -1,0 +1,55 @@
+[gd_scene load_steps=5 format=3 uid="uid://cyf8lr874knjd"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_ov6ib"]
+[ext_resource type="Script" path="res://creator/selection/inspector/primitive/inspector_line_edit_field.gd" id="2_h8lak"]
+[ext_resource type="Script" path="res://creator/selection/inspector/primitive/droppable_field.gd" id="3_boqr1"]
+[ext_resource type="PackedScene" uid="uid://cy566ld7k03ue" path="res://creator/selection/inspector/primitive/inspector_reset_button.tscn" id="4_oqhq0"]
+
+[node name="InspectorLabeledLineEditField" type="HBoxContainer"]
+custom_minimum_size = Vector2(256, 30)
+offset_right = 256.0
+offset_bottom = 32.0
+size_flags_horizontal = 3
+theme = ExtResource("1_ov6ib")
+theme_override_constants/separation = 0
+script = ExtResource("2_h8lak")
+
+[node name="LabelHolder" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.75
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 2
+
+[node name="Label" type="Label" parent="LabelHolder"]
+clip_contents = true
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "E"
+vertical_alignment = 1
+clip_text = true
+
+[node name="LineEditHolder" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(64, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="LineEdit" parent="LineEditHolder"]
+custom_minimum_size = Vector2(64, 30)
+layout_mode = 2
+alignment = 1
+select_all_on_focus = true
+caret_blink = true
+script = ExtResource("3_boqr1")
+
+[node name="ResetButton" parent="." instance=ExtResource("4_oqhq0")]
+layout_mode = 2
+
+[connection signal="focus_entered" from="LineEditHolder/LineEdit" to="." method="_on_focus_entered"]
+[connection signal="focus_exited" from="LineEditHolder/LineEdit" to="." method="_on_focus_exited"]
+[connection signal="text_changed" from="LineEditHolder/LineEdit" to="." method="_on_text_changed"]
+[connection signal="text_submitted" from="LineEditHolder/LineEdit" to="." method="emit_value_submitted"]
+[connection signal="value_dropped" from="LineEditHolder/LineEdit" to="." method="_on_value_dropped"]
+[connection signal="pressed" from="ResetButton" to="." method="_on_reset_button_pressed"]

@@ -1,0 +1,41 @@
+version: "3.9"
+services:
+  mirror-server:
+    container_name: the_mirror_server
+    build:
+      dockerfile: "dev.Dockerfile"
+    volumes:
+      - ./monorepo.env:/app/.env
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+      - "9000:9000"
+      - "9001:9001"
+      - "8080:8080"
+    depends_on:
+      - redis
+      - mongo
+  
+  redis:
+    container_name: redis
+    image: 'redis:latest'
+
+  mongo:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    volumes: # restores the mirror database on to the mirror-server image automatically
+      - ./database_backup/dump.archive:/database_dump/dump.archive
+      - ./database_backup/mongo_restore.sh:/docker-entrypoint-initdb.d/mongo_restore.sh
+      - mongodb_data:/data/db # keeps local storage after container restart
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    # ports section is only needed if you want to use mongo-db compass on host, remove when not used
+    ports:
+      - "27017:27017"
+
+volumes:
+  mongodb_data:
+    driver: local

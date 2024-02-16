@@ -1,0 +1,607 @@
+[gd_scene load_steps=25 format=3 uid="uid://cafdwaqkoterm"]
+
+[ext_resource type="Shader" path="res://ui/common/shaders/ui_blurr.gdshader" id="1_18jct"]
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="2_m8c41"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="3_8f8xl"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/view_space/view_space_servers_panel.gd" id="3_x8opj"]
+[ext_resource type="PackedScene" uid="uid://bahpo436m8hut" path="res://creator/asset_inventory/browser/search_field.tscn" id="4_mwtrc"]
+[ext_resource type="Texture2D" uid="uid://boqxb7htsu2hv" path="res://ui/art/rotate.svg" id="5_dph1y"]
+[ext_resource type="Texture2D" uid="uid://k11o2wueu67r" path="res://art/ui/plus-icon-white.svg" id="6_t5p6d"]
+[ext_resource type="Script" path="res://scripts/ui/table.gd" id="7_0170e"]
+[ext_resource type="Script" path="res://scripts/ui/table_variant_entry.gd" id="8_cy2sn"]
+[ext_resource type="PackedScene" uid="uid://c414bgtr5h40j" path="res://ui/main_menu/pages/view_space/table_items/user_in_table.tscn" id="11_4ucl2"]
+[ext_resource type="PackedScene" uid="uid://be8e7b6xk45xc" path="res://ui/main_menu/pages/view_space/table_items/players_count_in_table.tscn" id="12_mc33l"]
+[ext_resource type="PackedScene" uid="uid://c4lw66trpp8xm" path="res://ui/main_menu/pages/view_space/table_items/join_button_in_table.tscn" id="13_ahqso"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ljnnu"]
+shader = ExtResource("1_18jct")
+shader_parameter/blur = 1.072
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/strength = 0.1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6ylpw"]
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ja47g"]
+content_margin_left = 8.0
+content_margin_top = 12.0
+content_margin_right = 8.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0.831373)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p10vs"]
+content_margin_left = 8.0
+content_margin_top = 12.0
+content_margin_right = 8.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t8qyu"]
+content_margin_left = 8.0
+content_margin_top = 12.0
+content_margin_right = 8.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0.8)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="LabelSettings" id="LabelSettings_ngw4r"]
+line_spacing = 0.0
+font = ExtResource("3_8f8xl")
+font_size = 12
+font_color = Color(0.403922, 0.45098, 0.592157, 1)
+
+[sub_resource type="Animation" id="Animation_n4yvx"]
+resource_name = "Roll"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2nhbe"]
+_data = {
+"Roll": SubResource("Animation_n4yvx")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s8l2n"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 8
+anti_aliasing = false
+anti_aliasing_size = 0.86
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i2hjg"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.6)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_86b8y"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_right = 8
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fq68i"]
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.85098, 0.85098, 0.85098, 0.129412)
+
+[node name="ServersPanel" type="PanelContainer"]
+material = SubResource("ShaderMaterial_ljnnu")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_m8c41")
+theme_override_styles/panel = SubResource("StyleBoxFlat_6ylpw")
+script = ExtResource("3_x8opj")
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = false
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 70
+theme_override_constants/margin_top = 70
+theme_override_constants/margin_right = 70
+theme_override_constants/margin_bottom = 70
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 22
+
+[node name="ServersLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_8f8xl")
+theme_override_font_sizes/font_size = 40
+text = "Servers"
+autowrap_mode = 3
+
+[node name="ActionBar" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 12
+
+[node name="SortOptionButton" type="OptionButton" parent="MarginContainer/VBoxContainer/ActionBar"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+theme_override_styles/focus = SubResource("StyleBoxFlat_ja47g")
+theme_override_styles/normal = SubResource("StyleBoxFlat_p10vs")
+theme_override_styles/hover = SubResource("StyleBoxFlat_t8qyu")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_t8qyu")
+item_count = 3
+selected = 0
+popup/item_0/text = "Player Count"
+popup/item_0/id = 0
+popup/item_1/text = "Recent"
+popup/item_1/id = 1
+popup/item_2/text = "Name"
+popup/item_2/id = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ActionBar/SortOptionButton"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 4.0
+offset_right = 41.0
+offset_bottom = 18.0
+text = "Sort by"
+label_settings = SubResource("LabelSettings_ngw4r")
+
+[node name="SearchField" parent="MarginContainer/VBoxContainer/ActionBar" instance=ExtResource("4_mwtrc")]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Search..."
+text_changed_delay = 0.0
+
+[node name="Panel" parent="MarginContainer/VBoxContainer/ActionBar/SearchField" index="0"]
+size_flags_vertical = 1
+
+[node name="SearchIcon" parent="MarginContainer/VBoxContainer/ActionBar/SearchField/Panel/HBoxContainer" index="0"]
+custom_minimum_size = Vector2(40, 30)
+
+[node name="Icon" parent="MarginContainer/VBoxContainer/ActionBar/SearchField/Panel/HBoxContainer/SearchIcon" index="0"]
+custom_minimum_size = Vector2(19, 19)
+offset_top = 14.0
+offset_right = 29.0
+offset_bottom = 33.0
+
+[node name="LineEdit" parent="MarginContainer/VBoxContainer/ActionBar/SearchField/Panel/HBoxContainer/SearchField" index="0"]
+theme_override_font_sizes/font_size = 16
+
+[node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer/ActionBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.3
+
+[node name="RefreshServersButton" type="Button" parent="MarginContainer/VBoxContainer/ActionBar"]
+clip_contents = true
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+theme_override_constants/icon_max_width = 30
+icon_alignment = 1
+
+[node name="RefreshSpinner" type="TextureRect" parent="MarginContainer/VBoxContainer/ActionBar/RefreshServersButton"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(16, 16)
+texture = ExtResource("5_dph1y")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="MarginContainer/VBoxContainer/ActionBar/RefreshServersButton/RefreshSpinner"]
+autoplay = "Roll"
+libraries = {
+"": SubResource("AnimationLibrary_2nhbe")
+}
+
+[node name="CreateNewButton" type="Button" parent="MarginContainer/VBoxContainer/ActionBar"]
+clip_contents = true
+custom_minimum_size = Vector2(140, 48)
+layout_mode = 2
+theme_override_constants/icon_max_width = 30
+theme_override_font_sizes/font_size = 16
+text = "Create new"
+icon = ExtResource("6_t5p6d")
+
+[node name="Table" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+theme = ExtResource("2_m8c41")
+script = ExtResource("7_0170e")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Table"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+
+[node name="Scrollbar" type="ScrollContainer" parent="MarginContainer/VBoxContainer/Table/MarginContainer"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+size_flags_vertical = 0
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="table_header" type="Control" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="title_name" type="Label" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table_header"]
+layout_mode = 0
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.403922, 0.45098, 0.592157, 1)
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_s8l2n")
+text = "SERVER NAME"
+horizontal_alignment = 1
+
+[node name="empty" type="Label" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table_header"]
+layout_mode = 0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.6
+theme_override_colors/font_color = Color(0.403922, 0.45098, 0.592157, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_i2hjg")
+horizontal_alignment = 1
+
+[node name="title_creator" type="Label" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table_header"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 0
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.6
+theme_override_colors/font_color = Color(0.403922, 0.45098, 0.592157, 1)
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_i2hjg")
+text = "SERVER CREATOR"
+horizontal_alignment = 1
+
+[node name="empty2" type="Label" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table_header"]
+layout_mode = 0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.6
+theme_override_colors/font_color = Color(0.403922, 0.45098, 0.592157, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_i2hjg")
+horizontal_alignment = 1
+
+[node name="title_permissions" type="Label" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table_header"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 0
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.403922, 0.45098, 0.592157, 1)
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_i2hjg")
+text = "PLAYER COUNT"
+horizontal_alignment = 1
+
+[node name="empty3" type="Label" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table_header"]
+layout_mode = 0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.6
+theme_override_colors/font_color = Color(0.403922, 0.45098, 0.592157, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_i2hjg")
+horizontal_alignment = 1
+
+[node name="title_join" type="Label" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table_header"]
+layout_mode = 0
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.403922, 0.45098, 0.592157, 1)
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_86b8y")
+text = "JOIN"
+horizontal_alignment = 1
+
+[node name="new_row" type="Control" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="server_id" type="Control" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("8_cy2sn")
+
+[node name="server_id2" type="Control" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("8_cy2sn")
+
+[node name="server_name" type="Label" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_fq68i")
+text = "SERVER NAME"
+vertical_alignment = 1
+
+[node name="empty_row" type="Label" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_fq68i")
+vertical_alignment = 1
+
+[node name="user" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/new_row" instance=ExtResource("11_4ucl2")]
+layout_mode = 0
+
+[node name="empty_row2" type="Label" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_fq68i")
+vertical_alignment = 1
+
+[node name="players_count" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/new_row" instance=ExtResource("12_mc33l")]
+layout_mode = 0
+
+[node name="empty_row3" type="Label" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_fq68i")
+vertical_alignment = 1
+
+[node name="join_button" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/new_row" instance=ExtResource("13_ahqso")]
+layout_mode = 0
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Control3" type="Control" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Control4" type="Control" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Control5" type="Control" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Control6" type="Control" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Control7" type="Control" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 3
+anchors_preset = 0
+
+[node name="table" type="GridContainer" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 2
+theme = ExtResource("2_m8c41")
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 7
+
+[node name="title_name" type="Label" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.403922, 0.45098, 0.592157, 1)
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_s8l2n")
+text = "SERVER NAME"
+horizontal_alignment = 1
+
+[node name="empty" type="Label" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.6
+theme_override_colors/font_color = Color(0.403922, 0.45098, 0.592157, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_i2hjg")
+horizontal_alignment = 1
+
+[node name="title_creator" type="Label" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.6
+theme_override_colors/font_color = Color(0.403922, 0.45098, 0.592157, 1)
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_i2hjg")
+text = "SERVER CREATOR"
+horizontal_alignment = 1
+
+[node name="empty2" type="Label" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.6
+theme_override_colors/font_color = Color(0.403922, 0.45098, 0.592157, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_i2hjg")
+horizontal_alignment = 1
+
+[node name="title_permissions" type="Label" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.403922, 0.45098, 0.592157, 1)
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_i2hjg")
+text = "PLAYER COUNT"
+horizontal_alignment = 1
+
+[node name="empty3" type="Label" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.6
+theme_override_colors/font_color = Color(0.403922, 0.45098, 0.592157, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_i2hjg")
+horizontal_alignment = 1
+
+[node name="title_join" type="Label" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.403922, 0.45098, 0.592157, 1)
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_86b8y")
+text = "JOIN"
+horizontal_alignment = 1
+
+[node name="server_id" type="Control" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table"]
+visible = false
+layout_mode = 2
+script = ExtResource("8_cy2sn")
+
+[node name="server_name" type="Label" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_fq68i")
+text = "SERVER NAME"
+vertical_alignment = 1
+
+[node name="empty_row" type="Label" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_fq68i")
+vertical_alignment = 1
+
+[node name="user" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table" instance=ExtResource("11_4ucl2")]
+layout_mode = 2
+
+[node name="empty_row2" type="Label" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_fq68i")
+vertical_alignment = 1
+
+[node name="players_count" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table" instance=ExtResource("12_mc33l")]
+layout_mode = 2
+
+[node name="empty_row3" type="Label" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_fq68i")
+vertical_alignment = 1
+
+[node name="join_button" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table" instance=ExtResource("13_ahqso")]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+
+[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+
+[node name="Control3" type="Control" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+
+[node name="Control4" type="Control" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+
+[node name="Control5" type="Control" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+
+[node name="Control6" type="Control" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+
+[node name="Control7" type="Control" parent="MarginContainer/VBoxContainer/Table/MarginContainer/Scrollbar/VBoxContainer/table"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+
+[node name="InfoLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "There currently no Play Servers available!
+ Please create a new one."
+horizontal_alignment = 1
+
+[node name="AutoRefreshTimer" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
+
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/ActionBar/SortOptionButton" to="." method="_on_sort_option_button_item_selected"]
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/ActionBar/SearchField" to="." method="_on_search_field_text_changed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ActionBar/RefreshServersButton" to="." method="_on_refresh_servers_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ActionBar/CreateNewButton" to="." method="_on_create_new_button_pressed"]
+[connection signal="timeout" from="AutoRefreshTimer" to="." method="_on_auto_refresh_timer_timeout"]
+
+[editable path="MarginContainer/VBoxContainer/ActionBar/SearchField"]

@@ -1,0 +1,161 @@
+[gd_scene load_steps=6 format=3 uid="uid://dujwxto2lxn3u"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_532wm"]
+[ext_resource type="PackedScene" uid="uid://51hfh08pbhvq" path="res://creator/common/dropdown_search/dropdown_button.tscn" id="2_0wn1l"]
+[ext_resource type="Script" path="res://creator/asset_inventory/filter/filter_menu.gd" id="2_5osdm"]
+[ext_resource type="Texture2D" uid="uid://boqxb7htsu2hv" path="res://ui/art/rotate.svg" id="4_f8umm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6xw3f"]
+
+[node name="FilterMenu" type="PanelContainer"]
+custom_minimum_size = Vector2(180, 160)
+offset_right = 180.0
+offset_bottom = 158.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_532wm")
+theme_type_variation = &"PanelContainerPopup"
+script = ExtResource("2_5osdm")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+metadata/_edit_use_anchors_ = true
+
+[node name="FilterMenu" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="SortBy" type="VBoxContainer" parent="MarginContainer/FilterMenu"]
+layout_mode = 2
+theme_override_constants/separation = -3
+
+[node name="Label" type="Label" parent="MarginContainer/FilterMenu/SortBy"]
+layout_mode = 2
+text = "Sort By"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/FilterMenu/SortBy"]
+layout_mode = 2
+
+[node name="OptionSortBy" type="OptionButton" parent="MarginContainer/FilterMenu/SortBy/HBoxContainer"]
+custom_minimum_size = Vector2(0, 21)
+layout_mode = 2
+size_flags_horizontal = 3
+item_count = 3
+selected = 0
+popup/item_0/text = "Newest (Default)"
+popup/item_0/id = 0
+popup/item_1/text = "Oldest"
+popup/item_1/id = 1
+popup/item_2/text = "Name"
+popup/item_2/id = 2
+
+[node name="ResetSortBy" type="Button" parent="MarginContainer/FilterMenu/SortBy/HBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/icon_max_width = 12
+theme_override_styles/normal = SubResource("StyleBoxEmpty_6xw3f")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_6xw3f")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_6xw3f")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_6xw3f")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_6xw3f")
+icon = ExtResource("4_f8umm")
+icon_alignment = 1
+
+[node name="AssetType" type="VBoxContainer" parent="MarginContainer/FilterMenu"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = -3
+
+[node name="Label" type="Label" parent="MarginContainer/FilterMenu/AssetType"]
+layout_mode = 2
+text = "Asset Type"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/FilterMenu/AssetType"]
+layout_mode = 2
+
+[node name="OptionAssetType" type="OptionButton" parent="MarginContainer/FilterMenu/AssetType/HBoxContainer"]
+custom_minimum_size = Vector2(0, 21)
+layout_mode = 2
+size_flags_horizontal = 3
+item_count = 4
+selected = 0
+popup/item_0/text = "All"
+popup/item_0/id = 3
+popup/item_1/text = "3D Objects"
+popup/item_1/id = 0
+popup/item_2/text = "Audio"
+popup/item_2/id = 1
+popup/item_3/text = "Images"
+popup/item_3/id = 2
+
+[node name="ResetAssetType" type="Button" parent="MarginContainer/FilterMenu/AssetType/HBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/icon_max_width = 12
+theme_override_styles/normal = SubResource("StyleBoxEmpty_6xw3f")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_6xw3f")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_6xw3f")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_6xw3f")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_6xw3f")
+icon = ExtResource("4_f8umm")
+icon_alignment = 1
+
+[node name="Category" type="VBoxContainer" parent="MarginContainer/FilterMenu"]
+layout_mode = 2
+theme_override_constants/separation = -3
+
+[node name="Label" type="Label" parent="MarginContainer/FilterMenu/Category"]
+layout_mode = 2
+text = "Category
+"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/FilterMenu/Category"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="OptionCategory" parent="MarginContainer/FilterMenu/Category/HBoxContainer" instance=ExtResource("2_0wn1l")]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "All"
+default_text = "All"
+
+[node name="ResetCategory" type="Button" parent="MarginContainer/FilterMenu/Category/HBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/icon_max_width = 12
+theme_override_styles/normal = SubResource("StyleBoxEmpty_6xw3f")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_6xw3f")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_6xw3f")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_6xw3f")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_6xw3f")
+icon = ExtResource("4_f8umm")
+icon_alignment = 1
+
+[node name="Graphics" type="VBoxContainer" parent="MarginContainer/FilterMenu"]
+layout_mode = 2
+theme_override_constants/separation = -3
+
+[node name="Label" type="Label" parent="MarginContainer/FilterMenu/Graphics"]
+layout_mode = 2
+text = "Graphics
+"
+
+[node name="OptionGraphics" type="OptionButton" parent="MarginContainer/FilterMenu/Graphics"]
+custom_minimum_size = Vector2(0, 21)
+layout_mode = 2
+item_count = 1
+selected = 0
+popup/item_0/text = "All"
+popup/item_0/id = 0
+
+[connection signal="item_selected" from="MarginContainer/FilterMenu/SortBy/HBoxContainer/OptionSortBy" to="." method="_on_option_sort_by_item_selected"]
+[connection signal="pressed" from="MarginContainer/FilterMenu/SortBy/HBoxContainer/ResetSortBy" to="." method="_on_reset_sort_by_pressed"]
+[connection signal="item_selected" from="MarginContainer/FilterMenu/AssetType/HBoxContainer/OptionAssetType" to="." method="_on_option_asset_type_item_selected"]
+[connection signal="pressed" from="MarginContainer/FilterMenu/AssetType/HBoxContainer/ResetAssetType" to="." method="_on_reset_asset_type_pressed"]
+[connection signal="item_selected" from="MarginContainer/FilterMenu/Category/HBoxContainer/OptionCategory" to="." method="_on_option_category_item_selected"]
+[connection signal="pressed" from="MarginContainer/FilterMenu/Category/HBoxContainer/ResetCategory" to="." method="_on_reset_category_pressed"]

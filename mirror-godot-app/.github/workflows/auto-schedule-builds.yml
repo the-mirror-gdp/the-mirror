@@ -1,0 +1,41 @@
+name: 🔧 Auto Build Scheduler
+# Ideally we don't modify this script
+# Timezone: UTC
+on:
+  schedule:
+    - cron: '0 3 11,28 * *' # every 11th and 28th of the month at 3am UTC
+
+# what branch this file will deploy using
+env:
+  deployment-branch-valid: ${{ (github.head_ref || github.ref_name) == 'dev' && 'yes' || 'no' }}
+
+# for our purposes, we don't want the hook to ever run on the wrong branch.
+# so I included a safeguard so it can only ever run once.
+jobs:
+  merge-dev-into-staging:
+    name: 'Merge dev into deployment-staging 🚀'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+    - uses: actions/checkout@v3
+      if: env.deployment-branch-valid == 'yes'
+      with:
+        ref: 'deployment-staging'
+        fetch-depth: 0
+        token: ${{ secrets.CI_TOKEN_GITHUB }}
+
+    - name: Set Git config
+      if: env.deployment-branch-valid == 'yes'
+      run: |
+        git config --local user.email 'engineering@themirror.space'
+        git config --local user.name 'Automatic Merger'
+
+    - name: Upgrade deployment-staging branch
+      if: env.deployment-branch-valid == 'yes'
+      run: |
+        git checkout deployment-staging
+        git fetch origin dev
+        git fetch origin deployment-staging
+        git merge origin/dev -m 'Automated branch update from dev'
+        git push origin deployment-staging
+

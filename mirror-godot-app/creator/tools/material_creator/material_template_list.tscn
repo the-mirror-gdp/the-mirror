@@ -1,0 +1,470 @@
+[gd_scene load_steps=14 format=3 uid="uid://bs1x5ic38xnvh"]
+
+[ext_resource type="Script" path="res://creator/tools/material_creator/material_template_list.gd" id="1_6y4a1"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="1_dbax7"]
+[ext_resource type="Texture2D" uid="uid://cswbs412nmkki" path="res://ui/art/object.svg" id="2_af4y4"]
+[ext_resource type="FontFile" uid="uid://cgyrixnr8bppj" path="res://ui/common/fonts/montserrat/montserrat_medium.ttf" id="3_64onc"]
+[ext_resource type="Texture2D" uid="uid://ch0wqrkugnwfo" path="res://ui/art/cut.svg" id="4_5lq5u"]
+[ext_resource type="Texture2D" uid="uid://c0aogh35f1blx" path="res://ui/art/additive.svg" id="5_xjs7j"]
+[ext_resource type="Texture2D" uid="uid://dfoov0f88ojew" path="res://ui/art/sky.svg" id="6_ahosc"]
+[ext_resource type="Texture2D" uid="uid://bsxqjt40uuiyg" path="res://ui/art/upload_box.svg" id="7_xafs2"]
+[ext_resource type="Texture2D" uid="uid://by48buxx6rdka" path="res://ui/art/make_static.svg" id="8_5uvk3"]
+[ext_resource type="Texture2D" uid="uid://c5x7xk60yadr3" path="res://ui/art/effect.svg" id="9_qgxsq"]
+[ext_resource type="Texture2D" uid="uid://6y844f1nxa7y" path="res://ui/art/material.svg" id="10_r0dmj"]
+[ext_resource type="Texture2D" uid="uid://cvnsm6ykoj4xq" path="res://ui/art/upload_arrow.svg" id="11_osgjy"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_62c1x"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(1, 1, 1, 0.0784314)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="MaterialTemplateList" type="MarginContainer"]
+clip_contents = true
+offset_right = 371.0
+offset_bottom = 682.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.05
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_right = 4
+script = ExtResource("1_6y4a1")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+theme_override_constants/separation = 7
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_dbax7")
+theme_override_font_sizes/font_size = 16
+text = "Please select material Template:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="TemplateStandard" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62c1x")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TemplateStandard"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TemplateStandard/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/TemplateStandard/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+texture = ExtResource("2_af4y4")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TemplateStandard/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer/TemplateStandard/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Standard"
+
+[node name="HelpLabel" type="Label" parent="VBoxContainer/TemplateStandard/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_64onc")
+text = "Basic dielectric or metallic: wood, metals, smooth rocks"
+autowrap_mode = 3
+
+[node name="TemplateOpacity" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62c1x")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TemplateOpacity"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TemplateOpacity/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/TemplateOpacity/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+texture = ExtResource("4_5lq5u")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TemplateOpacity/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer/TemplateOpacity/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Opacity masked"
+
+[node name="HelpLabel" type="Label" parent="VBoxContainer/TemplateOpacity/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_64onc")
+text = "Alpha scissors for transparency: hollow materials"
+autowrap_mode = 3
+
+[node name="TemplateDisplaced" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62c1x")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TemplateDisplaced"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TemplateDisplaced/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/TemplateDisplaced/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+texture = ExtResource("5_xjs7j")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TemplateDisplaced/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer/TemplateDisplaced/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Displaced"
+
+[node name="HelpLabel" type="RichTextLabel" parent="VBoxContainer/TemplateDisplaced/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
+text = "Depth llusion using bump texture: bricks, rocks; [color=orange]High GPU usage cost[/color]"
+fit_content = true
+scroll_active = false
+
+[node name="TemplateFoliage" type="Button" parent="VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62c1x")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TemplateFoliage"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TemplateFoliage/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/TemplateFoliage/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+texture = ExtResource("6_ahosc")
+expand_mode = 4
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TemplateFoliage/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer/TemplateFoliage/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Foliage "
+
+[node name="HelpLabel" type="Label" parent="VBoxContainer/TemplateFoliage/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_64onc")
+text = "Animated with wind: leaves, twigs, grass"
+autowrap_mode = 3
+
+[node name="TemplateGlass" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62c1x")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TemplateGlass"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TemplateGlass/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/TemplateGlass/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("7_xafs2")
+expand_mode = 4
+stretch_mode = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TemplateGlass/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer/TemplateGlass/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Glass"
+
+[node name="HelpLabel" type="Label" parent="VBoxContainer/TemplateGlass/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_64onc")
+text = "Refraction and alpha blended materials"
+autowrap_mode = 3
+
+[node name="TemplateWater" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62c1x")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TemplateWater"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TemplateWater/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/TemplateWater/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("8_5uvk3")
+expand_mode = 4
+stretch_mode = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TemplateWater/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer/TemplateWater/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Water "
+
+[node name="HelpLabel2" type="RichTextLabel" parent="VBoxContainer/TemplateWater/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
+text = "Animated with beer property: small water surfaces. [color=orange]Requires high poly mesh for displacement[/color]"
+fit_content = true
+scroll_active = false
+
+[node name="TemplateVarnish" type="Button" parent="VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62c1x")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TemplateVarnish"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TemplateVarnish/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/TemplateVarnish/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+texture = ExtResource("9_qgxsq")
+expand_mode = 4
+stretch_mode = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TemplateVarnish/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer/TemplateVarnish/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Varnish "
+
+[node name="HelpLabel" type="Label" parent="VBoxContainer/TemplateVarnish/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_64onc")
+text = "Secondary pass of clearcoat: car paint, toys"
+autowrap_mode = 3
+
+[node name="TemplateFabric" type="Button" parent="VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62c1x")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TemplateFabric"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TemplateFabric/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/TemplateFabric/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+texture = ExtResource("10_r0dmj")
+expand_mode = 4
+stretch_mode = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TemplateFabric/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer/TemplateFabric/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Fabric "
+
+[node name="HelpLabel" type="Label" parent="VBoxContainer/TemplateFabric/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_64onc")
+text = "Rim light + sheen: cloths, curtains"
+autowrap_mode = 3
+
+[node name="TemplateShader" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_62c1x")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TemplateShader"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TemplateShader/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/TemplateShader/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(48, 0)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("11_osgjy")
+expand_mode = 4
+stretch_mode = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TemplateShader/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer/TemplateShader/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Shader"
+
+[node name="HelpLabel" type="Label" parent="VBoxContainer/TemplateShader/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_64onc")
+text = "Custom shader written in gdshader"
+autowrap_mode = 3
+
+[connection signal="pressed" from="VBoxContainer/TemplateStandard" to="." method="_on_template_standard_pressed"]
+[connection signal="pressed" from="VBoxContainer/TemplateOpacity" to="." method="_on_template_opacity_pressed"]
+[connection signal="pressed" from="VBoxContainer/TemplateDisplaced" to="." method="_on_template_displaced_pressed"]
+[connection signal="pressed" from="VBoxContainer/TemplateFoliage" to="." method="_on_template_foliage_pressed"]
+[connection signal="pressed" from="VBoxContainer/TemplateGlass" to="." method="_on_template_glass_pressed"]
+[connection signal="pressed" from="VBoxContainer/TemplateWater" to="." method="_on_template_water_pressed"]
+[connection signal="pressed" from="VBoxContainer/TemplateVarnish" to="." method="_on_template_varnish_pressed"]
+[connection signal="pressed" from="VBoxContainer/TemplateFabric" to="." method="_on_template_fabric_pressed"]
+[connection signal="pressed" from="VBoxContainer/TemplateShader" to="." method="_on_template_shader_pressed"]

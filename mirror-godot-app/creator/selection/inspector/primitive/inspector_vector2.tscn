@@ -1,0 +1,52 @@
+[gd_scene load_steps=5 format=3 uid="uid://b1scl85jhehe4"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_js1n7"]
+[ext_resource type="Script" path="res://creator/selection/inspector/primitive/inspector_vector2.gd" id="2_xxvu6"]
+[ext_resource type="PackedScene" uid="uid://cucd1uacfmy0h" path="res://creator/selection/inspector/primitive/inspector_vector_number.tscn" id="3_06hhy"]
+[ext_resource type="PackedScene" uid="uid://cy566ld7k03ue" path="res://creator/selection/inspector/primitive/inspector_reset_button.tscn" id="4_h5ujm"]
+
+[node name="InspectorPropertyVector2" type="HBoxContainer"]
+custom_minimum_size = Vector2(256, 30)
+offset_right = 322.0
+offset_bottom = 32.0
+size_flags_horizontal = 3
+theme = ExtResource("1_js1n7")
+theme_override_constants/separation = 0
+script = ExtResource("2_xxvu6")
+
+[node name="LabelHolder" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 2
+
+[node name="Label" type="Label" parent="LabelHolder"]
+clip_contents = true
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+size_flags_vertical = 1
+text = "E"
+vertical_alignment = 1
+clip_text = true
+
+[node name="Content" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="X" parent="Content" instance=ExtResource("3_06hhy")]
+layout_mode = 2
+label_text = "X"
+label_color = Color(0.960784, 0.2, 0.321569, 1)
+
+[node name="Y" parent="Content" instance=ExtResource("3_06hhy")]
+layout_mode = 2
+label_text = "Y"
+label_color = Color(0.529412, 0.839216, 0.0117647, 1)
+
+[node name="ResetButton" parent="." instance=ExtResource("4_h5ujm")]
+layout_mode = 2
+
+[connection signal="value_changed" from="Content/X" to="." method="_on_number_field_value_changed"]
+[connection signal="value_changed" from="Content/Y" to="." method="_on_number_field_value_changed"]
+[connection signal="pressed" from="ResetButton" to="." method="_on_reset_button_pressed"]

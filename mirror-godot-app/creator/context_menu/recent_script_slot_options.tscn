@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://dttg2igveyva3"]
+
+[ext_resource type="Script" path="res://creator/context_menu/recent_script_slot_options.gd" id="1_q7ojs"]
+[ext_resource type="PackedScene" uid="uid://c6did4ni1basa" path="res://creator/context_menu/context_option.tscn" id="2_3at3s"]
+[ext_resource type="Texture2D" uid="uid://cdcvojixjjpx2" path="res://ui/art/edit.svg" id="4_mf7h2"]
+
+[node name="RecentScriptSlotOptions" type="VBoxContainer"]
+theme_override_constants/separation = 0
+script = ExtResource("1_q7ojs")
+
+[node name="EditScript" parent="." instance=ExtResource("2_3at3s")]
+layout_mode = 2
+text = "Edit Script"
+icon = ExtResource("4_mf7h2")
+
+[connection signal="pressed" from="EditScript" to="." method="_on_edit_asset_pressed"]

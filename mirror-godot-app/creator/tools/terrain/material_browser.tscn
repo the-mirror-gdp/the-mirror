@@ -1,0 +1,167 @@
+[gd_scene load_steps=12 format=3 uid="uid://cx2ptclxpp58e"]
+
+[ext_resource type="StyleBox" uid="uid://bgdhxmhs366tr" path="res://ui/new_player_ui/inventory/panel_transparent_blue_top_rounded.tres" id="1_3jdfg"]
+[ext_resource type="Script" path="res://creator/tools/terrain/material_browser.gd" id="1_ydm0q"]
+[ext_resource type="PackedScene" uid="uid://2retsii3e6aj" path="res://creator/tools/terrain/material_item.tscn" id="2_2wfbr"]
+[ext_resource type="Texture2D" uid="uid://cssmajv2w3v2f" path="res://ui/art/key_outline.svg" id="2_ebp5o"]
+[ext_resource type="FontVariation" uid="uid://dbrjq4n5bqtm4" path="res://ui/new_player_ui/inventory/slot_font.tres" id="3_g55r7"]
+[ext_resource type="FontVariation" uid="uid://bwp6hb31ol8la" path="res://ui/new_player_ui/inventory/title_font_bold.tres" id="4_r2qsi"]
+[ext_resource type="StyleBox" uid="uid://cd25y0wnopb8g" path="res://ui/new_player_ui/inventory/panel_dark_blue_rounded.tres" id="8_4oltc"]
+[ext_resource type="Theme" uid="uid://cs755sks03x2m" path="res://ui/common/panels/panel_hover.theme.tres" id="9_toox6"]
+[ext_resource type="Theme" uid="uid://ys8qltjcesi5" path="res://ui/new_player_ui/ui.theme.tres" id="12_8tcbl"]
+[ext_resource type="Theme" uid="uid://6eru14yfat8d" path="res://ui/in_game_menu/in_game_menu_ui_theme.tres" id="13_skcis"]
+[ext_resource type="Theme" uid="uid://ggwm8asxintx" path="res://ui/common/themes/menu_ui.theme.tres" id="14_ogmbd"]
+
+[node name="MaterialBrowser" type="VBoxContainer"]
+anchors_preset = -1
+anchor_left = 0.310547
+anchor_top = 0.179167
+anchor_right = 0.689453
+anchor_bottom = 0.820833
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 0
+script = ExtResource("1_ydm0q")
+material_panel_list_item = ExtResource("2_2wfbr")
+material_panel_list_item_selected_theme = ExtResource("9_toox6")
+metadata/_edit_use_anchors_ = true
+
+[node name="TopText" type="Panel" parent="."]
+custom_minimum_size = Vector2(0, 34)
+offset_right = 969.0
+offset_bottom = 34.0
+size_flags_vertical = 0
+theme_override_styles/panel = ExtResource("1_3jdfg")
+
+[node name="ChooseMaterialText" type="HBoxContainer" parent="TopText"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 4.0
+offset_right = -8.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_custom_anchors = true
+
+[node name="Label" type="Label" parent="TopText/ChooseMaterialText"]
+custom_minimum_size = Vector2(0, 22)
+offset_top = 2.0
+offset_right = 931.0
+offset_bottom = 24.0
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("4_r2qsi")
+theme_override_font_sizes/font_size = 12
+text = "CHOOSE MATERIAL"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+
+[node name="Outline" type="TextureButton" parent="TopText/ChooseMaterialText"]
+custom_minimum_size = Vector2(18, 18)
+offset_left = 935.0
+offset_top = 4.0
+offset_right = 953.0
+offset_bottom = 22.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = ExtResource("2_ebp5o")
+texture_pressed = ExtResource("2_ebp5o")
+texture_hover = ExtResource("2_ebp5o")
+texture_disabled = ExtResource("2_ebp5o")
+texture_focused = ExtResource("2_ebp5o")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="TopText/ChooseMaterialText/Outline"]
+custom_minimum_size = Vector2(14, 14)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+theme_override_fonts/font = ExtResource("3_g55r7")
+theme_override_font_sizes/font_size = 11
+text = "X"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Materials" type="Panel" parent="."]
+offset_top = 34.0
+offset_right = 969.0
+offset_bottom = 827.0
+size_flags_vertical = 3
+
+[node name="Panel" type="Panel" parent="Materials"]
+anchors_preset = -1
+anchor_left = 0.03
+anchor_top = 0.03
+anchor_right = 0.97
+anchor_bottom = 0.97
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("8_4oltc")
+
+[node name="MaterialsList" type="ScrollContainer" parent="Materials/Panel"]
+anchors_preset = -1
+anchor_left = 0.03
+anchor_top = 0.03
+anchor_right = 0.97
+anchor_bottom = 0.97
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GridContainer" type="GridContainer" parent="Materials/Panel/MaterialsList"]
+columns = 4
+
+[node name="BottomButtons" type="Panel" parent="."]
+custom_minimum_size = Vector2(0, 96)
+offset_top = 827.0
+offset_right = 969.0
+offset_bottom = 923.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="BottomButtons"]
+anchors_preset = -1
+anchor_right = 0.97
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("12_8tcbl")
+metadata/_edit_use_anchors_ = true
+
+[node name="Spacer" type="Control" parent="BottomButtons/HBoxContainer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 419.0
+offset_bottom = 96.0
+size_flags_horizontal = 3
+
+[node name="Cancel" type="Button" parent="BottomButtons/HBoxContainer"]
+custom_minimum_size = Vector2(256, 64)
+offset_left = 423.0
+offset_top = 16.0
+offset_right = 679.0
+offset_bottom = 80.0
+size_flags_vertical = 4
+theme = ExtResource("13_skcis")
+text = "Cancel"
+
+[node name="Done" type="Button" parent="BottomButtons/HBoxContainer"]
+custom_minimum_size = Vector2(256, 64)
+offset_left = 683.0
+offset_top = 16.0
+offset_right = 939.0
+offset_bottom = 80.0
+size_flags_vertical = 4
+theme = ExtResource("14_ogmbd")
+disabled = true
+text = "Done"
+
+[connection signal="pressed" from="TopText/ChooseMaterialText/Outline" to="." method="_on_close"]
+[connection signal="pressed" from="BottomButtons/HBoxContainer/Cancel" to="." method="_on_close"]
+[connection signal="pressed" from="BottomButtons/HBoxContainer/Done" to="." method="_on_done_pressed"]

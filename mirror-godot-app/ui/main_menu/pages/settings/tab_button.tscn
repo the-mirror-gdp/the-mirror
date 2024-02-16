@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bp0y24nv35rn3"]
+
+[ext_resource type="Theme" uid="uid://bup8odqu073gb" path="res://ui/main_menu/pages/settings/theme/tab_button_theme.tres" id="1_efonw"]
+
+[node name="Button" type="Button"]
+offset_right = 8.0
+offset_bottom = 8.0
+theme = ExtResource("1_efonw")
+text = "Button"
+alignment = 0

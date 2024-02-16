@@ -1,0 +1,62 @@
+[gd_scene load_steps=5 format=3 uid="uid://dbpxgjpuqb2x2"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_idq2p"]
+[ext_resource type="Script" path="res://creator/selection/inspector/primitive/inspector_vector3.gd" id="2_ycp34"]
+[ext_resource type="PackedScene" uid="uid://cucd1uacfmy0h" path="res://creator/selection/inspector/primitive/inspector_vector_number.tscn" id="3_y4ayk"]
+[ext_resource type="PackedScene" uid="uid://cy566ld7k03ue" path="res://creator/selection/inspector/primitive/inspector_reset_button.tscn" id="4_3q0oa"]
+
+[node name="InspectorPropertyVector3" type="HBoxContainer"]
+custom_minimum_size = Vector2(256, 30)
+offset_right = 322.0
+offset_bottom = 32.0
+size_flags_horizontal = 3
+theme = ExtResource("1_idq2p")
+theme_override_constants/separation = 0
+script = ExtResource("2_ycp34")
+label_text = "Name"
+
+[node name="LabelHolder" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 2
+
+[node name="Label" type="Label" parent="LabelHolder"]
+clip_contents = true
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+size_flags_vertical = 1
+text = "Name"
+vertical_alignment = 1
+clip_text = true
+
+[node name="Content" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="X" parent="Content" instance=ExtResource("3_y4ayk")]
+layout_mode = 2
+label_text = "X"
+label_color = Color(0.960784, 0.2, 0.321569, 1)
+
+[node name="Y" parent="Content" instance=ExtResource("3_y4ayk")]
+layout_mode = 2
+label_text = "Y"
+label_color = Color(0.529412, 0.839216, 0.0117647, 1)
+
+[node name="Z" parent="Content" instance=ExtResource("3_y4ayk")]
+layout_mode = 2
+label_text = "Z"
+label_color = Color(0.160784, 0.54902, 0.960784, 1)
+
+[node name="ResetButton" parent="." instance=ExtResource("4_3q0oa")]
+layout_mode = 2
+
+[connection signal="value_changed" from="Content/X" to="." method="_on_number_field_value_changed"]
+[connection signal="value_preview" from="Content/X" to="." method="_on_x_value_preview"]
+[connection signal="value_changed" from="Content/Y" to="." method="_on_number_field_value_changed"]
+[connection signal="value_preview" from="Content/Y" to="." method="_on_y_value_preview"]
+[connection signal="value_changed" from="Content/Z" to="." method="_on_number_field_value_changed"]
+[connection signal="value_preview" from="Content/Z" to="." method="_on_z_value_preview"]
+[connection signal="pressed" from="ResetButton" to="." method="_on_reset_button_pressed"]

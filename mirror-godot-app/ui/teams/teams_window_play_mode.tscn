@@ -1,0 +1,348 @@
+[gd_scene load_steps=15 format=3 uid="uid://b3nbyqvdhjh7b"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_fs3w1"]
+[ext_resource type="Script" path="res://scripts/ui/play_mode_teams.gd" id="2_lb0ib"]
+[ext_resource type="Shader" path="res://ui/common/shaders/ui_blurr.gdshader" id="3_di8dj"]
+[ext_resource type="StyleBox" uid="uid://nen4cpg1225q" path="res://ui/common/panels/panel_basic_rounded.stylebox.tres" id="4_op7kd"]
+[ext_resource type="PackedScene" uid="uid://d3nipcgjwg7j5" path="res://ui/common/components/window_close_button.tscn" id="5_sgfpm"]
+[ext_resource type="PackedScene" uid="uid://dqmxrquvyyu51" path="res://ui/common/components/window_header.tscn" id="6_5xofh"]
+[ext_resource type="Texture2D" uid="uid://b073tnwc67ff1" path="res://creator/tools/build_bar/team_icon_white.svg" id="8_haupb"]
+[ext_resource type="Script" path="res://scripts/ui/table.gd" id="9_kqr1y"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cocrq"]
+shader = ExtResource("3_di8dj")
+shader_parameter/blur = 3.0
+shader_parameter/color = Color(0.40504, 0.436742, 0.470745, 1)
+shader_parameter/strength = 0.15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iivx4"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.133333)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hqeb6"]
+content_margin_left = 5.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.133333)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1tw1t"]
+content_margin_left = 5.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.133333)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ru254"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_snbrk"]
+border_width_top = 1
+border_color = Color(0.8, 0.8, 0.8, 0.207843)
+border_blend = true
+
+[node name="TeamsWindow" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1280.0
+offset_top = -720.0
+offset_right = 1280.0
+offset_bottom = 720.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("1_fs3w1")
+script = ExtResource("2_lb0ib")
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+copy_mode = 2
+
+[node name="Control" type="Panel" parent="."]
+material = SubResource("ShaderMaterial_cocrq")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.34375
+anchor_top = 0.291667
+anchor_right = 0.65625
+anchor_bottom = 0.708333
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("4_op7kd")
+
+[node name="close_button" parent="Control" instance=ExtResource("5_sgfpm")]
+layout_mode = 1
+offset_right = 0.0
+offset_bottom = 0.0
+
+[node name="CloseButton" parent="Control/close_button/MarginContainer" index="0"]
+custom_minimum_size = Vector2(16, 16)
+
+[node name="body" type="VBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/body"]
+layout_mode = 2
+
+[node name="window_header" parent="Control/body/VBoxContainer" instance=ExtResource("6_5xofh")]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 1
+
+[node name="TITLE" parent="Control/body/VBoxContainer/window_header" index="0"]
+offset_top = 45.0
+
+[node name="MarginContainer" parent="Control/body/VBoxContainer/window_header/TITLE" index="0"]
+theme_override_constants/margin_top = 0
+
+[node name="Label" parent="Control/body/VBoxContainer/window_header/TITLE/MarginContainer" index="0"]
+text = "Teams"
+
+[node name="table_container" type="HBoxContainer" parent="Control/body/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+script = ExtResource("9_kqr1y")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/body/VBoxContainer/table_container"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_top = 50
+
+[node name="Scrollbar" type="ScrollContainer" parent="Control/body/VBoxContainer/table_container/MarginContainer"]
+custom_minimum_size = Vector2(0, 260)
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="table_header" type="Control" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="title_name" type="Label" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/table_header"]
+layout_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_iivx4")
+text = "NAME
+"
+
+[node name="title_blank" type="Label" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/table_header"]
+layout_mode = 0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_iivx4")
+
+[node name="title_color" type="Label" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/table_header"]
+layout_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_hqeb6")
+text = "COLOR"
+
+[node name="title_action" type="Label" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/table_header"]
+layout_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_1tw1t")
+text = "ACTION"
+
+[node name="new_row" type="Control" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="icon" type="MarginContainer" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+offset_right = 10.0
+offset_bottom = 10.0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="TextureButton" type="TextureButton" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row/icon"]
+layout_mode = 2
+focus_mode = 0
+texture_normal = ExtResource("8_haupb")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="name" type="MarginContainer" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="team_name" type="Label" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row/name"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "RED TEAM"
+
+[node name="color" type="MarginContainer" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="team_color" type="ColorPickerButton" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row/color"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ru254")
+disabled = true
+color = Color(1, 0, 0, 1)
+
+[node name="join_team" type="MarginContainer" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="join_team_button" type="Button" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row/join_team"]
+layout_mode = 2
+focus_mode = 0
+theme_override_constants/h_separation = 8
+theme_override_constants/icon_max_width = 20
+theme_override_font_sizes/font_size = 18
+text = "Join"
+
+[node name="visual separator" type="HSeparator" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+theme_override_styles/separator = SubResource("StyleBoxFlat_snbrk")
+
+[node name="visual separator2" type="HSeparator" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+theme_override_styles/separator = SubResource("StyleBoxFlat_snbrk")
+
+[node name="visual separator3" type="HSeparator" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+theme_override_styles/separator = SubResource("StyleBoxFlat_snbrk")
+
+[node name="visual separator4" type="HSeparator" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+theme_override_styles/separator = SubResource("StyleBoxFlat_snbrk")
+
+[node name="table" type="GridContainer" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_fs3w1")
+theme_override_constants/h_separation = 0
+columns = 4
+
+[node name="title_name" type="Label" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_iivx4")
+text = "NAME
+"
+
+[node name="title_blank" type="Label" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_iivx4")
+
+[node name="title_color" type="Label" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_hqeb6")
+text = "COLOR"
+
+[node name="title_action" type="Label" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_1tw1t")
+text = "ACTION"
+
+[node name="icon" type="MarginContainer" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="TextureButton" type="TextureButton" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/table/icon"]
+layout_mode = 2
+focus_mode = 0
+texture_normal = ExtResource("8_haupb")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="name" type="MarginContainer" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="team_name" type="Label" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/table/name"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "RED TEAM"
+
+[node name="color" type="MarginContainer" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="team_color" type="ColorPickerButton" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/table/color"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ru254")
+disabled = true
+color = Color(1, 0, 0, 1)
+
+[node name="join_team" type="MarginContainer" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="join_team_button" type="Button" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/table/join_team"]
+layout_mode = 2
+focus_mode = 0
+theme_override_constants/h_separation = 8
+theme_override_constants/icon_max_width = 20
+theme_override_font_sizes/font_size = 18
+text = "Join"
+
+[node name="visual separator" type="HSeparator" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_snbrk")
+
+[node name="visual separator2" type="HSeparator" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_snbrk")
+
+[node name="visual separator3" type="HSeparator" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_snbrk")
+
+[node name="visual separator4" type="HSeparator" parent="Control/body/VBoxContainer/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_snbrk")
+
+[connection signal="pressed" from="Control/close_button/MarginContainer/CloseButton" to="." method="close_button_pressed"]
+
+[editable path="Control/close_button"]
+[editable path="Control/body/VBoxContainer/window_header"]

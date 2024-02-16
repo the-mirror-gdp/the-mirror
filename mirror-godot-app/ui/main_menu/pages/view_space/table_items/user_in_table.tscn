@@ -1,0 +1,60 @@
+[gd_scene load_steps=8 format=3 uid="uid://c414bgtr5h40j"]
+
+[ext_resource type="FontFile" uid="uid://cv5tkor0qdxqq" path="res://ui/common/fonts/fontawesome-free-6/Font Awesome 6 Free-Solid-900.otf" id="1_nn2j8"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/view_space/table_items/user_in_table.gd" id="1_y11wl"]
+[ext_resource type="Script" path="res://ui/main_menu/common/UrlTextureRect.gd" id="3_ra661"]
+[ext_resource type="FontFile" uid="uid://cgyrixnr8bppj" path="res://ui/common/fonts/montserrat/montserrat_medium.ttf" id="4_8kvtm"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8no3h"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.85098, 0.85098, 0.85098, 0.129412)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pfjsn"]
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bbkgt"]
+content_margin_left = 10.0
+content_margin_right = 10.0
+
+[node name="UserInTable" type="PanelContainer"]
+theme_override_styles/panel = SubResource("StyleBoxFlat_8no3h")
+script = ExtResource("1_y11wl")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="user_icon" type="Label" parent="HBoxContainer"]
+clip_children = 2
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("1_nn2j8")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_pfjsn")
+text = "user"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="UrlTextureRect" type="TextureRect" parent="HBoxContainer/user_icon"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 2
+script = ExtResource("3_ra661")
+
+[node name="user_name" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_8kvtm")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxEmpty_bbkgt")
+text = "JAN KOWALSKI"
+vertical_alignment = 1

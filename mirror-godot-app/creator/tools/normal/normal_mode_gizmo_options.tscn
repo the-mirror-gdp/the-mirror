@@ -1,0 +1,426 @@
+[gd_scene load_steps=11 format=3 uid="uid://ymbifg7ja6vs"]
+
+[ext_resource type="StyleBox" uid="uid://bgdhxmhs366tr" path="res://ui/new_player_ui/inventory/panel_transparent_blue_top_rounded.tres" id="1_a5xaf"]
+[ext_resource type="Script" path="res://creator/tools/toolbar_gizmo_options.gd" id="1_nwkws"]
+[ext_resource type="Theme" uid="uid://dqjg12tafkeu2" path="res://creator/tools/build_bar/build_bar.theme.tres" id="1_un4s6"]
+[ext_resource type="Texture2D" uid="uid://cssmajv2w3v2f" path="res://ui/art/key_outline.svg" id="2_a3j7r"]
+[ext_resource type="FontVariation" uid="uid://dbrjq4n5bqtm4" path="res://ui/new_player_ui/inventory/slot_font.tres" id="3_0jqvd"]
+[ext_resource type="FontVariation" uid="uid://bwp6hb31ol8la" path="res://ui/new_player_ui/inventory/title_font_bold.tres" id="4_sh4pa"]
+[ext_resource type="Texture2D" uid="uid://5w8yo8d2hlte" path="res://ui/art/key_outline_large.svg" id="5_o4vg8"]
+[ext_resource type="FontFile" uid="uid://dh4xtfcbcu8ur" path="res://ui/common/fonts/TheMirrorIcons.otf" id="8_3ijs8"]
+[ext_resource type="Script" path="res://ui/new_player_ui/ToolWindowKeyLabel.gd" id="8_d7611"]
+[ext_resource type="ButtonGroup" uid="uid://bmdkxr2d73y56" path="res://creator/tools/normal/gizmo_button_group.tres" id="9_k2p2f"]
+
+[node name="GizmoOptions" type="VBoxContainer" node_paths=PackedStringArray("_grab_button", "_move_button", "_rotate_button", "_scale_button")]
+offset_right = 310.0
+offset_bottom = 100.0
+theme = ExtResource("1_un4s6")
+theme_override_constants/separation = 0
+script = ExtResource("1_nwkws")
+_grab_button = NodePath("SelectMode/Grab/VBoxContainer/GrabButton")
+_move_button = NodePath("SelectMode/Move/VBoxContainer/MoveButton")
+_rotate_button = NodePath("SelectMode/Rotate/VBoxContainer/RotateButton")
+_scale_button = NodePath("SelectMode/Scale/VBoxContainer/ScaleButton")
+
+[node name="TopText" type="Panel" parent="."]
+custom_minimum_size = Vector2(0, 34)
+offset_right = 310.0
+offset_bottom = 34.0
+size_flags_vertical = 0
+theme_override_styles/panel = ExtResource("1_a5xaf")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TopText"]
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_top = 4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+metadata/_edit_use_custom_anchors = true
+
+[node name="Terrain" type="HBoxContainer" parent="TopText/HBoxContainer"]
+visible = false
+offset_right = 77.0
+offset_bottom = 26.0
+size_flags_horizontal = 0
+
+[node name="Outline" type="TextureRect" parent="TopText/HBoxContainer/Terrain"]
+custom_minimum_size = Vector2(18, 18)
+offset_top = 4.0
+offset_right = 18.0
+offset_bottom = 22.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_a3j7r")
+ignore_texture_size = true
+
+[node name="Label" type="Label" parent="TopText/HBoxContainer/Terrain/Outline"]
+custom_minimum_size = Vector2(14, 14)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+theme_override_fonts/font = ExtResource("3_0jqvd")
+theme_override_font_sizes/font_size = 11
+text = "T"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="TopText/HBoxContainer/Terrain"]
+custom_minimum_size = Vector2(0, 22)
+offset_left = 22.0
+offset_top = 2.0
+offset_right = 77.0
+offset_bottom = 24.0
+theme_override_fonts/font = ExtResource("4_sh4pa")
+theme_override_font_sizes/font_size = 12
+text = "TERRAIN"
+vertical_alignment = 1
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+
+[node name="Build" type="HBoxContainer" parent="TopText/HBoxContainer"]
+offset_right = 62.0
+offset_bottom = 26.0
+size_flags_horizontal = 0
+
+[node name="Outline" type="TextureRect" parent="TopText/HBoxContainer/Build"]
+custom_minimum_size = Vector2(18, 18)
+offset_top = 4.0
+offset_right = 18.0
+offset_bottom = 22.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_a3j7r")
+ignore_texture_size = true
+
+[node name="Label" type="Label" parent="TopText/HBoxContainer/Build/Outline"]
+custom_minimum_size = Vector2(14, 14)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+theme_override_fonts/font = ExtResource("3_0jqvd")
+theme_override_font_sizes/font_size = 11
+text = "B"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="TopText/HBoxContainer/Build"]
+custom_minimum_size = Vector2(0, 22)
+offset_left = 22.0
+offset_top = 2.0
+offset_right = 62.0
+offset_bottom = 24.0
+theme_override_fonts/font = ExtResource("4_sh4pa")
+theme_override_font_sizes/font_size = 12
+text = "BUILD"
+vertical_alignment = 1
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+
+[node name="Edit" type="HBoxContainer" parent="TopText/HBoxContainer"]
+offset_left = 74.0
+offset_right = 125.0
+offset_bottom = 26.0
+size_flags_horizontal = 0
+
+[node name="Outline" type="TextureRect" parent="TopText/HBoxContainer/Edit"]
+custom_minimum_size = Vector2(18, 18)
+offset_top = 4.0
+offset_right = 18.0
+offset_bottom = 22.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_a3j7r")
+ignore_texture_size = true
+
+[node name="Label" type="Label" parent="TopText/HBoxContainer/Edit/Outline"]
+custom_minimum_size = Vector2(14, 14)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+theme_override_fonts/font = ExtResource("3_0jqvd")
+theme_override_font_sizes/font_size = 11
+text = "E"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="TopText/HBoxContainer/Edit"]
+custom_minimum_size = Vector2(0, 22)
+offset_left = 22.0
+offset_top = 2.0
+offset_right = 51.0
+offset_bottom = 24.0
+theme_override_fonts/font = ExtResource("4_sh4pa")
+theme_override_font_sizes/font_size = 12
+text = "EDIT"
+vertical_alignment = 1
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+
+[node name="Menu" type="HBoxContainer" parent="TopText/HBoxContainer"]
+offset_left = 137.0
+offset_right = 208.0
+offset_bottom = 26.0
+size_flags_horizontal = 0
+
+[node name="Outline" type="TextureRect" parent="TopText/HBoxContainer/Menu"]
+custom_minimum_size = Vector2(28, 18)
+offset_top = 4.0
+offset_right = 28.0
+offset_bottom = 22.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("5_o4vg8")
+ignore_texture_size = true
+
+[node name="Label" type="Label" parent="TopText/HBoxContainer/Menu/Outline"]
+custom_minimum_size = Vector2(14, 14)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+theme_override_fonts/font = ExtResource("3_0jqvd")
+theme_override_font_sizes/font_size = 11
+text = "ESC"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="TopText/HBoxContainer/Menu"]
+custom_minimum_size = Vector2(0, 22)
+offset_left = 32.0
+offset_top = 2.0
+offset_right = 71.0
+offset_bottom = 24.0
+theme_override_fonts/font = ExtResource("4_sh4pa")
+theme_override_font_sizes/font_size = 12
+text = "MENU"
+vertical_alignment = 1
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+
+[node name="SelectMode" type="HBoxContainer" parent="."]
+offset_top = 34.0
+offset_right = 310.0
+offset_bottom = 100.0
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="Grab" type="MarginContainer" parent="SelectMode"]
+offset_right = 77.0
+offset_bottom = 66.0
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SelectMode/Grab"]
+offset_left = 22.0
+offset_top = 9.0
+offset_right = 54.0
+offset_bottom = 57.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = -3
+
+[node name="GrabButton" type="Button" parent="SelectMode/Grab/VBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+offset_right = 32.0
+offset_bottom = 32.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_mode = 1
+theme_override_fonts/font = ExtResource("8_3ijs8")
+theme_override_font_sizes/font_size = 12
+toggle_mode = true
+button_group = ExtResource("9_k2p2f")
+text = "E"
+icon_alignment = 1
+expand_icon = true
+
+[node name="GrabLabel" type="Label" parent="SelectMode/Grab/VBoxContainer"]
+offset_top = 29.0
+offset_right = 32.0
+offset_bottom = 48.0
+theme_override_fonts/font = ExtResource("4_sh4pa")
+theme_override_font_sizes/font_size = 12
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 2
+script = ExtResource("8_d7611")
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+
+[node name="VSeparator" type="VSeparator" parent="SelectMode"]
+self_modulate = Color(0, 0, 0, 0.2)
+custom_minimum_size = Vector2(0, 32)
+offset_left = 77.0
+offset_right = 77.0
+offset_bottom = 66.0
+size_flags_vertical = 5
+theme_override_constants/separation = 0
+
+[node name="Move" type="MarginContainer" parent="SelectMode"]
+offset_left = 77.0
+offset_right = 155.0
+offset_bottom = 66.0
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SelectMode/Move"]
+offset_left = 23.0
+offset_top = 9.0
+offset_right = 55.0
+offset_bottom = 57.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = -3
+
+[node name="MoveButton" type="Button" parent="SelectMode/Move/VBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+offset_right = 32.0
+offset_bottom = 32.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_mode = 1
+theme_override_fonts/font = ExtResource("8_3ijs8")
+theme_override_font_sizes/font_size = 12
+toggle_mode = true
+button_group = ExtResource("9_k2p2f")
+text = "A"
+icon_alignment = 1
+expand_icon = true
+
+[node name="MoveLabel" type="Label" parent="SelectMode/Move/VBoxContainer"]
+offset_top = 29.0
+offset_right = 32.0
+offset_bottom = 48.0
+theme_override_fonts/font = ExtResource("4_sh4pa")
+theme_override_font_sizes/font_size = 12
+text = "2"
+horizontal_alignment = 1
+vertical_alignment = 2
+script = ExtResource("8_d7611")
+tool_number = 2
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+
+[node name="VSeparator2" type="VSeparator" parent="SelectMode"]
+self_modulate = Color(0, 0, 0, 0.2)
+custom_minimum_size = Vector2(0, 32)
+offset_left = 155.0
+offset_right = 155.0
+offset_bottom = 66.0
+size_flags_vertical = 5
+theme_override_constants/separation = 0
+
+[node name="Rotate" type="MarginContainer" parent="SelectMode"]
+offset_left = 155.0
+offset_right = 232.0
+offset_bottom = 66.0
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SelectMode/Rotate"]
+offset_left = 22.0
+offset_top = 9.0
+offset_right = 54.0
+offset_bottom = 57.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = -3
+
+[node name="RotateButton" type="Button" parent="SelectMode/Rotate/VBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+offset_right = 32.0
+offset_bottom = 32.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_mode = 1
+theme_override_fonts/font = ExtResource("8_3ijs8")
+theme_override_font_sizes/font_size = 12
+toggle_mode = true
+button_group = ExtResource("9_k2p2f")
+text = "D"
+icon_alignment = 1
+expand_icon = true
+
+[node name="RotateLabel" type="Label" parent="SelectMode/Rotate/VBoxContainer"]
+offset_top = 29.0
+offset_right = 32.0
+offset_bottom = 48.0
+theme_override_fonts/font = ExtResource("4_sh4pa")
+theme_override_font_sizes/font_size = 12
+text = "3"
+horizontal_alignment = 1
+vertical_alignment = 2
+script = ExtResource("8_d7611")
+tool_number = 3
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+
+[node name="VSeparator3" type="VSeparator" parent="SelectMode"]
+self_modulate = Color(0, 0, 0, 0.2)
+custom_minimum_size = Vector2(0, 32)
+offset_left = 232.0
+offset_right = 232.0
+offset_bottom = 66.0
+size_flags_vertical = 5
+theme_override_constants/separation = 0
+
+[node name="Scale" type="MarginContainer" parent="SelectMode"]
+offset_left = 232.0
+offset_right = 310.0
+offset_bottom = 66.0
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SelectMode/Scale"]
+offset_left = 23.0
+offset_top = 9.0
+offset_right = 55.0
+offset_bottom = 57.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = -3
+
+[node name="ScaleButton" type="Button" parent="SelectMode/Scale/VBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+offset_right = 32.0
+offset_bottom = 32.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_mode = 1
+theme_override_fonts/font = ExtResource("8_3ijs8")
+theme_override_font_sizes/font_size = 12
+toggle_mode = true
+button_group = ExtResource("9_k2p2f")
+text = "C"
+icon_alignment = 1
+expand_icon = true
+
+[node name="ScaleLabel" type="Label" parent="SelectMode/Scale/VBoxContainer"]
+offset_top = 29.0
+offset_right = 32.0
+offset_bottom = 48.0
+theme_override_fonts/font = ExtResource("4_sh4pa")
+theme_override_font_sizes/font_size = 12
+text = "4"
+horizontal_alignment = 1
+vertical_alignment = 2
+script = ExtResource("8_d7611")
+tool_number = 4
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+
+[connection signal="pressed" from="SelectMode/Grab/VBoxContainer/GrabButton" to="." method="_on_grab_button_pressed"]
+[connection signal="pressed" from="SelectMode/Move/VBoxContainer/MoveButton" to="." method="_on_move_button_pressed"]
+[connection signal="pressed" from="SelectMode/Rotate/VBoxContainer/RotateButton" to="." method="_on_rotate_button_pressed"]
+[connection signal="pressed" from="SelectMode/Scale/VBoxContainer/ScaleButton" to="." method="_on_scale_button_pressed"]

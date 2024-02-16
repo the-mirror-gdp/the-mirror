@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://cru471yvfl7f8"]
+
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="1_fqx8y"]
+
+[node name="Emoji" type="Label3D"]
+pixel_size = 0.0075
+billboard = 1
+outline_modulate = Color(0, 0, 0, 0)
+text = "❤️"
+font = ExtResource("1_fqx8y")

@@ -1,0 +1,10 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://03jecd8t5u3l"]
+
+[ext_resource type="FontFile" uid="uid://0xwx6e53jci7" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_regular.ttf" id="1"]
+
+[sub_resource type="FontVariation" id="1"]
+base_font = ExtResource("1")
+
+[resource]
+Label/colors/font_color = Color(1, 1, 1, 1)
+Label/fonts/font = SubResource("1")

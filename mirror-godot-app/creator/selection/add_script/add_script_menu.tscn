@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=3 uid="uid://b5v3xh8qmijeq"]
+
+[ext_resource type="Theme" uid="uid://chpmeyn2g6o6r" path="res://script/visual/editor/script_editor.theme.tres" id="1_bqqdn"]
+[ext_resource type="Script" path="res://creator/selection/add_script/add_script_menu.gd" id="2_wf3s5"]
+[ext_resource type="Texture2D" uid="uid://kpcb4jb5hto6" path="res://ui/art/accordian_close.png" id="3_jay8g"]
+[ext_resource type="PackedScene" uid="uid://nnphdtunua76" path="res://creator/common/dropdown_search/dropdown_filter_menu.tscn" id="3_ljcbd"]
+
+[node name="AddScriptMenu" type="VBoxContainer"]
+offset_right = 350.0
+offset_bottom = 26.0
+theme = ExtResource("1_bqqdn")
+script = ExtResource("2_wf3s5")
+
+[node name="CreateNewScript" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="CreateVisualScript" type="Button" parent="CreateNewScript"]
+custom_minimum_size = Vector2(180, 2.08165e-12)
+layout_mode = 2
+text = "New Visual Script"
+icon = ExtResource("3_jay8g")
+expand_icon = true
+
+[node name="CreateGDScript" type="Button" parent="CreateNewScript"]
+custom_minimum_size = Vector2(150, 2.08165e-12)
+layout_mode = 2
+disabled = true
+text = "New GDScript"
+icon = ExtResource("3_jay8g")
+expand_icon = true
+
+[node name="FilterMenu" parent="." instance=ExtResource("3_ljcbd")]
+visible = false
+custom_minimum_size = Vector2(100, 300)
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 3
+auto_hide = false
+
+[node name="SearchField" parent="FilterMenu/MarginContainer/FilterMenu" index="0"]
+placeholder_text = "Search scripts in space..."
+
+[connection signal="pressed" from="CreateNewScript/CreateVisualScript" to="." method="_on_create_visual_script_pressed"]
+[connection signal="pressed" from="CreateNewScript/CreateGDScript" to="." method="_on_create_gd_script_pressed"]
+[connection signal="item_activated" from="FilterMenu" to="." method="_on_filter_menu_item_activated"]
+[connection signal="item_selected" from="FilterMenu" to="." method="_on_filter_menu_item_selected"]
+
+[editable path="FilterMenu"]

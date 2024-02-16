@@ -1,0 +1,58 @@
+[gd_scene load_steps=10 format=3 uid="uid://bbtbjpdqfhwag"]
+
+[ext_resource type="Script" path="res://creator/context_menu/asset_slot_options.gd" id="1_eokfl"]
+[ext_resource type="PackedScene" uid="uid://c6did4ni1basa" path="res://creator/context_menu/context_option.tscn" id="1_pllnn"]
+[ext_resource type="Texture2D" uid="uid://g7ikhwlvgwky" path="res://ui/art/copy.svg" id="2_gfg3n"]
+[ext_resource type="Texture2D" uid="uid://d3wol5dxj0fgk" path="res://ui/art/asset_tool.svg" id="3_suqtx"]
+[ext_resource type="Texture2D" uid="uid://cdcvojixjjpx2" path="res://ui/art/edit.svg" id="4_32jbq"]
+[ext_resource type="Texture2D" uid="uid://dbh6pi6vogo8m" path="res://ui/art/linked.svg" id="4_yw86r"]
+[ext_resource type="Texture2D" uid="uid://cwinr5i6f8577" path="res://creator/selection/scene_hierarchy/icons/script_tab_icon.svg" id="5_b21oe"]
+[ext_resource type="Texture2D" uid="uid://cqnycive6oia8" path="res://script/visual/editor/icons/trash.svg" id="8_7tknh"]
+[ext_resource type="PackedScene" uid="uid://cdxdqom4buex" path="res://creator/common/delete_dialog/delete_dialog.tscn" id="8_xk8ub"]
+
+[node name="AssetSlotOptions" type="VBoxContainer"]
+theme_override_constants/separation = 0
+script = ExtResource("1_eokfl")
+
+[node name="CreateInstance" parent="." instance=ExtResource("1_pllnn")]
+layout_mode = 2
+text = "Create Instance"
+icon = ExtResource("3_suqtx")
+
+[node name="EditAsset" parent="." instance=ExtResource("1_pllnn")]
+layout_mode = 2
+text = "Edit Asset"
+icon = ExtResource("4_32jbq")
+
+[node name="EditScript" parent="." instance=ExtResource("1_pllnn")]
+layout_mode = 2
+text = "Edit Script"
+icon = ExtResource("5_b21oe")
+
+[node name="CopyAssetID" parent="." instance=ExtResource("1_pllnn")]
+layout_mode = 2
+text = "Copy Asset ID"
+icon = ExtResource("2_gfg3n")
+
+[node name="CopyAssetURL" parent="." instance=ExtResource("1_pllnn")]
+layout_mode = 2
+text = "Copy Asset URL"
+icon = ExtResource("4_yw86r")
+
+[node name="DeleteAsset" parent="." instance=ExtResource("1_pllnn")]
+layout_mode = 2
+theme_override_colors/icon_normal_color = Color(1, 0.419608, 0.329412, 0.501961)
+theme_override_colors/icon_pressed_color = Color(1, 0.419608, 0.329412, 0.784314)
+theme_override_colors/icon_hover_color = Color(1, 0.419608, 0.329412, 0.784314)
+text = "Delete Asset"
+icon = ExtResource("8_7tknh")
+
+[node name="DeleteDialog" parent="." instance=ExtResource("8_xk8ub")]
+
+[connection signal="pressed" from="CreateInstance" to="." method="_on_create_instance_pressed"]
+[connection signal="pressed" from="EditAsset" to="." method="_on_edit_asset_pressed"]
+[connection signal="pressed" from="EditScript" to="." method="_on_edit_script_pressed"]
+[connection signal="pressed" from="CopyAssetID" to="." method="_on_copy_asset_id_pressed"]
+[connection signal="pressed" from="CopyAssetURL" to="." method="_on_copy_asset_url_pressed"]
+[connection signal="pressed" from="DeleteAsset" to="." method="_on_delete_asset_pressed"]
+[connection signal="confirmed" from="DeleteDialog" to="." method="_on_delete_dialog_confirmed"]

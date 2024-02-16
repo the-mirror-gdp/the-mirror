@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://51hfh08pbhvq"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_oevvq"]
+[ext_resource type="Texture2D" uid="uid://cg5f8s6wlgvc4" path="res://ui/art/dropdown.svg" id="2_h3q7h"]
+[ext_resource type="Script" path="res://creator/common/dropdown_search/dropdown_button.gd" id="3_8alvd"]
+[ext_resource type="PackedScene" uid="uid://nnphdtunua76" path="res://creator/common/dropdown_search/dropdown_filter_menu.tscn" id="4_0redq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qhcnq"]
+
+[node name="DropdownButton" type="Button"]
+offset_right = 114.0
+offset_bottom = 31.0
+theme = ExtResource("1_oevvq")
+theme_type_variation = &"OptionButton"
+text = "Dropdown"
+icon = ExtResource("2_h3q7h")
+alignment = 0
+text_overrun_behavior = 3
+icon_alignment = 2
+script = ExtResource("3_8alvd")
+
+[node name="PopupPanel" type="PopupPanel" parent="."]
+disable_3d = true
+handle_input_locally = false
+size = Vector2i(200, 240)
+theme_override_styles/panel = SubResource("StyleBoxEmpty_qhcnq")
+
+[node name="FilterMenu" parent="PopupPanel" instance=ExtResource("4_0redq")]
+auto_hide = false
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]
+[connection signal="item_selected" from="PopupPanel/FilterMenu" to="." method="_on_filter_menu_item_selected"]

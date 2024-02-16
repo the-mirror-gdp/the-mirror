@@ -1,0 +1,17 @@
+[gd_resource type="StandardMaterial3D" load_steps=6 format=3 uid="uid://c7swx5w4aoipc"]
+
+[ext_resource type="Texture2D" uid="uid://b72lrfsjluuf" path="res://player/character_models/astronaut/wearpack_albedo.jpg" id="1_lun1p"]
+[ext_resource type="Texture2D" uid="uid://ba76rtdqcw1ta" path="res://player/character_models/astronaut/wearpack_ao.jpg" id="2_chdmt"]
+[ext_resource type="Texture2D" uid="uid://b5p20sp4to502" path="res://player/character_models/astronaut/wearpack_metallic.jpg" id="3_mo2e1"]
+[ext_resource type="Texture2D" uid="uid://b3k6yj78sbikk" path="res://player/character_models/astronaut/wearpack_normal.jpg" id="4_iia5g"]
+[ext_resource type="Texture2D" uid="uid://b1s0q4i6jetkq" path="res://player/character_models/astronaut/wearpack_roughness.jpg" id="5_i6jcr"]
+
+[resource]
+albedo_texture = ExtResource("1_lun1p")
+metallic = 1.0
+metallic_texture = ExtResource("3_mo2e1")
+roughness_texture = ExtResource("5_i6jcr")
+normal_enabled = true
+normal_texture = ExtResource("4_iia5g")
+ao_enabled = true
+ao_texture = ExtResource("2_chdmt")

@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://byuapxuq5cky6"]
+
+[ext_resource type="Script" path="res://ui/global_version_label/version_label.gd" id="1_nkhpk"]
+
+[node name="VersionLabel" type="Label"]
+custom_minimum_size = Vector2(200, 0)
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -20.0
+offset_right = 200.0
+grow_vertical = 0
+size_flags_horizontal = 4
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 12
+text = " Alpha Version"
+script = ExtResource("1_nkhpk")
+metadata/_edit_layout_mode = 1

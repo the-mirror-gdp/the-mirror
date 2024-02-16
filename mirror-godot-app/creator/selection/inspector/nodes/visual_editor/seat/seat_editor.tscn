@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://0w28v0tcgfmg"]
+
+[ext_resource type="PackedScene" uid="uid://dc2xevl5b3vcw" path="res://creator/selection/inspector/nodes/visual_editor/seat/sitting_player_ghost.tscn" id="1_0eylo"]
+[ext_resource type="Script" path="res://creator/selection/inspector/nodes/visual_editor/seat/seat_editor.gd" id="1_8i0h0"]
+
+[node name="Seat Editor" type="Node3D"]
+script = ExtResource("1_8i0h0")
+
+[node name="Back Control Point" type="Marker3D" parent="."]
+
+[node name="Foot Control Point" type="Marker3D" parent="."]
+
+[node name="Knee Control Point" type="Marker3D" parent="."]
+
+[node name="_SittingPlayerGhost" parent="." instance=ExtResource("1_0eylo")]

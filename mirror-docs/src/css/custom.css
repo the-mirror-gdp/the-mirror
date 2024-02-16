@@ -1,0 +1,106 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;500;600;700&display=swap');
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #1b1e37;
+  --ifm-color-primary-dark: #0b1021;
+  --ifm-color-primary-darker: #277148;
+  --ifm-color-primary-darkest: #205d3b;
+  --ifm-color-primary-light: #4674dd;
+  --ifm-color-primary-lighter: #359962;
+  --ifm-color-primary-lightest: #3cad6e;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  font-family: 'Montserrat';
+
+  --ifm-footer-background-color: red !important;
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  --ifm-color-primary: #256bfb;
+  --ifm-color-primary-dark: #030012;
+  --ifm-color-primary-darker: #0e0e0e;
+  --ifm-color-primary-darkest: #205d3b;
+  --ifm-color-primary-light: #4674dd;
+  --ifm-color-primary-lighter: #4674dd;
+  --ifm-color-primary-lightest: #4674dd;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+
+  --aa-text-color-rgb: 255, 255, 255 !important;
+  --aa-primary-color-rgb: 255, 255, 255 !important;
+  --aa-muted-color-rgb: 128, 128, 128 !important;
+  --ifm-background-dark: #06011f;
+}
+
+/* custom styling for search button*/
+.navbar .dsla-search-wrapper .dsla-search-field button {
+  padding: 0 20px 0 10px !important;
+  border-radius: 1rem;
+  border: 0;
+  background: rgb(27 30 61);
+  height: 2.5rem;
+}
+
+.navbar .dsla-search-wrapper .dsla-search-field button:focus {
+  outline: none;
+  box-shadow: none;
+  outline: 1px solid var(--ifm-color-primary);
+}
+
+.aa-Form[role='search'] {
+  border-radius: 1rem;
+  background: rgb(27 30 61);
+  border: 0;
+}
+
+.aa-Form[role='search']:focus-within {
+  outline: none;
+  box-shadow: none;
+  outline: 1px solid var(--ifm-color-primary);
+}
+
+/* custom theme styling */
+.navbar,
+.footer {
+  background: var(--ifm-color-primary-dark);
+}
+
+.hero,
+.main-wrapper {
+  background: var(--ifm-background-dark);
+}
+
+.card {
+  background: linear-gradient(
+    180deg,
+    hsla(234, 34%, 16%, 0.75) 0%,
+    hsla(227, 34%, 19%, 1) 100%
+  );
+  background: -moz-linear-gradient(
+    180deg,
+    hsla(234, 34%, 16%, 0.75) 0%,
+    hsla(227, 34%, 19%, 1) 100%
+  );
+  background: -webkit-linear-gradient(
+    180deg,
+    hsla(234, 34%, 16%, 0.75) 0%,
+    hsla(227, 34%, 19%, 1) 100%
+  );
+}
+
+.mirror-success-button {
+  background: var(--ifm-color-primary);
+  color: #fff;
+  box-shadow: 0 2px 40px 0px rgba(7, 121, 255, 0.4);
+  transition: all 100ms ease-in-out;
+}
+
+.mirror-success-button:hover {
+  background: #1d4edb;
+  color: #fff;
+}

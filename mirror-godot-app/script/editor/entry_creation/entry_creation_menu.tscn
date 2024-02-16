@@ -1,0 +1,73 @@
+[gd_scene load_steps=5 format=3 uid="uid://bbdxbffixyrdn"]
+
+[ext_resource type="Theme" uid="uid://chpmeyn2g6o6r" path="res://script/visual/editor/script_editor.theme.tres" id="1_5i2bh"]
+[ext_resource type="PackedScene" uid="uid://degms63wigj84" path="res://script/editor/entry_creation/parameter_add_button.tscn" id="2_f86a2"]
+[ext_resource type="Script" path="res://script/editor/entry_creation/entry_creation_menu.gd" id="2_wcq5v"]
+[ext_resource type="Script" path="res://script/editor/entry_creation/signal_selection.gd" id="3_g7gye"]
+
+[node name="EntryCreationMenu" type="VBoxContainer"]
+custom_minimum_size = Vector2(350, 300)
+offset_right = 359.0
+offset_bottom = 300.0
+theme = ExtResource("1_5i2bh")
+script = ExtResource("2_wcq5v")
+
+[node name="SignalSelection" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("3_g7gye")
+
+[node name="Search" type="LineEdit" parent="SignalSelection"]
+layout_mode = 2
+placeholder_text = "Type here to search..."
+
+[node name="Tree" type="Tree" parent="SignalSelection"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+allow_rmb_select = true
+enable_recursive_folding = false
+hide_root = true
+scroll_horizontal_enabled = false
+
+[node name="CustomSignal" type="VBoxContainer" parent="."]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SignalName" type="HBoxContainer" parent="CustomSignal"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CustomSignal/SignalName"]
+custom_minimum_size = Vector2(2.08165e-12, 25)
+layout_mode = 2
+size_flags_vertical = 8
+text = "Signal Name"
+
+[node name="LineEdit" type="LineEdit" parent="CustomSignal/SignalName"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Signal name here..."
+
+[node name="SignalParameters" type="RichTextLabel" parent="CustomSignal"]
+layout_mode = 2
+bbcode_enabled = true
+text = "Signal Inputs:"
+fit_content = true
+
+[node name="AddInputButton" parent="CustomSignal" instance=ExtResource("2_f86a2")]
+layout_mode = 2
+theme = ExtResource("1_5i2bh")
+text = "Add Input"
+dialog_title_text = "Add Signal Input"
+
+[node name="Help" type="Label" parent="CustomSignal"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Inputs allow you to pass data when using custom signals. Items added in this menu will show up as inputs on the emit signal blocks and outputs on the entry blocks receiving the signals."
+autowrap_mode = 3
+
+[connection signal="text_changed" from="SignalSelection/Search" to="SignalSelection" method="_on_search_text_changed"]
+[connection signal="item_activated" from="SignalSelection/Tree" to="." method="_on_tree_item_activated"]
+[connection signal="text_changed" from="CustomSignal/SignalName/LineEdit" to="." method="_on_signal_name_text_changed"]
+[connection signal="request_parameter_creation" from="CustomSignal/AddInputButton" to="." method="_on_request_parameter_creation"]

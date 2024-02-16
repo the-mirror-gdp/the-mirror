@@ -1,0 +1,69 @@
+[gd_scene load_steps=7 format=3 uid="uid://d0ritou4okory"]
+
+[ext_resource type="Theme" uid="uid://ggwm8asxintx" path="res://ui/common/themes/menu_ui.theme.tres" id="1_1e55t"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/home/home_space_panel_empty.gd" id="2_3sqxi"]
+[ext_resource type="Texture2D" uid="uid://bpdhjrlxnx4ta" path="res://ui/art/rolling_spinner.svg" id="2_gjlbj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eeenm"]
+bg_color = Color(0.152941, 0.164706, 0.188235, 0.298039)
+border_color = Color(0.0627451, 0.929412, 0.760784, 1)
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="Animation" id="Animation_n4yvx"]
+resource_name = "Roll"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2nhbe"]
+_data = {
+"Roll": SubResource("Animation_n4yvx")
+}
+
+[node name="HomeSpacePanelEmpty" type="Panel"]
+custom_minimum_size = Vector2(400, 330)
+offset_right = 400.0
+offset_bottom = 315.0
+size_flags_vertical = 3
+theme = ExtResource("1_1e55t")
+theme_override_styles/panel = SubResource("StyleBoxFlat_eeenm")
+script = ExtResource("2_3sqxi")
+metadata/_edit_layout_mode = 0
+metadata/_edit_use_custom_anchors = false
+
+[node name="LoadingSpinner" type="TextureRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(50, 50)
+texture = ExtResource("2_gjlbj")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="LoadingSpinner"]
+autoplay = "Roll"
+libraries = {
+"": SubResource("AnimationLibrary_2nhbe")
+}

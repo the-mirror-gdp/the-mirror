@@ -1,0 +1,81 @@
+[gd_scene load_steps=5 format=3 uid="uid://r5fu62rua3sb"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_5fvg0"]
+[ext_resource type="Script" path="res://scripts/ui/table.gd" id="9_pnxx5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0bro2"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.133333)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rdkbg"]
+
+[node name="TableTestGUT" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_5fvg0")
+script = ExtResource("9_pnxx5")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_top = 50
+
+[node name="Scrollbar" type="ScrollContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(0, 260)
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Scrollbar"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="table_header" type="Control" parent="MarginContainer/Scrollbar/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="title_name" type="Label" parent="MarginContainer/Scrollbar/VBoxContainer/table_header"]
+layout_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_0bro2")
+text = "NAME
+"
+
+[node name="new_row" type="Control" parent="MarginContainer/Scrollbar/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="name" type="MarginContainer" parent="MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="team_name" type="LineEdit" parent="MarginContainer/Scrollbar/VBoxContainer/new_row/name"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxEmpty_rdkbg")
+text = "RED TEAM"
+placeholder_text = "Team Name here"
+max_length = 64
+caret_blink = true
+caret_blink_interval = 0.5
+
+[node name="table" type="GridContainer" parent="MarginContainer/Scrollbar/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_5fvg0")
+theme_override_constants/h_separation = 0
+columns = 5

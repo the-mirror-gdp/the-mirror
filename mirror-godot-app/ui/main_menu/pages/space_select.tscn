@@ -1,0 +1,176 @@
+[gd_scene load_steps=12 format=3 uid="uid://b6kuvk63etfpw"]
+
+[ext_resource type="Script" path="res://ui/main_menu/pages/space_select.gd" id="1_1ynam"]
+[ext_resource type="PackedScene" uid="uid://cvyh06rrrcdyc" path="res://ui/main_menu/common/space_panel.tscn" id="2_ed1sy"]
+[ext_resource type="PackedScene" uid="uid://7geveyvf002c" path="res://ui/common/components/endless_scroll_flow_container.tscn" id="3_68pjp"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="3_xdod4"]
+[ext_resource type="PackedScene" uid="uid://bahpo436m8hut" path="res://creator/asset_inventory/browser/search_field.tscn" id="4_atsy6"]
+[ext_resource type="AudioStream" uid="uid://b1wqy8isen5sg" path="res://audio/mouseclick.wav" id="6_jogvj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_to6xd"]
+content_margin_left = 8.0
+content_margin_top = 12.0
+content_margin_right = 8.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0.831373)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0gnba"]
+content_margin_left = 8.0
+content_margin_top = 12.0
+content_margin_right = 8.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_44eih"]
+content_margin_left = 8.0
+content_margin_top = 12.0
+content_margin_right = 8.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0.8)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="LabelSettings" id="LabelSettings_p2v8i"]
+line_spacing = 0.0
+font = ExtResource("3_xdod4")
+font_size = 8
+font_color = Color(0.403922, 0.45098, 0.592157, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8y7rc"]
+
+[node name="SpaceSelect" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+script = ExtResource("1_1ynam")
+_space_panel = ExtResource("2_ed1sy")
+metadata/_edit_use_anchors_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = false
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_right = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(1280, 0)
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="VBoxContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "My Spaces"
+
+[node name="Description" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer"]
+visible = false
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Jump Into Your Space"
+uppercase = true
+
+[node name="Spacer2" type="Control" parent="VBoxContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_constants/separation = 24
+
+[node name="SourceOptionButton" type="OptionButton" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+theme_override_styles/focus = SubResource("StyleBoxFlat_to6xd")
+theme_override_styles/normal = SubResource("StyleBoxFlat_0gnba")
+theme_override_styles/hover = SubResource("StyleBoxFlat_44eih")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_44eih")
+item_count = 2
+selected = 0
+popup/item_0/text = "Popular"
+popup/item_0/id = 0
+popup/item_1/text = "Last Updated"
+popup/item_1/id = 1
+
+[node name="Label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/SourceOptionButton"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 4.0
+offset_right = 41.0
+offset_bottom = 18.0
+text = "Sort by"
+label_settings = SubResource("LabelSettings_p2v8i")
+
+[node name="SearchField" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_atsy6")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Search..."
+
+[node name="Panel" type="Panel" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_8y7rc")
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = false
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="EndlessScrollFlowContainer" parent="VBoxContainer/Panel/MarginContainer" instance=ExtResource("3_68pjp")]
+unique_name_in_owner = true
+layout_mode = 2
+item_scene = ExtResource("2_ed1sy")
+
+[node name="ItemsContainer" parent="VBoxContainer/Panel/MarginContainer/EndlessScrollFlowContainer/VBoxContainer" index="0"]
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 48
+
+[node name="LoadingSection" parent="VBoxContainer/Panel/MarginContainer/EndlessScrollFlowContainer/VBoxContainer" index="1"]
+custom_minimum_size = Vector2(0, 160)
+
+[node name="LoadingSpinner" parent="VBoxContainer/Panel/MarginContainer/EndlessScrollFlowContainer/VBoxContainer/LoadingSection" index="0"]
+custom_minimum_size = Vector2(120, 120)
+pivot_offset = Vector2(60, 60)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_jogvj")
+volume_db = -10.0
+
+[connection signal="item_selected" from="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/SourceOptionButton" to="." method="_on_source_option_button_item_selected"]
+[connection signal="text_changed" from="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/SearchField" to="." method="on_search_title"]
+
+[editable path="VBoxContainer/Panel/MarginContainer/EndlessScrollFlowContainer"]

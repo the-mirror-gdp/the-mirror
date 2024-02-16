@@ -1,0 +1,169 @@
+[gd_scene load_steps=14 format=3 uid="uid://qf7nqg1kppey"]
+
+[ext_resource type="Theme" uid="uid://ys8qltjcesi5" path="res://ui/new_player_ui/ui.theme.tres" id="1_qcmph"]
+[ext_resource type="Script" path="res://ui/game/loading_ui.gd" id="3"]
+[ext_resource type="Texture2D" uid="uid://cuqq3ychrk642" path="res://ui/common/images/space-default.jpg" id="3_b8ghu"]
+[ext_resource type="Texture2D" uid="uid://15cvus520agc" path="res://ui/common/images/logo-icon.svg" id="4_3vgpu"]
+[ext_resource type="Material" uid="uid://de88hevdyb04k" path="res://ui/common/shaders/dark_blue_blur.mat.tres" id="4_uk6h4"]
+[ext_resource type="FontFile" uid="uid://s44wjlc18fo7" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_bold.ttf" id="5_8i1yk"]
+[ext_resource type="FontFile" uid="uid://wnq6gpmrsr6v" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_medium.ttf" id="6_28sr8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8ye7f"]
+bg_color = Color(0.054902, 0.0862745, 0.176471, 0.498039)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="FontVariation" id="Font_rc2n0"]
+base_font = ExtResource("5_8i1yk")
+
+[sub_resource type="FontVariation" id="Font_02vhr"]
+base_font = ExtResource("6_28sr8")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dr0t4"]
+content_margin_left = 150.0
+content_margin_right = 150.0
+bg_color = Color(0.0705882, 1, 0.843137, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Animation" id="Animation_s4hvh"]
+resource_name = "Loading"
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Panel/MarginContainer/VBoxContainer/Progress:value")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 100.0, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_b8uvc"]
+_data = {
+"Loading": SubResource("Animation_s4hvh")
+}
+
+[node name="LoadingUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("1_qcmph")
+script = ExtResource("3")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_b8ghu")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+position = Vector2(432, 1263)
+scale = Vector2(4.2, 1.71)
+copy_mode = 2
+
+[node name="Panel" type="Panel" parent="."]
+material = ExtResource("4_uk6h4")
+clip_contents = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = -324.0
+offset_right = 830.0
+offset_bottom = -24.0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_8ye7f")
+metadata/_edit_layout_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 80
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+metadata/_edit_layout_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="LoadingTitle" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("Font_rc2n0")
+theme_override_font_sizes/font_size = 32
+autowrap_mode = 3
+
+[node name="LoadingSubtext" type="RichTextLabel" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_fonts/normal_font = SubResource("Font_02vhr")
+fit_content = true
+scroll_active = false
+
+[node name="StatusLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("Font_rc2n0")
+theme_override_font_sizes/font_size = 16
+clip_text = true
+
+[node name="Progress" type="HScrollBar" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/grabber = SubResource("StyleBoxFlat_dr0t4")
+value = 32.4913
+
+[node name="ProgressAnimation" type="AnimationPlayer" parent="Panel/MarginContainer/VBoxContainer/Progress"]
+root_node = NodePath("../../../../..")
+libraries = {
+"": SubResource("AnimationLibrary_b8uvc")
+}
+
+[node name="Logo" type="TextureRect" parent="Panel"]
+layout_mode = 1
+offset_left = 32.0
+offset_top = 22.0
+offset_right = 80.0
+offset_bottom = 70.0
+texture = ExtResource("4_3vgpu")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CancelButton" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -143.0
+offset_top = 22.0
+offset_right = -32.0
+offset_bottom = 70.0
+grow_horizontal = 0
+text = "Cancel"
+
+[connection signal="pressed" from="Panel/CancelButton" to="." method="_on_cancel_button_pressed"]

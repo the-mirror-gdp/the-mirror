@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=3 uid="uid://pmobbaenk23l"]
+
+[ext_resource type="Script" path="res://script/visual/editor/auto_close/auto_close_check_box.gd" id="1_i1jks"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_31pb8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iorl5"]
+bg_color = Color(0.6, 0.6, 0.6, 0.133333)
+
+[node name="AutoCloseCheckBoxHolder" type="Control"]
+custom_minimum_size = Vector2(120, 24)
+layout_mode = 3
+anchors_preset = 0
+
+[node name="AutoCloseCheckBox" type="CheckBox" parent="."]
+custom_minimum_size = Vector2(110, 24)
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -103.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_31pb8")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_31pb8")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_31pb8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_iorl5")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_iorl5")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_31pb8")
+button_pressed = true
+text = "Auto Close"
+script = ExtResource("1_i1jks")
+
+[connection signal="toggled" from="AutoCloseCheckBox" to="AutoCloseCheckBox" method="_on_toggled"]

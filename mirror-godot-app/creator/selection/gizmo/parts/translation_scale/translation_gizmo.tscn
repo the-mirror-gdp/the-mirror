@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://6kifssyg0uh2"]
+
+[ext_resource type="PackedScene" uid="uid://cx3cuhqnehql1" path="res://creator/selection/gizmo/parts/translation_scale/base_translation_scale_gizmo.tscn" id="1_g17pw"]
+[ext_resource type="Script" path="res://creator/selection/gizmo/parts/translation_scale/translation_gizmo.gd" id="2_4acfv"]
+
+[node name="TranslationGizmo" instance=ExtResource("1_g17pw")]
+script = ExtResource("2_4acfv")
+
+[node name="ZArrow" parent="." index="5"]
+body_mode = 1

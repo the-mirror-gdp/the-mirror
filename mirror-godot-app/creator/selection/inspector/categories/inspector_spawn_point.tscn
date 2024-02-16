@@ -1,0 +1,90 @@
+[gd_scene load_steps=9 format=3 uid="uid://cihdb150pxqg2"]
+
+[ext_resource type="PackedScene" uid="uid://dkxqj3l0xm8uw" path="res://creator/selection/inspector/categories/inspector_category_base.tscn" id="1_1cn6d"]
+[ext_resource type="Script" path="res://creator/selection/inspector/categories/inspector_spawn_point.gd" id="2_kvxh2"]
+[ext_resource type="PackedScene" uid="uid://cigpns5k3w4m8" path="res://creator/selection/inspector/primitive/inspector_dropdown.tscn" id="3_r0dwa"]
+[ext_resource type="PackedScene" uid="uid://cdctwmtu1ot17" path="res://creator/selection/inspector/primitive/inspector_bool.tscn" id="6_5lds4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sim58"]
+bg_color = Color(0.109804, 0.121569, 0.141176, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.109804, 0.121569, 0.141176, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3ivr3"]
+bg_color = Color(0.109804, 0.121569, 0.141176, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.0705882, 1, 0.843137, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_trad2"]
+bg_color = Color(0.109804, 0.121569, 0.141176, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.0705882, 1, 0.843137, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ex55k"]
+bg_color = Color(0.109804, 0.121569, 0.141176, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.0705882, 1, 0.843137, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="InspectorSpawnPoint" instance=ExtResource("1_1cn6d")]
+anchors_preset = -1
+script = ExtResource("2_kvxh2")
+
+[node name="Text" parent="CategoryTitle/ToggleButton/Name" index="3"]
+text = "Spawn Point"
+
+[node name="TeamSelection" parent="Properties/MarginContainer/PropertyList" index="0" instance=ExtResource("3_r0dwa")]
+layout_mode = 2
+label_text = "Team Selection"
+
+[node name="MultiplePlayers" parent="Properties/MarginContainer/PropertyList" index="1" instance=ExtResource("6_5lds4")]
+visible = false
+layout_mode = 2
+label_text = "Multiple players"
+
+[node name="Label" type="Label" parent="Properties/MarginContainer/PropertyList" index="2"]
+visible = false
+layout_mode = 2
+text = "Multiple players means: do multiple people spawn on the same point at the start of a round?"
+autowrap_mode = 2
+
+[node name="EditTeams" type="Button" parent="Properties/MarginContainer/PropertyList" index="3"]
+custom_minimum_size = Vector2(100, 28)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_sim58")
+theme_override_styles/hover = SubResource("StyleBoxFlat_3ivr3")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_trad2")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_sim58")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ex55k")
+text = "Edit Global Teams"
+
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/TeamSelection" to="." method="_select_new_team"]
+[connection signal="pressed" from="Properties/MarginContainer/PropertyList/EditTeams" to="." method="_edit_teams_button_pressed"]

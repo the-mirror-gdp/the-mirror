@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://jnydrcejt8ji"]
+
+[ext_resource type="PackedScene" uid="uid://w2yqlg0c2hvo" path="res://creator/common/asset_slot.tscn" id="1_vsac4"]
+[ext_resource type="Script" uid="uid://ybb31hjgjc5a" path="res://creator/common/asset_slot_subwindow.gd" id="2_xy8fv"]
+
+[node name="AssetSlot" instance=ExtResource("1_vsac4")]
+script = ExtResource("2_xy8fv")

@@ -1,0 +1,144 @@
+[gd_scene load_steps=8 format=3 uid="uid://cb6qvpd6kuoi5"]
+
+[ext_resource type="Theme" uid="uid://dqjg12tafkeu2" path="res://creator/tools/build_bar/build_bar.theme.tres" id="1_3iya4"]
+[ext_resource type="Script" path="res://creator/tools/toolbar_gizmo_options.gd" id="1_rjlml"]
+[ext_resource type="PackedScene" uid="uid://nqtj3k1bv6uh" path="res://ui/hover_text/hoverable_button.tscn" id="3_5iuv6"]
+[ext_resource type="FontFile" uid="uid://dh4xtfcbcu8ur" path="res://ui/common/fonts/TheMirrorIcons.otf" id="4_mv4hy"]
+[ext_resource type="ButtonGroup" uid="uid://bcq1xj7sa5bt3" path="res://creator/tools/build_bar/edit_mode_button_group.tres" id="5_s17e8"]
+[ext_resource type="PackedScene" uid="uid://b71qr3g838s8b" path="res://ui/hover_text/hoverable_checkbox.tscn" id="9_oou7p"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_8j5hu"]
+line_spacing = 0.0
+font = ExtResource("4_mv4hy")
+font_size = 20
+shadow_size = 0
+
+[node name="BuildBarGizmoOptions" type="HBoxContainer" node_paths=PackedStringArray("_grab_button", "_move_button", "_rotate_button", "_scale_button", "_relative_checkbox", "_snap_checkbox", "_snap_amount")]
+custom_minimum_size = Vector2(350, 30)
+offset_right = 459.0
+offset_bottom = 32.0
+theme = ExtResource("1_3iya4")
+script = ExtResource("1_rjlml")
+_grab_button = NodePath("GrabButton")
+_move_button = NodePath("MoveButton")
+_rotate_button = NodePath("RotateButton")
+_scale_button = NodePath("ScaleButton")
+_relative_checkbox = NodePath("RelativeCheckBox")
+_snap_checkbox = NodePath("SnapCheckBox")
+_snap_amount = NodePath("SnapAmount")
+metadata/_edit_horizontal_guides_ = [28.0, 4.0]
+
+[node name="GrabButton" parent="." instance=ExtResource("3_5iuv6")]
+custom_minimum_size = Vector2(31, 32)
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("5_s17e8")
+hover_tooltip_text = "Grab Mode"
+
+[node name="LabelGrab" type="Label" parent="GrabButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "E"
+label_settings = SubResource("LabelSettings_8j5hu")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MoveButton" parent="." instance=ExtResource("3_5iuv6")]
+custom_minimum_size = Vector2(31, 32)
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("5_s17e8")
+hover_tooltip_text = "Move Mode"
+
+[node name="LabelMove" type="Label" parent="MoveButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "A"
+label_settings = SubResource("LabelSettings_8j5hu")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RotateButton" parent="." instance=ExtResource("3_5iuv6")]
+custom_minimum_size = Vector2(31, 32)
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("5_s17e8")
+hover_tooltip_text = "Rotate Mode"
+
+[node name="LabelRotate" type="Label" parent="RotateButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "D"
+label_settings = SubResource("LabelSettings_8j5hu")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScaleButton" parent="." instance=ExtResource("3_5iuv6")]
+custom_minimum_size = Vector2(31, 32)
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("5_s17e8")
+hover_tooltip_text = "Scale Mode"
+
+[node name="LabeScale" type="Label" parent="ScaleButton"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "C"
+label_settings = SubResource("LabelSettings_8j5hu")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="."]
+self_modulate = Color(1, 1, 1, 0.2)
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 12
+
+[node name="RelativeCheckBox" parent="." instance=ExtResource("9_oou7p")]
+layout_mode = 2
+text = "Relative"
+hover_tooltip_text = "If enabled, the gizmo is relative to the gizmo's local directions."
+
+[node name="SnapCheckBox" parent="." instance=ExtResource("9_oou7p")]
+layout_mode = 2
+text = "Snap"
+hover_tooltip_text = "If enabled, snap to the specified snap amount."
+
+[node name="SnapAmount" type="SpinBox" parent="."]
+clip_contents = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+max_value = 1000.0
+step = 0.01
+alignment = 1
+update_on_text_changed = true
+
+[connection signal="pressed" from="GrabButton" to="." method="_on_grab_button_pressed"]
+[connection signal="pressed" from="MoveButton" to="." method="_on_move_button_pressed"]
+[connection signal="pressed" from="RotateButton" to="." method="_on_rotate_button_pressed"]
+[connection signal="pressed" from="ScaleButton" to="." method="_on_scale_button_pressed"]
+[connection signal="toggled" from="RelativeCheckBox" to="." method="_on_relative_check_box_toggled"]
+[connection signal="toggled" from="SnapCheckBox" to="." method="_on_snap_check_box_toggled"]

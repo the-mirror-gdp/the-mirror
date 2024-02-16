@@ -1,0 +1,54 @@
+[gd_scene load_steps=10 format=3 uid="uid://bfgp4fuvvwsip"]
+
+[ext_resource type="PackedScene" uid="uid://7r8pofugnpkb" path="res://ui/main_menu/pages/settings/sections/settings_section.tscn" id="1_b1f70"]
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="2_qeerb"]
+[ext_resource type="Theme" uid="uid://dblj3nhoduter" path="res://ui/main_menu/pages/settings/theme/setting_theme.tres" id="2_rntts"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/settings/sections/advanced/show_space_object_internal_nodes.gd" id="3_mn2w6"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/settings/sections/advanced/setting_download_queue_size.gd" id="5_quohj"]
+[ext_resource type="PackedScene" uid="uid://bdspx67qsqxcu" path="res://creator/selection/inspector/primitive/inspector_toggle.tscn" id="6_ao1an"]
+[ext_resource type="Theme" uid="uid://giim0icv3frs" path="res://ui/main_menu/pages/settings/sections/settings_menu_entry.theme.tres" id="6_l2e21"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/settings/sections/advanced/setting_single_threaded_node.gd" id="7_w4vfd"]
+[ext_resource type="PackedScene" uid="uid://batm8eishqj04" path="res://creator/selection/inspector/primitive/inspector_slider.tscn" id="8_26sfl"]
+
+[node name="Advanced" instance=ExtResource("1_b1f70")]
+theme = ExtResource("2_qeerb")
+
+[node name="ShowSpaceObjectInternalNodes" type="PanelContainer" parent="Options" index="0"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme = ExtResource("2_rntts")
+script = ExtResource("3_mn2w6")
+
+[node name="InspectorPropertyToggle" parent="Options/ShowSpaceObjectInternalNodes" index="0" instance=ExtResource("6_ao1an")]
+layout_mode = 2
+theme = ExtResource("6_l2e21")
+label_text = "Show Space Object Internal Nodes"
+
+[node name="DownloadQueueSize" type="PanelContainer" parent="Options" index="1"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme = ExtResource("2_rntts")
+script = ExtResource("5_quohj")
+
+[node name="InspectorSlider" parent="Options/DownloadQueueSize" index="0" instance=ExtResource("8_26sfl")]
+layout_mode = 2
+theme = ExtResource("6_l2e21")
+reset_value = 20.0
+current_value = 20.0
+min_value = 1.0
+max_value = 40.0
+step = 1.0
+allow_greater = true
+allow_lesser = true
+label_text = "Download Queue Size"
+
+[node name="ForceSingleThreadedMode" type="PanelContainer" parent="Options" index="2"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme = ExtResource("2_rntts")
+script = ExtResource("7_w4vfd")
+
+[node name="InspectorPropertyToggle" parent="Options/ForceSingleThreadedMode" index="0" instance=ExtResource("6_ao1an")]
+layout_mode = 2
+theme = ExtResource("6_l2e21")
+label_text = "[Experimental] Force Single Threaded Mode"

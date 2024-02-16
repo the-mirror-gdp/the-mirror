@@ -1,0 +1,4 @@
+export enum ASSET_LIST_DISPLAY_TYPE {
+  LIST = 'LIST',
+  GALLERY = 'GALLERY'
+}

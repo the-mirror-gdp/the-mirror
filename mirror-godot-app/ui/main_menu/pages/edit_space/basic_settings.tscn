@@ -1,0 +1,281 @@
+[gd_scene load_steps=14 format=3 uid="uid://b7ypef5lmyuv7"]
+
+[ext_resource type="Script" path="res://ui/main_menu/pages/edit_space/basic_settings.gd" id="1_a1xwd"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="1_dldrl"]
+[ext_resource type="Theme" uid="uid://ggwm8asxintx" path="res://ui/common/themes/menu_ui.theme.tres" id="1_v5tys"]
+[ext_resource type="Texture2D" uid="uid://cuqq3ychrk642" path="res://ui/common/images/space-default.jpg" id="2_mbuln"]
+[ext_resource type="FontFile" uid="uid://cv5tkor0qdxqq" path="res://ui/common/fonts/fontawesome-free-6/Font Awesome 6 Free-Solid-900.otf" id="3_6xk5m"]
+[ext_resource type="PackedScene" uid="uid://un78b1xd3lc" path="res://ui/main_menu/pages/edit_space/image_button.tscn" id="6_1x2h0"]
+[ext_resource type="Theme" uid="uid://bjdtuw56lro3h" path="res://ui/common/themes/menu_ui_button_accent.theme.tres" id="7_itbu3"]
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="8_5kjwe"]
+[ext_resource type="Theme" uid="uid://dl2k8atj5vtpo" path="res://ui/common/themes/menu_ui_button_accent_2.theme.tres" id="8_wcnjf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0m53x"]
+content_margin_right = 0.0
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.85098, 0.886275, 0.917647, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pytxe"]
+content_margin_left = 22.0
+content_margin_top = 32.0
+content_margin_right = 22.0
+content_margin_bottom = 20.0
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ty6n"]
+content_margin_left = 22.0
+content_margin_top = 64.0
+content_margin_right = 22.0
+content_margin_bottom = 20.0
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+
+[sub_resource type="Theme" id="Theme_nol7t"]
+LineEdit/font_sizes/font_size = 19
+LineEdit/styles/normal = SubResource("StyleBoxFlat_pytxe")
+
+[node name="BasicSettings" type="VBoxContainer"]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_v5tys")
+theme_override_constants/separation = 32
+script = ExtResource("1_a1xwd")
+_empty_cover_texture = ExtResource("2_mbuln")
+
+[node name="PageNamesContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="PageName" type="Label" parent="PageNamesContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.333333, 1, 0.831373, 1)
+theme_override_fonts/font = ExtResource("1_dldrl")
+theme_override_font_sizes/font_size = 13
+text = "Space Settings & Permissions"
+clip_text = true
+uppercase = true
+
+[node name="SubPageName" type="Label" parent="PageNamesContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_dldrl")
+theme_override_font_sizes/font_size = 32
+text = "Basic Space Settings"
+autowrap_mode = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 32
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer2"]
+layout_mode = 2
+
+[node name="ImageButton0" parent="HBoxContainer2/VBoxContainer" instance=ExtResource("6_1x2h0")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(658, 420)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer2/VBoxContainer/ImageButton0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="CoverUploadButton" type="Button" parent="HBoxContainer2/VBoxContainer/ImageButton0/MarginContainer"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+mouse_filter = 1
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0.333333, 1, 0.831373, 1)
+theme_override_colors/font_hover_color = Color(0.333333, 1, 0.831373, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.333333, 1, 0.831373, 1)
+theme_override_fonts/font = ExtResource("3_6xk5m")
+theme_override_styles/normal = SubResource("StyleBoxFlat_0m53x")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0m53x")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_0m53x")
+theme_override_styles/focus = SubResource("StyleBoxFlat_0m53x")
+button_mask = 0
+text = "arrow-up-from-bracket"
+
+[node name="CoverImageLabel" type="Label" parent="HBoxContainer2/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.509804)
+theme_override_fonts/font = ExtResource("1_dldrl")
+theme_override_font_sizes/font_size = 14
+text = "Cover Image"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer2"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CoverImageLabel" type="Label" parent="HBoxContainer2/VBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.509804)
+theme_override_fonts/font = ExtResource("1_dldrl")
+theme_override_font_sizes/font_size = 14
+text = "Images"
+
+[node name="ImagesContainer" type="FlowContainer" parent="HBoxContainer2/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 32
+theme_override_constants/v_separation = 32
+
+[node name="ImageButton1" parent="HBoxContainer2/VBoxContainer2/ImagesContainer" instance=ExtResource("6_1x2h0")]
+layout_mode = 2
+
+[node name="ImageButton2" parent="HBoxContainer2/VBoxContainer2/ImagesContainer" instance=ExtResource("6_1x2h0")]
+layout_mode = 2
+
+[node name="ImageButton3" parent="HBoxContainer2/VBoxContainer2/ImagesContainer" instance=ExtResource("6_1x2h0")]
+layout_mode = 2
+
+[node name="ImageButton4" parent="HBoxContainer2/VBoxContainer2/ImagesContainer" instance=ExtResource("6_1x2h0")]
+layout_mode = 2
+
+[node name="SpaceNameLineEdit" type="LineEdit" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 19
+theme_override_styles/normal = SubResource("StyleBoxFlat_pytxe")
+text = "Space Name"
+
+[node name="Label" type="Label" parent="SpaceNameLineEdit"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 8.0
+offset_right = 106.0
+offset_bottom = 31.0
+theme_override_colors/font_color = Color(0.415686, 0.454902, 0.52549, 1)
+theme_override_font_sizes/font_size = 14
+text = "Space Name"
+
+[node name="DescritpionTextEdit" type="TextEdit" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+theme_override_font_sizes/font_size = 19
+theme_override_styles/normal = SubResource("StyleBoxFlat_0ty6n")
+text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam orci nunc, dignissim sed justo id, varius porta sapien. Maecenas nec euismod odio. Phasellus felis velit, iaculis nec ultrices et, tincidunt eu turpis. Cras fringilla, nisl ac hendrerit egestas, orci erat fermentum neque, eu sollicitudin est metus eget arcu. Suspendisse tincidunt felis sapien, bibendum tincidunt metus aliquam ut. Phasellus ac nunc et nunc ultricies facilisis. Nam at metus eget justo eleifend auctor faucibus a lacus. Nulla a aliquam tellus, sit amet egestas metus. Pellentesque scelerisque eu turpis a sagittis. Fusce ultrices lorem eu diam mollis, non pretium metus luctus. Donec auctor felis ut commodo ultricies. Vivamus sed risus diam. Etiam at nunc condimentum velit aliquet pellentesque. Sed efficitur blandit tincidunt. Vestibulum tristique molestie erat, et fermentum leo suscipit nec. Nulla hendrerit dignissim nibh sit amet posuere."
+placeholder_text = "No description was provided for this space."
+wrap_mode = 1
+
+[node name="Label" type="Label" parent="DescritpionTextEdit"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 8.0
+offset_right = 106.0
+offset_bottom = 31.0
+theme_override_colors/font_color = Color(0.415686, 0.454902, 0.52549, 1)
+theme_override_font_sizes/font_size = 14
+text = "Description"
+
+[node name="MaxPlayersSpinBox" type="SpinBox" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+theme = SubResource("Theme_nol7t")
+min_value = 1.0
+max_value = 32.0
+value = 1.0
+
+[node name="Label" type="Label" parent="MaxPlayersSpinBox"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 8.0
+offset_right = 106.0
+offset_bottom = 31.0
+theme_override_colors/font_color = Color(0.415686, 0.454902, 0.52549, 1)
+theme_override_font_sizes/font_size = 14
+text = "Maximum number of players"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="SaveButton" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+text = "Save"
+
+[node name="CancelButton" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+theme = ExtResource("7_itbu3")
+text = "Cancel
+"
+
+[node name="PublishButton" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+text = "Publish Game"
+
+[node name="Spacer" type="Control" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DeleteButton" type="Button" parent="HBoxContainer"]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+theme = ExtResource("8_wcnjf")
+text = "Delete"
+
+[node name="DeleteSpaceConfirmationDialog" type="ConfirmationDialog" parent="."]
+size = Vector2i(339, 100)
+dialog_text = "Do you really want to delete this Space?"
+
+[node name="FileSearch" type="FileDialog" parent="."]
+title = "Open a File"
+position = Vector2i(500, 150)
+size = Vector2i(750, 750)
+popup_window = true
+min_size = Vector2i(500, 500)
+theme = ExtResource("8_5kjwe")
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="pressed" from="HBoxContainer2/VBoxContainer/ImageButton0/MarginContainer/CoverUploadButton" to="." method="_on_cover_upload_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/SaveButton" to="." method="_on_save_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/PublishButton" to="." method="_on_publish_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/DeleteButton" to="." method="_on_delete_button_pressed"]
+[connection signal="confirmed" from="DeleteSpaceConfirmationDialog" to="." method="_on_delete_space_confirmation_dialog_confirmed"]

@@ -1,0 +1,22 @@
+[gd_scene load_steps=6 format=3 uid="uid://bqx5np6ckv4ri"]
+
+[ext_resource type="AudioStream" uid="uid://cujfcfawqenlt" path="res://player/audio/rough_terrain/footsteps_stream.tres" id="1_t4t6e"]
+[ext_resource type="Script" path="res://player/audio/audio_controller.gd" id="1_vp0as"]
+[ext_resource type="Resource" uid="uid://285iy8n5wecm" path="res://player/audio/rough_terrain/rough_terrain_audio_set.tres" id="2_a7vho"]
+[ext_resource type="Resource" uid="uid://lp8is08jqhtv" path="res://player/audio/metal_surface/metal_surface_audio_set.tres" id="3_yma2m"]
+[ext_resource type="AudioStream" uid="uid://d048yi21sjl56" path="res://player/audio/rough_terrain/jump_stream.tres" id="10_ljpoo"]
+
+[node name="audio_controller" type="Node3D"]
+script = ExtResource("1_vp0as")
+_audio_set_terrain = ExtResource("2_a7vho")
+_audio_set_space_object = ExtResource("3_yma2m")
+
+[node name="FootstepsAudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("1_t4t6e")
+
+[node name="FootstepsAudioStreamPlayer3D2" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("1_t4t6e")
+
+[node name="VerbalAudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.54383, 0)
+stream = ExtResource("10_ljpoo")

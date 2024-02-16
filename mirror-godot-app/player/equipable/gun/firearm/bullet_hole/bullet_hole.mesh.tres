@@ -1,0 +1,13 @@
+[gd_resource type="PlaneMesh" load_steps=3 format=3]
+
+[ext_resource type="Texture2D" uid="uid://cceqqklu2booq" path="res://player/equipable/gun/firearm/bullet_hole/bullet_hole.webp" id="1_7dcib"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a48lc"]
+transparency = 1
+albedo_texture = ExtResource("1_7dcib")
+
+[resource]
+material = SubResource("StandardMaterial3D_a48lc")
+flip_faces = true
+size = Vector2(0.05, 0.05)
+orientation = 2

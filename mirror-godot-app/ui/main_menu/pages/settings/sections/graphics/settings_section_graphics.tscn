@@ -1,0 +1,114 @@
+[gd_scene load_steps=11 format=3 uid="uid://ues6ooi7657v"]
+
+[ext_resource type="PackedScene" uid="uid://7r8pofugnpkb" path="res://ui/main_menu/pages/settings/sections/settings_section.tscn" id="1_gll4n"]
+[ext_resource type="Theme" uid="uid://dblj3nhoduter" path="res://ui/main_menu/pages/settings/theme/setting_theme.tres" id="2_8pjrp"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/settings/sections/graphics/rendering_quality.gd" id="3_tlyu6"]
+[ext_resource type="PackedScene" uid="uid://bef1lt31hgv6l" path="res://creator/selection/inspector/primitive/inspector_scroller.tscn" id="5_742y4"]
+[ext_resource type="PackedScene" uid="uid://batm8eishqj04" path="res://creator/selection/inspector/primitive/inspector_slider.tscn" id="6_wcb46"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/settings/sections/graphics/3d_resolution_scale.gd" id="6_xysny"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/settings/sections/graphics/volumetric_fog.gd" id="8_j41b3"]
+[ext_resource type="PackedScene" uid="uid://bdspx67qsqxcu" path="res://creator/selection/inspector/primitive/inspector_toggle.tscn" id="10_25iqk"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/settings/sections/graphics/auto_performance.gd" id="12_o7brn"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_rb02f"]
+
+[node name="Graphics" instance=ExtResource("1_gll4n")]
+
+[node name="RenderQuality" type="PanelContainer" parent="Options" index="0"]
+custom_minimum_size = Vector2(0, 74)
+layout_mode = 2
+theme = ExtResource("2_8pjrp")
+script = ExtResource("3_tlyu6")
+
+[node name="InspectorPropertyScroller" parent="Options/RenderQuality" index="0" instance=ExtResource("5_742y4")]
+layout_mode = 2
+values = ["LOW", "MEDIUM", "HIGH"]
+reset_value = 1
+current_value = 1
+label_text = "Render Quality"
+
+[node name="Label" parent="Options/RenderQuality/InspectorPropertyScroller/LabelHolder" index="0"]
+theme_override_font_sizes/font_size = 16
+text = "Render Quality"
+
+[node name="ButtonLeft" parent="Options/RenderQuality/InspectorPropertyScroller/PanelContainer/MarginContainer/HBoxContainer" index="0"]
+custom_minimum_size = Vector2(64, 0)
+
+[node name="OptionLabel" parent="Options/RenderQuality/InspectorPropertyScroller/PanelContainer/MarginContainer/HBoxContainer/VBoxContainer" index="0"]
+text = "MEDIUM"
+
+[node name="ButtonRight" parent="Options/RenderQuality/InspectorPropertyScroller/PanelContainer/MarginContainer/HBoxContainer" index="2"]
+custom_minimum_size = Vector2(64, 0)
+
+[node name="3DResolutionScale" type="PanelContainer" parent="Options" index="1"]
+custom_minimum_size = Vector2(0, 74)
+layout_mode = 2
+theme = ExtResource("2_8pjrp")
+script = ExtResource("6_xysny")
+
+[node name="InspectorSlider" parent="Options/3DResolutionScale" index="0" instance=ExtResource("6_wcb46")]
+layout_mode = 2
+reset_value = 1.0
+current_value = 1.0
+unit_suffix = "%"
+min_value = 0.25
+step = 0.05
+units_multiplier = 100.0
+label_text = "3D Resolution Scale"
+
+[node name="Label" parent="Options/3DResolutionScale/InspectorSlider/LabelHolder" index="0"]
+theme_override_font_sizes/font_size = 16
+text = "3D Resolution Scale"
+
+[node name="Slider" parent="Options/3DResolutionScale/InspectorSlider/SliderHolder" index="0"]
+min_value = 0.25
+step = 0.05
+value = 1.0
+
+[node name="Value" parent="Options/3DResolutionScale/InspectorSlider/SliderHolder" index="1"]
+text = "100%"
+
+[node name="AllowVolumetricFog" type="PanelContainer" parent="Options" index="2"]
+custom_minimum_size = Vector2(0, 74)
+layout_mode = 2
+theme = ExtResource("2_8pjrp")
+script = ExtResource("8_j41b3")
+
+[node name="InspectorPropertyBool" parent="Options/AllowVolumetricFog" index="0" instance=ExtResource("10_25iqk")]
+layout_mode = 2
+label_text = "Allow Volumetric Fog"
+
+[node name="Label" parent="Options/AllowVolumetricFog/InspectorPropertyBool/LabelHolder" index="0"]
+theme_override_font_sizes/font_size = 16
+text = "Allow Volumetric Fog"
+
+[node name="ButtonDisable" parent="Options/AllowVolumetricFog/InspectorPropertyBool/PanelContainer/MarginContainer/HBoxContainer" index="0"]
+button_group = SubResource("ButtonGroup_rb02f")
+
+[node name="ButtonEnable" parent="Options/AllowVolumetricFog/InspectorPropertyBool/PanelContainer/MarginContainer/HBoxContainer" index="1"]
+button_group = SubResource("ButtonGroup_rb02f")
+
+[node name="AutoPerformance" type="PanelContainer" parent="Options" index="3"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme = ExtResource("2_8pjrp")
+script = ExtResource("12_o7brn")
+
+[node name="InspectorPropertyBool" parent="Options/AutoPerformance" index="0" instance=ExtResource("10_25iqk")]
+layout_mode = 2
+label_text = "Auto performance"
+
+[node name="Label" parent="Options/AutoPerformance/InspectorPropertyBool/LabelHolder" index="0"]
+theme_override_font_sizes/font_size = 16
+text = "Auto performance"
+
+[node name="ButtonDisable" parent="Options/AutoPerformance/InspectorPropertyBool/PanelContainer/MarginContainer/HBoxContainer" index="0"]
+button_group = SubResource("ButtonGroup_rb02f")
+
+[node name="ButtonEnable" parent="Options/AutoPerformance/InspectorPropertyBool/PanelContainer/MarginContainer/HBoxContainer" index="1"]
+button_group = SubResource("ButtonGroup_rb02f")
+
+[editable path="Options/RenderQuality/InspectorPropertyScroller"]
+[editable path="Options/3DResolutionScale/InspectorSlider"]
+[editable path="Options/AllowVolumetricFog/InspectorPropertyBool"]
+[editable path="Options/AutoPerformance/InspectorPropertyBool"]

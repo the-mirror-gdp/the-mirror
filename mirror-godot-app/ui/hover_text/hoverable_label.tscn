@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://b6ox2gq4sespi"]
+
+[ext_resource type="Script" path="res://ui/hover_text/scripts/hoverable_label.gd" id="2_pt417"]
+
+[node name="HoverableLabel" type="Label"]
+custom_minimum_size = Vector2(29, 30)
+offset_right = 29.0
+offset_bottom = 30.0
+mouse_filter = 1
+text = "Label"
+script = ExtResource("2_pt417")
+
+[connection signal="mouse_entered" from="." to="." method="_on_hoverable_label_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_hoverable_label_mouse_exited"]

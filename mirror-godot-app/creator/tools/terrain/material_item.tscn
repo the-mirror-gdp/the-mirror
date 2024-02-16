@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://2retsii3e6aj"]
+
+[node name="Item" type="VBoxContainer"]
+custom_minimum_size = Vector2(196, 196)
+offset_right = 196.0
+offset_bottom = 196.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+
+[node name="TextureRect" type="TextureRect" parent="Panel"]
+layout_mode = 0
+anchor_left = 0.1
+anchor_right = 0.9
+anchor_bottom = 1.0
+stretch_mode = 5
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="."]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+text = "MEDIEVAL BRICK WALL CASTLE"
+horizontal_alignment = 1
+autowrap_mode = 3
+clip_text = true
+text_overrun_behavior = 3

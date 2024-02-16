@@ -1,0 +1,85 @@
+[gd_scene load_steps=6 format=3 uid="uid://w7stm3dre8xv"]
+
+[ext_resource type="StyleBox" uid="uid://w2jaivp725n0" path="res://ui/new_player_ui/inventory/panel_transparent_blue_rounded.tres" id="1_nl8m3"]
+[ext_resource type="Script" path="res://creator/asset_inventory/hotbar/hotbar_slot.gd" id="2_fnxpv"]
+[ext_resource type="FontVariation" uid="uid://dbrjq4n5bqtm4" path="res://ui/new_player_ui/inventory/slot_font.tres" id="3_l8u2i"]
+[ext_resource type="Texture2D" uid="uid://48rhepqcbd3b" path="res://player/equipable/equipable_icon.svg" id="3_rng0d"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1d54i"]
+bg_color = Color(1, 1, 1, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="HotbarSlot" type="Panel"]
+custom_minimum_size = Vector2(76, 76)
+theme_override_styles/panel = ExtResource("1_nl8m3")
+script = ExtResource("2_fnxpv")
+hover_color = Color(0.333333, 1, 0.831373, 1)
+
+[node name="Preview" type="TextureRect" parent="."]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_use_custom_anchors = true
+metadata/_edit_layout_mode = 1
+
+[node name="IsEquipable" type="TextureRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -21.0
+offset_top = -20.0
+offset_right = -3.0
+offset_bottom = -4.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+texture = ExtResource("3_rng0d")
+expand_mode = 1
+
+[node name="Text" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 2.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("3_l8u2i")
+theme_override_font_sizes/font_size = 9
+text = "1"
+horizontal_alignment = 2
+metadata/_edit_use_custom_anchors = true
+
+[node name="Outline" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1d54i")

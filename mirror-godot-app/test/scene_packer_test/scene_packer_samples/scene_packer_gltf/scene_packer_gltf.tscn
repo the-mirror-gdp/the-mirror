@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://rv3swe1i12oh"]
+
+[ext_resource type="PackedScene" uid="uid://68hhrrdc1t6p" path="res://player/character_models/astronaut/astronaut.tscn" id="1_hhso3"]
+
+[node name="SnPackerGLTF" type="Node3D"]
+
+[node name="astronaut" parent="." instance=ExtResource("1_hhso3")]

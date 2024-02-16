@@ -1,0 +1,601 @@
+[gd_scene load_steps=40 format=3 uid="uid://ch0uw2fa08s6a"]
+
+[ext_resource type="Theme" uid="uid://ggwm8asxintx" path="res://ui/common/themes/menu_ui.theme.tres" id="1_bsgag"]
+[ext_resource type="Script" path="res://ui/main_menu/main_menu_ui.gd" id="2_0tnty"]
+[ext_resource type="Texture2D" uid="uid://dai4ge7mods7c" path="res://ui/common/images/gui_background.jpg" id="3_vn3vv"]
+[ext_resource type="PackedScene" uid="uid://0mra323xtoht" path="res://ui/main_menu/pages/home_page.tscn" id="4_ra4e2"]
+[ext_resource type="PackedScene" uid="uid://dkowcs24a0rg" path="res://ui/main_menu/pages/my_spaces.tscn" id="6_dxmr5"]
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="7_3j0pc"]
+[ext_resource type="PackedScene" uid="uid://cprw7dhdbphw3" path="res://ui/main_menu/pages/build_spaces.tscn" id="7_al6u3"]
+[ext_resource type="PackedScene" uid="uid://sndmfviwx31d" path="res://ui/main_menu/pages/play_spaces.tscn" id="8_m64q5"]
+[ext_resource type="Shader" path="res://ui/common/shaders/ui_blurr.gdshader" id="8_w8ibq"]
+[ext_resource type="PackedScene" uid="uid://tgcx8ymhgpxe" path="res://ui/main_menu/pages/avatar/avatar.tscn" id="9_aqh2v"]
+[ext_resource type="PackedScene" uid="uid://cx2mo1w80rpi6" path="res://ui/main_menu/pages/settings/settings.tscn" id="10_6f3nv"]
+[ext_resource type="PackedScene" uid="uid://qan235j7m5xi" path="res://ui/main_menu/header.tscn" id="10_jeyvr"]
+[ext_resource type="Texture2D" uid="uid://15cvus520agc" path="res://ui/common/images/logo-icon.svg" id="11_8pcq8"]
+[ext_resource type="Texture2D" uid="uid://pyiiu7es8s11" path="res://ui/art/close.svg" id="12_a3gvo"]
+[ext_resource type="Texture2D" uid="uid://cbl1xcmq3sicl" path="res://ui/art/accordian_open.png" id="12_pjn6c"]
+[ext_resource type="Theme" uid="uid://6eru14yfat8d" path="res://ui/in_game_menu/in_game_menu_ui_theme.tres" id="14_4mpjs"]
+[ext_resource type="Script" path="res://ui/main_menu/exit_popup/exit_popup.gd" id="15_dw04s"]
+[ext_resource type="StyleBox" uid="uid://nen4cpg1225q" path="res://ui/common/panels/panel_basic_rounded.stylebox.tres" id="16_p2g25"]
+[ext_resource type="StyleBox" uid="uid://b14r8oqdqptk8" path="res://ui/common/panels/panel_round_border_only.tres" id="17_deux3"]
+[ext_resource type="Theme" uid="uid://d3isoxw65g1rm" path="res://ui/common/buttons/gray/gray.theme.tres" id="17_hutr7"]
+[ext_resource type="FontFile" uid="uid://s44wjlc18fo7" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_bold.ttf" id="18_0wqyw"]
+[ext_resource type="FontFile" uid="uid://bjwepurchoc75" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_semi_bold.ttf" id="18_u1bpo"]
+[ext_resource type="Texture2D" uid="uid://k4oe0d3tax4n" path="res://ui/art/back.svg" id="19_u3ywl"]
+[ext_resource type="Texture2D" uid="uid://b0teyxfld2la6" path="res://ui/main_menu/leave_icon.svg" id="22_c5j2d"]
+[ext_resource type="Texture2D" uid="uid://burup0fme27qi" path="res://ui/in_game_menu/close_icon.svg" id="23_ix0lw"]
+[ext_resource type="PackedScene" uid="uid://b58iveuspbtyj" path="res://ui/button_sound/button_sound.tscn" id="24_7u35v"]
+[ext_resource type="Script" path="res://ui/main_menu/respawn_button.gd" id="25_l48f3"]
+[ext_resource type="Texture2D" uid="uid://djg7bh24p0oyw" path="res://ui/art/square.png" id="26_2si0s"]
+[ext_resource type="Texture2D" uid="uid://diaokdq2eymny" path="res://ui/main_menu/respawn_stars.svg" id="26_6uqyx"]
+[ext_resource type="Script" path="res://ui/main_menu/end_preview_button.gd" id="26_nsk5e"]
+[ext_resource type="AudioStream" uid="uid://cvgwto68ecirv" path="res://ui/main_menu/audio/back_close.wav" id="31_rrg3a"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0aacv"]
+shader = ExtResource("8_w8ibq")
+shader_parameter/blur = 1.5
+shader_parameter/color = null
+shader_parameter/strength = null
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4coir"]
+shader = ExtResource("8_w8ibq")
+shader_parameter/blur = 3.0
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/strength = 0.15
+
+[sub_resource type="Theme" id="Theme_yjf73"]
+
+[sub_resource type="FontVariation" id="Font_gbjgd"]
+base_font = ExtResource("18_0wqyw")
+
+[sub_resource type="Animation" id="Animation_olfs1"]
+resource_name = "FadeIn"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_3yyxa"]
+resource_name = "FadeOut"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cbjsg"]
+_data = {
+"FadeIn": SubResource("Animation_olfs1"),
+"FadeOut": SubResource("Animation_3yyxa")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hucna"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+
+[node name="MainMenuUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_bsgag")
+script = ExtResource("2_0tnty")
+metadata/_edit_horizontal_guides_ = [-102.0]
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_vn3vv")
+expand_mode = 1
+
+[node name="Pages" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Home" parent="Pages" instance=ExtResource("4_ra4e2")]
+visible = false
+layout_mode = 1
+
+[node name="My_Spaces" parent="Pages" instance=ExtResource("6_dxmr5")]
+visible = false
+layout_mode = 1
+
+[node name="Build" parent="Pages" instance=ExtResource("7_al6u3")]
+visible = false
+layout_mode = 1
+theme = ExtResource("7_3j0pc")
+
+[node name="Play" parent="Pages" instance=ExtResource("8_m64q5")]
+layout_mode = 1
+
+[node name="Avatar" parent="Pages" instance=ExtResource("9_aqh2v")]
+visible = false
+layout_mode = 1
+
+[node name="Settings" parent="Pages" instance=ExtResource("10_6f3nv")]
+layout_mode = 1
+
+[node name="HeaderMenu" parent="." instance=ExtResource("10_jeyvr")]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_bottom = 94.0
+metadata/_edit_lock_ = true
+
+[node name="Logo" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.498039)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -85.0
+offset_top = -85.0
+offset_right = -25.0
+offset_bottom = -25.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("11_8pcq8")
+expand_mode = 1
+
+[node name="HelpButton" type="Button" parent="."]
+self_modulate = Color(1, 1, 1, 0.392157)
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -205.0
+offset_top = -71.0
+offset_right = -105.0
+offset_bottom = -21.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 3
+theme = ExtResource("17_hutr7")
+text = "
+"
+metadata/_edit_layout_mode = 1
+
+[node name="Label" type="Label" parent="HelpButton"]
+self_modulate = Color(1, 1, 1, 0.784314)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 1
+theme_override_fonts/font = ExtResource("18_u1bpo")
+theme_override_font_sizes/font_size = 11
+text = "HELP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WindowOptions" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -69.0
+offset_top = 20.0
+offset_right = -25.0
+offset_bottom = 60.0
+grow_horizontal = 0
+theme_override_constants/separation = 20
+metadata/_edit_layout_mode = 1
+
+[node name="MinimizeWindow" type="TextureButton" parent="WindowOptions"]
+self_modulate = Color(0.145098, 0.419608, 0.984314, 1)
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_normal = ExtResource("12_pjn6c")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="CloseWindow" type="TextureButton" parent="WindowOptions"]
+self_modulate = Color(0.145098, 0.419608, 0.984314, 1)
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture_normal = ExtResource("12_a3gvo")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="BackButton" type="TextureButton" parent="."]
+visible = false
+modulate = Color(0.0705882, 1, 0.843137, 1)
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 65.0
+offset_bottom = 65.0
+texture_normal = ExtResource("19_u3ywl")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="ExitPopup" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("14_4mpjs")
+script = ExtResource("15_dw04s")
+
+[node name="ColorRect" type="ColorRect" parent="ExitPopup"]
+material = SubResource("ShaderMaterial_0aacv")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="ExitPopup"]
+material = SubResource("ShaderMaterial_4coir")
+custom_minimum_size = Vector2(370, 400)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -185.0
+offset_top = -200.0
+offset_right = 185.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+theme_override_styles/panel = ExtResource("16_p2g25")
+metadata/_edit_layout_mode = 1
+
+[node name="Border" type="Panel" parent="ExitPopup/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_yjf73")
+theme_override_styles/panel = ExtResource("17_deux3")
+
+[node name="MarginContainer" type="MarginContainer" parent="ExitPopup/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -86.0
+offset_top = -44.0
+offset_right = 86.0
+offset_bottom = 44.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 150
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 150
+theme_override_constants/margin_bottom = 100
+metadata/_edit_layout_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ExitPopup/Panel/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("14_4mpjs")
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="ExitPopup/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("Font_gbjgd")
+theme_override_font_sizes/font_size = 20
+text = "Are you sure you want to exit The Mirror?"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="ExitPopup/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="StayButton" type="Button" parent="ExitPopup/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "   Back to The Mirror"
+icon = ExtResource("19_u3ywl")
+alignment = 0
+expand_icon = true
+
+[node name="ExitButton" type="Button" parent="ExitPopup/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "   Yes, exit the Mirror"
+icon = ExtResource("22_c5j2d")
+alignment = 0
+expand_icon = true
+
+[node name="LogoutButton" type="Button" parent="ExitPopup/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "   Logout"
+icon = ExtResource("12_a3gvo")
+alignment = 0
+expand_icon = true
+
+[node name="CloseButton" type="TextureButton" parent="ExitPopup/Panel"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -22.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 22.0
+grow_horizontal = 0
+texture_normal = ExtResource("23_ix0lw")
+ignore_texture_size = true
+stretch_mode = 5
+metadata/_edit_layout_mode = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="ExitPopup"]
+libraries = {
+"": SubResource("AnimationLibrary_cbjsg")
+}
+
+[node name="PauseButtons" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 21.0
+offset_top = -71.0
+offset_right = 574.0
+offset_bottom = -21.0
+grow_vertical = 0
+theme_override_constants/separation = 20
+metadata/_edit_layout_mode = 1
+
+[node name="ESCButton" type="Button" parent="PauseButtons"]
+custom_minimum_size = Vector2(160, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("17_hutr7")
+text = "
+"
+metadata/_edit_layout_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="PauseButtons/ESCButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1.5
+offset_bottom = 1.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 11
+theme_override_constants/margin_top = 11
+theme_override_constants/margin_right = 11
+theme_override_constants/margin_bottom = 11
+metadata/_edit_layout_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PauseButtons/ESCButton/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+metadata/_edit_layout_mode = 1
+
+[node name="Label" type="Label" parent="PauseButtons/ESCButton/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("18_u1bpo")
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_hucna")
+text = "ESC"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="PauseButtons/ESCButton/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("18_u1bpo")
+theme_override_font_sizes/font_size = 11
+text = "CLOSE MENU"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RespawnPlayer" type="Button" parent="PauseButtons"]
+visible = false
+custom_minimum_size = Vector2(160, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("17_hutr7")
+text = "
+"
+script = ExtResource("25_l48f3")
+
+[node name="MarginContainer" type="MarginContainer" parent="PauseButtons/RespawnPlayer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1.5
+offset_bottom = 1.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 11
+theme_override_constants/margin_top = 11
+theme_override_constants/margin_right = 11
+theme_override_constants/margin_bottom = 11
+metadata/_edit_layout_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PauseButtons/RespawnPlayer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+metadata/_edit_layout_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="PauseButtons/RespawnPlayer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("26_6uqyx")
+
+[node name="Label2" type="Label" parent="PauseButtons/RespawnPlayer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("18_u1bpo")
+theme_override_font_sizes/font_size = 11
+text = "RESPAWN PLAYER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EndPreviewButton" type="Button" parent="PauseButtons"]
+visible = false
+custom_minimum_size = Vector2(160, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("17_hutr7")
+text = "
+"
+script = ExtResource("26_nsk5e")
+
+[node name="MarginContainer" type="MarginContainer" parent="PauseButtons/EndPreviewButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1.5
+offset_bottom = 1.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 11
+theme_override_constants/margin_top = 11
+theme_override_constants/margin_right = 11
+theme_override_constants/margin_bottom = 11
+metadata/_edit_layout_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PauseButtons/EndPreviewButton/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+metadata/_edit_layout_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="PauseButtons/EndPreviewButton/MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("26_2si0s")
+
+[node name="Label2" type="Label" parent="PauseButtons/EndPreviewButton/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("18_u1bpo")
+theme_override_font_sizes/font_size = 11
+text = "END PREVIEW"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ExitServer" type="Button" parent="PauseButtons"]
+custom_minimum_size = Vector2(160, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("17_hutr7")
+text = "
+"
+
+[node name="MarginContainer" type="MarginContainer" parent="PauseButtons/ExitServer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1.5
+offset_bottom = 1.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 11
+theme_override_constants/margin_top = 11
+theme_override_constants/margin_right = 11
+theme_override_constants/margin_bottom = 11
+metadata/_edit_layout_mode = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PauseButtons/ExitServer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+metadata/_edit_layout_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="PauseButtons/ExitServer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("22_c5j2d")
+
+[node name="Label2" type="Label" parent="PauseButtons/ExitServer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("18_u1bpo")
+theme_override_font_sizes/font_size = 11
+text = "  EXIT SERVER"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ButtonSound" parent="." instance=ExtResource("24_7u35v")]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("31_rrg3a")
+volume_db = -10.0
+
+[connection signal="request_change_subpage" from="Pages/My_Spaces" to="." method="change_subpage"]
+[connection signal="request_change_page" from="Pages/Avatar" to="." method="change_page"]
+[connection signal="page_button_pressed" from="HeaderMenu" to="." method="_on_main_menu_page_button_pressed"]
+[connection signal="gui_input" from="Logo" to="." method="_on_logo_gui_input"]
+[connection signal="pressed" from="HelpButton" to="." method="_on_help_button_pressed"]
+[connection signal="pressed" from="WindowOptions/MinimizeWindow" to="." method="_on_minimize_window_pressed"]
+[connection signal="pressed" from="WindowOptions/CloseWindow" to="." method="_on_close_window_pressed"]
+[connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="gui_input" from="ExitPopup/ColorRect" to="ExitPopup" method="_on_color_rect_gui_input"]
+[connection signal="pressed" from="ExitPopup/Panel/MarginContainer/VBoxContainer/StayButton" to="ExitPopup" method="_on_stay_button_pressed"]
+[connection signal="pressed" from="ExitPopup/Panel/MarginContainer/VBoxContainer/ExitButton" to="ExitPopup" method="_on_exit_button_pressed"]
+[connection signal="pressed" from="ExitPopup/Panel/MarginContainer/VBoxContainer/LogoutButton" to="ExitPopup" method="_on_logout_button_pressed"]
+[connection signal="pressed" from="ExitPopup/Panel/CloseButton" to="ExitPopup" method="_on_close_button_pressed"]
+[connection signal="animation_finished" from="ExitPopup/AnimationPlayer" to="ExitPopup" method="_on_animation_player_animation_finished"]
+[connection signal="pressed" from="PauseButtons/ESCButton" to="." method="_on_esc_button_pressed"]
+[connection signal="pressed" from="PauseButtons/RespawnPlayer" to="." method="_on_respawn_player_pressed"]
+[connection signal="pressed" from="PauseButtons/ExitServer" to="." method="_on_exit_server_pressed"]

@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bwq2op0om8tw0"
+path="res://.godot/imported/gizmo.rotation.ring.obj-26e7cfc6531314b361e66a7bf2c959c6.mesh"
+
+[deps]
+
+files=["res://.godot/imported/gizmo.rotation.ring.obj-26e7cfc6531314b361e66a7bf2c959c6.mesh"]
+
+source_file="res://creator/selection/gizmo/parts/rotation/gizmo.rotation.ring.obj"
+dest_files=["res://.godot/imported/gizmo.rotation.ring.obj-26e7cfc6531314b361e66a7bf2c959c6.mesh", "res://.godot/imported/gizmo.rotation.ring.obj-26e7cfc6531314b361e66a7bf2c959c6.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

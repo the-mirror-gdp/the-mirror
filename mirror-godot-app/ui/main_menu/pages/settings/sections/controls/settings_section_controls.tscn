@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3 uid="uid://bl7uhjoiuskhk"]
+
+[ext_resource type="PackedScene" uid="uid://7r8pofugnpkb" path="res://ui/main_menu/pages/settings/sections/settings_section.tscn" id="1_xitci"]
+[ext_resource type="Theme" uid="uid://dblj3nhoduter" path="res://ui/main_menu/pages/settings/theme/setting_theme.tres" id="2_p0x7w"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/settings/sections/controls/camera_mouse_sensitivity.gd" id="3_c2ljr"]
+[ext_resource type="PackedScene" uid="uid://7fra83sagq5p" path="res://creator/selection/inspector/primitive/inspector_number_slider.tscn" id="4_57mvc"]
+
+[node name="Controls" instance=ExtResource("1_xitci")]
+
+[node name="CameraMouseSensitivity" type="PanelContainer" parent="Options" index="0"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme = ExtResource("2_p0x7w")
+script = ExtResource("3_c2ljr")
+
+[node name="InspectorNumberSlider" parent="Options/CameraMouseSensitivity" index="0" instance=ExtResource("4_57mvc")]
+layout_mode = 2
+reset_value = 0.5
+max_value = 2.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+label_text = "Camera Mouse Sensitivity"
+
+[node name="Label" parent="Options/CameraMouseSensitivity/InspectorNumberSlider/LabelHolder" index="0"]
+theme_override_font_sizes/font_size = 16
+text = "Camera Mouse Sensitivity"
+
+[node name="SpinBox" parent="Options/CameraMouseSensitivity/InspectorNumberSlider/Content/SpinBoxHolder" index="0"]
+max_value = 2.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+
+[node name="Slider" parent="Options/CameraMouseSensitivity/InspectorNumberSlider/Content/SliderHolder" index="0"]
+max_value = 2.0
+step = 0.001
+
+[node name="ResetButton" parent="Options/CameraMouseSensitivity/InspectorNumberSlider" index="2"]
+self_modulate = Color(1, 1, 1, 1)
+focus_mode = 2
+
+[editable path="Options/CameraMouseSensitivity/InspectorNumberSlider"]

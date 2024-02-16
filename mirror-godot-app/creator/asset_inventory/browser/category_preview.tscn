@@ -1,0 +1,84 @@
+[gd_scene load_steps=11 format=3 uid="uid://dugn8p8road1g"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_kekr0"]
+[ext_resource type="Script" path="res://creator/asset_inventory/browser/category_preview.gd" id="2_0jj4s"]
+[ext_resource type="Script" path="res://creator/common/button_highlight.gd" id="3_cffdm"]
+[ext_resource type="FontVariation" uid="uid://bwp6hb31ol8la" path="res://ui/new_player_ui/inventory/title_font_bold.tres" id="4_76ata"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="7_lnyls"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ohyv2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_moatk"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0yfip"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_oprno"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_tkddn"]
+line_spacing = 0.0
+font = ExtResource("7_lnyls")
+font_size = 11
+
+[node name="Category" type="PanelContainer"]
+self_modulate = Color(1, 1, 1, 0.215686)
+custom_minimum_size = Vector2(360, 32)
+offset_right = 372.0
+offset_bottom = 100.0
+theme = ExtResource("1_kekr0")
+script = ExtResource("2_0jj4s")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="ViewAllButton" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ohyv2")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_moatk")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_0yfip")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_oprno")
+script = ExtResource("3_cffdm")
+_item_paths = Array[NodePath]([NodePath("CategoryNameLabel"), NodePath("ViewAll")])
+_hover_color = Color(0.0705882, 1, 0.843137, 1)
+
+[node name="CategoryNameLabel" type="Label" parent="MarginContainer/VBoxContainer/ViewAllButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 2
+theme_override_fonts/font = ExtResource("4_76ata")
+theme_override_font_sizes/font_size = 14
+text = "Category Name"
+label_settings = SubResource("LabelSettings_tkddn")
+uppercase = true
+
+[node name="ViewAll" type="Label" parent="MarginContainer/VBoxContainer/ViewAllButton"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 10
+text = "view all"
+horizontal_alignment = 2
+
+[node name="Slots" type="GridContainer" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+size_flags_vertical = 3
+columns = 4
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ViewAllButton" to="." method="_on_view_all_button_pressed"]

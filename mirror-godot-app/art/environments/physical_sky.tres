@@ -1,0 +1,30 @@
+[gd_resource type="Environment" load_steps=3 format=3 uid="uid://ib7u2j6apjgi"]
+
+[ext_resource type="Material" uid="uid://dljt3u0s1ixvm" path="res://art/sky/sky_physical.tres" id="1_qa330"]
+
+[sub_resource type="Sky" id="Sky_d7khk"]
+sky_material = ExtResource("1_qa330")
+
+[resource]
+background_mode = 2
+sky = SubResource("Sky_d7khk")
+tonemap_mode = 3
+tonemap_exposure = 1.2
+tonemap_white = 0.8
+ssao_enabled = true
+ssao_intensity = 3.0
+ssao_power = 2.0
+ssao_light_affect = 0.2
+glow_enabled = true
+glow_hdr_threshold = 1.7
+fog_density = 0.02
+fog_aerial_perspective = 0.3
+fog_sky_affect = 0.5
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0003
+volumetric_fog_albedo = Color(0.117647, 0.356863, 0.67451, 1)
+volumetric_fog_emission_energy = 0.0
+volumetric_fog_length = 1024.0
+volumetric_fog_ambient_inject = 1.0
+volumetric_fog_temporal_reprojection_amount = 0.95
+adjustment_enabled = true

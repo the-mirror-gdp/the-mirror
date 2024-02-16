@@ -1,0 +1,123 @@
+[gd_scene load_steps=19 format=3 uid="uid://gw3vl1demthm"]
+
+[ext_resource type="Script" path="res://ui/user_tutorial/user_tutorial.gd" id="1_dgjo8"]
+[ext_resource type="Texture2D" uid="uid://dj0hfdl3s6t1i" path="res://ui/user_tutorial/home_pages/1.jpg" id="2_878u2"]
+[ext_resource type="FontFile" uid="uid://bjwepurchoc75" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_semi_bold.ttf" id="2_yb3eg"]
+[ext_resource type="Texture2D" uid="uid://bk7gat35lpsxj" path="res://ui/user_tutorial/home_pages/2.jpg" id="3_kucli"]
+[ext_resource type="Texture2D" uid="uid://bqk710d1psd48" path="res://ui/user_tutorial/home_pages/3.jpg" id="4_gn8ab"]
+[ext_resource type="Texture2D" uid="uid://c6tsbbekumiua" path="res://ui/user_tutorial/home_pages/4.jpg" id="5_rdxon"]
+[ext_resource type="Texture2D" uid="uid://dl8tk7airee0p" path="res://ui/user_tutorial/home_pages/5.jpg" id="6_ouvt0"]
+[ext_resource type="Texture2D" uid="uid://be5lsedpnnhnv" path="res://ui/user_tutorial/space_pages/1.jpg" id="7_asb55"]
+[ext_resource type="Texture2D" uid="uid://bqmpkyvakeuuj" path="res://ui/user_tutorial/space_pages/2.jpg" id="8_jm5v4"]
+[ext_resource type="Texture2D" uid="uid://n13jfd3587va" path="res://ui/user_tutorial/space_pages/3.jpg" id="9_c5b4u"]
+[ext_resource type="Texture2D" uid="uid://umyvo3i2tkn6" path="res://ui/user_tutorial/space_pages/4.jpg" id="10_5eokl"]
+[ext_resource type="Texture2D" uid="uid://dgr3dgklbcpbn" path="res://ui/user_tutorial/space_pages/5.jpg" id="11_mohgf"]
+[ext_resource type="Texture2D" uid="uid://cv2umd4l6gvna" path="res://ui/user_tutorial/space_pages/6.jpg" id="12_4i3yb"]
+[ext_resource type="Texture2D" uid="uid://5r4ek467pmdg" path="res://ui/user_tutorial/space_pages/7.jpg" id="13_ava5h"]
+[ext_resource type="PackedScene" uid="uid://b58iveuspbtyj" path="res://ui/button_sound/button_sound.tscn" id="13_l65p1"]
+[ext_resource type="Texture2D" uid="uid://dwywlclclldsc" path="res://ui/user_tutorial/space_pages/8.jpg" id="14_0q1u0"]
+[ext_resource type="Texture2D" uid="uid://dbgdsygg75d8y" path="res://ui/user_tutorial/space_pages/9.jpg" id="15_eo8ja"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y1ie0"]
+bg_color = Color(0.0980392, 0.0980392, 0.196078, 0.784314)
+
+[node name="UserTutorial" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_dgjo8")
+_home_pages = Array[Texture2D]([ExtResource("2_878u2"), ExtResource("3_kucli"), ExtResource("4_gn8ab"), ExtResource("5_rdxon"), ExtResource("6_ouvt0")])
+_space_pages = Array[Texture2D]([ExtResource("7_asb55"), ExtResource("8_jm5v4"), ExtResource("9_c5b4u"), ExtResource("10_5eokl"), ExtResource("11_mohgf"), ExtResource("12_4i3yb"), ExtResource("13_ava5h"), ExtResource("14_0q1u0"), ExtResource("15_eo8ja")])
+
+[node name="Window" type="Panel" parent="."]
+visible = false
+self_modulate = Color(0, 0, 0, 0.784314)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Window"]
+self_modulate = Color(0, 0, 0, 0.784314)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -616.0
+offset_top = -456.0
+offset_right = 616.0
+offset_bottom = 456.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Window/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Window/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="PageImage" type="TextureRect" parent="Window/PanelContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1200, 800)
+layout_mode = 2
+size_flags_vertical = 3
+stretch_mode = 5
+
+[node name="MarginContainer" type="MarginContainer" parent="Window/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_right = 64
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Window/PanelContainer/MarginContainer/HBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="PreviousButton" type="Button" parent="Window/PanelContainer/MarginContainer/HBoxContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(256, 64)
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_fonts/font = ExtResource("2_yb3eg")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_y1ie0")
+text = "Previous"
+
+[node name="NextButton" type="Button" parent="Window/PanelContainer/MarginContainer/HBoxContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(256, 64)
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_fonts/font = ExtResource("2_yb3eg")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_y1ie0")
+text = "Next"
+
+[node name="DoneButton" type="Button" parent="Window/PanelContainer/MarginContainer/HBoxContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(256, 64)
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_fonts/font = ExtResource("2_yb3eg")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_y1ie0")
+text = "Done"
+
+[node name="ButtonSound" parent="." instance=ExtResource("13_l65p1")]
+
+[connection signal="pressed" from="Window/PanelContainer/MarginContainer/HBoxContainer/MarginContainer/HBoxContainer/PreviousButton" to="." method="_on_previous_button_pressed"]
+[connection signal="pressed" from="Window/PanelContainer/MarginContainer/HBoxContainer/MarginContainer/HBoxContainer/NextButton" to="." method="_on_next_button_pressed"]
+[connection signal="pressed" from="Window/PanelContainer/MarginContainer/HBoxContainer/MarginContainer/HBoxContainer/DoneButton" to="." method="_on_done_button_pressed"]

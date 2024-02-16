@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=3 uid="uid://brbtsnjio4p2m"]
+
+[ext_resource type="Script" path="res://player/cameras/camera_manager.gd" id="1_sgi5b"]
+[ext_resource type="PackedScene" uid="uid://g08bytt518wj" path="res://player/cameras/head/player_head_camera.tscn" id="2_h612i"]
+[ext_resource type="PackedScene" uid="uid://h5gnmb66fkgi" path="res://player/cameras/free/free_camera.tscn" id="4_35k1r"]
+[ext_resource type="Script" path="res://player/cameras/placement_preview.gd" id="5_h3wxg"]
+[ext_resource type="PackedScene" uid="uid://clraq8sj7pby6" path="res://player/cameras/voxel_viewer/camera_voxel_viewer.tscn" id="6_n4xo0"]
+
+[node name="CameraManager" type="Node"]
+script = ExtResource("1_sgi5b")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
+audio_listener_enable_3d = true
+size = Vector2i(2560, 1440)
+render_target_update_mode = 4
+
+[node name="PlayerHeadCamera" parent="SubViewportContainer/SubViewport" instance=ExtResource("2_h612i")]
+
+[node name="FreeCamera" parent="SubViewportContainer/SubViewport" instance=ExtResource("4_35k1r")]
+
+[node name="PlacementPreview" type="Node3D" parent="SubViewportContainer/SubViewport"]
+script = ExtResource("5_h3wxg")
+
+[node name="JoltDebugGeometry3D" type="JoltDebugGeometry3D" parent="SubViewportContainer/SubViewport"]
+
+[node name="CameraVoxelViewer" parent="." node_paths=PackedStringArray("camera_manager") instance=ExtResource("6_n4xo0")]
+camera_manager = NodePath("..")

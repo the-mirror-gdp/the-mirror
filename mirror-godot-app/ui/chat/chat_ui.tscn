@@ -1,0 +1,78 @@
+[gd_scene load_steps=6 format=3 uid="uid://bompdcbpjbtli"]
+
+[ext_resource type="Script" path="res://ui/chat/chat_ui.gd" id="1_wp7mh"]
+[ext_resource type="AudioStream" uid="uid://ippsowd2uk20" path="res://ui/chat/chat_send.wav" id="2_iy67r"]
+[ext_resource type="AudioStream" uid="uid://bqvawxu4dbvyx" path="res://ui/chat/chat_receive.wav" id="3_i2jyh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eu63x"]
+bg_color = Color(0, 0, 0.117647, 0.392157)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sf50b"]
+content_margin_left = 16.0
+content_margin_right = 16.0
+bg_color = Color(0, 0, 0.117647, 0.392157)
+
+[node name="ChatUI" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_wp7mh")
+
+[node name="ChatBox" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 608.0
+offset_bottom = 331.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_eu63x")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ChatBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="ChatBox/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ChatBox/VBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="ChatBox/VBoxContainer/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_right = 16
+
+[node name="MessageContainer" type="VBoxContainer" parent="ChatBox/VBoxContainer/MarginContainer/ScrollContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 1
+
+[node name="LineEdit" type="LineEdit" parent="ChatBox/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_sf50b")
+placeholder_text = "To chat click here or press \"/\" key"
+max_length = 200
+caret_blink = true
+caret_blink_interval = 0.5
+
+[node name="ChatSendSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_iy67r")
+
+[node name="ChatReceiveSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_i2jyh")

@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cy566ld7k03ue"]
+
+[ext_resource type="PackedScene" uid="uid://nqtj3k1bv6uh" path="res://ui/hover_text/hoverable_button.tscn" id="1_uqr1n"]
+[ext_resource type="Texture2D" uid="uid://boqxb7htsu2hv" path="res://ui/art/rotate.svg" id="2_ywqaa"]
+
+[node name="ResetButton" instance=ExtResource("1_uqr1n")]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(20, 32)
+focus_mode = 0
+theme_override_colors/icon_disabled_color = Color(0, 0, 0, 0)
+icon = ExtResource("2_ywqaa")
+flat = true
+expand_icon = true
+hover_tooltip_text = "Reset this field to its default value."

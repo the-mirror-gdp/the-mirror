@@ -1,0 +1,54 @@
+[gd_scene load_steps=6 format=3 uid="uid://sndmfviwx31d"]
+
+[ext_resource type="PackedScene" uid="uid://b6kuvk63etfpw" path="res://ui/main_menu/pages/space_select.tscn" id="1_27a22"]
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_pjv1t"]
+[ext_resource type="Script" path="res://ui/common/modulo_sized_control.gd" id="1_yanbh"]
+[ext_resource type="PackedScene" uid="uid://bxip7xuk82fsr" path="res://ui/main_menu/pages/view_space.tscn" id="4_6wwu8"]
+[ext_resource type="PackedScene" uid="uid://brrda4tvbd43x" path="res://ui/main_menu/pages/edit_space/edit_space.tscn" id="5_h8aoa"]
+
+[node name="Play" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_pjv1t")
+
+[node name="Pages" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_yanbh")
+items_container_path = NodePath("PlaySpaceSelect/VBoxContainer")
+item_width = 376
+
+[node name="PlaySpaceSelect" parent="Pages" instance=ExtResource("1_27a22")]
+layout_mode = 1
+_data_source = 2
+
+[node name="Title" parent="Pages/PlaySpaceSelect/VBoxContainer/MarginContainer/VBoxContainer" index="1"]
+text = "Play Spaces"
+
+[node name="Description" parent="Pages/PlaySpaceSelect/VBoxContainer/MarginContainer/VBoxContainer" index="2"]
+text = "Explore Spaces in The Mirror
+"
+
+[node name="MarginContainer" parent="Pages/PlaySpaceSelect/VBoxContainer/Panel" index="0"]
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_right = 0
+
+[node name="ViewSpace" parent="Pages" instance=ExtResource("4_6wwu8")]
+visible = false
+layout_mode = 1
+offset_top = 80.0
+
+[node name="EditSpace" parent="Pages" instance=ExtResource("5_h8aoa")]
+visible = false
+layout_mode = 1
+
+[editable path="Pages/PlaySpaceSelect"]
+[editable path="Pages/PlaySpaceSelect/VBoxContainer/Panel/MarginContainer/EndlessScrollFlowContainer"]

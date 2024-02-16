@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://ui/main_menu/pages/avatar/avatar_preview/avatar_preview.gd" id="1_kpol7"]
+[ext_resource type="PackedScene" path="res://player/animations/animation_controller.tscn" id="2_n0k41"]
+[ext_resource type="FontFile" uid="uid://bfrj1luneglfi" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_italic.ttf" id="3_kholi"]
+
+[node name="AvatarPreview" type="Node3D"]
+script = ExtResource("1_kpol7")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.03739, 1.66784)
+current = true
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.987746, -0.156072, 0, 0.156072, 0.987746, 0, 0.32346, 4.22917)
+light_energy = 0.7
+
+[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.87979, 0.475363, 0, -0.475363, 0.87979, 0, 4.94505, 6.22737)
+light_energy = 0.75
+
+[node name="PlayerModel" parent="." instance=ExtResource("2_n0k41")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="LoadingLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+visible = false
+modulate = Color(0.678431, 0.670588, 1, 0.501961)
+outline_modulate = Color(0, 0, 0, 0.501961)
+text = "LOADING"
+font = ExtResource("3_kholi")

@@ -1,0 +1,89 @@
+name: 🪞 Export Client Test PR
+on:
+  pull_request:
+
+concurrency:
+  group: pr-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build-windows-pr:
+    name: 🏁 Build Windows Dev PR
+    uses: ./.github/workflows/client-build-tool.yml
+    secrets:
+      gcp-secret: ""
+      cicd-token-github: ${{ secrets.CI_TOKEN_GITHUB}}
+    with:
+      should-deploy: false
+      should-run-unit-tests: true
+      should-notify-on-failure: false
+      editor-binary-workflow: windows_builds.yml
+      editor-binary-name: MirrorGodotEditorWindows.exe
+      editor-binary-download: MirrorGodotEditorWindows.exe
+      editor-binary-branch: dev
+      editor-template-directory: ~/AppData/Roaming/Godot/export_templates/4.3.dev
+      template-binary-workflow: windows_builds.yml
+      template-binary-name: windows_release_x86_64.exe
+      template-binary-branch: dev
+      export-template-file: windows_release_x86_64.exe
+      game-environment-cfg-name: dev
+      game-export-preset: Windows
+      game-binary-name: The Mirror Dev.exe
+      bucket-name: no-bucket
+      os: "Windows"
+
+  build-linux-pr:
+    name: 🐧 Build Linux Dev PR
+    uses: ./.github/workflows/client-build-tool.yml
+    secrets:
+      gcp-secret: ""
+      cicd-token-github: ${{ secrets.CI_TOKEN_GITHUB}}
+    with:
+      should-deploy: false
+      should-run-unit-tests: true
+      should-notify-on-failure: false
+      editor-binary-workflow: linux_builds.yml
+      editor-binary-name: MirrorGodotEditorLinux.x86_64
+      editor-binary-download: MirrorGodotEditorLinux.x86_64
+      editor-binary-branch: dev
+      editor-template-directory: ~/.local/share/godot/export_templates/4.3.dev
+      template-binary-workflow: linux_builds.yml
+      template-binary-name: linux_release.x86_64
+      template-binary-branch: dev
+      export-template-file: linux_release.x86_64
+      game-environment-cfg-name: dev
+      game-export-preset: Linux
+      game-binary-name: The Mirror Dev.x86_64
+      bucket-name: no-bucket
+      os: "Linux"
+
+  build-macos-pr:
+    name: 🍎 Build MacOS Dev PR
+    uses: ./.github/workflows/client-build-tool.yml
+    secrets:
+      gcp-secret: ""
+      cicd-token-github: ${{ secrets.CI_TOKEN_GITHUB}}
+    with:
+      should-deploy: false
+      should-run-unit-tests: true
+      should-notify-on-failure: false
+      should-unzip-editor: true
+      should-install-timeout-macos: true
+      editor-binary-workflow: macos_builds.yml
+      editor-binary-download: MirrorGodotEditorMac.app.zip
+      editor-binary-name: MirrorGodotEditorMac.app/Contents/MacOS/Godot
+      editor-binary-branch: dev
+      editor-template-directory: ~/Library/Application\ Support/Godot/export_templates/4.3.dev
+      template-binary-workflow: macos_builds.yml
+      template-binary-name: macos_template.app.zip
+      template-binary-branch: dev
+      export-template-file: macos.zip
+      game-environment-cfg-name: dev
+      game-export-preset: MacOS-themirror-dev
+      game-binary-name: The Mirror Dev.app
+      bucket-name: no-bucket
+      os: "macOS"

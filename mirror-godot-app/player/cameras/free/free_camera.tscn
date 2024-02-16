@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://h5gnmb66fkgi"]
+
+[ext_resource type="Script" path="res://player/cameras/free/free_camera.gd" id="1_3yevj"]
+[ext_resource type="Script" path="res://player/cameras/camera_nodes/asset_placement_build_mode.gd" id="2_y2s2j"]
+[ext_resource type="Script" path="res://player/cameras/free/camera_speed_ui.gd" id="3_0hd0m"]
+[ext_resource type="AudioStream" uid="uid://c1y7rfhonwf4" path="res://player/cameras/free/audio/place_object.wav" id="3_7jy55"]
+
+[node name="FreeCamera" type="Node3D" node_paths=PackedStringArray("_camera")]
+script = ExtResource("1_3yevj")
+_camera = NodePath("Camera")
+
+[node name="Camera" type="Camera3D" parent="."]
+script = ExtResource("2_y2s2j")
+
+[node name="AudioStreamPlayerCreateObject" type="AudioStreamPlayer" parent="Camera"]
+stream = ExtResource("3_7jy55")
+volume_db = -10.0
+
+[node name="CameraSpeedUI" type="Label" parent="."]
+modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(180, 20)
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -29.0
+offset_right = 126.0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 18
+text = "Speed: x.x m/s"
+script = ExtResource("3_0hd0m")
+
+[connection signal="scroll_speed_changed" from="." to="Camera" method="adjust_near_far_planes"]
+[connection signal="scroll_speed_changed" from="." to="CameraSpeedUI" method="_on_scroll_speed_changed"]

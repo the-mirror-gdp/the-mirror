@@ -1,0 +1,14 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=4 format=3 uid="uid://bwfba6vnlwk7i"]
+
+[ext_resource type="AudioStream" uid="uid://bih6pkgokh7ea" path="res://player/audio/metal_surface/jump/Jump_FPS-001.wav" id="1_igdbe"]
+[ext_resource type="AudioStream" uid="uid://dwis6mwovq863" path="res://player/audio/metal_surface/jump/Jump_FPS-002.wav" id="2_0hbbr"]
+[ext_resource type="AudioStream" uid="uid://d1rg80skdta7s" path="res://player/audio/metal_surface/jump/Jump_FPS-003.wav" id="3_h3wkk"]
+
+[resource]
+streams_count = 3
+stream_0/stream = ExtResource("1_igdbe")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("2_0hbbr")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("3_h3wkk")
+stream_2/weight = 1.0

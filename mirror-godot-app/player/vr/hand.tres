@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://by1x2mq3jq2nf"]
+
+[resource]
+transparency = 1
+albedo_color = Color(0, 0.784314, 1, 0.0980392)
+metallic_specular = 0.0
+emission_enabled = true
+emission = Color(0, 0.784314, 1, 1)
+clearcoat_enabled = true

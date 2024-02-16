@@ -1,0 +1,43 @@
+[gd_scene load_steps=4 format=3 uid="uid://c1s82vpjmqhda"]
+
+[ext_resource type="Script" path="res://player/ui/social/social_ui.gd" id="1_nrft1"]
+[ext_resource type="FontFile" uid="uid://wnq6gpmrsr6v" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_medium.ttf" id="2_m2tde"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_fqyuv"]
+font = ExtResource("2_m2tde")
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+
+[node name="SocialUI" type="Control"]
+z_index = 1
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_nrft1")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -90.0
+offset_top = -180.0
+offset_right = 90.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 8
+alignment = 2
+
+[node name="Messages" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 2
+
+[node name="Name" type="Label" parent="VBoxContainer"]
+self_modulate = Color(0.0705882, 1, 0.843137, 1)
+layout_mode = 2
+text = "Player"
+label_settings = SubResource("LabelSettings_fqyuv")
+horizontal_alignment = 1
+vertical_alignment = 1

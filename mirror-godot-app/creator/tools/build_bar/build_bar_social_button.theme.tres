@@ -1,0 +1,24 @@
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://b2jbwic4wjvr0"]
+
+[ext_resource type="FontFile" uid="uid://cv5tkor0qdxqq" path="res://ui/common/fonts/fontawesome-free-6/Font Awesome 6 Free-Solid-900.otf" id="1_hxu1k"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4wgjg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1honx"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dljkk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mslg3"]
+bg_color = Color(0.145098, 0.419608, 0.984314, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[resource]
+Button/font_sizes/font_size = 23
+Button/fonts/font = ExtResource("1_hxu1k")
+Button/styles/focus = SubResource("StyleBoxEmpty_4wgjg")
+Button/styles/hover = SubResource("StyleBoxEmpty_1honx")
+Button/styles/normal = SubResource("StyleBoxEmpty_dljkk")
+Button/styles/pressed = SubResource("StyleBoxFlat_mslg3")

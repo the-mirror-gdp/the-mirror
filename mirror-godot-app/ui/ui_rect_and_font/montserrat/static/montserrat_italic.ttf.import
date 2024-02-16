@@ -1,0 +1,38 @@
+[remap]
+
+importer="font_data_dynamic"
+type="FontFile"
+uid="uid://bfrj1luneglfi"
+path="res://.godot/imported/montserrat_italic.ttf-d17d95f30c723082075dab46e3e7079b.fontdata"
+
+[deps]
+
+source_file="res://ui/ui_rect_and_font/montserrat/static/montserrat_italic.ttf"
+dest_files=["res://.godot/imported/montserrat_italic.ttf-d17d95f30c723082075dab46e3e7079b.fontdata"]
+
+[params]
+
+Rendering=null
+antialiasing=1
+generate_mipmaps=true
+multichannel_signed_distance_field=false
+msdf_pixel_range=8
+msdf_size=48
+allow_system_fallback=true
+force_autohinter=false
+hinting=2
+subpixel_positioning=1
+oversampling=2.0
+Fallbacks=null
+fallbacks=[]
+Compress=null
+compress=true
+preload=[{
+"chars": [],
+"glyphs": [],
+"name": "New Configuration",
+"size": Vector2i(16, 0)
+}]
+language_support={}
+script_support={}
+opentype_features={}

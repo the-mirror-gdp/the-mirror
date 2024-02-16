@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://nepceiq6xabl"]
+
+[ext_resource type="Theme" uid="uid://mnma6h0u7wla" path="res://creator/creator_ui.theme.tres" id="1_a5xrf"]
+[ext_resource type="Script" path="res://creator/selection/inspector/primitive/inspector_subset.gd" id="2_7c5e6"]
+
+[node name="InspectorPropertySubset" type="HBoxContainer"]
+offset_right = 200.0
+offset_bottom = 3.0
+size_flags_horizontal = 3
+theme = ExtResource("1_a5xrf")
+script = ExtResource("2_7c5e6")
+
+[node name="Line" type="VSeparator" parent="."]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="PropertyList" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3

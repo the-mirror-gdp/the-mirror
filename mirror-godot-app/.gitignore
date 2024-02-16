@@ -1,0 +1,25 @@
+# Godot 4+ specific ignores
+.godot/
+
+# System specific ignores
+.directory
+.DS_Store
+*~
+
+# Deeplink files
+*.sock
+
+# Project specific ignores
+override.cfg
+test/scene_packer_test/pck_import_test/pcks/
+
+# Binaries
+bin/
+build/
+lib/
+
+# NodeJS
+node_modules
+
+# Voxel terrain
+voxels.db

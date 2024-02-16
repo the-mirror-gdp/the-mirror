@@ -1,0 +1,67 @@
+[gd_scene load_steps=8 format=3 uid="uid://ds3mtjikaxb2b"]
+
+[ext_resource type="Texture2D" uid="uid://bk2slyi5pj8kr" path="res://creator/tools/statistics/ring.svg" id="1_has8y"]
+[ext_resource type="Script" path="res://creator/tools/statistics/statistics.gd" id="1_u16jv"]
+[ext_resource type="FontVariation" uid="uid://bwp6hb31ol8la" path="res://ui/new_player_ui/inventory/title_font_bold.tres" id="2_vhgt5"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="4_hg6ga"]
+[ext_resource type="FontFile" uid="uid://ck6yyvqvhv7tq" path="res://ui/common/fonts/source_code_pro/SourceCodePro-Medium.ttf" id="4_j3sf6"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_5n2kp"]
+font = ExtResource("4_hg6ga")
+font_size = 11
+
+[sub_resource type="LabelSettings" id="LabelSettings_l7r70"]
+font = ExtResource("4_hg6ga")
+font_size = 11
+
+[node name="Statistics" type="HBoxContainer"]
+custom_minimum_size = Vector2(128, 30)
+offset_right = 128.0
+offset_bottom = 30.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 0
+theme_override_constants/separation = 0
+script = ExtResource("1_u16jv")
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="."]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+mouse_filter = 2
+max_value = 1e+07
+allow_greater = true
+fill_mode = 4
+nine_patch_stretch = true
+texture_under = ExtResource("1_has8y")
+texture_progress = ExtResource("1_has8y")
+tint_under = Color(1, 1, 1, 0.25)
+tint_progress = Color(0, 1, 0, 1)
+
+[node name="Labels" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(90, 30)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = -2
+alignment = 1
+
+[node name="NameLabel" type="Label" parent="Labels"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_vhgt5")
+theme_override_font_sizes/font_size = 12
+text = "NAME"
+label_settings = SubResource("LabelSettings_5n2kp")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NumberLabel" type="Label" parent="Labels"]
+clip_contents = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_j3sf6")
+theme_override_font_sizes/font_size = 13
+text = "0000 of 10M"
+label_settings = SubResource("LabelSettings_l7r70")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="mouse_entered" from="." to="." method="_on_hoverable_button_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_hoverable_button_mouse_exited"]

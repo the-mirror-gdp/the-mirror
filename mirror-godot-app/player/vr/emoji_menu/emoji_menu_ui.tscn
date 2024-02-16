@@ -1,0 +1,125 @@
+[gd_scene load_steps=4 format=3 uid="uid://du226mia7mdf"]
+
+[ext_resource type="PackedScene" uid="uid://d20ywphmiq3n6" path="res://player/vr/emoji_menu/emoji_item.tscn" id="1_3k4dj"]
+[ext_resource type="Texture2D" uid="uid://btqnv4hwpgduk" path="res://ui/art/circle.svg" id="1_f1shy"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a8rsq"]
+bg_color = Color(0, 0, 0, 0.784314)
+corner_radius_top_left = 1024
+corner_radius_top_right = 1024
+corner_radius_bottom_right = 1024
+corner_radius_bottom_left = 1024
+corner_detail = 12
+
+[node name="EmojiMenuUI" type="Panel"]
+custom_minimum_size = Vector2(512, 512)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_a8rsq")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+self_modulate = Color(0, 0, 0, 0.588235)
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("1_f1shy")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 200
+
+[node name="Emoji" parent="VBoxContainer" instance=ExtResource("1_3k4dj")]
+layout_mode = 2
+emoji_symbol = "🙂"
+
+[node name="Emoji2" parent="VBoxContainer" instance=ExtResource("1_3k4dj")]
+layout_mode = 2
+emoji_symbol = "❤️"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 200
+alignment = 1
+
+[node name="Emoji" parent="HBoxContainer" instance=ExtResource("1_3k4dj")]
+layout_mode = 2
+emoji_symbol = "😢"
+
+[node name="Emoji2" parent="HBoxContainer" instance=ExtResource("1_3k4dj")]
+layout_mode = 2
+emoji_symbol = "😲"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.785398
+pivot_offset = Vector2(256, 256)
+auto_translate = false
+mouse_filter = 2
+theme_override_constants/separation = 200
+
+[node name="Emoji" parent="VBoxContainer2" instance=ExtResource("1_3k4dj")]
+layout_mode = 2
+emoji_symbol = "😀"
+rotated = true
+
+[node name="Emoji2" parent="VBoxContainer2" instance=ExtResource("1_3k4dj")]
+layout_mode = 2
+emoji_symbol = "👎"
+rotated = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.785398
+pivot_offset = Vector2(256, 256)
+auto_translate = false
+mouse_filter = 2
+theme_override_constants/separation = 200
+alignment = 1
+
+[node name="Emoji" parent="HBoxContainer2" instance=ExtResource("1_3k4dj")]
+layout_mode = 2
+emoji_symbol = "☹️"
+rotated = true
+
+[node name="Emoji2" parent="HBoxContainer2" instance=ExtResource("1_3k4dj")]
+layout_mode = 2
+emoji_symbol = "👍"
+rotated = true

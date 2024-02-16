@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://qan235j7m5xi"]
+
+[ext_resource type="Theme" uid="uid://j2x4to0hys03" path="res://ui/common/themes/main_menu.theme.tres" id="1_ujoti"]
+[ext_resource type="Script" path="res://ui/main_menu/header.gd" id="2_08sl6"]
+[ext_resource type="Texture2D" uid="uid://ny5ed73oitlv" path="res://ui/art/settings_full.svg" id="3_ro7ay"]
+
+[node name="HeaderMenu" type="HBoxContainer"]
+custom_minimum_size = Vector2(0, 94)
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+size_flags_vertical = 3
+theme = ExtResource("1_ujoti")
+theme_override_constants/separation = 50
+alignment = 1
+script = ExtResource("2_08sl6")
+settings_icon = ExtResource("3_ro7ay")
+metadata/_edit_use_custom_anchors = false

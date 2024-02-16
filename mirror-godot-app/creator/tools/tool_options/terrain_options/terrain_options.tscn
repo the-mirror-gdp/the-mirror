@@ -1,0 +1,151 @@
+[gd_scene load_steps=12 format=3 uid="uid://c05b20xy8h380"]
+
+[ext_resource type="Script" path="res://creator/tools/tool_options/terrain_options/terrain_options.gd" id="1_iatvx"]
+[ext_resource type="StyleBox" uid="uid://biwid7pf726cm" path="res://ui/new_player_ui/inventory/panel_light_blue_rounded.tres" id="2_0356s"]
+[ext_resource type="StyleBox" uid="uid://c4ig2wlac32fb" path="res://ui/new_player_ui/inventory/panel_light_blue_rounded_unselected.tres" id="3_kmny1"]
+[ext_resource type="FontVariation" uid="uid://bwp6hb31ol8la" path="res://ui/new_player_ui/inventory/title_font_bold.tres" id="4_2g5t7"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="5_6ovrn"]
+[ext_resource type="PackedScene" uid="uid://nqtj3k1bv6uh" path="res://creator/tools/buttons/toolbar_button.tscn" id="5_ywuaa"]
+[ext_resource type="Texture2D" uid="uid://c0aogh35f1blx" path="res://ui/art/additive.svg" id="6_timgw"]
+[ext_resource type="Texture2D" uid="uid://bfm1o8w2h4wsv" path="res://ui/art/deconstruct.svg" id="7_d4obw"]
+[ext_resource type="Texture2D" uid="uid://brru2tnle0qbj" path="res://ui/art/terrain-flatten.svg" id="8_407dj"]
+[ext_resource type="Texture2D" uid="uid://d2qox4ia5vuw1" path="res://ui/art/filled.svg" id="10_2aira"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_x5kw6"]
+line_spacing = 0.0
+font = ExtResource("5_6ovrn")
+font_size = 11
+
+[node name="TerrainOptions" type="MarginContainer" node_paths=PackedStringArray("_add_button", "_subtract_button", "_flat_button", "_paint_button", "_brush_size", "_brush_strength")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 6
+script = ExtResource("1_iatvx")
+button_selected_style = ExtResource("2_0356s")
+button_deselected_style = ExtResource("3_kmny1")
+_add_button = NodePath("VBoxContainer/Mode/AddButton")
+_subtract_button = NodePath("VBoxContainer/Mode/SubtractButton")
+_flat_button = NodePath("VBoxContainer/Mode/FlatButton")
+_paint_button = NodePath("VBoxContainer/Mode/PaintButton")
+_brush_size = NodePath("VBoxContainer/BrushSize/BrushSizeSlider")
+_brush_strength = NodePath("VBoxContainer/BrushStrength/BrushStrengthSlider")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Mode" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/Mode"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("4_2g5t7")
+theme_override_font_sizes/font_size = 14
+text = "Mode"
+label_settings = SubResource("LabelSettings_x5kw6")
+vertical_alignment = 1
+
+[node name="AddButton" parent="VBoxContainer/Mode" instance=ExtResource("5_ywuaa")]
+layout_mode = 2
+icon = ExtResource("6_timgw")
+hover_tooltip_text = "Additive Mode"
+
+[node name="SubtractButton" parent="VBoxContainer/Mode" instance=ExtResource("5_ywuaa")]
+layout_mode = 2
+icon = ExtResource("7_d4obw")
+hover_tooltip_text = "Subtractive Mode"
+
+[node name="FlatButton" parent="VBoxContainer/Mode" instance=ExtResource("5_ywuaa")]
+layout_mode = 2
+icon = ExtResource("8_407dj")
+hover_tooltip_text = "Flatten Mode"
+
+[node name="PaintButton" parent="VBoxContainer/Mode" instance=ExtResource("5_ywuaa")]
+layout_mode = 2
+icon = ExtResource("10_2aira")
+hover_tooltip_text = "Paint Mode"
+
+[node name="BrushSize" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="VBoxContainer/BrushSize"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("4_2g5t7")
+theme_override_font_sizes/font_size = 14
+text = "Brush Size"
+label_settings = SubResource("LabelSettings_x5kw6")
+vertical_alignment = 1
+
+[node name="BrushSizeSlider" type="HSlider" parent="VBoxContainer/BrushSize"]
+self_modulate = Color(0.282353, 0.505882, 0.968627, 1)
+custom_minimum_size = Vector2(200, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+min_value = 0.5
+max_value = 10.0
+step = 0.5
+value = 3.0
+
+[node name="BrushStrength" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="VBoxContainer/BrushStrength"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("4_2g5t7")
+theme_override_font_sizes/font_size = 14
+text = "Strength"
+label_settings = SubResource("LabelSettings_x5kw6")
+vertical_alignment = 1
+
+[node name="BrushStrengthSlider" type="HSlider" parent="VBoxContainer/BrushStrength"]
+self_modulate = Color(0.282353, 0.505882, 0.968627, 1)
+custom_minimum_size = Vector2(200, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+min_value = 0.01
+max_value = 1.0
+step = 0.01
+value = 1.0
+exp_edit = true
+
+[node name="BrushMaterial" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="VBoxContainer/BrushMaterial"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("4_2g5t7")
+theme_override_font_sizes/font_size = 14
+text = "Material"
+label_settings = SubResource("LabelSettings_x5kw6")
+vertical_alignment = 1
+
+[node name="MaterialButton" parent="VBoxContainer/BrushMaterial" instance=ExtResource("5_ywuaa")]
+layout_mode = 2
+icon = ExtResource("10_2aira")
+hover_tooltip_text = "Paint Mode"
+
+[connection signal="pressed" from="VBoxContainer/Mode/AddButton" to="." method="_on_add_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/Mode/SubtractButton" to="." method="_on_subtract_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/Mode/FlatButton" to="." method="_on_flat_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/Mode/PaintButton" to="." method="_on_paint_button_pressed"]
+[connection signal="value_changed" from="VBoxContainer/BrushSize/BrushSizeSlider" to="." method="_on_brush_size_changed"]
+[connection signal="value_changed" from="VBoxContainer/BrushStrength/BrushStrengthSlider" to="." method="_on_brush_strength_changed"]
+[connection signal="pressed" from="VBoxContainer/BrushMaterial/MaterialButton" to="." method="_on_material_button_pressed"]

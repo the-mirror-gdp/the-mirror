@@ -1,0 +1,480 @@
+[gd_scene load_steps=14 format=3 uid="uid://mh7yc1w0drne"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_xbr42"]
+[ext_resource type="Script" path="res://ui/teams/scoreboard_window.gd" id="2_srbm7"]
+[ext_resource type="Shader" path="res://ui/common/shaders/ui_blurr.gdshader" id="3_peaks"]
+[ext_resource type="StyleBox" uid="uid://nen4cpg1225q" path="res://ui/common/panels/panel_basic_rounded.stylebox.tres" id="4_qixaq"]
+[ext_resource type="PackedScene" uid="uid://dqmxrquvyyu51" path="res://ui/common/components/window_header.tscn" id="6_ipvv5"]
+[ext_resource type="Script" path="res://scripts/ui/table.gd" id="9_he7mu"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r7cus"]
+shader = ExtResource("3_peaks")
+shader_parameter/blur = 2.417
+shader_parameter/color = Color(0.072, 0.0882, 0.18, 1)
+shader_parameter/strength = 0.35
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0bro2"]
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.133333)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b7cjn"]
+content_margin_left = 5.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.133333)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rdkbg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nglxu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u7pt6"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0, 0.72549, 0.113725, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kaxxm"]
+border_width_top = 1
+border_color = Color(0.8, 0.8, 0.8, 0.207843)
+border_blend = true
+
+[node name="ScoreboardWindow" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_xbr42")
+script = ExtResource("2_srbm7")
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="."]
+copy_mode = 2
+
+[node name="Control" type="Panel" parent="."]
+material = SubResource("ShaderMaterial_r7cus")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -300.0
+offset_right = 400.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("4_qixaq")
+
+[node name="body" type="VBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="window_header" parent="Control/body" instance=ExtResource("6_ipvv5")]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 1
+
+[node name="Label" parent="Control/body/window_header" index="0"]
+text = "Scoreboard"
+
+[node name="table_container" type="HBoxContainer" parent="Control/body"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+script = ExtResource("9_he7mu")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/body/table_container"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_top = 50
+
+[node name="Scrollbar" type="ScrollContainer" parent="Control/body/table_container/MarginContainer"]
+custom_minimum_size = Vector2(0, 260)
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/body/table_container/MarginContainer/Scrollbar"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="table_header" type="Control" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="title_name" type="Label" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table_header"]
+layout_mode = 0
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_0bro2")
+text = "NAME
+"
+
+[node name="title_color" type="Label" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table_header"]
+layout_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_b7cjn")
+text = "TEAM"
+
+[node name="title_kills" type="Label" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table_header"]
+layout_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_b7cjn")
+text = "KILLS
+"
+
+[node name="title_deaths" type="Label" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table_header"]
+layout_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_b7cjn")
+text = "DEATHS"
+
+[node name="title_score" type="Label" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table_header"]
+layout_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_b7cjn")
+text = "SCORE"
+
+[node name="title_latency" type="Label" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table_header"]
+layout_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_b7cjn")
+text = "PING"
+
+[node name="new_row" type="Control" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="name" type="MarginContainer" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="player_name" type="Label" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row/name"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxEmpty_rdkbg")
+text = "Gordon"
+
+[node name="color" type="MarginContainer" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="team_color" type="ColorPickerButton" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row/color"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxEmpty_nglxu")
+disabled = true
+color = Color(1, 0, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row/color/team_color"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="team_name" type="Label" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row/color/team_color/MarginContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_rdkbg")
+text = "RED"
+
+[node name="kills" type="MarginContainer" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="player_kills" type="Label" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row/kills"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxEmpty_rdkbg")
+text = "30"
+
+[node name="deaths" type="MarginContainer" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="player_deaths" type="Label" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row/deaths"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxEmpty_rdkbg")
+text = "10"
+
+[node name="score" type="MarginContainer" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="player_score" type="Label" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row/score"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxEmpty_rdkbg")
+text = "300"
+
+[node name="latency" type="MarginContainer" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="player_latency" type="Label" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row/latency"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_u7pt6")
+text = "10 ms"
+
+[node name="visual separator" type="HSeparator" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+theme_override_styles/separator = SubResource("StyleBoxFlat_kaxxm")
+
+[node name="visual separator4" type="HSeparator" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+theme_override_styles/separator = SubResource("StyleBoxFlat_kaxxm")
+
+[node name="visual separator5" type="HSeparator" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+theme_override_styles/separator = SubResource("StyleBoxFlat_kaxxm")
+
+[node name="visual separator6" type="HSeparator" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+theme_override_styles/separator = SubResource("StyleBoxFlat_kaxxm")
+
+[node name="visual separator2" type="HSeparator" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+theme_override_styles/separator = SubResource("StyleBoxFlat_kaxxm")
+
+[node name="visual separator3" type="HSeparator" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/new_row"]
+layout_mode = 0
+theme_override_styles/separator = SubResource("StyleBoxFlat_kaxxm")
+
+[node name="table" type="GridContainer" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_xbr42")
+theme_override_constants/h_separation = 0
+columns = 6
+
+[node name="title_name" type="Label" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_0bro2")
+text = "NAME
+"
+
+[node name="title_color" type="Label" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_b7cjn")
+text = "TEAM"
+
+[node name="title_kills" type="Label" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_b7cjn")
+text = "KILLS
+"
+
+[node name="title_deaths" type="Label" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_b7cjn")
+text = "DEATHS"
+
+[node name="title_score" type="Label" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_b7cjn")
+text = "SCORE"
+
+[node name="title_latency" type="Label" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_b7cjn")
+text = "PING"
+
+[node name="name" type="MarginContainer" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="player_name" type="LineEdit" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table/name"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxEmpty_rdkbg")
+text = "Gordon"
+placeholder_text = "Team Name here"
+max_length = 64
+
+[node name="color" type="MarginContainer" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="team_color" type="ColorPickerButton" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table/color"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxEmpty_nglxu")
+disabled = true
+color = Color(1, 0, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table/color/team_color"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="team_name" type="Label" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table/color/team_color/MarginContainer"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_rdkbg")
+text = "RED"
+
+[node name="kills" type="MarginContainer" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="player_kills" type="Label" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table/kills"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxEmpty_rdkbg")
+text = "30"
+
+[node name="deaths" type="MarginContainer" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="player_deaths" type="Label" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table/deaths"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxEmpty_rdkbg")
+text = "10"
+
+[node name="score" type="MarginContainer" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="player_score" type="Label" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table/score"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxEmpty_rdkbg")
+text = "300"
+
+[node name="latency" type="MarginContainer" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="player_latency" type="Label" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table/latency"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_u7pt6")
+text = "10 ms"
+
+[node name="visual separator" type="HSeparator" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_kaxxm")
+
+[node name="visual separator4" type="HSeparator" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_kaxxm")
+
+[node name="visual separator5" type="HSeparator" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_kaxxm")
+
+[node name="visual separator6" type="HSeparator" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_kaxxm")
+
+[node name="visual separator2" type="HSeparator" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_kaxxm")
+
+[node name="visual separator3" type="HSeparator" parent="Control/body/table_container/MarginContainer/Scrollbar/VBoxContainer/table"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxFlat_kaxxm")
+
+[node name="BottomButtons" type="HBoxContainer" parent="Control/body"]
+custom_minimum_size = Vector2(2.08165e-12, 30)
+layout_mode = 2
+alignment = 1
+
+[node name="Close" type="Button" parent="Control/body/BottomButtons"]
+custom_minimum_size = Vector2(80, 30)
+layout_mode = 2
+text = "Close"
+
+[node name="NewMatch" type="Button" parent="Control/body/BottomButtons"]
+custom_minimum_size = Vector2(80, 30)
+layout_mode = 2
+text = "New Match"
+
+[node name="BottomSpacer" type="Control" parent="Control/body"]
+custom_minimum_size = Vector2(4, 4)
+layout_mode = 2
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="pressed" from="Control/body/BottomButtons/Close" to="." method="_on_close_pressed"]
+[connection signal="pressed" from="Control/body/BottomButtons/NewMatch" to="." method="_on_new_match_pressed"]
+
+[editable path="Control/body/window_header"]

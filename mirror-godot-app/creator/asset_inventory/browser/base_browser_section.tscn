@@ -1,0 +1,124 @@
+[gd_scene load_steps=9 format=3 uid="uid://cb78cuaotdwo2"]
+
+[ext_resource type="Script" path="res://creator/asset_inventory/browser/base_browser_section.gd" id="1_37tlx"]
+[ext_resource type="Script" path="res://creator/common/button_highlight.gd" id="3_qhr3e"]
+[ext_resource type="Texture2D" uid="uid://kpcb4jb5hto6" path="res://ui/art/accordian_close.png" id="4_2w2kg"]
+[ext_resource type="Texture2D" uid="uid://b0hmmns8khvkj" path="res://ui/art/my_assets.svg" id="5_7axto"]
+[ext_resource type="Texture2D" uid="uid://cbl1xcmq3sicl" path="res://ui/art/accordian_open.png" id="5_p6roy"]
+[ext_resource type="FontVariation" uid="uid://bwp6hb31ol8la" path="res://ui/new_player_ui/inventory/title_font_bold.tres" id="7_metv6"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="8_bx0pw"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_tkddn"]
+line_spacing = 0.0
+font = ExtResource("8_bx0pw")
+font_size = 12
+
+[node name="BaseBrowserSection" type="VBoxContainer"]
+offset_right = 420.0
+offset_bottom = 500.0
+theme_override_constants/separation = 0
+script = ExtResource("1_37tlx")
+
+[node name="SectionHeader" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 48)
+layout_direction = 2
+layout_mode = 2
+size_flags_vertical = 0
+alignment = 1
+
+[node name="ToggleCollapse" type="Button" parent="SectionHeader"]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("3_qhr3e")
+_item_paths = Array[NodePath]([NodePath("MarginContainer/Header/Plus"), NodePath("MarginContainer/Header/Minus"), NodePath("MarginContainer/Header/Icon"), NodePath("MarginContainer/Header/SectionNameLabel")])
+_hover_color = Color(0.0705882, 1, 0.843137, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="SectionHeader/ToggleCollapse"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 4
+
+[node name="Header" type="HBoxContainer" parent="SectionHeader/ToggleCollapse/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Plus" type="TextureRect" parent="SectionHeader/ToggleCollapse/MarginContainer/Header"]
+modulate = Color(0.505882, 0.517647, 0.568627, 1)
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("4_2w2kg")
+expand_mode = 1
+
+[node name="Minus" type="TextureRect" parent="SectionHeader/ToggleCollapse/MarginContainer/Header"]
+visible = false
+modulate = Color(0.505882, 0.517647, 0.568627, 1)
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("5_p6roy")
+expand_mode = 1
+
+[node name="Icon" type="TextureRect" parent="SectionHeader/ToggleCollapse/MarginContainer/Header"]
+modulate = Color(0.505882, 0.517647, 0.568627, 1)
+custom_minimum_size = Vector2(12, 12)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("5_7axto")
+expand_mode = 1
+
+[node name="SectionNameLabel" type="Label" parent="SectionHeader/ToggleCollapse/MarginContainer/Header"]
+modulate = Color(0.505882, 0.517647, 0.568627, 1)
+layout_mode = 2
+size_flags_horizontal = 2
+theme_override_fonts/font = ExtResource("7_metv6")
+theme_override_font_sizes/font_size = 14
+text = "Browser Section"
+label_settings = SubResource("LabelSettings_tkddn")
+vertical_alignment = 1
+uppercase = true
+
+[node name="SectionHolder" type="ScrollContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="SectionHolder"]
+custom_minimum_size = Vector2(420, 0)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_right = 24
+
+[node name="SectionContainer" type="VBoxContainer" parent="SectionHolder/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Separator" type="HSeparator" parent="."]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 0
+
+[node name="HideTimer" type="Timer" parent="."]
+wait_time = 0.25
+one_shot = true
+autostart = true
+
+[node name="ShowScrollBarTimer" type="Timer" parent="."]
+wait_time = 0.25
+one_shot = true
+
+[connection signal="pressed" from="SectionHeader/ToggleCollapse" to="." method="_on_toggle_collapse_pressed"]

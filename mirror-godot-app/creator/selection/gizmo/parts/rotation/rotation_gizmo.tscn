@@ -1,0 +1,85 @@
+[gd_scene load_steps=13 format=3 uid="uid://5hqkhv5vfbxw"]
+
+[ext_resource type="Script" path="res://creator/selection/gizmo/parts/rotation/rotation_gizmo.gd" id="1_bx8et"]
+[ext_resource type="Script" path="res://creator/selection/gizmo/parts/rotation/gizmo_handle_ring.gd" id="1_ggwtb"]
+[ext_resource type="ArrayMesh" uid="uid://bwq2op0om8tw0" path="res://creator/selection/gizmo/parts/rotation/gizmo.rotation.ring.obj" id="1_uluam"]
+[ext_resource type="Material" uid="uid://p2vlt37ahm4i" path="res://creator/selection/gizmo/material/x_axis.tres" id="2_gn2pw"]
+[ext_resource type="ArrayMesh" uid="uid://0h11veqvdn7u" path="res://creator/selection/gizmo/parts/rotation/gizmo.rotation.ring.variant.obj" id="5_5v35w"]
+[ext_resource type="Material" uid="uid://xgv2bye8gtts" path="res://creator/selection/gizmo/material/y_axis.tres" id="5_t68vi"]
+[ext_resource type="Material" uid="uid://kv4p22wgy5j0" path="res://creator/selection/gizmo/material/z_axis.tres" id="6_ibfoe"]
+[ext_resource type="Material" uid="uid://ceu4aoa4kdxmk" path="res://creator/selection/gizmo/material/x_axis_highlight.tres" id="6_j4ds1"]
+[ext_resource type="Material" uid="uid://b4igy7qd57l3w" path="res://creator/selection/gizmo/material/y_axis_highlight.tres" id="8_2nnpm"]
+[ext_resource type="Material" uid="uid://iempen7gi22a" path="res://creator/selection/gizmo/material/z_axis_highlight.tres" id="10_kjnsb"]
+
+[sub_resource type="JBoxShape3D" id="JBoxShape3D_64y1g"]
+size = Vector3(1.6, 0.05, 1.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k06nr"]
+size = Vector3(1.6, 0.05, 1.6)
+
+[node name="RotationGizmo" type="Node3D"]
+script = ExtResource("1_bx8et")
+
+[node name="XRing" type="JBody3D" parent="."]
+transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0)
+manual_body_creation = true
+body_mode = 1
+layer_name = &"GIZMO"
+shape = SubResource("JBoxShape3D_64y1g")
+script = ExtResource("1_ggwtb")
+highlight_material = ExtResource("6_j4ds1")
+
+[node name="RotationRing" type="MeshInstance3D" parent="XRing"]
+mesh = ExtResource("1_uluam")
+surface_material_override/0 = ExtResource("2_gn2pw")
+
+[node name="RotationRingHighlight" type="MeshInstance3D" parent="XRing"]
+visible = false
+mesh = ExtResource("5_5v35w")
+surface_material_override/0 = ExtResource("6_j4ds1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="XRing"]
+shape = SubResource("BoxShape3D_k06nr")
+
+[node name="YRing" type="JBody3D" parent="."]
+manual_body_creation = true
+body_mode = 1
+layer_name = &"GIZMO"
+shape = SubResource("JBoxShape3D_64y1g")
+script = ExtResource("1_ggwtb")
+highlight_material = ExtResource("8_2nnpm")
+
+[node name="RotationRing" type="MeshInstance3D" parent="YRing"]
+mesh = ExtResource("1_uluam")
+surface_material_override/0 = ExtResource("5_t68vi")
+
+[node name="RotationRingHighlight" type="MeshInstance3D" parent="YRing"]
+visible = false
+mesh = ExtResource("5_5v35w")
+surface_material_override/0 = ExtResource("8_2nnpm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="YRing"]
+shape = SubResource("BoxShape3D_k06nr")
+
+[node name="ZRing" type="JBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 0, 0)
+manual_body_creation = true
+body_mode = 1
+layer_name = &"GIZMO"
+shape = SubResource("JBoxShape3D_64y1g")
+script = ExtResource("1_ggwtb")
+highlight_material = ExtResource("10_kjnsb")
+
+[node name="RotationRing" type="MeshInstance3D" parent="ZRing"]
+mesh = ExtResource("1_uluam")
+surface_material_override/0 = ExtResource("6_ibfoe")
+
+[node name="RotationRingHighlight" type="MeshInstance3D" parent="ZRing"]
+visible = false
+mesh = ExtResource("5_5v35w")
+surface_material_override/0 = ExtResource("10_kjnsb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ZRing"]
+shape = SubResource("BoxShape3D_k06nr")
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]

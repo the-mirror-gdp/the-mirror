@@ -1,0 +1,107 @@
+[gd_scene load_steps=15 format=3 uid="uid://btr3jxctovrbk"]
+
+[ext_resource type="Script" path="res://creator/context_menu/space_object_options.gd" id="1_8e0se"]
+[ext_resource type="PackedScene" uid="uid://c6did4ni1basa" path="res://creator/context_menu/context_option.tscn" id="1_31aty"]
+[ext_resource type="Texture2D" uid="uid://b0hmmns8khvkj" path="res://ui/art/my_assets.svg" id="2_fxy6x"]
+[ext_resource type="Texture2D" uid="uid://dl24bpqw0iqmd" path="res://ui/art/make_rigid.svg" id="3_od1tp"]
+[ext_resource type="Texture2D" uid="uid://cdcvojixjjpx2" path="res://ui/art/edit.svg" id="3_uek0p"]
+[ext_resource type="Texture2D" uid="uid://bfm1o8w2h4wsv" path="res://ui/art/deconstruct.svg" id="4_cxpav"]
+[ext_resource type="Texture2D" uid="uid://by48buxx6rdka" path="res://ui/art/make_static.svg" id="4_h028q"]
+[ext_resource type="Texture2D" uid="uid://dlg3kgkcggk3n" path="res://ui/art/lock.svg" id="5_f1cq0"]
+[ext_resource type="Texture2D" uid="uid://bwlwjqwd45ufu" path="res://ui/art/unlock.svg" id="6_jm58u"]
+[ext_resource type="Texture2D" uid="uid://r7rka8r6iym1" path="res://script/gd/editor/icons/text_script.svg" id="9_ukoec"]
+[ext_resource type="Texture2D" uid="uid://g7ikhwlvgwky" path="res://ui/art/copy.svg" id="10_7g0xd"]
+[ext_resource type="Texture2D" uid="uid://cqnycive6oia8" path="res://script/visual/editor/icons/trash.svg" id="11_ee1cf"]
+[ext_resource type="Texture2D" uid="uid://6y844f1nxa7y" path="res://ui/art/material.svg" id="12_x8kpf"]
+[ext_resource type="Texture2D" uid="uid://d2qox4ia5vuw1" path="res://ui/art/filled.svg" id="13_3h380"]
+
+[node name="SpaceObjectOptions" type="VBoxContainer"]
+offset_right = 200.0
+offset_bottom = 290.0
+theme_override_constants/separation = 0
+script = ExtResource("1_8e0se")
+
+[node name="Focus" parent="." instance=ExtResource("1_31aty")]
+layout_mode = 2
+
+[node name="Label" parent="Focus" index="0"]
+text = "F"
+
+[node name="Rename" parent="." instance=ExtResource("1_31aty")]
+layout_mode = 2
+text = "Rename"
+icon = ExtResource("3_uek0p")
+
+[node name="Teleport" parent="." instance=ExtResource("1_31aty")]
+layout_mode = 2
+text = "Teleport"
+icon = ExtResource("4_cxpav")
+
+[node name="Lock" parent="." instance=ExtResource("1_31aty")]
+layout_mode = 2
+text = "Lock"
+icon = ExtResource("5_f1cq0")
+
+[node name="Unlock" parent="." instance=ExtResource("1_31aty")]
+layout_mode = 2
+text = "Unlock"
+icon = ExtResource("6_jm58u")
+
+[node name="EnablePhysics" parent="." instance=ExtResource("1_31aty")]
+layout_mode = 2
+text = "Enable Physics"
+icon = ExtResource("3_od1tp")
+
+[node name="DisablePhysics" parent="." instance=ExtResource("1_31aty")]
+layout_mode = 2
+text = "Disable Physics"
+icon = ExtResource("4_h028q")
+
+[node name="Properties" parent="." instance=ExtResource("1_31aty")]
+layout_mode = 2
+text = "Properties"
+icon = ExtResource("2_fxy6x")
+
+[node name="Script" parent="." instance=ExtResource("1_31aty")]
+layout_mode = 2
+text = "Script"
+icon = ExtResource("9_ukoec")
+
+[node name="CopyID" parent="." instance=ExtResource("1_31aty")]
+layout_mode = 2
+text = "Copy ID"
+icon = ExtResource("10_7g0xd")
+
+[node name="CopyMaterial" parent="." instance=ExtResource("1_31aty")]
+layout_mode = 2
+text = "Copy Material"
+icon = ExtResource("12_x8kpf")
+
+[node name="PasteMaterial" parent="." instance=ExtResource("1_31aty")]
+layout_mode = 2
+text = "Paste  Material"
+icon = ExtResource("13_3h380")
+
+[node name="Delete" parent="." instance=ExtResource("1_31aty")]
+layout_mode = 2
+theme_override_colors/icon_normal_color = Color(1, 0.419608, 0.329412, 0.501961)
+theme_override_colors/icon_pressed_color = Color(1, 0.419608, 0.329412, 0.784314)
+theme_override_colors/icon_hover_color = Color(1, 0.419608, 0.329412, 0.784314)
+text = "Delete"
+icon = ExtResource("11_ee1cf")
+
+[connection signal="pressed" from="Focus" to="." method="_on_focus_pressed"]
+[connection signal="pressed" from="Rename" to="." method="_on_rename_pressed"]
+[connection signal="pressed" from="Teleport" to="." method="_on_teleport_pressed"]
+[connection signal="pressed" from="Lock" to="." method="_on_lock_pressed"]
+[connection signal="pressed" from="Unlock" to="." method="_on_unlock_pressed"]
+[connection signal="pressed" from="EnablePhysics" to="." method="_on_enable_physics_pressed"]
+[connection signal="pressed" from="DisablePhysics" to="." method="_on_disable_physics_pressed"]
+[connection signal="pressed" from="Properties" to="." method="_on_properties_pressed"]
+[connection signal="pressed" from="Script" to="." method="_on_script_pressed"]
+[connection signal="pressed" from="CopyID" to="." method="_on_copy_id_pressed"]
+[connection signal="pressed" from="CopyMaterial" to="." method="_on_copy_material_pressed"]
+[connection signal="pressed" from="PasteMaterial" to="." method="_on_paste_material_pressed"]
+[connection signal="pressed" from="Delete" to="." method="_on_delete_pressed"]
+
+[editable path="Focus"]

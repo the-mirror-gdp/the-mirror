@@ -1,0 +1,77 @@
+[gd_scene load_steps=8 format=3 uid="uid://btauipacgex7b"]
+
+[ext_resource type="FontVariation" uid="uid://bwp6hb31ol8la" path="res://ui/new_player_ui/inventory/title_font_bold.tres" id="1_5woab"]
+[ext_resource type="Theme" uid="uid://dqjg12tafkeu2" path="res://creator/tools/build_bar/build_bar.theme.tres" id="1_07m3b"]
+[ext_resource type="StyleBox" uid="uid://dh8ascnco0746" path="res://ui/new_player_ui/inventory/panel_white_rounded.tres" id="2_3xfjk"]
+[ext_resource type="Script" path="res://creator/tools/build_bar/build_bar_fancy_button.gd" id="3_dhbe3"]
+[ext_resource type="FontFile" uid="uid://dh4xtfcbcu8ur" path="res://ui/common/fonts/TheMirrorIcons.otf" id="4_qfci0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wt6xj"]
+bg_color = Color(0.235294, 0.262745, 0.309804, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="LabelSettings" id="LabelSettings_yxsdr"]
+line_spacing = 0.0
+font = ExtResource("4_qfci0")
+font_size = 18
+font_color = Color(0.235294, 0.262745, 0.309804, 1)
+
+[node name="BuildBarFancyButton" type="Button"]
+custom_minimum_size = Vector2(100, 30)
+offset_right = 100.0
+offset_bottom = 30.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+focus_mode = 1
+theme = ExtResource("1_07m3b")
+theme_override_fonts/font = ExtResource("1_5woab")
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_wt6xj")
+button_mask = 3
+script = ExtResource("3_dhbe3")
+hover_tooltip_text = null
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = 3.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 6
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer"]
+self_modulate = Color(0.333333, 1, 0.831373, 1)
+custom_minimum_size = Vector2(23, 24)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("2_3xfjk")
+metadata/_edit_layout_mode = 1
+
+[node name="IconLabel" type="Label" parent="HBoxContainer/PanelContainer"]
+custom_minimum_size = Vector2(17, 17)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "B"
+label_settings = SubResource("LabelSettings_yxsdr")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextLabel" type="Label" parent="HBoxContainer"]
+custom_minimum_size = Vector2(48, 22)
+layout_mode = 2
+size_flags_vertical = 8
+text = "USERS"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_layout_mode = 1
+
+[connection signal="mouse_entered" from="." to="." method="_on_hoverable_button_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_hoverable_button_mouse_exited"]

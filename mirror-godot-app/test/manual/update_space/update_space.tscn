@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://b1jmsw6q0etxm"]
+
+[ext_resource type="Script" path="res://test/manual/update_space/update_space.gd" id="1_dsbp6"]
+[ext_resource type="Script" path="res://test/integration/integration_tests.gd" id="1_sw4xn"]
+
+[node name="UpdateSpace" type="Node"]
+script = ExtResource("1_sw4xn")
+
+[node name="UpdateSpaceUsingIntegrationTest" type="Node" parent="."]
+script = ExtResource("1_dsbp6")

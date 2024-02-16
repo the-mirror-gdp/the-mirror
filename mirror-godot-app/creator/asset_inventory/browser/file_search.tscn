@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://b7v8026760qqs"]
+
+[ext_resource type="Theme" uid="uid://iixsh1y7xih1" path="res://creator/asset_inventory/browser/file_search_theme.tres" id="1_dpier"]
+[ext_resource type="Script" path="res://creator/asset_inventory/browser/file_search.gd" id="2_ic5nc"]
+
+[node name="FileSearch" type="FileDialog"]
+transparent_bg = true
+screen_space_aa = 1
+title = "Open a File"
+initial_position = 3
+size = Vector2i(1116, 750)
+current_screen = 0
+visible = true
+popup_window = true
+min_size = Vector2i(500, 500)
+theme = ExtResource("1_dpier")
+ok_button_text = "Open"
+file_mode = 0
+access = 2
+script = ExtResource("2_ic5nc")

@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://48n8qruuys5w"]
+
+[ext_resource type="Script" path="res://ui/main_menu/pages/home_page_section.gd" id="1_qfugp"]
+[ext_resource type="PackedScene" uid="uid://1ksyxjevuddj" path="res://ui/main_menu/pages/home/home_space_panel.tscn" id="2_3fsrf"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="3_xqvax"]
+[ext_resource type="AudioStream" uid="uid://b1wqy8isen5sg" path="res://audio/mouseclick.wav" id="4_fuyow"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_gcepv"]
+font = ExtResource("3_xqvax")
+font_size = 25
+
+[node name="SpacesSection" type="VBoxContainer"]
+theme_override_constants/separation = 10
+script = ExtResource("1_qfugp")
+item_scene = ExtResource("2_3fsrf")
+
+[node name="TitleBar" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(1400, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="TitleLabel" type="Label" parent="TitleBar"]
+layout_mode = 2
+text = "Popular spaces"
+label_settings = SubResource("LabelSettings_gcepv")
+uppercase = true
+
+[node name="ItemsContainer" type="HFlowContainer" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 48
+
+[node name="Spacer" type="Control" parent="."]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="AudioStreamPlayerClick" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_fuyow")
+volume_db = -10.0

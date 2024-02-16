@@ -1,0 +1,40 @@
+[gd_scene load_steps=4 format=3 uid="uid://l15rxcwb7vmm"]
+
+[ext_resource type="Script" path="res://creator/common/dropdown_search/search_item.gd" id="1_p1jhh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_itosx"]
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+draw_center = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d16pk"]
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.145098, 0.419608, 0.984314, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="SearchOption1" type="Button"]
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_itosx")
+button_mask = 3
+text = "SearchOption
+"
+alignment = 0
+text_overrun_behavior = 4
+expand_icon = true
+script = ExtResource("1_p1jhh")
+virtual_focus_style = SubResource("StyleBoxFlat_d16pk")
+standard_style = SubResource("StyleBoxFlat_itosx")

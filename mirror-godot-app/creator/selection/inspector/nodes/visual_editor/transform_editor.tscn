@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://0x4ckywcu6pv"]
+
+[ext_resource type="Script" path="res://creator/selection/inspector/nodes/visual_editor/visual_editor.gd" id="1_ie1d8"]
+
+[node name="Transform Editor" type="Node3D"]
+script = ExtResource("1_ie1d8")

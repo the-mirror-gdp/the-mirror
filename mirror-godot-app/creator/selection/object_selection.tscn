@@ -1,0 +1,75 @@
+[gd_scene load_steps=12 format=3 uid="uid://chwnp0r1q1t4r"]
+
+[ext_resource type="Script" path="res://creator/selection/object_selection.gd" id="1_l7w6e"]
+[ext_resource type="PackedScene" uid="uid://lia6ivhrthax" path="res://creator/selection/scene_hierarchy/scene_hierarchy.tscn" id="2_yl3e2"]
+[ext_resource type="PackedScene" uid="uid://c4eybt8b7lg5f" path="res://creator/selection/inspector/inspector.tscn" id="3_nhvb3"]
+[ext_resource type="Script" path="res://creator/selection/selection_helper.gd" id="4_5tb1j"]
+[ext_resource type="Material" uid="uid://de88hevdyb04k" path="res://ui/common/shaders/dark_blue_blur.mat.tres" id="4_ri7ax"]
+[ext_resource type="PackedScene" uid="uid://c2y3rwko7lsge" path="res://creator/selection/gizmo/gizmo.tscn" id="5_avn5g"]
+[ext_resource type="Script" path="res://creator/selection/grabber.gd" id="6_fa7eb"]
+[ext_resource type="Script" path="res://creator/selection/selection_outlines.gd" id="7_0ow0o"]
+[ext_resource type="PackedScene" uid="uid://6llh2y2ib484" path="res://creator/selection/model/model_tool.tscn" id="8_leru8"]
+[ext_resource type="PackedScene" uid="uid://dithyy2niqke3" path="res://creator/selection/add_script/add_script_dialog.tscn" id="10_ehihe"]
+[ext_resource type="AudioStream" uid="uid://cuv812yccpn6q" path="res://creator/selection/audio/click_select.wav" id="11_f7mty"]
+
+[node name="ObjectSelection" type="VBoxContainer"]
+custom_minimum_size = Vector2(380, 0)
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -400.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_constants/separation = 0
+script = ExtResource("1_l7w6e")
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+
+[node name="SceneHierarchy" parent="." instance=ExtResource("2_yl3e2")]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="Inspector" parent="." node_paths=PackedStringArray("_selection_helper") instance=ExtResource("3_nhvb3")]
+material = ExtResource("4_ri7ax")
+custom_minimum_size = Vector2(400, 400)
+layout_mode = 2
+size_flags_horizontal = 8
+_selection_helper = NodePath("../SelectionHelper")
+
+[node name="SelectionHelper" type="Node3D" parent="."]
+script = ExtResource("4_5tb1j")
+
+[node name="Gizmo" parent="." node_paths=PackedStringArray("target") instance=ExtResource("5_avn5g")]
+target = NodePath("../SelectionHelper")
+
+[node name="Grabber" type="Node" parent="." node_paths=PackedStringArray("selection_helper")]
+script = ExtResource("6_fa7eb")
+selection_helper = NodePath("../SelectionHelper")
+
+[node name="SelectionOutlines" type="Node" parent="."]
+script = ExtResource("7_0ow0o")
+selection_color = Color(0.333333, 1, 0.831373, 1)
+
+[node name="ModelTool" parent="." instance=ExtResource("8_leru8")]
+
+[node name="AddScriptDialog" parent="." instance=ExtResource("10_ehihe")]
+visible = false
+
+[node name="AudioStreamPlayerSelect" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_f7mty")
+volume_db = -10.0
+
+[connection signal="hierarchy_script_button_pressed" from="SceneHierarchy" to="Inspector" method="_on_scene_hierarchy_script_button_pressed"]
+[connection signal="request_add_script_dialog" from="SceneHierarchy" to="AddScriptDialog" method="popup_dialog"]
+[connection signal="request_script_edit" from="SceneHierarchy" to="." method="_on_request_script_edit"]
+[connection signal="restrict_inspector_to_script_instance" from="SceneHierarchy" to="Inspector" method="restrict_script_inspector_to_instance"]
+[connection signal="selection_changed" from="SceneHierarchy" to="." method="_on_selection_changed"]
+[connection signal="request_add_script_dialog" from="Inspector" to="AddScriptDialog" method="popup_dialog"]
+[connection signal="request_convert_prim_model_to_local" from="Inspector" to="ModelTool" method="load_local_model"]
+[connection signal="request_save_local_prim_model" from="Inspector" to="ModelTool" method="save_local_model"]
+[connection signal="request_script_edit" from="Inspector" to="." method="_on_request_script_edit"]
+[connection signal="request_select_and_focus_on_node" from="Inspector" to="SceneHierarchy" method="select_and_focus_on_node"]
+[connection signal="gizmo_changed" from="Gizmo" to="Grabber" method="cancel_grabbing"]
+[connection signal="request_refresh" from="AddScriptDialog" to="." method="refresh_scripts"]
+[connection signal="request_script_edit" from="AddScriptDialog" to="." method="_on_request_script_edit"]

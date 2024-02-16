@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://261c0tsj1hr4"]
+
+[ext_resource type="FontFile" uid="uid://wnq6gpmrsr6v" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_medium.ttf" id="1_jtgn1"]
+[ext_resource type="Script" path="res://creator/tools/material_browser/material_window.gd" id="2_s01ax"]
+[ext_resource type="PackedScene" uid="uid://b8atlrvod31k3" path="res://creator/tools/material_browser/material_browser.tscn" id="2_sgxeo"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_42300"]
+content_margin_bottom = 16.0
+bg_color = Color(0, 0, 0, 1)
+border_width_bottom = 17
+border_color = Color(0.152941, 0.164706, 0.188235, 1)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+expand_margin_top = 40.0
+expand_margin_bottom = 16.0
+
+[sub_resource type="Theme" id="Theme_x6yn0"]
+Window/colors/title_color = Color(0.6, 0.6, 0.6, 1)
+Window/constants/close_h_offset = 32
+Window/constants/close_v_offset = 28
+Window/constants/title_height = 40
+Window/fonts/title_font = ExtResource("1_jtgn1")
+Window/styles/embedded_border = SubResource("StyleBoxFlat_42300")
+
+[node name="MaterialWindow" type="Window"]
+title = "CHOOSE MATERIAL"
+size = Vector2i(731, 560)
+visible = false
+exclusive = true
+min_size = Vector2i(685, 560)
+content_scale_mode = 2
+theme = SubResource("Theme_x6yn0")
+script = ExtResource("2_s01ax")
+
+[node name="MaterialBrowser" parent="." instance=ExtResource("2_sgxeo")]
+
+[connection signal="about_to_popup" from="." to="." method="_on_about_to_popup"]
+[connection signal="close_requested" from="." to="." method="_on_close_requested"]
+[connection signal="focus_exited" from="." to="." method="_on_focus_exited"]

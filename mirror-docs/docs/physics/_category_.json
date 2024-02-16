@@ -1,0 +1,8 @@
+{
+  "label": "Physics",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "The Mirror includes Jolt physics, an advanced physics engine. Everything is exposed with a high-level API and is networked out of the box."
+  }
+}

@@ -1,0 +1,44 @@
+---
+sidebar_position: 1.81
+---
+
+import Tabs from '@theme/Tabs';
+import Table from '/src/components/Table';
+
+import TabItem from '@theme/TabItem';
+import YouTube from 'react-youtube';
+
+# 3D Models & Equipables
+
+## 3D Models
+
+- **Formats**: GLB and GLTF with more types planned for the future.
+
+- **File Size**: The maximum allowed file size for 3D models is 15MB per file. This limitation is due to automatic compression isn't available at the moment. This limitation will increase in the future.
+
+- **Texture Size**: This is platform dependent:
+
+  - Mid-range+ GPU: maximum size of 2k (2048x2048 pixels).
+  - VR or Low-range GPU (such as mobile): maximum size of 1k (1024x1024 pixels).
+
+:::note
+We recommend adhering to the power of two rule when creating textures. You can learn more [here](https://www.katsbits.com/tutorials/textures/make-better-textures-correct-size-and-power-of-two.php#:~:text=What%20is%20the%20power%20of,%2Ddown%20by%20%222%22.)
+:::
+
+- **Trim Sheets**: For large objects such as buildings, it is recommended to use trim sheets. Trim sheets optimize texture usage and improve performance.
+
+- **Style**: While The Mirror itself adheres to a semi-realistic style, there are no limits on what style you can achieve in The Mirror. You have complete freedom in choosing whichever style, The Mirror will support it.
+
+- **Vertex Count**: For optimial performance it is recommended models are below 30K vertices.
+
+:::note
+Budgeting your polygon or vertex count is generally tricky; it depends on the platform the game is running on, where the model is in the scene compared to the camera, how many of said model is in the scene, etc... For example, a sword model in an FPS game may have the same vertex count as a house in the far distance of a map that the player will never reach or get close to.
+:::
+
+- **GPU Compatibility**: The Mirror supports mid-range GPUs that are compatible with Vulkan or higher graphics APIs. For example, an Nvidia GTX 1650 should be capable of running the game at 1080p resolution with a stable 60 FPS.
+
+- **Custom Shaders**: Currently, custom shaders are not supported. Please utilize the default shaders provided by the game. We plan to allow for this in the future.
+
+## Equipables
+
+Info coming soon.

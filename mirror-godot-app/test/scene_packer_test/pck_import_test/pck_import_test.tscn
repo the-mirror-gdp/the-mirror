@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0lcdbbkp74x2"]
+
+[ext_resource type="Script" path="res://test/scene_packer_test/pck_import_test/pck_import_test.gd" id="1_apfpt"]
+
+[node name="PckTest" type="Node"]
+script = ExtResource("1_apfpt")

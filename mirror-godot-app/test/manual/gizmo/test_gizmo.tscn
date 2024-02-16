@@ -1,0 +1,93 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="PackedScene" uid="uid://c2y3rwko7lsge" path="res://creator/selection/gizmo/gizmo.tscn" id="1_8oejt"]
+[ext_resource type="Script" path="res://test/manual/gizmo/test_gizmo.gd" id="1_u0638"]
+[ext_resource type="Script" path="res://creator/selection/selection_helper.gd" id="3_1kaf8"]
+[ext_resource type="Script" path="res://player/cameras/camera_nodes/raycast_camera.gd" id="3_1kpg7"]
+[ext_resource type="Theme" uid="uid://ys8qltjcesi5" path="res://ui/new_player_ui/ui.theme.tres" id="5_l1nhw"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_sdkwr"]
+
+[node name="TestGizmo" type="Node"]
+script = ExtResource("1_u0638")
+
+[node name="Gizmo" parent="." node_paths=PackedStringArray("target") instance=ExtResource("1_8oejt")]
+target = NodePath("../SelectionHelper")
+
+[node name="SelectionHelper" type="Node3D" parent="." node_paths=PackedStringArray("gizmo")]
+script = ExtResource("3_1kaf8")
+gizmo = NodePath("../Gizmo")
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(0.866025, -0.25, 0.433013, 0, 0.866025, 0.5, -0.5, -0.433013, 0.75, 3, 3, 5)
+current = true
+script = ExtResource("3_1kpg7")
+
+[node name="TestBox1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 2)
+mesh = SubResource("BoxMesh_sdkwr")
+
+[node name="TestBox2" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_sdkwr")
+
+[node name="TestButtons" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(128, 0)
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -120.0
+grow_horizontal = 0
+grow_vertical = 2
+theme = ExtResource("5_l1nhw")
+alignment = 1
+
+[node name="Box1" type="Button" parent="TestButtons"]
+custom_minimum_size = Vector2(0, 32)
+offset_top = 614.0
+offset_right = 128.0
+offset_bottom = 646.0
+text = "Select Box 1"
+
+[node name="Box2" type="Button" parent="TestButtons"]
+custom_minimum_size = Vector2(0, 32)
+offset_top = 650.0
+offset_right = 128.0
+offset_bottom = 682.0
+text = "Select Box 2"
+
+[node name="BoxBoth" type="Button" parent="TestButtons"]
+custom_minimum_size = Vector2(0, 32)
+offset_top = 686.0
+offset_right = 128.0
+offset_bottom = 718.0
+text = "Select Both"
+
+[node name="BoxNone" type="Button" parent="TestButtons"]
+custom_minimum_size = Vector2(0, 32)
+offset_top = 722.0
+offset_right = 128.0
+offset_bottom = 754.0
+text = "Select None"
+
+[node name="Relative" type="CheckBox" parent="TestButtons"]
+custom_minimum_size = Vector2(0, 32)
+offset_top = 758.0
+offset_right = 128.0
+offset_bottom = 790.0
+text = "Relative"
+
+[node name="Snap" type="CheckBox" parent="TestButtons"]
+custom_minimum_size = Vector2(0, 32)
+offset_top = 794.0
+offset_right = 128.0
+offset_bottom = 826.0
+button_pressed = true
+text = "Snap"
+
+[connection signal="pressed" from="TestButtons/Box1" to="." method="_on_box_1_pressed"]
+[connection signal="pressed" from="TestButtons/Box2" to="." method="_on_box_2_pressed"]
+[connection signal="pressed" from="TestButtons/BoxBoth" to="." method="_on_box_both_pressed"]
+[connection signal="pressed" from="TestButtons/BoxNone" to="." method="_on_box_none_pressed"]
+[connection signal="toggled" from="TestButtons/Relative" to="." method="_on_relative_toggled"]
+[connection signal="toggled" from="TestButtons/Snap" to="." method="_on_snap_toggled"]

@@ -1,0 +1,303 @@
+on:
+  workflow_call:
+    inputs:
+      # controllable flow properties
+      # do you want to deploy
+      # do you want to run tests
+      # do you want to notify on slack
+      # do you want to use 7zip to package instead of zip
+      should-deploy:
+        required: true
+        type: boolean
+      should-deploy-as-server:
+        required: false
+        type: boolean
+      should-run-unit-tests:
+        required: true
+        type: boolean
+      should-notify-on-failure:
+        required: true
+        type: boolean
+      should-unzip-editor: # macos requires an extra zip file on cicd
+        required: false
+        type: boolean
+      should-install-timeout-macos:
+        required: false
+        type: boolean
+      # godot export properties
+      # specifies the workflow, name, branch and binary to download for the editor and template.
+      editor-binary-workflow:
+        required: true
+        type: string
+      editor-binary-name:
+        required: true
+        type: string
+      # for when the binary name is not consistent like on macos.
+      editor-binary-download:
+        required: true
+        type: string
+      editor-binary-branch:
+        required: true
+        type: string
+      editor-template-directory:
+        required: true
+        type: string
+      template-binary-workflow:
+        required: true
+        type: string
+      template-binary-name:
+        required: true
+        type: string
+      template-binary-branch:
+        required: true
+        type: string
+      export-template-file:
+        required: true
+        type: string
+      # server properties
+      server-pck-path:
+        required: false
+        type: string
+      # game properties
+      # the mirror environment configuration to use
+      game-environment-cfg-name:
+        required: true
+        type: string
+      # the export preset to use
+      game-export-preset:
+        required: true
+        type: string
+      # game output binary name
+      game-binary-name:
+        required: true
+        type: string
+      # gcp bucket name to upload to
+      bucket-name:
+        required: true
+        type: string
+      os:
+        required: true
+        type: string
+      environment:
+        required: false
+        type: string
+      url:
+        required: false
+        type: string
+      itch-channel:
+        required: false
+        type: string
+      itch-project-name:
+        required: false
+        type: string
+      platform-file-extension:
+        required: false
+        type: string
+      custom-project-file:
+        required: false
+        type: string
+    outputs:
+      url:
+        value: ${{ jobs.client-build-tool.outputs.url }}
+      file-name:
+        value: ${{ jobs.client-build-tool.outputs.file-name }}
+      version:
+        value: ${{ jobs.client-build-tool.outputs.version }}
+    secrets:
+      gcp-secret:
+        required: false
+      cicd-token-github:
+        required: true
+      ITCH_IO_CICD:
+        required: false
+
+# declare these so that they can be populated by the app
+env:
+  app_platform:
+  app_ver:
+  name: ${{ inputs.environment }}
+  url: ${{ inputs.url }}
+
+
+# we ensure our windows runners use bash always.
+defaults:
+  run:
+    shell: bash
+
+
+# what branch this file will deploy using
+jobs:
+  client-build-tool:
+    name: Build
+    runs-on: ["self-hosted", "${{ inputs.os }}"]
+    timeout-minutes: 45
+    outputs:
+      url: ${{ steps.output-url.outputs.url }}
+      file-name: ${{ steps.output-file-name.outputs.file-name }}
+      version: ${{ steps.output-version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Installing coreutils (for gtimeout)
+        if: ${{ inputs.should-install-timeout-macos }}
+        run: brew install coreutils
+
+      - name: Use custom project file (required for custom splash screen)
+        if: ${{ inputs.custom-project-file }}
+        run: |
+          rm -Rf project.godot
+          mv ${{ inputs.custom-project-file }} project.godot
+
+      - name: Download editor artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{ secrets.cicd-token-github }}
+          workflow: ${{ inputs.editor-binary-workflow }}
+          workflow_conclusion: success
+          name: ${{ inputs.editor-binary-download }}
+          branch: ${{ inputs.editor-binary-branch }}
+          repo: the-mirror-megaverse/godot-soft-fork
+
+      - name: Unzip editor binary
+        if: ${{ inputs.should-unzip-editor }}
+        run: |
+          unzip -o ${{ inputs.editor-binary-download }}
+
+      - name: Download export template artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{ secrets.cicd-token-github }}
+          workflow: ${{ inputs.template-binary-workflow }}
+          workflow_conclusion: success
+          name: ${{ inputs.template-binary-name }}
+          branch: ${{ inputs.template-binary-branch }}
+          repo: the-mirror-megaverse/godot-soft-fork
+
+      - name: Set up template in system-wide editor data
+        run: |
+          chmod +x ./${{ inputs.template-binary-name }}
+          mkdir -p ${{ inputs.editor-template-directory }}
+          mv ./${{ inputs.template-binary-name }} ${{ inputs.editor-template-directory }}/${{ inputs.export-template-file }}
+
+      - name: Copy environment configuration to override.cfg
+        run: |
+          rm -Rf override.cfg
+          cp ./addons/mirror_internal/env_configs/${{ inputs.game-environment-cfg-name }}.cfg override.cfg
+          # must be removed before booting the app otherwise we overwrite the override.cfg
+          rm -Rf addons/mirror_internal
+
+      - name: Wait for import of all assets
+        if: ${{ !inputs.should-install-timeout-macos }}
+        run: |
+          chmod +x ./${{ inputs.editor-binary-name }}
+          timeout 3m ./${{ inputs.editor-binary-name }} --editor --headless || true;
+
+      - name: Wait for import of all assets
+        if: ${{ inputs.should-install-timeout-macos }}
+        run: |
+          chmod +x ./${{ inputs.editor-binary-name }}
+          gtimeout 3m ./${{ inputs.editor-binary-name }} --editor --headless || true;
+
+      - name: Unit Tests
+        timeout-minutes: 15
+        if: inputs.should-run-unit-tests
+        run: |
+          chmod +x ./${{ inputs.editor-binary-name }}
+          ./${{ inputs.editor-binary-name }} -s --path ./ addons/gut/gut_cmdln.gd --headless
+
+      - name: Delete tests and other editor-only files
+        run: |
+          rm -Rf test
+          rm -Rf addons/gut
+          rm -Rf gha-creds-*.json # ensure no credentials are stored in the app.
+
+      - name: Export game client
+        timeout-minutes: 10
+        run: |
+          mkdir build/
+          chmod +x ./${{ inputs.editor-binary-name }}
+          ./${{ inputs.editor-binary-name }} \
+              --headless \
+              --export-release ${{ inputs.game-export-preset }} \
+              "build/${{ inputs.game-binary-name }}";
+          chmod -R +x build/
+
+      - name: Retrieve version information from platform data
+        run: |
+          cd build/
+          ls
+          cat version.txt
+          cat platform_name.txt
+          ver=$(cat version.txt)
+          platform=$(cat platform_name.txt)
+          echo $ver
+          echo $platform
+          echo "app_ver=${ver}" >> $GITHUB_ENV
+          echo "app_platform=${platform}" >> $GITHUB_ENV
+
+      - name: Zip for client download (Mac and Linux)
+        if: ${{ inputs.should-deploy }}
+        run: |
+          cd build/
+          ls ./
+          # make sure you have 7z installed with zip on windows.
+          zip -r ${{env.app_platform}}.zip "${{ inputs.game-binary-name }}" *.pck
+
+      - name: Google Cloud Platform authentication
+        if: ${{ inputs.should-deploy || inputs.should-deploy-as-server }}
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.gcp-secret }}'
+
+      - name: Upload build to GCP (for auto-updater)
+        if: inputs.should-deploy
+        uses: 'google-github-actions/upload-cloud-storage@v2'
+        with:
+          path: build/${{ env.app_platform }}.tar.gz
+          destination: ${{ inputs.bucket-name }}/versions/${{ env.app_ver }}/
+
+      - name: Upload build to GCP (for users)
+        if: inputs.should-deploy
+        uses: 'google-github-actions/upload-cloud-storage@v2'
+        with:
+          path: build/${{ env.app_platform }}.zip
+          destination: ${{ inputs.bucket-name }}/versions/${{ env.app_ver }}/
+
+      - name: Upload platform json to GCP
+        if: inputs.should-deploy
+        uses: 'google-github-actions/upload-cloud-storage@v2'
+        with:
+          path: build/${{ env.app_platform }}.json
+          destination: ${{ inputs.bucket-name }}/versions/${{ env.app_ver }}/
+
+      - name: Upload server pck
+        if: inputs.should-deploy-as-server
+        uses: 'google-github-actions/upload-cloud-storage@v2'
+        with:
+          path: build/${{ inputs.server-pck-path }}
+          destination: ${{ inputs.bucket-name }}/versions/${{ env.app_ver }}/
+
+      - name: Uploading server binary
+        if: inputs.should-deploy-as-server
+        uses: 'google-github-actions/upload-cloud-storage@v2'
+        with:
+          path: build/${{ inputs.game-binary-name }}
+          destination: ${{ inputs.bucket-name }}/versions/${{ env.app_ver }}/
+      - id: output-url
+        run: |
+          echo "url=${{ inputs.bucket-name }}/versions/${{ env.app_ver }}/${{ env.app_platform }}${{ inputs.platform-file-extension }}" >> $GITHUB_OUTPUT
+      - id: output-file-name
+        run: |
+          echo "file-name=${{ env.app_platform }}${{ inputs.platform-file-extension }}" >> $GITHUB_OUTPUT
+      - id: output-version
+        run: |
+          echo "version=${{ env.app_ver }}" >> $GITHUB_OUTPUT
+      - name: Notify slack fail
+        if: ${{ failure() && inputs.should-notify-on-failure }}
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel: eng-important-system-alerts
+          status: FAILED
+          color: danger

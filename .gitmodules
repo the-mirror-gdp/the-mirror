@@ -1,0 +1,3 @@
+[submodule "godot-engine"]
+	path = godot-engine
+	url = git@github.com:the-mirror-megaverse/godot-soft-fork.git # THIS NEEDS TO BE UPDATED WITH THE NEW SOFT FORK REPO

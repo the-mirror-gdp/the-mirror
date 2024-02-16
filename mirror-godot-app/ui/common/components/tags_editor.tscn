@@ -1,0 +1,67 @@
+[gd_scene load_steps=5 format=3 uid="uid://fshct6l288g3"]
+
+[ext_resource type="Script" path="res://ui/common/components/tags_editor.gd" id="1_lwogt"]
+[ext_resource type="PackedScene" uid="uid://nnphdtunua76" path="res://creator/common/dropdown_search/dropdown_filter_menu.tscn" id="2_us04u"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fe7nt"]
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_020oi"]
+bg_color = Color(0.0627451, 0.0627451, 0.0666667, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="TagsEditor" type="PanelContainer"]
+theme_override_styles/panel = SubResource("StyleBoxFlat_fe7nt")
+script = ExtResource("1_lwogt")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.415686, 0.454902, 0.52549, 1)
+theme_override_font_sizes/font_size = 8
+text = "Tags"
+
+[node name="TagsList" type="HFlowContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TagsSearchLineEdit" type="LineEdit" parent="VBoxContainer/TagsList"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 10
+placeholder_text = "I am typing a..."
+flat = true
+
+[node name="TagFilterMenu" parent="." instance=ExtResource("2_us04u")]
+visible = false
+top_level = true
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_020oi")
+
+[node name="SearchField" parent="TagFilterMenu/MarginContainer/FilterMenu" index="0"]
+visible = false
+
+[connection signal="focus_entered" from="VBoxContainer/TagsList/TagsSearchLineEdit" to="." method="_on_tags_search_line_edit_focus_entered"]
+[connection signal="gui_input" from="VBoxContainer/TagsList/TagsSearchLineEdit" to="." method="_on_tags_search_line_edit_gui_input"]
+[connection signal="text_changed" from="VBoxContainer/TagsList/TagsSearchLineEdit" to="." method="_on_tags_search_line_edit_text_changed"]
+[connection signal="text_submitted" from="VBoxContainer/TagsList/TagsSearchLineEdit" to="." method="_on_tags_search_line_edit_text_submitted"]
+[connection signal="item_selected" from="TagFilterMenu" to="." method="_on_tag_filter_menu_item_selected"]
+
+[editable path="TagFilterMenu"]

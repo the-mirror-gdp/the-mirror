@@ -1,0 +1,118 @@
+[gd_scene load_steps=14 format=3 uid="uid://cxs04kgxb5u1t"]
+
+[ext_resource type="StyleBox" uid="uid://duh0pbhsd0c24" path="res://ui/new_player_ui/inventory/panel_opaque_blue_rounded.tres" id="1_m8yac"]
+[ext_resource type="Script" path="res://creator/context_menu/context_menu.gd" id="1_nshto"]
+[ext_resource type="PackedScene" uid="uid://bbtbjpdqfhwag" path="res://creator/context_menu/asset_slot_options.tscn" id="2_kx7jk"]
+[ext_resource type="PackedScene" uid="uid://btr3jxctovrbk" path="res://creator/context_menu/space_object_options.tscn" id="2_o540h"]
+[ext_resource type="PackedScene" uid="uid://dttg2igveyva3" path="res://creator/context_menu/recent_script_slot_options.tscn" id="3_kr10c"]
+[ext_resource type="StyleBox" uid="uid://c1npie5wtebrp" path="res://ui/new_player_ui/inventory/panel_opaque_black_rounded_top.tres" id="3_mtke7"]
+[ext_resource type="AudioStream" uid="uid://b1wqy8isen5sg" path="res://audio/mouseclick.wav" id="3_nnacx"]
+[ext_resource type="PackedScene" uid="uid://bt6vmsw5oy0is" path="res://creator/context_menu/model_node_options.tscn" id="4_57pd2"]
+[ext_resource type="Texture2D" uid="uid://d3wol5dxj0fgk" path="res://ui/art/asset_tool.svg" id="4_qyjd0"]
+[ext_resource type="PackedScene" uid="uid://dt13umbkef7va" path="res://creator/context_menu/player_options.tscn" id="5_p13mv"]
+[ext_resource type="PackedScene" uid="uid://clodokvwasgku" path="res://creator/context_menu/extra_node_editor_options.tscn" id="5_x17lf"]
+[ext_resource type="PackedScene" uid="uid://2a12qwonnnlb" path="res://creator/context_menu/map_build_node_options.tscn" id="6_ui6rh"]
+[ext_resource type="PackedScene" uid="uid://b8jcsyvbb8pc5" path="res://creator/context_menu/rename_popup.tscn" id="10_cy57m"]
+
+[node name="ContextMenu" type="PanelContainer"]
+top_level = true
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = ExtResource("1_m8yac")
+script = ExtResource("1_nshto")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="TitleBar" type="PanelContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 28)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_mtke7")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/TitleBar"]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TitleBar/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/TitleBar/MarginContainer/HBoxContainer"]
+self_modulate = Color(0.588235, 0.588235, 0.588235, 1)
+layout_mode = 2
+texture = ExtResource("4_qyjd0")
+expand_mode = 2
+stretch_mode = 4
+
+[node name="Title" type="Label" parent="VBoxContainer/TitleBar/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 11
+text = "Space Object"
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="OptionsContainer" type="MarginContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="AssetSlotOptions" parent="VBoxContainer/OptionsContainer" instance=ExtResource("2_kx7jk")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="RecentScriptSlotOptions" parent="VBoxContainer/OptionsContainer" instance=ExtResource("3_kr10c")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="SpaceObjectOptions" parent="VBoxContainer/OptionsContainer" instance=ExtResource("2_o540h")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="ModelNodeOptions" parent="VBoxContainer/OptionsContainer" instance=ExtResource("4_57pd2")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="ExtraNodeEditorOptions" parent="VBoxContainer/OptionsContainer" instance=ExtResource("5_x17lf")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="PlayerOptions" parent="VBoxContainer/OptionsContainer" instance=ExtResource("5_p13mv")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="MapBuildNodeOptions" parent="VBoxContainer/OptionsContainer" instance=ExtResource("6_ui6rh")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+stream = ExtResource("3_nnacx")
+volume_db = -35.0
+
+[node name="RenamePopupHolder" type="Node" parent="."]
+
+[node name="RenamePopup" parent="RenamePopupHolder" instance=ExtResource("10_cy57m")]
+unique_name_in_owner = true
+visible = false
+top_level = true
+
+[connection signal="teleport_local_player_near_point" from="VBoxContainer/OptionsContainer/PlayerOptions" to="." method="_on_teleport_local_player_near_point"]

@@ -1,0 +1,94 @@
+[gd_scene load_steps=7 format=3 uid="uid://upty54ne3rjh"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_aj8w5"]
+[ext_resource type="Script" path="res://creator/selection/inspector/primitive/inspector_button.gd" id="2_40tpv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sim58"]
+bg_color = Color(0.109804, 0.121569, 0.141176, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.109804, 0.121569, 0.141176, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3ivr3"]
+bg_color = Color(0.109804, 0.121569, 0.141176, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.0705882, 1, 0.843137, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_trad2"]
+bg_color = Color(0.109804, 0.121569, 0.141176, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.0705882, 1, 0.843137, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ex55k"]
+bg_color = Color(0.109804, 0.121569, 0.141176, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.0705882, 1, 0.843137, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="InspectorButtonNoLabel" type="HBoxContainer"]
+custom_minimum_size = Vector2(256, 26)
+offset_right = 256.0
+offset_bottom = 20.0
+size_flags_horizontal = 3
+theme = ExtResource("1_aj8w5")
+theme_override_constants/separation = 0
+script = ExtResource("2_40tpv")
+enabled = true
+label_text = "Button"
+
+[node name="MainButton" type="Button" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_sim58")
+theme_override_styles/hover = SubResource("StyleBoxFlat_3ivr3")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_trad2")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_sim58")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ex55k")
+text = "Push the button"
+
+[node name="LabelHolder" type="Control" parent="."]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="LabelHolder"]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 14.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Button"
+
+[node name="ResetButton" type="Button" parent="."]
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+focus_mode = 0
+
+[connection signal="pressed" from="MainButton" to="." method="_on_main_button_pressed"]

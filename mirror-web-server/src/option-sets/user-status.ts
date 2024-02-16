@@ -1,0 +1,4 @@
+export enum USER_STATUS {
+  NOT_LOGGED_IN = 'NOT_LOGGED_IN',
+  LOGGED_IN = 'LOGGED_IN'
+}

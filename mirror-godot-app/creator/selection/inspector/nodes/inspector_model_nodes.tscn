@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://ctnbwogrp17eu"]
+
+[ext_resource type="PackedScene" uid="uid://dkxqj3l0xm8uw" path="res://creator/selection/inspector/categories/inspector_category_base.tscn" id="1_81u81"]
+[ext_resource type="Script" path="res://creator/selection/inspector/nodes/inspector_model_nodes.gd" id="2_kw5gr"]
+[ext_resource type="Script" path="res://creator/selection/inspector/nodes/model_scene_tree.gd" id="3_75qev"]
+[ext_resource type="Theme" uid="uid://chpmeyn2g6o6r" path="res://script/visual/editor/script_editor.theme.tres" id="3_jdcqm"]
+
+[node name="InspectorModelNodes" instance=ExtResource("1_81u81")]
+offset_bottom = 192.0
+script = ExtResource("2_kw5gr")
+
+[node name="Text" parent="CategoryTitle/ToggleButton/Name" index="3"]
+text = "MODEL NODES"
+
+[node name="Properties" parent="." index="1"]
+visible = true
+
+[node name="MarginContainer" parent="Properties" index="0"]
+offset_bottom = 66.0
+
+[node name="ModelSceneTree" type="Tree" parent="Properties/MarginContainer/PropertyList" index="0"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("3_jdcqm")
+theme_override_constants/v_separation = 4
+theme_override_constants/draw_relationship_lines = 1
+theme_override_font_sizes/font_size = 10
+columns = 2
+select_mode = 1
+scroll_horizontal_enabled = false
+script = ExtResource("3_75qev")
+
+[connection signal="request_open_extra_node_create_dialog" from="Properties/MarginContainer/PropertyList/ModelSceneTree" to="." method="_on_request_open_extra_node_create_dialog"]

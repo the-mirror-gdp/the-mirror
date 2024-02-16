@@ -1,0 +1,67 @@
+[gd_scene load_steps=4 format=3 uid="uid://bgmeld1kk6xcw"]
+
+[ext_resource type="Script" path="res://creator/asset_inventory/filter/filter_with_pills.gd" id="1_0luhg"]
+[ext_resource type="PackedScene" uid="uid://bth2e2qf81jg5" path="res://ui/common/components/pill_badge.tscn" id="2_c6o6h"]
+[ext_resource type="PackedScene" uid="uid://bklbklegx68ix" path="res://creator/asset_inventory/filter/filter_button.tscn" id="3_ac7j4"]
+
+[node name="FilterWithPills" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+script = ExtResource("1_0luhg")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PillsContainer" type="HFlowContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SortPillBadge" parent="VBoxContainer/PillsContainer" instance=ExtResource("2_c6o6h")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+title = "SortBy:"
+text = "Text"
+show_close = true
+
+[node name="CategoryPillBadge" parent="VBoxContainer/PillsContainer" instance=ExtResource("2_c6o6h")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+title = "Category:"
+text = "Text"
+show_close = true
+
+[node name="GraphicsPillBadge" parent="VBoxContainer/PillsContainer" instance=ExtResource("2_c6o6h")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+title = "Graphics:"
+text = "Text"
+show_close = true
+
+[node name="AssetTypePillBadge" parent="VBoxContainer/PillsContainer" instance=ExtResource("2_c6o6h")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+title = "Type:"
+text = "Text"
+show_close = true
+
+[node name="FilterButton" parent="." instance=ExtResource("3_ac7j4")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
+[connection signal="badge_pressed" from="VBoxContainer/PillsContainer/SortPillBadge" to="." method="_on_badge_pressed"]
+[connection signal="close_pressed" from="VBoxContainer/PillsContainer/SortPillBadge" to="." method="_on_sort_pill_badge_close_pressed"]
+[connection signal="badge_pressed" from="VBoxContainer/PillsContainer/CategoryPillBadge" to="." method="_on_badge_pressed"]
+[connection signal="close_pressed" from="VBoxContainer/PillsContainer/CategoryPillBadge" to="." method="_on_category_pill_badge_close_pressed"]
+[connection signal="badge_pressed" from="VBoxContainer/PillsContainer/AssetTypePillBadge" to="." method="_on_badge_pressed"]
+[connection signal="close_pressed" from="VBoxContainer/PillsContainer/AssetTypePillBadge" to="." method="_on_asset_type_pill_badge_close_pressed"]

@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://ba6xtytngt5sx"]
+
+[ext_resource type="Script" path="res://gameplay/auto_performance_adjuster/auto_performance_adjuster.gd" id="1_oc5x3"]
+[ext_resource type="PackedScene" uid="uid://btfnejgmwgbdx" path="res://gameplay/auto_performance_adjuster/performance_monitor/performance_monitor.tscn" id="2_pd0ax"]
+
+[node name="AutoPerformanceAdjuster" type="Node" groups=["AutoPerformanceAdjuster"]]
+script = ExtResource("1_oc5x3")
+
+[node name="PerformanceMonitor" parent="." instance=ExtResource("2_pd0ax")]
+
+[connection signal="good_performance_detected" from="PerformanceMonitor" to="." method="_on_performance_monitor_good_performance_detected"]
+[connection signal="low_performance_detected" from="PerformanceMonitor" to="." method="_on_performance_monitor_low_performance_detected"]

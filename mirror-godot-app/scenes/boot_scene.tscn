@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c2y7pnj0lci5b"]
+
+[ext_resource type="Script" path="res://scripts/autoload/bootup.gd" id="1_r2n0q"]
+
+[node name="Bootup" type="Node"]
+script = ExtResource("1_r2n0q")

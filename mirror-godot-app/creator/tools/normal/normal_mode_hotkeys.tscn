@@ -1,0 +1,91 @@
+[gd_scene load_steps=8 format=3 uid="uid://dnf2na6m4jduu"]
+
+[ext_resource type="Texture2D" uid="uid://d3k14wtyuq1xx" path="res://ui/art/build.svg" id="1_h3miv"]
+[ext_resource type="Script" path="res://creator/tools/normal/normal_mode_hotkeys.gd" id="1_nyopr"]
+[ext_resource type="PackedScene" uid="uid://td3d1noaer8j" path="res://creator/tools/normal/normal_mode_hotkey_item.tscn" id="2_28rd7"]
+[ext_resource type="Texture2D" uid="uid://dr2bjx72bm0n1" path="res://ui/art/chat.svg" id="5_j2qf7"]
+[ext_resource type="Texture2D" uid="uid://b073tnwc67ff1" path="res://creator/tools/build_bar/team_icon_white.svg" id="6_80yuu"]
+[ext_resource type="Texture2D" uid="uid://n00hlaoyd4dj" path="res://ui/art/camera.svg" id="7_h8dok"]
+[ext_resource type="Texture2D" uid="uid://cldkixpkpitrw" path="res://art/ui/medal-icon.png" id="7_wj4ws"]
+
+[node name="NormalModeHotkeys" type="HBoxContainer"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = -92.0
+offset_right = 82.0
+offset_bottom = -28.0
+grow_vertical = 0
+script = ExtResource("1_nyopr")
+
+[node name="BuildMode" parent="." instance=ExtResource("2_28rd7")]
+layout_mode = 2
+
+[node name="TextureRect" parent="BuildMode" index="0"]
+custom_minimum_size = Vector2(48, 48)
+texture = ExtResource("1_h3miv")
+
+[node name="AssetBrowser" parent="." instance=ExtResource("2_28rd7")]
+layout_mode = 2
+
+[node name="TextureRect" parent="AssetBrowser" index="0"]
+custom_minimum_size = Vector2(48, 36)
+
+[node name="InputLabel" parent="AssetBrowser/Panel" index="0"]
+offset_top = -3.0
+offset_right = -2.0
+offset_bottom = 2.0
+text = "Q"
+
+[node name="Chat" parent="." instance=ExtResource("2_28rd7")]
+layout_mode = 2
+
+[node name="TextureRect" parent="Chat" index="0"]
+texture = ExtResource("5_j2qf7")
+
+[node name="InputLabel" parent="Chat/Panel" index="0"]
+text = "Y"
+
+[node name="TeamSelection" parent="." instance=ExtResource("2_28rd7")]
+layout_mode = 2
+
+[node name="TextureRect" parent="TeamSelection" index="0"]
+texture = ExtResource("6_80yuu")
+
+[node name="InputLabel" parent="TeamSelection/Panel" index="0"]
+text = "M"
+
+[node name="Scoreboard" parent="." instance=ExtResource("2_28rd7")]
+layout_mode = 2
+
+[node name="TextureRect" parent="Scoreboard" index="0"]
+texture = ExtResource("7_wj4ws")
+
+[node name="Panel" parent="Scoreboard" index="1"]
+custom_minimum_size = Vector2(41, 18)
+
+[node name="InputLabel" parent="Scoreboard/Panel" index="0"]
+text = "TAB"
+
+[node name="CinematicMode" parent="." instance=ExtResource("2_28rd7")]
+layout_mode = 2
+
+[node name="TextureRect" parent="CinematicMode" index="0"]
+texture = ExtResource("7_h8dok")
+
+[node name="Panel" parent="CinematicMode" index="1"]
+custom_minimum_size = Vector2(41, 18)
+
+[node name="InputLabel" parent="CinematicMode/Panel" index="0"]
+offset_top = -1.0
+offset_bottom = 4.0
+theme_override_font_sizes/font_size = 12
+text = "\\"
+
+[editable path="BuildMode"]
+[editable path="AssetBrowser"]
+[editable path="Chat"]
+[editable path="TeamSelection"]
+[editable path="Scoreboard"]
+[editable path="CinematicMode"]

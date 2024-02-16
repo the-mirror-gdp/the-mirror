@@ -1,0 +1,114 @@
+[gd_scene load_steps=12 format=3 uid="uid://bdspx67qsqxcu"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_7d6sd"]
+[ext_resource type="Script" path="res://creator/selection/inspector/primitive/inspector_toggle.gd" id="2_ekre8"]
+[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="3_hhtwt"]
+[ext_resource type="PackedScene" uid="uid://cy566ld7k03ue" path="res://creator/selection/inspector/primitive/inspector_reset_button.tscn" id="4_nb21s"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_llswg"]
+bg_color = Color(0.0431373, 0.0627451, 0.129412, 0.784314)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_an2bg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sfgcm"]
+bg_color = Color(0.145098, 0.419608, 0.984314, 0.2)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gek33"]
+bg_color = Color(0.145098, 0.419608, 0.984314, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3ev5n"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uqfg8"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_mkr5e"]
+
+[node name="InspectorPropertyToggle" type="HBoxContainer"]
+custom_minimum_size = Vector2(256, 30)
+offset_right = 256.0
+offset_bottom = 32.0
+size_flags_horizontal = 3
+theme = ExtResource("1_7d6sd")
+theme_override_constants/separation = 0
+script = ExtResource("2_ekre8")
+
+[node name="LabelHolder" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.75
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 2
+
+[node name="Label" type="Label" parent="LabelHolder"]
+clip_contents = true
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "E"
+vertical_alignment = 1
+clip_text = true
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_llswg")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="ButtonDisable" type="Button" parent="PanelContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_hhtwt")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxEmpty_an2bg")
+theme_override_styles/hover = SubResource("StyleBoxFlat_sfgcm")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_gek33")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_3ev5n")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_uqfg8")
+toggle_mode = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_mkr5e")
+text = "DISABLE"
+
+[node name="ButtonEnable" type="Button" parent="PanelContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_hhtwt")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxEmpty_an2bg")
+theme_override_styles/hover = SubResource("StyleBoxFlat_sfgcm")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_gek33")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_3ev5n")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_uqfg8")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_mkr5e")
+text = "ENABLE"
+
+[node name="ResetButton" parent="." instance=ExtResource("4_nb21s")]
+layout_mode = 2
+
+[connection signal="toggled" from="PanelContainer/MarginContainer/HBoxContainer/ButtonDisable" to="." method="_on_button_disable_toggled"]
+[connection signal="toggled" from="PanelContainer/MarginContainer/HBoxContainer/ButtonEnable" to="." method="_on_button_enable_toggled"]
+[connection signal="pressed" from="ResetButton" to="." method="_on_reset_button_pressed"]

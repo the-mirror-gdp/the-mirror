@@ -1,0 +1,97 @@
+[gd_scene load_steps=16 format=3 uid="uid://lia6ivhrthax"]
+
+[ext_resource type="Script" path="res://creator/selection/scene_hierarchy/scene_hierarchy.gd" id="1_b2x1k"]
+[ext_resource type="Material" uid="uid://de88hevdyb04k" path="res://ui/common/shaders/dark_blue_blur.mat.tres" id="1_i5uj2"]
+[ext_resource type="Theme" uid="uid://cmn57tuwfayaa" path="res://creator/selection/scene_hierarchy/scene_hierarchy_main.theme.tres" id="1_iuxtk"]
+[ext_resource type="Script" path="res://creator/selection/scene_hierarchy/scene_hierarchy_tree.gd" id="2_7j78t"]
+[ext_resource type="Texture2D" uid="uid://d0jk05ffkguhp" path="res://creator/selection/scene_hierarchy/icons/hidden_icon.svg" id="7_4dmt8"]
+[ext_resource type="Texture2D" uid="uid://c50gro254jg4a" path="res://creator/selection/scene_hierarchy/icons/visible_icon.svg" id="8_3lcyn"]
+[ext_resource type="PackedScene" uid="uid://bahpo436m8hut" path="res://creator/asset_inventory/browser/search_field.tscn" id="8_ghf0h"]
+[ext_resource type="Texture2D" uid="uid://bn5ihadp4x5b6" path="res://creator/selection/scene_hierarchy/icons/3D_object.svg" id="9_bi0rs"]
+[ext_resource type="Texture2D" uid="uid://3gkg7dca2wry" path="res://creator/selection/scene_hierarchy/icons/empty_icon.svg" id="9_myu2j"]
+[ext_resource type="Texture2D" uid="uid://dxhfs31nbom8l" path="res://creator/selection/scene_hierarchy/icons/effect.svg" id="10_4j087"]
+[ext_resource type="Texture2D" uid="uid://ufwnjgbkhdji" path="res://creator/selection/scene_hierarchy/icons/lock_icon.svg" id="11_un7qt"]
+[ext_resource type="PackedScene" uid="uid://c3n3csc8l72co" path="res://creator/common/creator_title_tab.tscn" id="11_vb3g7"]
+[ext_resource type="AudioStream" uid="uid://b1wqy8isen5sg" path="res://audio/mouseclick.wav" id="13_lwuc3"]
+[ext_resource type="Texture2D" uid="uid://dtmbf0dt756ya" path="res://creator/selection/scene_hierarchy/icons/script_text.svg" id="13_yg6cs"]
+[ext_resource type="Texture2D" uid="uid://cpy0k7fhadpr2" path="res://creator/selection/scene_hierarchy/icons/stop.svg" id="14_xtqf8"]
+
+[node name="SceneHierarchy" type="Panel"]
+material = ExtResource("1_i5uj2")
+custom_minimum_size = Vector2(400, 100)
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -392.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_vertical = 3
+theme = ExtResource("1_iuxtk")
+script = ExtResource("1_b2x1k")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_layout_mode = 1
+
+[node name="CreatorTitleTab" parent="VBoxContainer" instance=ExtResource("11_vb3g7")]
+layout_mode = 2
+primary_name = "Entities"
+
+[node name="SearchField" parent="VBoxContainer" instance=ExtResource("8_ghf0h")]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_right = 8
+placeholder_text = "Search"
+text_changed_delay = 0.0
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 1
+theme_override_constants/margin_bottom = 4
+metadata/_edit_layout_mode = 1
+
+[node name="Tree" type="Tree" parent="VBoxContainer/MarginContainer"]
+clip_contents = false
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+mouse_force_pass_scroll_events = false
+allow_rmb_select = true
+hide_root = true
+drop_mode_flags = 1
+select_mode = 2
+script = ExtResource("2_7j78t")
+_empty_icon = ExtResource("9_myu2j")
+_hidden_icon = ExtResource("7_4dmt8")
+_visible_icon = ExtResource("8_3lcyn")
+_3d_object_icon = ExtResource("9_bi0rs")
+_effect_icon = ExtResource("10_4j087")
+_lock_icon = ExtResource("11_un7qt")
+_script_icon = ExtResource("13_yg6cs")
+_privileges_icon = ExtResource("14_xtqf8")
+_top_level_font_color = Color(0.505882, 0.517647, 0.568627, 1)
+_top_level_bg_color = Color(0, 0, 0, 0.333333)
+metadata/_edit_layout_mode = 1
+
+[node name="ClickSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_lwuc3")
+volume_db = -35.0
+
+[connection signal="search_icon_pressed" from="VBoxContainer/SearchField" to="." method="_on_search_field_search_icon_pressed"]
+[connection signal="text_changed" from="VBoxContainer/SearchField" to="VBoxContainer/MarginContainer/Tree" method="search_tree"]
+[connection signal="hierarchy_script_button_pressed" from="VBoxContainer/MarginContainer/Tree" to="." method="_on_hierarchy_script_button_pressed"]
+[connection signal="item_activated" from="VBoxContainer/MarginContainer/Tree" to="." method="_on_tree_item_activated"]
+[connection signal="mouse_entered" from="VBoxContainer/MarginContainer/Tree" to="VBoxContainer/MarginContainer/Tree" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="VBoxContainer/MarginContainer/Tree" to="VBoxContainer/MarginContainer/Tree" method="_on_mouse_exited"]
+[connection signal="multi_selected" from="VBoxContainer/MarginContainer/Tree" to="." method="_on_tree_multi_selected"]
+[connection signal="request_add_script_dialog" from="VBoxContainer/MarginContainer/Tree" to="." method="_on_tree_request_add_script_dialog"]
+[connection signal="request_script_edit" from="VBoxContainer/MarginContainer/Tree" to="." method="_on_tree_request_script_edit"]
+[connection signal="restrict_inspector_to_script_instance" from="VBoxContainer/MarginContainer/Tree" to="." method="_on_tree_restrict_inspector_to_script_instance"]
+[connection signal="selection_changed" from="VBoxContainer/MarginContainer/Tree" to="." method="_on_selection_changed"]

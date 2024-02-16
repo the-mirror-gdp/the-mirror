@@ -1,0 +1,101 @@
+[gd_scene load_steps=8 format=3 uid="uid://dhn1t5wmg12dp"]
+
+[ext_resource type="Texture2D" uid="uid://dfvy5ayk6pa8l" path="res://art/pcks/explosion01/images/colormap_explosion_5x5.png" id="1_sdkkw"]
+[ext_resource type="Texture2D" uid="uid://4r6oiycrk55r" path="res://art/pcks/explosion01/images/flowmap_explosion-flow.png" id="2_47cur"]
+
+[sub_resource type="Shader" id="Shader_xomp8"]
+code = "shader_type spatial;
+render_mode blend_mix,diffuse_burley,specular_schlick_ggx,unshaded;
+uniform vec4 albedo : source_color;
+uniform sampler2D texture_albedo : source_color,filter_linear_mipmap;
+uniform sampler2D texture_flowmap : hint_normal,filter_linear_mipmap;
+uniform sampler2D depth_texture : hint_depth_texture, repeat_disable, filter_nearest;uniform vec3 uv1_scale;
+uniform vec2 shader_estimate = vec2(1.0);
+uniform int particles_anim_h_frames;
+uniform int particles_anim_v_frames;
+uniform bool particles_anim_loop;
+uniform float proximity_fade_distance;
+
+varying float time_in_frame;
+varying vec2 next_frame_uv;
+
+void vertex() {
+	mat4 mat_world = mat4(normalize(INV_VIEW_MATRIX[0]), normalize(INV_VIEW_MATRIX[1]) ,normalize(INV_VIEW_MATRIX[2]), MODEL_MATRIX[3]);
+	mat_world = mat_world * mat4(vec4(cos(INSTANCE_CUSTOM.x), -sin(INSTANCE_CUSTOM.x), 0.0, 0.0), vec4(sin(INSTANCE_CUSTOM.x), cos(INSTANCE_CUSTOM.x), 0.0, 0.0), vec4(0.0, 0.0, 1.0, 0.0), vec4(0.0, 0.0, 0.0, 1.0));
+	MODELVIEW_MATRIX = VIEW_MATRIX * mat_world;
+	MODELVIEW_NORMAL_MATRIX = mat3(MODELVIEW_MATRIX);
+	float h_frames = float(particles_anim_h_frames);
+	float v_frames = float(particles_anim_v_frames);
+	float particle_total_frames = float(particles_anim_h_frames * particles_anim_v_frames);
+	float particle_frame = floor(INSTANCE_CUSTOM.z * float(particle_total_frames));
+	if (!particles_anim_loop) {
+		particle_frame = clamp(particle_frame, 0.0, particle_total_frames - 1.0);
+	} else {
+		particle_frame = mod(particle_frame, particle_total_frames);
+	}
+	UV /= vec2(h_frames, v_frames);
+	next_frame_uv = UV + vec2(mod(particle_frame + 1.0, h_frames) / h_frames, floor((particle_frame + 1.5) / h_frames) / v_frames);
+	UV += vec2(mod(particle_frame, h_frames) / h_frames, floor((particle_frame + 0.5) / h_frames) / v_frames);
+	time_in_frame = fract(INSTANCE_CUSTOM.y * particle_total_frames);
+}
+
+
+
+void fragment() {
+	vec2 flow_data = 2.0 * (texture(texture_flowmap, UV).rg - vec2(0.5)) * shader_estimate;
+	//flow_data *= vec2(float(particles_anim_h_frames), float(particles_anim_v_frames));
+	vec2 base_uv = UV - flow_data * time_in_frame;
+	vec2 base_uv_next_frame = next_frame_uv + flow_data * (1.0 - time_in_frame);
+	vec4 albedo_tex = texture(texture_albedo,base_uv);
+	vec4 albedo_tex_next_frame = texture(texture_albedo, base_uv_next_frame);
+	albedo_tex = mix(albedo_tex, albedo_tex_next_frame, time_in_frame);
+	ALBEDO = albedo.rgb * albedo_tex.rgb;
+	//ALBEDO = vec3(time_in_frame);
+	ALPHA *= albedo.a * albedo_tex.a;
+	float depth_tex = textureLod(depth_texture,SCREEN_UV,0.0).r;
+	vec4 world_pos = INV_PROJECTION_MATRIX * vec4(SCREEN_UV*2.0-1.0,depth_tex,1.0);
+	world_pos.xyz/=world_pos.w;
+	ALPHA*=clamp(1.0-smoothstep(world_pos.z+proximity_fade_distance,world_pos.z,VERTEX.z),0.0,1.0);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5fry4"]
+render_priority = 0
+shader = SubResource("Shader_xomp8")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/shader_estimate = Vector2(0.009, 0.009)
+shader_parameter/particles_anim_h_frames = 5
+shader_parameter/particles_anim_v_frames = 5
+shader_parameter/particles_anim_loop = true
+shader_parameter/proximity_fade_distance = 0.3
+shader_parameter/texture_albedo = ExtResource("1_sdkkw")
+shader_parameter/texture_flowmap = ExtResource("2_47cur")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ndw05"]
+emission_shape = 1
+emission_sphere_radius = 2.5
+gravity = Vector3(0, 1, 0)
+anim_speed_min = 1.0
+anim_speed_max = 1.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_n15qf"]
+size = Vector2(6, 6)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_iccbm"]
+radius = 0.8
+
+[node name="Explosion01" type="StaticBody3D"]
+
+[node name="Explosion01" type="GPUParticles3D" parent="."]
+material_override = SubResource("ShaderMaterial_5fry4")
+amount = 7
+speed_scale = 0.65
+explosiveness = 0.03
+randomness = 0.07
+process_material = SubResource("ParticleProcessMaterial_ndw05")
+draw_pass_1 = SubResource("QuadMesh_n15qf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.167677, 0)
+shape = SubResource("SphereShape3D_iccbm")

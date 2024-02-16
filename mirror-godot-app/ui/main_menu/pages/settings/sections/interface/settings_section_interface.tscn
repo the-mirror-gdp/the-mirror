@@ -1,0 +1,115 @@
+[gd_scene load_steps=12 format=3 uid="uid://dyugpif50dqac"]
+
+[ext_resource type="PackedScene" uid="uid://7r8pofugnpkb" path="res://ui/main_menu/pages/settings/sections/settings_section.tscn" id="1_fmxrd"]
+[ext_resource type="Theme" uid="uid://dblj3nhoduter" path="res://ui/main_menu/pages/settings/theme/setting_theme.tres" id="2_18p5h"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/settings/sections/interface/ui_scale.gd" id="3_ch2nf"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/settings/sections/interface/show_control_hints.gd" id="5_3wl6b"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/settings/sections/interface/show_framerate.gd" id="5_g2r3f"]
+[ext_resource type="PackedScene" uid="uid://7fra83sagq5p" path="res://creator/selection/inspector/primitive/inspector_number_slider.tscn" id="6_ehkwl"]
+[ext_resource type="PackedScene" uid="uid://bdspx67qsqxcu" path="res://creator/selection/inspector/primitive/inspector_toggle.tscn" id="6_nn34j"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/settings/sections/interface/crosshair_color.gd" id="8_4qpdv"]
+[ext_resource type="PackedScene" uid="uid://cv5dw53tu538o" path="res://creator/selection/inspector/primitive/inspector_color.tscn" id="8_cdg7l"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_no3pr"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_jmtgc"]
+
+[node name="Interface" instance=ExtResource("1_fmxrd")]
+
+[node name="UIScale" type="PanelContainer" parent="Options" index="0"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme = ExtResource("2_18p5h")
+script = ExtResource("3_ch2nf")
+
+[node name="InspectorNumberSlider" parent="Options/UIScale" index="0" instance=ExtResource("6_ehkwl")]
+layout_mode = 2
+reset_value = 1.0
+current_value = 1.0
+min_value = 0.5
+max_value = 2.0
+step = 0.1
+allow_greater = true
+allow_lesser = true
+label_text = "UI Scale"
+
+[node name="Label" parent="Options/UIScale/InspectorNumberSlider/LabelHolder" index="0"]
+theme_override_font_sizes/font_size = 16
+text = "UI Scale"
+
+[node name="SpinBox" parent="Options/UIScale/InspectorNumberSlider/Content/SpinBoxHolder" index="0"]
+min_value = 0.5
+max_value = 2.0
+step = 0.1
+value = 1.0
+allow_greater = true
+allow_lesser = true
+
+[node name="Slider" parent="Options/UIScale/InspectorNumberSlider/Content/SliderHolder" index="0"]
+min_value = 0.5
+max_value = 2.0
+step = 0.1
+value = 1.0
+
+[node name="ShowFloatingControlHints" type="PanelContainer" parent="Options" index="1"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme = ExtResource("2_18p5h")
+script = ExtResource("5_3wl6b")
+
+[node name="InspectorPropertyBool" parent="Options/ShowFloatingControlHints" index="0" instance=ExtResource("6_nn34j")]
+layout_mode = 2
+label_text = "Show Floating Control Hints"
+
+[node name="Label" parent="Options/ShowFloatingControlHints/InspectorPropertyBool/LabelHolder" index="0"]
+theme_override_font_sizes/font_size = 16
+text = "Show Floating Control Hints"
+
+[node name="ButtonDisable" parent="Options/ShowFloatingControlHints/InspectorPropertyBool/PanelContainer/MarginContainer/HBoxContainer" index="0"]
+button_group = SubResource("ButtonGroup_no3pr")
+
+[node name="ButtonEnable" parent="Options/ShowFloatingControlHints/InspectorPropertyBool/PanelContainer/MarginContainer/HBoxContainer" index="1"]
+button_group = SubResource("ButtonGroup_no3pr")
+
+[node name="ShowFramerate" type="PanelContainer" parent="Options" index="2"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme = ExtResource("2_18p5h")
+script = ExtResource("5_g2r3f")
+
+[node name="InspectorPropertyBool" parent="Options/ShowFramerate" index="0" instance=ExtResource("6_nn34j")]
+layout_mode = 2
+label_text = "Show Frames Per Second"
+
+[node name="Label" parent="Options/ShowFramerate/InspectorPropertyBool/LabelHolder" index="0"]
+theme_override_font_sizes/font_size = 16
+text = "Show Frames Per Second"
+
+[node name="ButtonDisable" parent="Options/ShowFramerate/InspectorPropertyBool/PanelContainer/MarginContainer/HBoxContainer" index="0"]
+button_group = SubResource("ButtonGroup_jmtgc")
+
+[node name="ButtonEnable" parent="Options/ShowFramerate/InspectorPropertyBool/PanelContainer/MarginContainer/HBoxContainer" index="1"]
+button_group = SubResource("ButtonGroup_jmtgc")
+
+[node name="CrosshairColor" type="PanelContainer" parent="Options" index="3"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme = ExtResource("2_18p5h")
+script = ExtResource("8_4qpdv")
+
+[node name="InspectorPropertyColor" parent="Options/CrosshairColor" index="0" instance=ExtResource("8_cdg7l")]
+layout_mode = 2
+current_value = Color(0, 1, 1, 1)
+label_text = "Crosshair Color"
+
+[node name="Label" parent="Options/CrosshairColor/InspectorPropertyColor/LabelHolder" index="0"]
+theme_override_font_sizes/font_size = 16
+text = "Crosshair Color"
+
+[node name="ColorPickerButton" parent="Options/CrosshairColor/InspectorPropertyColor" index="1"]
+color = Color(0, 1, 1, 1)
+
+[editable path="Options/UIScale/InspectorNumberSlider"]
+[editable path="Options/ShowFloatingControlHints/InspectorPropertyBool"]
+[editable path="Options/ShowFramerate/InspectorPropertyBool"]
+[editable path="Options/CrosshairColor/InspectorPropertyColor"]

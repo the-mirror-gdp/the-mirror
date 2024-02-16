@@ -1,0 +1,39 @@
+[remap]
+
+importer="font_data_dynamic"
+type="FontFile"
+uid="uid://wnq6gpmrsr6v"
+path="res://.godot/imported/montserrat_medium.ttf-23dfdbfa9297b9f58c78c23582b97e92.fontdata"
+
+[deps]
+
+source_file="res://ui/ui_rect_and_font/montserrat/static/montserrat_medium.ttf"
+dest_files=["res://.godot/imported/montserrat_medium.ttf-23dfdbfa9297b9f58c78c23582b97e92.fontdata"]
+
+[params]
+
+Rendering=null
+antialiasing=1
+generate_mipmaps=true
+multichannel_signed_distance_field=false
+msdf_pixel_range=8
+msdf_size=48
+allow_system_fallback=true
+force_autohinter=true
+hinting=2
+subpixel_positioning=3
+oversampling=2.0
+Fallbacks=null
+fallbacks=[]
+Compress=null
+compress=true
+preload=[{
+"chars": [],
+"glyphs": [],
+"name": "New Configuration",
+"size": Vector2i(16, 0),
+"variation_embolden": 0.0
+}]
+language_support={}
+script_support={}
+opentype_features={}

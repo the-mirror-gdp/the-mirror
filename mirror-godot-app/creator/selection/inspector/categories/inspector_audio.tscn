@@ -1,0 +1,83 @@
+[gd_scene load_steps=7 format=3 uid="uid://bwtfh6a8pr71y"]
+
+[ext_resource type="PackedScene" uid="uid://dkxqj3l0xm8uw" path="res://creator/selection/inspector/categories/inspector_category_base.tscn" id="1_8akob"]
+[ext_resource type="Script" path="res://creator/selection/inspector/categories/inspector_audio.gd" id="2_7wga1"]
+[ext_resource type="PackedScene" uid="uid://7fra83sagq5p" path="res://creator/selection/inspector/primitive/inspector_number_slider.tscn" id="2_mnb6j"]
+[ext_resource type="PackedScene" uid="uid://cdctwmtu1ot17" path="res://creator/selection/inspector/primitive/inspector_bool.tscn" id="3_nhs0r"]
+[ext_resource type="PackedScene" uid="uid://yl2tfblvbyak" path="res://creator/selection/inspector/primitive/inspector_number_field.tscn" id="4_gjcpi"]
+[ext_resource type="PackedScene" uid="uid://nepceiq6xabl" path="res://creator/selection/inspector/primitive/inspector_subset.tscn" id="5_ucds0"]
+
+[node name="InspectorAudio" instance=ExtResource("1_8akob")]
+script = ExtResource("2_7wga1")
+
+[node name="Text" parent="CategoryTitle/ToggleButton/Name" index="3"]
+text = "AUDIO"
+
+[node name="MarginContainer" parent="Properties" index="0"]
+offset_bottom = 192.0
+
+[node name="AutoPlay" parent="Properties/MarginContainer/PropertyList" index="0" instance=ExtResource("3_nhs0r")]
+layout_mode = 2
+reset_value = true
+label_text = "Auto Play"
+
+[node name="LoopAudio" parent="Properties/MarginContainer/PropertyList" index="1" instance=ExtResource("3_nhs0r")]
+layout_mode = 2
+reset_value = true
+label_text = "Loop"
+
+[node name="BaseVolume" parent="Properties/MarginContainer/PropertyList" index="2" instance=ExtResource("2_mnb6j")]
+layout_mode = 2
+reset_value = 100.0
+current_value = 100.0
+unit_suffix = "%"
+max_value = 125.0
+step = 1.0
+allow_greater = true
+label_text = "Volume"
+hover_tooltip_text = "The volume of this audio. If Spatial is enabled, this is the volume from 10 meters away(it can get louder when closer, up to Max Volume)."
+
+[node name="SpeedPitch" parent="Properties/MarginContainer/PropertyList" index="3" instance=ExtResource("2_mnb6j")]
+layout_mode = 2
+reset_value = 100.0
+current_value = 100.0
+unit_suffix = "%"
+min_value = 50.0
+max_value = 200.0
+step = 1.0
+allow_greater = true
+allow_lesser = true
+label_text = "Speed & Pitch"
+
+[node name="SpatialCheckbox" parent="Properties/MarginContainer/PropertyList" index="4" instance=ExtResource("3_nhs0r")]
+layout_mode = 2
+reset_value = true
+label_text = "Spatial"
+
+[node name="SpatialSubset" parent="Properties/MarginContainer/PropertyList" index="5" instance=ExtResource("5_ucds0")]
+layout_mode = 2
+
+[node name="Range" parent="Properties/MarginContainer/PropertyList/SpatialSubset/PropertyList" index="0" instance=ExtResource("4_gjcpi")]
+layout_mode = 2
+unit_suffix = "m"
+label_text = "Range"
+
+[node name="MaxVolume" parent="Properties/MarginContainer/PropertyList/SpatialSubset/PropertyList" index="1" instance=ExtResource("2_mnb6j")]
+layout_mode = 2
+reset_value = 100.0
+current_value = 100.0
+unit_suffix = "%"
+max_value = 150.0
+step = 1.0
+allow_greater = true
+label_text = "Max Volume"
+
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/AutoPlay" to="." method="_on_auto_play_value_changed"]
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/LoopAudio" to="." method="_on_loop_audio_value_changed"]
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/BaseVolume" to="." method="_on_base_volume_value_changed"]
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/SpeedPitch" to="." method="_on_speed_pitch_value_changed"]
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/SpatialCheckbox" to="." method="_on_spatial_checkbox_value_changed"]
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/SpatialSubset/PropertyList/Range" to="." method="_on_range_value_changed"]
+[connection signal="value_changed" from="Properties/MarginContainer/PropertyList/SpatialSubset/PropertyList/MaxVolume" to="." method="_on_max_volume_value_changed"]
+
+[editable path="Properties/MarginContainer/PropertyList/SpatialSubset"]

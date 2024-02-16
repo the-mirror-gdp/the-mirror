@@ -1,0 +1,177 @@
+[gd_scene load_steps=17 format=3 uid="uid://blmjh8573m68k"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_xjro3"]
+[ext_resource type="Script" uid="uid://b1k7prsgle0j7" path="res://creator/tools/material_creator/material_creator.gd" id="2_58ahm"]
+[ext_resource type="Script" path="res://creator/tools/material_creator/material_creator_camera.gd" id="3_ajwcx"]
+[ext_resource type="FontFile" uid="uid://cv5tkor0qdxqq" path="res://ui/common/fonts/fontawesome-free-6/Font Awesome 6 Free-Solid-900.otf" id="4_e0fdq"]
+[ext_resource type="PackedScene" uid="uid://c3n3csc8l72co" path="res://creator/common/creator_title_tab.tscn" id="5_3wvs1"]
+[ext_resource type="PackedScene" uid="uid://bet1cctglmseb" path="res://creator/tools/material_creator/material_inspector.tscn" id="18_gibp1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jet6x"]
+bg_color = Color(0.152941, 0.164706, 0.188235, 1)
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_y14mh"]
+
+[sub_resource type="Sky" id="Sky_3elow"]
+sky_material = SubResource("PhysicalSkyMaterial_y14mh")
+
+[sub_resource type="Environment" id="Environment_bpprx"]
+background_mode = 2
+sky = SubResource("Sky_3elow")
+tonemap_mode = 3
+
+[sub_resource type="BoxMesh" id="BoxMesh_lx7ju"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_03dc6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5lmot"]
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_0e8c5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rqt17"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7uqdi"]
+
+[node name="MaterialCreator" type="PanelContainer"]
+custom_minimum_size = Vector2(1090, 740)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_xjro3")
+theme_override_styles/panel = SubResource("StyleBoxFlat_jet6x")
+script = ExtResource("2_58ahm")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="HSplitContainer/MarginContainer"]
+layout_mode = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="HSplitContainer/MarginContainer/SubViewportContainer"]
+own_world_3d = true
+handle_input_locally = false
+size = Vector2i(2, 2)
+render_target_update_mode = 4
+
+[node name="Node3D" type="Node3D" parent="HSplitContainer/MarginContainer/SubViewportContainer/SubViewport"]
+script = ExtResource("3_ajwcx")
+
+[node name="Camera3D" type="Camera3D" parent="HSplitContainer/MarginContainer/SubViewportContainer/SubViewport/Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.01141)
+environment = SubResource("Environment_bpprx")
+
+[node name="Box" type="MeshInstance3D" parent="HSplitContainer/MarginContainer/SubViewportContainer/SubViewport"]
+transform = Transform3D(0.836516, -0.224144, -0.5, -0.102216, 0.832654, -0.544279, 0.538324, 0.506406, 0.673618, 0, 0, 0)
+mesh = SubResource("BoxMesh_lx7ju")
+
+[node name="Sphere" type="MeshInstance3D" parent="HSplitContainer/MarginContainer/SubViewportContainer/SubViewport"]
+transform = Transform3D(0.836516, -0.224144, -0.5, -0.102216, 0.832654, -0.544279, 0.538324, 0.506406, 0.673618, 0, 0, 0)
+visible = false
+mesh = SubResource("SphereMesh_03dc6")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="HSplitContainer/MarginContainer/SubViewportContainer/SubViewport"]
+transform = Transform3D(0.82843, 0.0370982, -0.558863, 0.406195, 0.647203, 0.645084, 0.385629, -0.761414, 0.521093, 0, 1.64694, 0)
+shadow_enabled = true
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/MarginContainer/MarginContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/separation = 4
+
+[node name="Box" type="Button" parent="HSplitContainer/MarginContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_e0fdq")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxEmpty_5lmot")
+toggle_mode = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_0e8c5")
+text = "cube"
+
+[node name="Sphere" type="Button" parent="HSplitContainer/MarginContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_e0fdq")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxEmpty_rqt17")
+toggle_mode = true
+button_group = SubResource("ButtonGroup_0e8c5")
+text = "circle"
+
+[node name="Control" type="Control" parent="HSplitContainer/MarginContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CustomWorld" type="Button" parent="HSplitContainer/MarginContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_e0fdq")
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxEmpty_rqt17")
+theme_override_styles/focus = SubResource("StyleBoxFlat_7uqdi")
+toggle_mode = true
+text = "cloud-sun"
+
+[node name="SideBar" type="VBoxContainer" parent="HSplitContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.25
+
+[node name="CreatorTitleTab" parent="HSplitContainer/SideBar" instance=ExtResource("5_3wvs1")]
+layout_mode = 2
+primary_name = "Material Properties"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HSplitContainer/SideBar"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 3
+
+[node name="MaterialInspector" parent="HSplitContainer/SideBar/ScrollContainer" instance=ExtResource("18_gibp1")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[connection signal="toggled" from="HSplitContainer/MarginContainer/MarginContainer/HBoxContainer/Box" to="." method="_on_box_toggled"]
+[connection signal="toggled" from="HSplitContainer/MarginContainer/MarginContainer/HBoxContainer/Sphere" to="." method="_on_sphere_toggled"]
+[connection signal="toggled" from="HSplitContainer/MarginContainer/MarginContainer/HBoxContainer/CustomWorld" to="." method="_on_custom_world_toggled"]
+[connection signal="resized" from="HSplitContainer/SideBar" to="." method="_on_side_bar_resized"]
+[connection signal="material_created" from="HSplitContainer/SideBar/ScrollContainer/MaterialInspector" to="." method="_on_material_inspector_material_created"]
+[connection signal="on_template_selected" from="HSplitContainer/SideBar/ScrollContainer/MaterialInspector/MaterialTemplateList" to="." method="_on_material_template_list_on_template_selected"]
+
+[editable path="HSplitContainer/SideBar/ScrollContainer/MaterialInspector"]
+[editable path="HSplitContainer/SideBar/ScrollContainer/MaterialInspector/PropertyList/ChangeTypeButton"]
+[editable path="HSplitContainer/SideBar/ScrollContainer/MaterialInspector/PropertyList/HBoxContainer/VBoxContainer/AlbedoTexture"]
+[editable path="HSplitContainer/SideBar/ScrollContainer/MaterialInspector/PropertyList/HBoxContainer/VBoxContainer/InspectorNumberSlider"]
+[editable path="HSplitContainer/SideBar/ScrollContainer/MaterialInspector/PropertyList/HBoxContainer/VBoxContainer/AlphaThresholdSlider"]
+[editable path="HSplitContainer/SideBar/ScrollContainer/MaterialInspector/PropertyList/NormalTexture"]
+[editable path="HSplitContainer/SideBar/ScrollContainer/MaterialInspector/PropertyList/NormalTexture/InspectorPropertyTexture"]
+[editable path="HSplitContainer/SideBar/ScrollContainer/MaterialInspector/PropertyList/NormalTexture/InspectorPropertyTexture/HBoxContainer/InspectorNumberSlider"]
+[editable path="HSplitContainer/SideBar/ScrollContainer/MaterialInspector/PropertyList/RoughnessTexture"]
+[editable path="HSplitContainer/SideBar/ScrollContainer/MaterialInspector/PropertyList/RoughnessTexture/InspectorPropertyTexture"]
+[editable path="HSplitContainer/SideBar/ScrollContainer/MaterialInspector/PropertyList/RoughnessTexture/InspectorPropertyTexture/HBoxContainer/InspectorNumberSlider"]
+[editable path="HSplitContainer/SideBar/ScrollContainer/MaterialInspector/PropertyList/MetallicTexture"]
+[editable path="HSplitContainer/SideBar/ScrollContainer/MaterialInspector/PropertyList/MetallicTexture/InspectorPropertyTexture"]
+[editable path="HSplitContainer/SideBar/ScrollContainer/MaterialInspector/PropertyList/MetallicTexture/InspectorPropertyTexture/HBoxContainer/InspectorNumberSlider"]
+[editable path="HSplitContainer/SideBar/ScrollContainer/MaterialInspector/PropertyList/DepthTexture"]
+[editable path="HSplitContainer/SideBar/ScrollContainer/MaterialInspector/PropertyList/DepthTexture/InspectorPropertyTexture"]
+[editable path="HSplitContainer/SideBar/ScrollContainer/MaterialInspector/PropertyList/DepthTexture/InspectorPropertyTexture/HBoxContainer/InspectorNumberSlider"]
+[editable path="HSplitContainer/SideBar/ScrollContainer/MaterialInspector/PropertyList/EmissionTexture"]
+[editable path="HSplitContainer/SideBar/ScrollContainer/MaterialInspector/PropertyList/EmissionTexture/InspectorPropertyTexture"]
+[editable path="HSplitContainer/SideBar/ScrollContainer/MaterialInspector/PropertyList/EmissionTexture/InspectorPropertyTexture/HBoxContainer/InspectorNumberSlider"]

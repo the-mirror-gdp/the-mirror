@@ -1,0 +1,104 @@
+[gd_scene load_steps=2 format=3 uid="uid://dn3xwxng1fxt3"]
+
+[ext_resource type="Script" path="res://creator/selection/inspector/nodes/node_creation_menu.gd" id="1_2ffkj"]
+
+[node name="ExtraNodeCreationMenu" type="VBoxContainer"]
+custom_minimum_size = Vector2(350, 150)
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 358.0
+offset_bottom = 158.0
+script = ExtResource("1_2ffkj")
+
+[node name="ParentNodeName" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="LabelHolder" type="MarginContainer" parent="ParentNodeName"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.75
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 2
+
+[node name="Label" type="Label" parent="ParentNodeName/LabelHolder"]
+clip_contents = true
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Parent Name"
+vertical_alignment = 1
+clip_text = true
+
+[node name="ParentNodeName" type="LineEdit" parent="ParentNodeName"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Parent node name..."
+
+[node name="TypeSelection" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="LabelHolder" type="MarginContainer" parent="TypeSelection"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.75
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 2
+
+[node name="Label" type="Label" parent="TypeSelection/LabelHolder"]
+clip_contents = true
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Node Type"
+vertical_alignment = 1
+clip_text = true
+
+[node name="NodeTypeSelectionButton" type="OptionButton" parent="TypeSelection"]
+layout_mode = 2
+size_flags_horizontal = 3
+item_count = 4
+selected = 2
+popup/item_0/text = "Trigger Shape"
+popup/item_0/id = 0
+popup/item_1/text = "Physics Shape"
+popup/item_1/id = 1
+popup/item_2/text = "Seat"
+popup/item_2/id = 2
+popup/item_3/text = "Spawn Point"
+popup/item_3/id = 3
+
+[node name="NewNodeName" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="LabelHolder" type="MarginContainer" parent="NewNodeName"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.75
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 2
+
+[node name="Label" type="Label" parent="NewNodeName/LabelHolder"]
+clip_contents = true
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Node Name"
+vertical_alignment = 1
+clip_text = true
+
+[node name="NewNodeName" type="LineEdit" parent="NewNodeName"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "New node name..."
+
+[connection signal="text_changed" from="ParentNodeName/ParentNodeName" to="." method="_on_parent_node_name_text_changed"]
+[connection signal="text_changed" from="NewNodeName/NewNodeName" to="." method="_on_new_node_name_text_changed"]

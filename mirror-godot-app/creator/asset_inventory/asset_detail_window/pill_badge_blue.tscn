@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://dwjt0d6crg2la"]
+
+[ext_resource type="PackedScene" uid="uid://bth2e2qf81jg5" path="res://ui/common/components/pill_badge.tscn" id="1_oyc0n"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vqsk7"]
+content_margin_left = 8.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.145098, 0.419608, 0.984314, 1)
+border_color = Color(0.337255, 0.356863, 0.4, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="PillBadge" instance=ExtResource("1_oyc0n")]
+theme_override_styles/panel = SubResource("StyleBoxFlat_vqsk7")

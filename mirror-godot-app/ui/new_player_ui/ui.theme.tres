@@ -1,0 +1,89 @@
+[gd_resource type="Theme" load_steps=19 format=3 uid="uid://ys8qltjcesi5"]
+
+[ext_resource type="FontFile" uid="uid://cyqoty8fo8udu" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_regular.ttf" id="1"]
+[ext_resource type="FontVariation" uid="uid://bwp6hb31ol8la" path="res://ui/new_player_ui/inventory/title_font_bold.tres" id="1_od7qj"]
+[ext_resource type="StyleBox" uid="uid://biwid7pf726cm" path="res://ui/new_player_ui/inventory/panel_light_blue_rounded.tres" id="1_rpu2c"]
+[ext_resource type="StyleBox" uid="uid://d0agfj0dkjits" path="res://ui/new_player_ui/inventory/panel_light_blue_rounded_hover.tres" id="3_u611i"]
+[ext_resource type="StyleBox" uid="uid://bxdufxik1y0yu" path="res://ui/new_player_ui/inventory/panel_light_blue_rounded_pressed.tres" id="4_c8o4f"]
+[ext_resource type="FontFile" uid="uid://s44wjlc18fo7" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_bold.ttf" id="5_3n5pm"]
+[ext_resource type="StyleBox" uid="uid://dcdx4uxyjvmqv" path="res://ui/new_player_ui/inventory/panel_transparent_bg.tres" id="5_08w73"]
+[ext_resource type="Texture2D" uid="uid://d1fm2eedtdrw" path="res://creator/selection/scene_hierarchy/icons/Down Arrow.svg" id="6_a4bp2"]
+[ext_resource type="Texture2D" uid="uid://beqg1tvi84kpg" path="res://creator/selection/scene_hierarchy/icons/Right Arrow.svg" id="7_s6354"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_50bp0"]
+bg_color = Color(0.254902, 0.254902, 0.254902, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5a1gs"]
+bg_color = Color(0.0705882, 0.0901961, 0.180392, 0.74902)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b1f2s"]
+bg_color = Color(1, 1, 1, 0)
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="FontVariation" id="Font_lmthf"]
+base_font = ExtResource("5_3n5pm")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_njfbf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xq6ox"]
+bg_color = Color(0.223529, 0.415686, 0.94902, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_crvbx"]
+bg_color = Color(0.223529, 0.415686, 0.94902, 1)
+
+[sub_resource type="FontVariation" id="Font_i3xq3"]
+base_font = ExtResource("1")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_42mvy"]
+bg_color = Color(0.164706, 0.160784, 0.207843, 0.827451)
+border_width_top = 22
+border_color = Color(0.0431373, 0.0627451, 0.129412, 1)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+expand_margin_top = 22.0
+
+[resource]
+Button/colors/font_color = Color(0.88, 0.88, 0.88, 1)
+Button/colors/font_color_disabled = Color(0.9, 0.9, 0.9, 0.2)
+Button/colors/font_color_focus = Color(0.94, 0.94, 0.94, 1)
+Button/colors/font_color_hover = Color(0.94, 0.94, 0.94, 1)
+Button/colors/font_color_pressed = Color(1, 1, 1, 1)
+Button/constants/hseparation = 2
+Button/fonts/font = ExtResource("1_od7qj")
+Button/styles/disabled = SubResource("StyleBoxFlat_50bp0")
+Button/styles/focus = ExtResource("1_rpu2c")
+Button/styles/hover = ExtResource("3_u611i")
+Button/styles/normal = ExtResource("1_rpu2c")
+Button/styles/pressed = ExtResource("4_c8o4f")
+Label/fonts/font = ExtResource("1_od7qj")
+Panel/styles/panel = SubResource("StyleBoxFlat_5a1gs")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_b1f2s")
+RichTextLabel/fonts/normal_font = ExtResource("1_od7qj")
+Tree/colors/font_color = Color(1, 1, 1, 1)
+Tree/colors/guide_color = Color(0.364706, 0.34902, 0.388235, 1)
+Tree/constants/button_margin = 8
+Tree/constants/h_separation = 8
+Tree/constants/v_separation = 12
+Tree/fonts/font = SubResource("Font_lmthf")
+Tree/icons/arrow = ExtResource("6_a4bp2")
+Tree/icons/arrow_collapsed = ExtResource("7_s6354")
+Tree/styles/bg = ExtResource("5_08w73")
+Tree/styles/bg_focus = SubResource("StyleBoxEmpty_njfbf")
+Tree/styles/selected = SubResource("StyleBoxFlat_xq6ox")
+Tree/styles/selected_focus = SubResource("StyleBoxFlat_crvbx")
+WindowDialog/colors/title_color = Color(1, 1, 1, 1)
+WindowDialog/constants/close_h_ofs = 18
+WindowDialog/constants/close_v_ofs = 18
+WindowDialog/constants/scaleborder_size = 4
+WindowDialog/constants/title_height = 20
+WindowDialog/fonts/title_font = SubResource("Font_i3xq3")
+WindowDialog/icons/close = null
+WindowDialog/icons/close_highlight = null
+WindowDialog/styles/panel = SubResource("StyleBoxFlat_42mvy")

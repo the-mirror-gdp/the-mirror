@@ -1,0 +1,14 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=4 format=3 uid="uid://d048yi21sjl56"]
+
+[ext_resource type="AudioStream" uid="uid://cgvldfvol5nmg" path="res://player/audio/rough_terrain/jump/Jump_Gen_RoughTerrain-001.wav" id="1_vy83p"]
+[ext_resource type="AudioStream" uid="uid://j1wlb821nd8g" path="res://player/audio/rough_terrain/jump/Jump_Gen_RoughTerrain-002.wav" id="2_qofn7"]
+[ext_resource type="AudioStream" uid="uid://b05u3a0ot0wsx" path="res://player/audio/rough_terrain/jump/Jump_Gen_RoughTerrain-003.wav" id="3_xwo1v"]
+
+[resource]
+streams_count = 3
+stream_0/stream = ExtResource("1_vy83p")
+stream_0/weight = 1.0
+stream_1/stream = ExtResource("2_qofn7")
+stream_1/weight = 1.0
+stream_2/stream = ExtResource("3_xwo1v")
+stream_2/weight = 1.0

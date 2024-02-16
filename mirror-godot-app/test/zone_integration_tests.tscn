@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://dtht38bvky5mc"]
+
+[ext_resource type="Script" path="res://test/integration/integration_tests.gd" id="3"]
+[ext_resource type="Script" path="res://test/integration/zone_client_integration_tests.gd" id="7_8bvt7"]
+[ext_resource type="Script" path="res://test/integration/zone_socket_client_integration_tests.gd" id="7_y0672"]
+
+[node name="ZoneIntegrationTests" type="Node"]
+script = ExtResource("3")
+
+[node name="ZoneClientIntegrationTests" type="Node" parent="."]
+script = ExtResource("7_8bvt7")
+
+[node name="ZoneSocketClientIntegrationTests" type="Node" parent="."]
+script = ExtResource("7_y0672")

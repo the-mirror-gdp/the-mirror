@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://bkavjgcegrk6u"]
+
+[ext_resource type="StyleBox" uid="uid://w2jaivp725n0" path="res://ui/new_player_ui/inventory/panel_transparent_blue_rounded.tres" id="1_wokdd"]
+[ext_resource type="Script" path="res://creator/tools/normal/normal_mode_toolbar.gd" id="2_0gk6b"]
+[ext_resource type="PackedScene" uid="uid://ymbifg7ja6vs" path="res://creator/tools/normal/normal_mode_gizmo_options.tscn" id="5_u2ygt"]
+[ext_resource type="PackedScene" uid="uid://ci8l05j2vr5o7" path="res://creator/tools/normal/normal_mode_terrain_options.tscn" id="6_31ocx"]
+
+[node name="NormalModeToolbar" type="PanelContainer"]
+custom_minimum_size = Vector2(350, 100)
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -360.0
+offset_top = 65.0
+offset_right = -50.0
+offset_bottom = 165.0
+grow_horizontal = 0
+theme_override_styles/panel = ExtResource("1_wokdd")
+script = ExtResource("2_0gk6b")
+metadata/_edit_use_custom_anchors = true
+
+[node name="GizmoOptions" parent="." instance=ExtResource("5_u2ygt")]
+offset_right = 350.0
+
+[node name="TerrainOptions" parent="." instance=ExtResource("6_31ocx")]
+offset_right = 350.0
+
+[connection signal="gizmo_button_pressed" from="GizmoOptions" to="." method="_on_gizmo_options_gizmo_button_pressed"]

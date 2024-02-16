@@ -1,0 +1,17 @@
+[gd_resource type="StandardMaterial3D" load_steps=6 format=3 uid="uid://do1syb0q2gcp2"]
+
+[ext_resource type="Texture2D" uid="uid://dcvydgsve4eve" path="res://player/character_models/astronaut/backpack_albedo.jpg" id="1_78ecs"]
+[ext_resource type="Texture2D" uid="uid://cu57ea5g8rlmm" path="res://player/character_models/astronaut/backpack_ao.jpg" id="2_r0bi7"]
+[ext_resource type="Texture2D" uid="uid://c5fvibe44xnvp" path="res://player/character_models/astronaut/backpack_metallic.jpg" id="3_8sq5q"]
+[ext_resource type="Texture2D" uid="uid://cwexvuieqwjwk" path="res://player/character_models/astronaut/backpack_normal.jpg" id="4_nwn68"]
+[ext_resource type="Texture2D" uid="uid://b2snrug4bdwis" path="res://player/character_models/astronaut/backpack_roughness.jpg" id="5_crg3v"]
+
+[resource]
+albedo_texture = ExtResource("1_78ecs")
+metallic = 1.0
+metallic_texture = ExtResource("3_8sq5q")
+roughness_texture = ExtResource("5_crg3v")
+normal_enabled = true
+normal_texture = ExtResource("4_nwn68")
+ao_enabled = true
+ao_texture = ExtResource("2_r0bi7")

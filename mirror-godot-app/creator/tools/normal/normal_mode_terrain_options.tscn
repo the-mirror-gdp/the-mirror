@@ -1,0 +1,266 @@
+[gd_scene load_steps=14 format=3 uid="uid://ci8l05j2vr5o7"]
+
+[ext_resource type="StyleBox" uid="uid://bgdhxmhs366tr" path="res://ui/new_player_ui/inventory/panel_transparent_blue_top_rounded.tres" id="1_3jdfg"]
+[ext_resource type="Script" path="res://creator/tools/tool_options/terrain_options/terrain_options.gd" id="1_4njh4"]
+[ext_resource type="StyleBox" uid="uid://biwid7pf726cm" path="res://ui/new_player_ui/inventory/panel_light_blue_rounded.tres" id="2_buorx"]
+[ext_resource type="Texture2D" uid="uid://cssmajv2w3v2f" path="res://ui/art/key_outline.svg" id="2_ebp5o"]
+[ext_resource type="FontVariation" uid="uid://dbrjq4n5bqtm4" path="res://ui/new_player_ui/inventory/slot_font.tres" id="3_g55r7"]
+[ext_resource type="StyleBox" uid="uid://c4ig2wlac32fb" path="res://ui/new_player_ui/inventory/panel_light_blue_rounded_unselected.tres" id="3_nlyih"]
+[ext_resource type="FontVariation" uid="uid://bwp6hb31ol8la" path="res://ui/new_player_ui/inventory/title_font_bold.tres" id="4_r2qsi"]
+[ext_resource type="PackedScene" uid="uid://nqtj3k1bv6uh" path="res://creator/tools/buttons/toolbar_button.tscn" id="5_0250e"]
+[ext_resource type="Texture2D" uid="uid://c0aogh35f1blx" path="res://ui/art/additive.svg" id="6_02jbj"]
+[ext_resource type="Script" path="res://ui/new_player_ui/ToolWindowKeyLabel.gd" id="7_sr1ca"]
+[ext_resource type="Texture2D" uid="uid://bfm1o8w2h4wsv" path="res://ui/art/deconstruct.svg" id="8_xe74p"]
+[ext_resource type="Texture2D" uid="uid://brru2tnle0qbj" path="res://ui/art/terrain-flatten.svg" id="10_eaico"]
+[ext_resource type="Texture2D" uid="uid://d2qox4ia5vuw1" path="res://ui/art/filled.svg" id="13_joeko"]
+
+[node name="TerrainOptions" type="VBoxContainer" node_paths=PackedStringArray("_add_button", "_subtract_button", "_flat_button", "_paint_button", "_brush_size")]
+offset_right = 310.0
+offset_bottom = 100.0
+theme_override_constants/separation = 0
+script = ExtResource("1_4njh4")
+button_selected_style = ExtResource("2_buorx")
+button_deselected_style = ExtResource("3_nlyih")
+_add_button = NodePath("Buttons/Add/VBoxContainer/AddButton")
+_subtract_button = NodePath("Buttons/Subtract/VBoxContainer/SubtractButton")
+_flat_button = NodePath("Buttons/Flat/VBoxContainer/FlatButton")
+_paint_button = NodePath("Buttons/Paint/VBoxContainer/PaintButton")
+_brush_size = NodePath("Buttons/BrushSize/VBoxContainer/BrushSizeSlider")
+
+[node name="TopText" type="Panel" parent="."]
+custom_minimum_size = Vector2(0, 34)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_styles/panel = ExtResource("1_3jdfg")
+
+[node name="TerrainModeText" type="HBoxContainer" parent="TopText"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 4.0
+offset_right = -8.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_custom_anchors = true
+
+[node name="Terrain" type="HBoxContainer" parent="TopText/TerrainModeText"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Outline" type="TextureRect" parent="TopText/TerrainModeText/Terrain"]
+custom_minimum_size = Vector2(18, 18)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_ebp5o")
+ignore_texture_size = true
+
+[node name="Label" type="Label" parent="TopText/TerrainModeText/Terrain/Outline"]
+custom_minimum_size = Vector2(14, 14)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+theme_override_fonts/font = ExtResource("3_g55r7")
+theme_override_font_sizes/font_size = 11
+text = "T"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="TopText/TerrainModeText/Terrain"]
+custom_minimum_size = Vector2(0, 22)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_r2qsi")
+theme_override_font_sizes/font_size = 12
+text = "EXIT TERRAIN MODE"
+vertical_alignment = 1
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+
+[node name="Buttons" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="Add" type="MarginContainer" parent="Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Buttons/Add"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = -3
+
+[node name="AddButton" parent="Buttons/Add/VBoxContainer" instance=ExtResource("5_0250e")]
+layout_mode = 2
+size_flags_horizontal = 4
+icon = ExtResource("6_02jbj")
+hover_tooltip_text = "Additive Mode"
+
+[node name="Label" type="Label" parent="Buttons/Add/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_r2qsi")
+theme_override_font_sizes/font_size = 12
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 2
+script = ExtResource("7_sr1ca")
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+
+[node name="VSeparator" type="VSeparator" parent="Buttons"]
+self_modulate = Color(0, 0, 0, 0.2)
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_vertical = 5
+theme_override_constants/separation = 0
+
+[node name="Subtract" type="MarginContainer" parent="Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Buttons/Subtract"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = -3
+
+[node name="SubtractButton" parent="Buttons/Subtract/VBoxContainer" instance=ExtResource("5_0250e")]
+layout_mode = 2
+size_flags_horizontal = 4
+icon = ExtResource("8_xe74p")
+hover_tooltip_text = "Subtractive Mode"
+
+[node name="Label" type="Label" parent="Buttons/Subtract/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_r2qsi")
+theme_override_font_sizes/font_size = 12
+text = "2"
+horizontal_alignment = 1
+vertical_alignment = 2
+script = ExtResource("7_sr1ca")
+tool_number = 2
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+
+[node name="VSeparator2" type="VSeparator" parent="Buttons"]
+self_modulate = Color(0, 0, 0, 0.2)
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_vertical = 5
+theme_override_constants/separation = 0
+
+[node name="Flat" type="MarginContainer" parent="Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Buttons/Flat"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = -3
+
+[node name="FlatButton" parent="Buttons/Flat/VBoxContainer" instance=ExtResource("5_0250e")]
+layout_mode = 2
+size_flags_horizontal = 4
+icon = ExtResource("10_eaico")
+hover_tooltip_text = "Flatten Mode"
+
+[node name="Label" type="Label" parent="Buttons/Flat/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_r2qsi")
+theme_override_font_sizes/font_size = 12
+text = "3
+"
+horizontal_alignment = 1
+vertical_alignment = 2
+script = ExtResource("7_sr1ca")
+tool_number = 3
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+
+[node name="VSeparator3" type="VSeparator" parent="Buttons"]
+self_modulate = Color(0, 0, 0, 0.2)
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_vertical = 5
+theme_override_constants/separation = 0
+
+[node name="Paint" type="MarginContainer" parent="Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Buttons/Paint"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = -3
+
+[node name="PaintButton" parent="Buttons/Paint/VBoxContainer" instance=ExtResource("5_0250e")]
+layout_mode = 2
+size_flags_horizontal = 4
+icon = ExtResource("13_joeko")
+hover_tooltip_text = "Flatten Mode"
+
+[node name="Label" type="Label" parent="Buttons/Paint/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_r2qsi")
+theme_override_font_sizes/font_size = 12
+text = "4
+"
+horizontal_alignment = 1
+vertical_alignment = 2
+script = ExtResource("7_sr1ca")
+tool_number = 4
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+
+[node name="VSeparator4" type="VSeparator" parent="Buttons"]
+self_modulate = Color(0, 0, 0, 0.2)
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+size_flags_vertical = 5
+theme_override_constants/separation = 0
+
+[node name="BrushSize" type="MarginContainer" parent="Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_right = 12
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Buttons/BrushSize"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+alignment = 1
+
+[node name="Label" type="Label" parent="Buttons/BrushSize/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_r2qsi")
+theme_override_font_sizes/font_size = 12
+text = "Brush Size"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BrushSizeSlider" type="HSlider" parent="Buttons/BrushSize/VBoxContainer"]
+self_modulate = Color(0.282353, 0.505882, 0.968627, 1)
+layout_mode = 2
+size_flags_vertical = 1
+min_value = 0.5
+max_value = 10.0
+step = 0.5
+value = 3.0
+
+[connection signal="pressed" from="Buttons/Add/VBoxContainer/AddButton" to="." method="_on_add_button_pressed"]
+[connection signal="pressed" from="Buttons/Subtract/VBoxContainer/SubtractButton" to="." method="_on_subtract_button_pressed"]
+[connection signal="pressed" from="Buttons/Flat/VBoxContainer/FlatButton" to="." method="_on_flat_button_pressed"]
+[connection signal="pressed" from="Buttons/Paint/VBoxContainer/PaintButton" to="." method="_on_paint_button_pressed"]
+[connection signal="value_changed" from="Buttons/BrushSize/VBoxContainer/BrushSizeSlider" to="." method="_on_brush_size_changed"]

@@ -1,0 +1,46 @@
+[gd_scene load_steps=12 format=3 uid="uid://dd1lm16i1bgyw"]
+
+[ext_resource type="Script" path="res://test/integration/asset_client_integration_tests.gd" id="1"]
+[ext_resource type="Script" path="res://test/integration/user_client_integration_tests.gd" id="2"]
+[ext_resource type="Script" path="res://test/integration/zone_finder_integration_tests.gd" id="2_j6ty6"]
+[ext_resource type="Script" path="res://test/integration/integration_tests.gd" id="3"]
+[ext_resource type="Script" path="res://test/integration/space_client_integration_tests.gd" id="4"]
+[ext_resource type="Script" path="res://test/integration/file_client_integration_tests.gd" id="5"]
+[ext_resource type="Script" path="res://test/integration/terrain_client_integration_tests.gd" id="6_0xwa7"]
+[ext_resource type="Script" path="res://test/integration/environment_client_integration_tests.gd" id="6_mlq5d"]
+[ext_resource type="Script" path="res://test/integration/zone_client_integration_tests.gd" id="7_8bvt7"]
+[ext_resource type="Script" path="res://test/integration/zone_socket_client_integration_tests.gd" id="7_y0672"]
+[ext_resource type="Script" path="res://test/integration/version_client_integration_tests.gd" id="10_3q6g3"]
+
+[node name="IntegrationTests" type="Node"]
+script = ExtResource("3")
+
+[node name="VersionClientIntegrationTests" type="Node" parent="."]
+script = ExtResource("10_3q6g3")
+
+[node name="UserClientIntegrationTests" type="Node" parent="."]
+script = ExtResource("2")
+
+[node name="AssetClientIntegrationTests" type="Node" parent="."]
+script = ExtResource("1")
+
+[node name="FileClientIntegrationTests" type="Node" parent="."]
+script = ExtResource("5")
+
+[node name="SpaceClientIntegrationTests" type="Node" parent="."]
+script = ExtResource("4")
+
+[node name="EnvironmentClientIntegrationTests" type="Node" parent="."]
+script = ExtResource("6_mlq5d")
+
+[node name="TerrainClientIntegrationTests" type="Node" parent="."]
+script = ExtResource("6_0xwa7")
+
+[node name="ZoneFinderIntegrationTests" type="Node" parent="."]
+script = ExtResource("2_j6ty6")
+
+[node name="ZoneClientIntegrationTests" type="Node" parent="."]
+script = ExtResource("7_8bvt7")
+
+[node name="ZoneSocketClientIntegrationTests" type="Node" parent="."]
+script = ExtResource("7_y0672")

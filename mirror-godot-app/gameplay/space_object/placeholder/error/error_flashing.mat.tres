@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://w2sin2dp00mn"]
+
+[ext_resource type="Shader" path="res://gameplay/space_object/placeholder/error/error_flashing.gdshader" id="1_8gg12"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_8gg12")
+shader_parameter/col1 = Quaternion(0.75, 0, 0, 1)
+shader_parameter/col2 = Quaternion(0.5, 0, 0, 1)

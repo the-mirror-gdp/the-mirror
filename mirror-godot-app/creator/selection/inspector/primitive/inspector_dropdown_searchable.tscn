@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=3 uid="uid://dg0ur0tpkgp2b"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_fmbu0"]
+[ext_resource type="Script" path="res://creator/selection/inspector/primitive/inspector_dropdown_searchable.gd" id="2_1kibh"]
+[ext_resource type="PackedScene" uid="uid://51hfh08pbhvq" path="res://creator/common/dropdown_search/dropdown_button.tscn" id="3_bgwno"]
+[ext_resource type="PackedScene" uid="uid://cy566ld7k03ue" path="res://creator/selection/inspector/primitive/inspector_reset_button.tscn" id="4_l3v4f"]
+
+[node name="InspectorPropertyDropdownSearchable" type="HBoxContainer"]
+custom_minimum_size = Vector2(256, 30)
+offset_right = 256.0
+offset_bottom = 32.0
+size_flags_horizontal = 3
+theme = ExtResource("1_fmbu0")
+theme_override_constants/separation = 0
+script = ExtResource("2_1kibh")
+current_value = "Dropdown"
+
+[node name="LabelHolder" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.75
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 2
+
+[node name="Label" type="Label" parent="LabelHolder"]
+clip_contents = true
+custom_minimum_size = Vector2(50, 30)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "E"
+vertical_alignment = 1
+clip_text = true
+
+[node name="DropdownButton" parent="." instance=ExtResource("3_bgwno")]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ResetButton" parent="." instance=ExtResource("4_l3v4f")]
+layout_mode = 2
+
+[connection signal="item_selected" from="DropdownButton" to="." method="_on_dropdown_button_item_selected"]
+[connection signal="pressed" from="ResetButton" to="." method="_on_reset_button_pressed"]

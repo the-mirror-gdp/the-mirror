@@ -1,0 +1,73 @@
+[gd_scene load_steps=11 format=3 uid="uid://cxgqg52wih3kl"]
+
+[ext_resource type="PackedScene" uid="uid://7r8pofugnpkb" path="res://ui/main_menu/pages/settings/sections/settings_section.tscn" id="1_07lea"]
+[ext_resource type="Theme" uid="uid://dblj3nhoduter" path="res://ui/main_menu/pages/settings/theme/setting_theme.tres" id="2_ik162"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/settings/sections/audio/settings_section_audio.gd" id="2_q52xc"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/settings/sections/audio/volume.gd" id="3_ik5jr"]
+[ext_resource type="PackedScene" uid="uid://batm8eishqj04" path="res://creator/selection/inspector/primitive/inspector_slider.tscn" id="4_6ep1g"]
+[ext_resource type="PackedScene" uid="uid://7fra83sagq5p" path="res://creator/selection/inspector/primitive/inspector_number_slider.tscn" id="4_fte40"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/settings/sections/audio/menu_ambience_volume.gd" id="5_4jk6u"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/settings/sections/audio/enable_microphone.gd" id="7_jro3k"]
+[ext_resource type="PackedScene" uid="uid://bdspx67qsqxcu" path="res://creator/selection/inspector/primitive/inspector_toggle.tscn" id="8_5enox"]
+[ext_resource type="Theme" uid="uid://giim0icv3frs" path="res://ui/main_menu/pages/settings/sections/settings_menu_entry.theme.tres" id="9_bfp2f"]
+
+[node name="Audio" instance=ExtResource("1_07lea")]
+script = ExtResource("2_q52xc")
+
+[node name="Volume" type="PanelContainer" parent="Options" index="0"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme = ExtResource("2_ik162")
+script = ExtResource("3_ik5jr")
+
+[node name="InspectorNumberSlider" parent="Options/Volume" index="0" instance=ExtResource("4_6ep1g")]
+layout_mode = 2
+reset_value = 100.0
+current_value = 100.0
+unit_suffix = "%"
+max_value = 125.0
+step = 1.0
+allow_greater = true
+label_text = "Volume"
+
+[node name="Label" parent="Options/Volume/InspectorNumberSlider/LabelHolder" index="0"]
+theme_override_font_sizes/font_size = 16
+text = "Volume"
+
+[node name="Slider" parent="Options/Volume/InspectorNumberSlider/SliderHolder" index="0"]
+max_value = 125.0
+step = 1.0
+value = 100.0
+
+[node name="Value" parent="Options/Volume/InspectorNumberSlider/SliderHolder" index="1"]
+text = "100%"
+
+[node name="MenuAmbienceVolume" type="PanelContainer" parent="Options" index="1"]
+visible = false
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme = ExtResource("2_ik162")
+script = ExtResource("5_4jk6u")
+
+[node name="InspectorNumberSlider" parent="Options/MenuAmbienceVolume" index="0" instance=ExtResource("4_fte40")]
+layout_mode = 2
+reset_value = 100.0
+current_value = 100.0
+unit_suffix = "%"
+max_value = 125.0
+step = 1.0
+allow_greater = true
+label_text = "Menu Ambience Volume"
+
+[node name="EnableMicrophone" type="PanelContainer" parent="Options" index="2"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme = ExtResource("2_ik162")
+script = ExtResource("7_jro3k")
+
+[node name="InspectorPropertyToggle" parent="Options/EnableMicrophone" index="0" instance=ExtResource("8_5enox")]
+layout_mode = 2
+theme = ExtResource("9_bfp2f")
+label_text = "Enable Microphone"
+
+[editable path="Options/Volume/InspectorNumberSlider"]

@@ -1,0 +1,2562 @@
+---
+sidebar_position: 3.9
+title: Visual Scripting API Reference
+sidebar_label: VS API Reference
+note: This page is auto-generated from the script API, do not manually edit it. See res://addons/mirror_internal/script_api_dumper/script_api_dumper.gd in the Godot app.
+---
+
+# Visual Scripting API Reference
+
+This page contains a reference of the entire visual scripting API available to you in The Mirror.
+
+## Entry Signals
+
+These signals can be used as entry points for your script (the first run blocks that are executed). Some come from SpaceObject, some come from subnodes, and some are global signals. Global scripts may only use global signals. Object scripts may use all signals.
+
+### SpaceObject
+
+Signals emitted when a player interacts with a SpaceObject.
+
+#### On Player Interact
+
+Emitted when a player interacts with a SpaceObject.
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Player      | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+### Trigger
+
+Signals emitted when physics trigger events happen, like bodies entering triggers.
+
+#### On Player Interact
+
+Emitted when a player interacts with a trigger.
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Player      | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+#### On Body Entered Trigger
+
+Emitted when a physics body is of type Trigger and another body enters it.
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Body        | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+#### On Body Exited Trigger
+
+Emitted when a physics body is of type Trigger and another body exits it.
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Body        | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+### Animation
+
+Signals emitted when an AnimationPlayer node finishes playing an animation.
+
+#### On Animation Animation Finished
+
+Emitted when an AnimationPlayer node finishes playing an animation. This signal requires an AnimationPlayer subnode.
+
+| Output Name    | Data Type                                                                  |
+| -------------- | -------------------------------------------------------------------------- |
+| Animation Name | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+
+### Audio
+
+Signals emitted when an audio player node finishes playing its audio.
+
+#### On Audio Finished
+
+Emitted when an audio player node finishes playing an audio file. This signal requires an AudioStreamPlayer(3D) subnode.
+
+### Timer
+
+Signals emitted when a Timer node finishes counting down.
+
+#### On Timer Timeout
+
+Emitted when a Timer node finishes counting down. This signal requires a Timer subnode. Note: The duration is an input that you can adjust in the inspector, it is not supplied by the signal.
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Duration    | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) |
+
+### Player
+
+Global signals emitted when events happen to players.
+
+#### On Player Connected
+
+Emitted when a player connects to the server. This is a global signal, it can be used from any script.
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Player      | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+#### On Player Disconnected
+
+Emitted when a player disconnects from the server. This is a global signal, it can be used from any script.
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Player      | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+#### On Player Killed By Player
+
+Emitted when a player is killed by another player. This is a global signal, it can be used from any script.
+
+| Output Name   | Data Type                                                                  |
+| ------------- | -------------------------------------------------------------------------- |
+| Victim Player | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+| Killer Player | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+| Victim Team   | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+| Killer Team   | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+| Friendly Fire | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)     |
+
+#### On Player Spawned
+
+Emitted when a player spawns. This is a global signal, it can be used from any script.
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Player      | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+### Variables
+
+Global signals emitted when variables are changed.
+
+#### On Global Variable Changed
+
+Emitted when any global variable is changed. To avoid infinite loops, this is deferred until the end of the frame. This is a global signal, it can be used from any script.
+
+| Output Name    | Data Type                                                                    |
+| -------------- | ---------------------------------------------------------------------------- |
+| Variable Name  | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   |
+| Variable Value | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) |
+
+#### On Global Variable Tweened
+
+Emitted when any global variable is tweened. To avoid infinite loops, this is deferred until the end of the frame. This is a global signal, it can be used from any script.
+
+| Output Name   | Data Type                                                                    |
+| ------------- | ---------------------------------------------------------------------------- |
+| Variable Name | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   |
+| From Value    | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) |
+| To Value      | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) |
+| Duration      | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     |
+
+#### On Object Variable Changed
+
+Emitted when any object variable is changed. To avoid infinite loops, this is deferred until the end of the frame. This is a global signal, it can be used from any script.
+
+| Output Name    | Data Type                                                                    |
+| -------------- | ---------------------------------------------------------------------------- |
+| Object         | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html)   |
+| Variable Name  | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   |
+| Variable Value | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) |
+
+#### On Object Variable Tweened
+
+Emitted when any object variable is tweened. To avoid infinite loops, this is deferred until the end of the frame. This is a global signal, it can be used from any script.
+
+| Output Name   | Data Type                                                                    |
+| ------------- | ---------------------------------------------------------------------------- |
+| Object        | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html)   |
+| Variable Name | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   |
+| From Value    | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) |
+| To Value      | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) |
+| Duration      | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     |
+
+### Match
+
+Global signals emitted when a match or round starts or ends.
+
+#### On Match Start
+
+Emitted when a match starts. This is a global signal, it can be used from any script.
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Freeze Time | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) |
+
+#### On Match End
+
+Emitted when a match ends (but not when it's terminated). This is a global signal, it can be used from any script.
+
+| Output Name       | Data Type                                                                  |
+| ----------------- | -------------------------------------------------------------------------- |
+| Winning Team Name | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+
+#### On Round Start
+
+Emitted when a round starts. This is a global signal, it can be used from any script.
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Freeze Time | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) |
+
+#### On Round End
+
+Emitted when a round ends (but not when it's terminated). This is a global signal, it can be used from any script.
+
+| Output Name       | Data Type                                                                  |
+| ----------------- | -------------------------------------------------------------------------- |
+| Winning Team Name | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+
+#### On Team Score Changed
+
+Emitted when a team's score changes. This signal will only emit for valid teams. This is a global signal, it can be used from any script.
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Team Name   | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+| Team Score  | [int](https://docs.godotengine.org/en/stable/classes/class_int.html)       |
+
+### Global
+
+Misc global signals not covered by other categories.
+
+#### On Game Start
+
+Emitted when the game starts after all SpaceObjects have loaded. This is a global signal, it can be used from any script.
+
+#### On Process Every Frame
+
+Emitted every frame. Please avoid using this signal if possible, as it can be very expensive. This is a global signal, it can be used from any script.
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Delta Time  | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) |
+
+#### On Death
+
+Emitted when a player dies. This is a global signal, it can be used from any script.
+
+| Output Name   | Data Type                                                                  |
+| ------------- | -------------------------------------------------------------------------- |
+| Target Object | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+| Event Origin  | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+
+#### On Server Revive
+
+Emitted when a player is revived by the server. This is a global signal, it can be used from any script.
+
+| Output Name   | Data Type                                                                  |
+| ------------- | -------------------------------------------------------------------------- |
+| Target Object | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+| Event Origin  | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+
+#### On Health Changed
+
+Emitted when a player's health changes. This is a global signal, it can be used from any script.
+
+| Output Name   | Data Type                                                                  |
+| ------------- | -------------------------------------------------------------------------- |
+| Target Object | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+| New Health    | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   |
+| Old Health    | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   |
+| Event Origin  | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+
+### OMI_seat
+
+Signals emitted from a seat as defined by [OMI_seat](https://github.com/omigroup/gltf-extensions/tree/main/extensions/2.0/OMI_seat).
+
+#### On OMI_seat Player Sit Here
+
+Emitted when a player sits on a seat as defined by OMI_seat. This signal requires an OMI_seat subnode.
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Player      | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+#### On OMI_seat Player Unsit Here
+
+Emitted when a player stops sitting on a seat as defined by OMI_seat. This signal requires an OMI_seat subnode.
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Player      | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+### OMI_spawn_point
+
+Signals emitted from a spawn point as defined by [OMI_spawn_point](https://github.com/omigroup/gltf-extensions/tree/main/extensions/2.0/OMI_spawn_point).
+
+#### On OMI_spawn_point Player Spawned Here
+
+Emitted when a player spawns at a spawn point as defined by OMI_spawn_point. This signal requires an OMI_spawn_point subnode.
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Player      | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+## Script Blocks
+
+Regular script blocks. These allow you to perform actions (run blocks) or gather information (data blocks).
+
+### Misc
+
+These blocks are very important, and so are top-level in the script block creation dialog, not tucked away in a category.
+
+#### Print In Chat (Say/Shout/Global)
+
+Prints a Message to the chat. If ran on a script attached to an object, it will make that object "talk". If the Range is 0 or less, it will be global. If the range is less than 2, it will be a whisper. If the range is less than 40, it will be a say. If the range is 40 or greater, it will be a shout.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Message    | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+| Range      | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 20.0          |
+
+#### Print Notify
+
+Prints a Message to the notification area. The Notify Status can be Info, Success, Warning, or Error.
+
+| Input Name    | Data Type                                                                    | Default Value         |
+| ------------- | ---------------------------------------------------------------------------- | --------------------- |
+| Title         | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | "Script Notification" |
+| Message       | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""                    |
+| Notify Status | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | "Info"                |
+
+#### Emit Signal
+
+Emits a custom user-defined signal on an object. The Signal Name must be a signal with an entry block already defined elsewhere in your Space. If the Object is null, the signal will emit on the object the script is attached to.
+
+| Input Name  | Data Type                                                                  | Default Value |
+| ----------- | -------------------------------------------------------------------------- | ------------- |
+| Signal Name | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+| Object      | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+### Flow
+
+Flow blocks control the flow of execution in your script. They are used to run code in a specific order, or to run code when a condition is met.
+
+#### Branch
+
+Branches the flow of execution based on a Condition. If the Condition is true, it will execute the True flow. If the Condition is false, it will execute the False flow.
+
+| Input Name | Data Type                                                              | Default Value |
+| ---------- | ---------------------------------------------------------------------- | ------------- |
+| Condition  | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html) | false         |
+
+#### If
+
+Executes the True flow if the Condition is true. If the Condition is false, it will execute the False flow. After executing the True or False flow, it will execute the Done flow.
+
+| Input Name | Data Type                                                              | Default Value |
+| ---------- | ---------------------------------------------------------------------- | ------------- |
+| Condition  | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html) | false         |
+
+#### If Equals
+
+Executes the True flow if the Left value equals the Right value. If the values are not equal, it will execute the False flow. This is equivalent to `if Left == Right:` in GDScript. After executing the True or False flow, it will execute the Done flow.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Left       | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+| Right      | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+
+#### Loop
+
+Loops the given number of Times and executes Action each time. Index starts at 0 and is exclusive at the end (if Times is 3, Index will be 0, 1, then 2). The Action flow may only run at most 1000 times. This is equivalent to `for i in range(times)` in GDScript. After finishing the loop, it will execute the Done flow.
+
+| Input Name | Data Type                                                            | Default Value |
+| ---------- | -------------------------------------------------------------------- | ------------- |
+| Times      | [int](https://docs.godotengine.org/en/stable/classes/class_int.html) | 5             |
+
+| Output Name | Data Type                                                            |
+| ----------- | -------------------------------------------------------------------- |
+| Index       | [int](https://docs.godotengine.org/en/stable/classes/class_int.html) |
+
+#### While
+
+Loops while the Condition is true. This is equivalent to `while Condition:` in GDScript. The True flow may only run at most 1000 times. After finishing the loop, it will execute the Done flow.
+
+| Input Name | Data Type                                                              | Default Value |
+| ---------- | ---------------------------------------------------------------------- | ------------- |
+| Condition  | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html) | false         |
+
+#### Match Flow
+
+If the Input matches a Case, the Flow with the same number will be executed. If no flow matches, it will execute the Default flow. After executing the matched or Default flow, it will execute the Done flow.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Input      | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+| Case 1     | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+
+#### Wait (Async)
+
+Pauses the script execution for the given number of seconds.
+
+| Input Name | Data Type                                                                | Default Value |
+| ---------- | ------------------------------------------------------------------------ | ------------- |
+| Seconds    | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 1.0           |
+
+### Logic
+
+Logic blocks are used to perform logic operations on data, like comparing numbers, matching values, or combining boolean values.
+
+#### If Value
+
+If Condition is true, Output is set to the True value. Otherwise, Output is set to the False value. This is equivalent to `Output = True if Condition else False` in GDScript.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Condition  | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)       | false         |
+| True       | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+| False      | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Output      | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) |
+
+#### Match Value
+
+If Input matches a Case, the Value with the same number will be set as the Output. Otherwise, the Output will be set to Default.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Input      | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+| Default    | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+| Case 1     | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+| Value 1    | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Output      | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) |
+
+#### And
+
+If both Left and Right are true, Result will be true. Otherwise, Result will be false. This is equivalent to `Left and Right` in GDScript.
+
+| Input Name | Data Type                                                              | Default Value |
+| ---------- | ---------------------------------------------------------------------- | ------------- |
+| Left       | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html) | false         |
+| Right      | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html) | false         |
+
+| Output Name | Data Type                                                              |
+| ----------- | ---------------------------------------------------------------------- |
+| Result      | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html) |
+
+#### Equals
+
+If Left equals Right, Result will be true. Otherwise, Result will be false. This is equivalent to `Left == Right` in GDScript.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Left       | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+| Right      | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+
+| Output Name | Data Type                                                              |
+| ----------- | ---------------------------------------------------------------------- |
+| Result      | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html) |
+
+#### Greater Than
+
+If Left is greater than Right, Result will be true. Otherwise, Result will be false. This is equivalent to `Left > Right` in GDScript.
+
+| Input Name | Data Type                                                                | Default Value |
+| ---------- | ------------------------------------------------------------------------ | ------------- |
+| Left       | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 0.0           |
+| Right      | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 0.0           |
+
+| Output Name | Data Type                                                              |
+| ----------- | ---------------------------------------------------------------------- |
+| Result      | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html) |
+
+#### Less Than
+
+If Left is less than Right, Result will be true. Otherwise, Result will be false. This is equivalent to `Left < Right` in GDScript.
+
+| Input Name | Data Type                                                                | Default Value |
+| ---------- | ------------------------------------------------------------------------ | ------------- |
+| Left       | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 0.0           |
+| Right      | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 0.0           |
+
+| Output Name | Data Type                                                              |
+| ----------- | ---------------------------------------------------------------------- |
+| Result      | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html) |
+
+#### Not
+
+If Input is true, Result will be false. If Input is false, Result will be true. This is equivalent to `not Input` in GDScript.
+
+| Input Name | Data Type                                                              | Default Value |
+| ---------- | ---------------------------------------------------------------------- | ------------- |
+| Input      | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html) | false         |
+
+| Output Name | Data Type                                                              |
+| ----------- | ---------------------------------------------------------------------- |
+| Result      | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html) |
+
+#### Or
+
+If either Left or Right is true, Result will be true. Otherwise, Result will be false. This is equivalent to `Left or Right` in GDScript.
+
+| Input Name | Data Type                                                              | Default Value |
+| ---------- | ---------------------------------------------------------------------- | ------------- |
+| Left       | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html) | false         |
+| Right      | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html) | false         |
+
+| Output Name | Data Type                                                              |
+| ----------- | ---------------------------------------------------------------------- |
+| Result      | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html) |
+
+### Math
+
+Math blocks are used to perform math operations on numbers, like adding, subtracting, multiplying, or dividing.
+
+#### Add
+
+Adds Left and Right together. This is equivalent to `Left + Right` in GDScript.
+
+| Input Name | Data Type | Default Value |
+| ---------- | --------- | ------------- |
+| Value 1    | Math      | 0.0           |
+| Value 2    | Math      | 0.0           |
+
+| Output Name | Data Type |
+| ----------- | --------- |
+| Result      | Math      |
+
+#### Clamp
+
+Clamps Value between Minimum and Maximum. This is equivalent to `clamp(Value, Minimum, Maximum)` in GDScript.
+
+| Input Name | Data Type | Default Value |
+| ---------- | --------- | ------------- |
+| Value      | Math      | 0.0           |
+| Minimum    | Math      | 0.0           |
+| Maximum    | Math      | 1.0           |
+
+| Output Name | Data Type |
+| ----------- | --------- |
+| Result      | Math      |
+
+#### Divide
+
+Divides Left by Right. This is equivalent to `Left / Right` in GDScript.
+
+| Input Name | Data Type | Default Value |
+| ---------- | --------- | ------------- |
+| Left       | Math      | 0.0           |
+| Right      | Math      | 0.0           |
+
+| Output Name | Data Type |
+| ----------- | --------- |
+| Result      | Math      |
+
+#### Modulus
+
+Returns the modulus of Left and Right. For integers, this is equivalent to `posmod(Left, Right)` in GDScript.
+
+| Input Name | Data Type | Default Value |
+| ---------- | --------- | ------------- |
+| Left       | Math      | 0.0           |
+| Right      | Math      | 0.0           |
+
+| Output Name | Data Type |
+| ----------- | --------- |
+| Result      | Math      |
+
+#### Multiply
+
+Multiplies Left and Right together. This is equivalent to `Left * Right` in GDScript.
+
+| Input Name | Data Type | Default Value |
+| ---------- | --------- | ------------- |
+| Left       | Math      | 0.0           |
+| Right      | Math      | 0.0           |
+
+| Output Name | Data Type |
+| ----------- | --------- |
+| Result      | Math      |
+
+#### Subtract
+
+Returns Left minus Right. This is equivalent to `Left - Right` in GDScript.
+
+| Input Name | Data Type | Default Value |
+| ---------- | --------- | ------------- |
+| Left       | Math      | 0.0           |
+| Right      | Math      | 0.0           |
+
+| Output Name | Data Type |
+| ----------- | --------- |
+| Result      | Math      |
+
+#### Constant Math Expression
+
+Evaluates the given math expression at compile time, using the Expression class provided by Godot.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Expression | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | "TAU / 4"     |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Result      | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) |
+
+#### Random Number
+
+Returns a random number between Minimum and Maximum, with a multiple of Step. This is inclusive on both sides, so it may return Minimum or Maximum.
+
+| Input Name | Data Type                                                                | Default Value |
+| ---------- | ------------------------------------------------------------------------ | ------------- |
+| Minimum    | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 0.0           |
+| Maximum    | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 1.0           |
+| Step       | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 0.0           |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Number      | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) |
+
+#### Rotation Looking At
+
+Returns a rotation such that the +Z axis points towards Positive and the -Z axis points towards Negative. Positive and Negative may not be equal or vertically on top of each other.
+
+| Input Name   | Data Type                                                                    | Default Value |
+| ------------ | ---------------------------------------------------------------------------- | ------------- |
+| Positive     | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html)   | null          |
+| Negative     | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html)   | null          |
+| Up Direction | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 1, 0)     |
+
+| Output Name          | Data Type                                                                    |
+| -------------------- | ---------------------------------------------------------------------------- |
+| Euler Angles Degrees | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) |
+
+### Time
+
+Time blocks are used to get the current time, convert between time formats, and format time values.
+
+#### Get Current Unix Time In UTC
+
+Returns the current Unix timestamp in seconds based on the system time in UTC. This method always returns the time in UTC.
+
+| Output Name    | Data Type                                                                |
+| -------------- | ------------------------------------------------------------------------ |
+| Unix Timestamp | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) |
+
+#### Date/Time String To Unix Timestamp
+
+Converts the given ISO 8601 date and/or time string to a Unix timestamp. The string can contain a date only, a time only, or both.
+
+| Input Name         | Data Type                                                                  | Default Value |
+| ------------------ | -------------------------------------------------------------------------- | ------------- |
+| ISO 8601 Date/Time | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+
+| Output Name    | Data Type                                                            |
+| -------------- | -------------------------------------------------------------------- |
+| Unix Timestamp | [int](https://docs.godotengine.org/en/stable/classes/class_int.html) |
+
+#### Date/Time Values To Unix Timestamp
+
+Converts the given date/time values to a Unix timestamp.
+
+| Input Name | Data Type                                                            | Default Value |
+| ---------- | -------------------------------------------------------------------- | ------------- |
+| Year       | [int](https://docs.godotengine.org/en/stable/classes/class_int.html) | 1970          |
+| Month      | [int](https://docs.godotengine.org/en/stable/classes/class_int.html) | 1             |
+| Day        | [int](https://docs.godotengine.org/en/stable/classes/class_int.html) | 1             |
+| Hour       | [int](https://docs.godotengine.org/en/stable/classes/class_int.html) | 0             |
+| Minute     | [int](https://docs.godotengine.org/en/stable/classes/class_int.html) | 0             |
+| Second     | [int](https://docs.godotengine.org/en/stable/classes/class_int.html) | 0             |
+
+| Output Name    | Data Type                                                            |
+| -------------- | -------------------------------------------------------------------- |
+| Unix Timestamp | [int](https://docs.godotengine.org/en/stable/classes/class_int.html) |
+
+#### Unix Timestamp To Date/Time String
+
+Converts the given Unix timestamp to an ISO 8601 date/time string.
+
+| Input Name     | Data Type                                                            | Default Value |
+| -------------- | -------------------------------------------------------------------- | ------------- |
+| Unix Timestamp | [int](https://docs.godotengine.org/en/stable/classes/class_int.html) | 0             |
+
+| Output Name        | Data Type                                                                  |
+| ------------------ | -------------------------------------------------------------------------- |
+| ISO 8601 Date/Time | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+
+#### Unix Timestamp To Date/Time Values
+
+Converts the given Unix timestamp to date/time values.
+
+| Input Name     | Data Type                                                            | Default Value |
+| -------------- | -------------------------------------------------------------------- | ------------- |
+| Unix Timestamp | [int](https://docs.godotengine.org/en/stable/classes/class_int.html) | 0             |
+
+| Output Name | Data Type                                                            |
+| ----------- | -------------------------------------------------------------------- |
+| Year        | [int](https://docs.godotengine.org/en/stable/classes/class_int.html) |
+| Month       | [int](https://docs.godotengine.org/en/stable/classes/class_int.html) |
+| Day         | [int](https://docs.godotengine.org/en/stable/classes/class_int.html) |
+| Hour        | [int](https://docs.godotengine.org/en/stable/classes/class_int.html) |
+| Minute      | [int](https://docs.godotengine.org/en/stable/classes/class_int.html) |
+| Second      | [int](https://docs.godotengine.org/en/stable/classes/class_int.html) |
+
+### String
+
+String blocks are used to perform string operations, like concatenating strings and formatting strings.
+
+#### String Case Insensitive Equals
+
+Performs a case-insensitive equality check on the given Strings. For example, "RED", "red", and "Red" would all be considered equal to each other.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Left       | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+| Right      | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+
+| Output Name | Data Type                                                              |
+| ----------- | ---------------------------------------------------------------------- |
+| Result      | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html) |
+
+#### Concatenate Strings
+
+Concatenates the given strings together (also known as adding or appending the strings).
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Value 1    | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+| Value 2    | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Result      | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+
+#### Join Strings
+
+Joins the given strings together with the given Joiner in between each string. This is equivalent to `Joiner.join(PackedStringArray([Value1, Value2]))` in GDScript.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Joiner     | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ", "          |
+| Value 1    | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+| Value 2    | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Result      | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+
+#### Convert To String
+
+Converts the given Input value to a string. This is equivalent to `str(Input)` in GDScript.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Input      | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| String      | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+
+#### Convert To JSON
+
+Converts the given Key and Value to JSON as `{Key: Value}`.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Key        | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | "name"        |
+| Value      | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| JSON        | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+
+#### Format String Using Array
+
+Formats the given Template string using the given Values array. This is equivalent to `Template % Values` in GDScript.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Template   | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+| Values     | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html)   | []            |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| String      | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+
+#### Format String Using JSON
+
+Formats the given Template string using the given JSON. This is equivalent to `Template.format(JSON)` in GDScript.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| JSON       | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | "{}"          |
+| Template   | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| String      | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+
+#### Get JSON key Value
+
+Returns the Value for the given Key in the given JSON. If the Key does not exist, it will return null. This is equivalent to `JSON.get(Key)` in GDScript.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| JSON       | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | "{}"          |
+| Key        | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Value       | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) |
+
+#### Merge JSONs
+
+Merges the given JSONs together. If the same key exists in both, the value from JSON1 will be used. This is equivalent to `JSON1.merge(JSON2)` in GDScript.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| JSON1      | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | "{}"          |
+| JSON2      | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | "{}"          |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Output      | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+
+#### String Length
+
+Returns the amount of characters in the given string. The input data is passed through unchanged for convenience.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| String     | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Pass        | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+| Length      | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   |
+
+### Color
+
+Color blocks are used to perform color operations, like constructing colors and converting colors to strings.
+
+#### Color Construct
+
+Constructs a Color from the given Red, Green, Blue, and Opacity values, on a range of 0 to 1.
+
+| Input Name | Data Type                                                                | Default Value |
+| ---------- | ------------------------------------------------------------------------ | ------------- |
+| Red        | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 0.0           |
+| Green      | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 0.0           |
+| Blue       | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 0.0           |
+| Opacity    | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 1.0           |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Color       | [Color](https://docs.godotengine.org/en/stable/classes/class_color.html) |
+
+#### Color From HSV
+
+Constructs a Color from the given Hue, Saturation, Value, and Opacity values, on a range of 0 to 1.
+
+| Input Name | Data Type                                                                | Default Value |
+| ---------- | ------------------------------------------------------------------------ | ------------- |
+| Hue        | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 0.0           |
+| Saturation | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 0.0           |
+| Value      | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 0.0           |
+| Opacity    | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 1.0           |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Color       | [Color](https://docs.godotengine.org/en/stable/classes/class_color.html) |
+
+#### Color From String
+
+Constructs a Color from the given String. The String can be a friendly name (like red) or a hex color code (like #f00 or #ff0000). Returns Default if the String cannot be converted into a color.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| String     | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+| Default    | [Color](https://docs.godotengine.org/en/stable/classes/class_color.html)   | (0, 0, 0, 1)  |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Color       | [Color](https://docs.godotengine.org/en/stable/classes/class_color.html) |
+
+#### Color Split
+
+Splits the given Color into its Red, Green, Blue, and Opacity values, on a range of 0 to 1.
+
+| Input Name | Data Type                                                                | Default Value |
+| ---------- | ------------------------------------------------------------------------ | ------------- |
+| Color      | [Color](https://docs.godotengine.org/en/stable/classes/class_color.html) | (0, 0, 0, 1)  |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Red         | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) |
+| Green       | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) |
+| Blue        | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) |
+| Opacity     | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) |
+
+#### Color Clamp
+
+Clamps the given input between the given minimum and maximum.
+
+| Input Name | Data Type                                                                | Default Value |
+| ---------- | ------------------------------------------------------------------------ | ------------- |
+| Color      | [Color](https://docs.godotengine.org/en/stable/classes/class_color.html) | (0, 0, 0, 1)  |
+| Minimum    | [Color](https://docs.godotengine.org/en/stable/classes/class_color.html) | (0, 0, 0, 1)  |
+| Maximum    | [Color](https://docs.godotengine.org/en/stable/classes/class_color.html) | (1, 1, 1, 1)  |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Clamped     | [Color](https://docs.godotengine.org/en/stable/classes/class_color.html) |
+
+### Vector2
+
+Vector2 blocks are used to perform 2D vector math operations.
+
+#### Vector2 Construct
+
+Constructs a Vector2 from the given X and Y values.
+
+| Input Name | Data Type                                                                | Default Value |
+| ---------- | ------------------------------------------------------------------------ | ------------- |
+| X          | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 0.0           |
+| Y          | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 0.0           |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Vector      | [Vector2](https://docs.godotengine.org/en/stable/classes/class_vector2.html) |
+
+#### Vector2 From Angle (Sin/Cos)
+
+Constructs a Vector2 from the given angle in degrees. The X value will be the cosine of the angle, and the Y value will be the sine of the angle. The X and Y values are also provided separately, so this script block can be used as Sin and Cos as well, or the values can be wired into a Vector3 Construct block.
+
+| Input Name | Data Type                                                                | Default Value |
+| ---------- | ------------------------------------------------------------------------ | ------------- |
+| Degrees    | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 0.0           |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Vector      | [Vector2](https://docs.godotengine.org/en/stable/classes/class_vector2.html) |
+| X (Cos)     | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     |
+| Y (Sin)     | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     |
+
+#### Vector2 Split
+
+Splits the given Vector2 into its X and Y values.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Vector     | [Vector2](https://docs.godotengine.org/en/stable/classes/class_vector2.html) | (0, 0)        |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| X           | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) |
+| Y           | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) |
+
+#### Vector2 Angle To
+
+Returns the angle between two vectors, in degrees.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Vector2    | [Vector2](https://docs.godotengine.org/en/stable/classes/class_vector2.html) | (0, 0)        |
+| To         | [Vector2](https://docs.godotengine.org/en/stable/classes/class_vector2.html) | (0, 0)        |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Degrees     | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) |
+
+#### Vector2 Clamp
+
+Clamps the given input between the given minimum and maximum.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Vector2    | [Vector2](https://docs.godotengine.org/en/stable/classes/class_vector2.html) | (0, 0)        |
+| Minimum    | [Vector2](https://docs.godotengine.org/en/stable/classes/class_vector2.html) | (0, 0)        |
+| Maximum    | [Vector2](https://docs.godotengine.org/en/stable/classes/class_vector2.html) | (0, 0)        |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Clamped     | [Vector2](https://docs.godotengine.org/en/stable/classes/class_vector2.html) |
+
+#### Vector2 Distance To
+
+Returns the distance between two vectors.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Vector2    | [Vector2](https://docs.godotengine.org/en/stable/classes/class_vector2.html) | (0, 0)        |
+| To         | [Vector2](https://docs.godotengine.org/en/stable/classes/class_vector2.html) | (0, 0)        |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Distance    | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) |
+
+#### Vector2 Length
+
+Returns the magnitude of the given vector. The input data is passed through unchanged for convenience.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Vector2    | [Vector2](https://docs.godotengine.org/en/stable/classes/class_vector2.html) | (0, 0)        |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Pass        | [Vector2](https://docs.godotengine.org/en/stable/classes/class_vector2.html) |
+| Length      | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     |
+
+#### Vector2 Move Toward
+
+Moves the first vector towards the given To target by the given amount.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Vector2    | [Vector2](https://docs.godotengine.org/en/stable/classes/class_vector2.html) | (0, 0)        |
+| To         | [Vector2](https://docs.godotengine.org/en/stable/classes/class_vector2.html) | (0, 0)        |
+| Delta      | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 0.0           |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Moved       | [Vector2](https://docs.godotengine.org/en/stable/classes/class_vector2.html) |
+
+#### Vector2 Project
+
+Projects the first vector onto the Onto vector.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Vector2    | [Vector2](https://docs.godotengine.org/en/stable/classes/class_vector2.html) | (0, 0)        |
+| Onto       | [Vector2](https://docs.godotengine.org/en/stable/classes/class_vector2.html) | (0, 0)        |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Projected   | [Vector2](https://docs.godotengine.org/en/stable/classes/class_vector2.html) |
+
+### Vector3
+
+Vector3 blocks are used to perform 3D vector math operations.
+
+#### Vector3 Construct
+
+Constructs a Vector3 from the given X, Y, and Z values.
+
+| Input Name | Data Type                                                                | Default Value |
+| ---------- | ------------------------------------------------------------------------ | ------------- |
+| X          | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 0.0           |
+| Y          | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 0.0           |
+| Z          | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 0.0           |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Vector      | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) |
+
+#### Vector3 Split
+
+Splits the given Vector3 into its X, Y, and Z values.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Vector     | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| X           | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) |
+| Y           | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) |
+| Z           | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) |
+
+#### Vector3 Angle To
+
+Returns the angle between two vectors, in degrees.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Vector3    | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+| To         | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Degrees     | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) |
+
+#### Vector3 Clamp
+
+Clamps the given input between the given minimum and maximum.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Vector3    | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+| Minimum    | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+| Maximum    | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Clamped     | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) |
+
+#### Vector3 Distance To
+
+Returns the distance between two vectors.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Vector3    | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+| To         | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Distance    | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) |
+
+#### Vector3 Length
+
+Returns the magnitude of the given vector. The input data is passed through unchanged for convenience.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Vector3    | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Pass        | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) |
+| Length      | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     |
+
+#### Vector3 Move Toward
+
+Moves the first vector towards the given To target by the given amount.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Vector3    | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+| To         | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+| Delta      | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 0.0           |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Moved       | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) |
+
+#### Vector3 Project
+
+Projects the first vector onto the Onto vector.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Vector3    | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+| Onto       | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Projected   | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) |
+
+### Array
+
+Array blocks are used to perform operations on lists of values.
+
+#### Array Construct
+
+Constructs an Array from the given values.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Index 0    | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+| Index 1    | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Array       | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html) |
+
+#### Array Get
+
+Returns the Value at the given Index in the given Array. If the Index is out of bounds, Value will be set to the default for the selected data type. The input array is passed through unchanged for convenience.
+
+| Input Name | Data Type                                                                | Default Value |
+| ---------- | ------------------------------------------------------------------------ | ------------- |
+| Array      | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html) | []            |
+| Index      | [int](https://docs.godotengine.org/en/stable/classes/class_int.html)     | 0             |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Pass        | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html)     |
+| Value       | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) |
+
+#### Array Set
+
+Sets the Value at the given Index in the given Array. If the Index is out of bounds, the Array will be extended to fit the Index, up to a maximum size of 1000. The input array is passed through for convenience (this is not a copy).
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Array      | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html)     | []            |
+| Index      | [int](https://docs.godotengine.org/en/stable/classes/class_int.html)         | 0             |
+| Value      | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Pass        | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html) |
+
+#### Array Contains / Find
+
+If the given Array contains the given Value, Found will be true, and Index will be set to the index of the first occurrence. If Value is not in the Array, Found will be false and Index will be -1.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Array      | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html)     | []            |
+| Value      | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Pass        | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html) |
+| Found       | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)   |
+| Index       | [int](https://docs.godotengine.org/en/stable/classes/class_int.html)     |
+
+#### Array For Each
+
+Loops through each value in the given Array. This is equivalent to `for value in array:` in GDScript. After finishing the loop, it will execute the Done flow.
+
+| Input Name | Data Type                                                                | Default Value |
+| ---------- | ------------------------------------------------------------------------ | ------------- |
+| Array      | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html) | []            |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Index       | [int](https://docs.godotengine.org/en/stable/classes/class_int.html)         |
+| Value       | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) |
+
+#### Array Pick Random
+
+Picks a random Value from the given Array and its Index.
+
+| Input Name | Data Type                                                                | Default Value |
+| ---------- | ------------------------------------------------------------------------ | ------------- |
+| Array      | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html) | []            |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Index       | [int](https://docs.godotengine.org/en/stable/classes/class_int.html)         |
+| Value       | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) |
+
+#### Array Duplicate
+
+Duplicates the given collection.
+
+| Input Name | Data Type                                                                | Default Value |
+| ---------- | ------------------------------------------------------------------------ | ------------- |
+| Array      | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html) | []            |
+| Deep       | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)   | false         |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Duplicated  | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html) |
+
+#### Array Is Empty
+
+Returns true if the given collection is empty. The input data is passed through unchanged for convenience (this is not a copy).
+
+| Input Name | Data Type                                                                | Default Value |
+| ---------- | ------------------------------------------------------------------------ | ------------- |
+| Array      | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html) | []            |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Pass        | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html) |
+| Is Empty    | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)   |
+
+#### Array Size
+
+Returns the size of the given collection. The input data is passed through unchanged for convenience (this is not a copy).
+
+| Input Name | Data Type                                                                | Default Value |
+| ---------- | ------------------------------------------------------------------------ | ------------- |
+| Array      | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html) | []            |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Pass        | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html) |
+| Size        | [int](https://docs.godotengine.org/en/stable/classes/class_int.html)     |
+
+#### Array Sort
+
+Sorts the given collection. This sorts the original data, and passes it through for convenience (this is not a copy).
+
+| Input Name | Data Type                                                                | Default Value |
+| ---------- | ------------------------------------------------------------------------ | ------------- |
+| Array      | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html) | []            |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Sorted      | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html) |
+
+#### Array Shuffle
+
+Shuffles the array such that the items will be in a random order. This shuffles the original data, and passes it through for convenience (this is not a copy).
+
+| Input Name | Data Type                                                                | Default Value |
+| ---------- | ------------------------------------------------------------------------ | ------------- |
+| Array      | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html) | []            |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Shuffled    | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html) |
+
+### Dictionary
+
+Dictionary blocks are used to perform operations on key/value pairs.
+
+#### Dictionary Construct
+
+Constructs a Dictionary from the given Key and Value pairs.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Key        | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | ""            |
+| Value      | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+| Key 2      | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | ""            |
+| Value 2    | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+
+| Output Name | Data Type                                                                          |
+| ----------- | ---------------------------------------------------------------------------------- |
+| Dictionary  | [Dictionary](https://docs.godotengine.org/en/stable/classes/class_dictionary.html) |
+
+#### Dictionary Get
+
+Returns the Value at the given Key in the given Dictionary. If the Key does not exist, Value will be set to the default for the selected data type. The input dictionary is passed through unchanged for convenience.
+
+| Input Name | Data Type                                                                          | Default Value |
+| ---------- | ---------------------------------------------------------------------------------- | ------------- |
+| Dictionary | [Dictionary](https://docs.godotengine.org/en/stable/classes/class_dictionary.html) | { }           |
+| Key        | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)         | ""            |
+
+| Output Name | Data Type                                                                          |
+| ----------- | ---------------------------------------------------------------------------------- |
+| Pass        | [Dictionary](https://docs.godotengine.org/en/stable/classes/class_dictionary.html) |
+| Value       | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html)       |
+
+#### Dictionary Set
+
+Sets the Value at the given Key in the given Dictionary. The input dictionary is passed through for convenience (this is not a copy).
+
+| Input Name | Data Type                                                                          | Default Value |
+| ---------- | ---------------------------------------------------------------------------------- | ------------- |
+| Dictionary | [Dictionary](https://docs.godotengine.org/en/stable/classes/class_dictionary.html) | { }           |
+| Key        | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)         | ""            |
+| Value      | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html)       | ""            |
+
+| Output Name | Data Type                                                                          |
+| ----------- | ---------------------------------------------------------------------------------- |
+| Pass        | [Dictionary](https://docs.godotengine.org/en/stable/classes/class_dictionary.html) |
+
+#### Dictionary For Each
+
+Loops through each key and value in the given Dictionary. This is equivalent to `for key in dictionary: var value = dictionary[key]` in GDScript. After finishing the loop, it will execute the Done flow.
+
+| Input Name | Data Type                                                                          | Default Value |
+| ---------- | ---------------------------------------------------------------------------------- | ------------- |
+| Dictionary | [Dictionary](https://docs.godotengine.org/en/stable/classes/class_dictionary.html) | { }           |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Key         | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   |
+| Value       | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) |
+
+#### Dictionary Pick Random
+
+Picks a random Key and Value from the given Dictionary.
+
+| Input Name | Data Type                                                                          | Default Value |
+| ---------- | ---------------------------------------------------------------------------------- | ------------- |
+| Dictionary | [Dictionary](https://docs.godotengine.org/en/stable/classes/class_dictionary.html) | { }           |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Key         | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   |
+| Value       | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) |
+
+#### Dictionary Duplicate
+
+Duplicates the given collection.
+
+| Input Name | Data Type                                                                          | Default Value |
+| ---------- | ---------------------------------------------------------------------------------- | ------------- |
+| Dictionary | [Dictionary](https://docs.godotengine.org/en/stable/classes/class_dictionary.html) | { }           |
+| Deep       | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)             | false         |
+
+| Output Name | Data Type                                                                          |
+| ----------- | ---------------------------------------------------------------------------------- |
+| Duplicated  | [Dictionary](https://docs.godotengine.org/en/stable/classes/class_dictionary.html) |
+
+#### Dictionary Is Empty
+
+Returns true if the given collection is empty. The input data is passed through unchanged for convenience (this is not a copy).
+
+| Input Name | Data Type                                                                          | Default Value |
+| ---------- | ---------------------------------------------------------------------------------- | ------------- |
+| Dictionary | [Dictionary](https://docs.godotengine.org/en/stable/classes/class_dictionary.html) | { }           |
+
+| Output Name | Data Type                                                                          |
+| ----------- | ---------------------------------------------------------------------------------- |
+| Pass        | [Dictionary](https://docs.godotengine.org/en/stable/classes/class_dictionary.html) |
+| Is Empty    | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)             |
+
+#### Dictionary Size
+
+Returns the size of the given collection. The input data is passed through unchanged for convenience (this is not a copy).
+
+| Input Name | Data Type                                                                          | Default Value |
+| ---------- | ---------------------------------------------------------------------------------- | ------------- |
+| Dictionary | [Dictionary](https://docs.godotengine.org/en/stable/classes/class_dictionary.html) | { }           |
+
+| Output Name | Data Type                                                                          |
+| ----------- | ---------------------------------------------------------------------------------- |
+| Pass        | [Dictionary](https://docs.godotengine.org/en/stable/classes/class_dictionary.html) |
+| Size        | [int](https://docs.godotengine.org/en/stable/classes/class_int.html)               |
+
+#### Dictionary Sort
+
+Sorts the given collection. This sorts the original data, and passes it through for convenience (this is not a copy).
+
+| Input Name | Data Type                                                                          | Default Value |
+| ---------- | ---------------------------------------------------------------------------------- | ------------- |
+| Dictionary | [Dictionary](https://docs.godotengine.org/en/stable/classes/class_dictionary.html) | { }           |
+
+| Output Name | Data Type                                                                          |
+| ----------- | ---------------------------------------------------------------------------------- |
+| Sorted      | [Dictionary](https://docs.godotengine.org/en/stable/classes/class_dictionary.html) |
+
+### SpaceObject
+
+SpaceObject blocks are used to control SpaceObjects. All objects in your Space are SpaceObjects.
+
+#### Get Self
+
+Returns the SpaceObject that this script is attached to, or the global scripts singleton if a global script. Note that you usually do not need this script block, as you can leave the Object port blank on most script blocks and it will use Self automatically.
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Self        | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+#### Create Space Object (Async)
+
+Creates a new SpaceObject with the given parameters. By default, the transform parameters are relative, the new object will spawn near the object the script is on. The new object will appear in the Space after a very short delay (a fraction of a second). This script block is async, it will pause execution until the SpaceObject finishes being created.
+
+| Input Name       | Data Type                                                                    | Default Value |
+| ---------------- | ---------------------------------------------------------------------------- | ------------- |
+| Asset ID         | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | ""            |
+| Name             | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | ""            |
+| Position         | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 1, 0)     |
+| Rotation Degrees | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+| Relative         | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)       | true          |
+| Scale            | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (1, 1, 1)     |
+| Offset           | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+| Collision        | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)       | true          |
+| Shape Type       | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | "Auto"        |
+| Body Type        | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | "Static"      |
+| Mass             | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 1.0           |
+| Gravity Scale    | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 1.0           |
+| Damageable       | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)       | false         |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| SpaceObject | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+#### Delete Space Object
+
+Deletes the given SpaceObject.
+
+| Input Name  | Data Type                                                                  | Default Value |
+| ----------- | -------------------------------------------------------------------------- | ------------- |
+| SpaceObject | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+#### Get Space Object
+
+Gets the SpaceObject with the given Name or ID. If no object is found, it will return null.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Name or ID | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| SpaceObject | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+#### Is Other Space Object
+
+If the given Object is a SpaceObject and is not the current SpaceObject, Is Other will be true and SpaceObject will be set to the object. If the given Object is not a SpaceObject or is the current SpaceObject, Is Other will be false and SpaceObject will be set to null.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Object     | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+| Output Name  | Data Type                                                                  |
+| ------------ | -------------------------------------------------------------------------- |
+| Is Other     | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)     |
+| Space Object | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+#### BBCode To SpaceObject Texture (Async)
+
+Takes the given SpaceObject (On Object) and renders a texture with the given BBCode and background color. The texture will be rendered after a very short delay (a few frames).
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| On Object  | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+| BBCode     | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+| BG Color   | [Color](https://docs.godotengine.org/en/stable/classes/class_color.html)   | (0, 0, 0, 1)  |
+
+#### Scroll Texture
+
+Scrolls the texture on the given SpaceObject (On Object) by the given Scroll Offset over the given Duration with the specified Transition and Easing.
+
+| Input Name    | Data Type                                                                    | Default Value |
+| ------------- | ---------------------------------------------------------------------------- | ------------- |
+| On Object     | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html)   | null          |
+| Scroll Offset | [Vector2](https://docs.godotengine.org/en/stable/classes/class_vector2.html) | (1, 0)        |
+| Duration      | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 2.0           |
+| Transition    | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | "Linear"      |
+| Easing        | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | "In Out"      |
+
+#### NPC Move to
+
+Move the NPC toward the specified location. Returns: ON_TARGET, MOVING_TO_TARGET, MOVING_TO_BASE, ON_BASE
+
+| Input Name               | Data Type                                                                    | Default Value |
+| ------------------------ | ---------------------------------------------------------------------------- | ------------- |
+| On Object                | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html)   | null          |
+| Target Location          | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+| Acceleration             | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 40.0          |
+| Deceleration             | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 25.0          |
+| Max Speed                | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 9.0           |
+| Step Height              | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 0.2           |
+| Max Push Force           | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 5000000.0     |
+| Supporting Height        | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 0.2           |
+| Gravity                  | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 9.8           |
+| Min Distance From Target | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 2.0           |
+| Max Distance From Target | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | -1.0          |
+| Base Location            | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+| Steering Ray Offset      | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 1, 0)     |
+| Steering Ray Length      | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 10.0          |
+| Steering Ray Radius      | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 0.5           |
+| Steering Ignore          | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html)     | []            |
+| Rotation offset          | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 0.0           |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Result      | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+
+#### Damage Using Capsule
+
+Cast a capsule and damage anything within that capsule.
+
+| Input Name       | Data Type                                                                    | Default Value |
+| ---------------- | ---------------------------------------------------------------------------- | ------------- |
+| On Object        | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html)   | null          |
+| Damage           | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 10.0          |
+| Impulse          | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 0.0           |
+| Can Damage Teams | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html)     | []            |
+| Can Damage Self  | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)       | false         |
+| Ignore           | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html)     | []            |
+| Collider Offset  | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+| Height           | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 2.0           |
+| Radius           | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 1.0           |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Damaged     | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html) |
+
+#### Is Dead
+
+Returns true when the SpaceObject or Character is dead.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| On Object  | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+| Output Name | Data Type                                                              |
+| ----------- | ---------------------------------------------------------------------- |
+| Is Dead     | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html) |
+
+#### Get Model Node By Name
+
+Gets a model node of the SpaceObject by name. These are nodes imported from the GLTF file. Model nodes are guaranteed to have a unique name.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| On Object  | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+| Node Name  | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+
+| Output Name  | Data Type                                                                  |
+| ------------ | -------------------------------------------------------------------------- |
+| Pass         | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+| Node Or Null | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+#### Get Model Node By Type
+
+Gets a model node of the SpaceObject by type. These are nodes imported from the GLTF file. If multiple nodes of the same type exist, the first one found is returned.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| On Object  | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+| Node Type  | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+
+| Output Name  | Data Type                                                                  |
+| ------------ | -------------------------------------------------------------------------- |
+| Pass         | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+| Node Or Null | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+#### Center Model Offset
+
+Adjusts the model offset of the SpaceObject so that the model's center is at the origin of the SpaceObject.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| On Object  | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Pass        | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+#### Get Space Object Asset Id
+
+Gets the asset ID of the SpaceObject. This is the ID of the asset that was used to create the SpaceObject.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| On Object  | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Pass        | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+| Asset ID    | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+
+#### Queue Update Network Object
+
+Queues an update to the SpaceObject's network object. Many operations will automatically queue an update, but this can be used to force an update.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| On Object  | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Pass        | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+### Player
+
+Player blocks are used to perform operations on Players.
+
+#### Get All Players
+
+Gets all Players in the Space as an Array. You can loop over this with the Array For Each script block.
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Players     | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html) |
+
+#### Get Players On Team
+
+Gets all Players on the given Team as an Array. You can loop over this with the Array For Each script block.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Team Name  | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Players     | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html) |
+
+#### Get Local Player (Client-Side)
+
+Gets the local Player. This script block may only be run on client-side scripts. If ran on the server, an error will be printed.
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Player      | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+#### Get Player By ID
+
+Gets a player by their User ID. If found, it is set to Player, and Is Valid will be true. If no player is found, Player will be null, and Is Valid will be false.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| User ID    | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Player      | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+| Is Valid    | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)     |
+
+#### Get Players In Range
+
+Gets players in a given range. If multiple players are in range, Closest Player will be the nearest one. If no players are in range, Closest Player will be null and the array will be empty.
+
+| Input Name  | Data Type                                                                  | Default Value |
+| ----------- | -------------------------------------------------------------------------- | ------------- |
+| Relative To | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+| Range       | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   | 5.0           |
+
+| Output Name      | Data Type                                                                  |
+| ---------------- | -------------------------------------------------------------------------- |
+| Closest Player   | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+| Players In Range | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html)   |
+
+#### Get Player Role For Space
+
+Gets the role of the given Player. Return values include but are not limited to OWNER, MANAGER, CONTRIBUTOR, and OBSERVER. Role ID is a number from 0 to 1000 that reflects the permissions level, 1000 means all permissions and 0 means no permissions.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Player     | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Role Name   | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+| Role ID     | [int](https://docs.godotengine.org/en/stable/classes/class_int.html)       |
+
+#### Get Player Inventory
+
+Gets the inventory of the given Player. This includes the currently held item and all items. The inventory array is a copy, any writes will not affect the player.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Player     | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Inventory   | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html)   |
+| Held Item   | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+
+#### Get Player Head
+
+Gets the head of the given Player. This can be used to get the position or rotation of the player's viewpoint. This node's transform may only be read, any writes will be ignored and overwritten.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Player     | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Head        | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+#### Get Player Height
+
+Gets the height of the given Player. The height can either be retrieved in Meters or as a Multiplier of the player's model height.
+
+| Input Name  | Data Type                                                                  | Default Value |
+| ----------- | -------------------------------------------------------------------------- | ------------- |
+| Player      | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+| Height Type | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | "Meters"      |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Height      | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) |
+
+#### Set Player Height
+
+Sets the height of the given Player. This can be used to make the player tiny or giant. The height can either be set in Meters or as a Multiplier of the player's model height. For competitive games, you would likely want to set all players to the same height in meters.
+
+| Input Name  | Data Type                                                                  | Default Value |
+| ----------- | -------------------------------------------------------------------------- | ------------- |
+| Player      | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+| Height      | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   | 1.75          |
+| Height Type | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | "Meters"      |
+
+#### Set Player Avatar
+
+Sets the Player's avatar to the specified URL. This can be used to create an avatar world where users interact
+with objects to switch to avatars, or to enforce a specific appearance in competitive or class-based games.
+The Avatar input must be a URL to the avatar GLB file, such as an avatar from Ready Player Me.
+
+For competitive or class-based games, set Lock to true to prevent players from switching to another avatar in their menu.
+If your game is not competitive but you still want to ensure players are a similar size, consider using Set Player Height
+instead, as custom avatars are a very fun form of self-expression; most users want to play as themselves.
+
+| Input Name  | Data Type                                                                  | Default Value |
+| ----------- | -------------------------------------------------------------------------- | ------------- |
+| Player      | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+| Avatar      | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+| Lock        | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)     | false         |
+| Height      | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   | 1.0           |
+| Height Type | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | "Multiplier"  |
+
+#### Tween Player Height
+
+Tweens the height of the given Player. The height can either be tweened in Meters or as a Multiplier of the player's model height.
+
+| Input Name  | Data Type                                                                  | Default Value |
+| ----------- | -------------------------------------------------------------------------- | ------------- |
+| Player      | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+| Height      | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   | 1.75          |
+| Height Type | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | "Meters"      |
+| Duration    | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   | 1.0           |
+| Transition  | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | "Linear"      |
+| Easing      | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | "In Out"      |
+
+#### Is Valid Player
+
+If the given Object is a Player, Is Valid will be true and Player will be set to the player. If the given Object is not a Player, Is Valid will be false and Player will be set to null.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Object     | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Is Valid    | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)     |
+| Player      | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+#### User Profile Request (Async)
+
+Requests the user profile for the given User ID. The profile will be returned after a short delay (a fraction of a second).
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| User ID    | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| JSON        | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+
+#### Respawn Player
+
+Respawns the player. This will teleport the player to a random spawn point on the player's team. If no spawn point for this team is found, a random spawn point for a different team will be picked. If the Space has no spawn points, the player will be teleported to the global world origin.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| On Object  | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Pass        | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+#### Get Player Team
+
+Gets the player's team name.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| On Object  | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Pass        | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+| Team        | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+
+#### Set Player Team
+
+Sets the player's team using the team name and team color.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| On Object  | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+| Team       | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+| Color      | [Color](https://docs.godotengine.org/en/stable/classes/class_color.html)   | (0, 0, 0, 1)  |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Pass        | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+#### Set Player Input Allowed
+
+Sets whether the player is allowed to move and look around. Setting this to false will disallow and disable input. Setting this to true will allow but not necessarily enable input, because the player may have input disabled for other reasons, like being in a menu.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| On Object  | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+| Is Allowed | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)     | false         |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Pass        | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+#### Is Player Input Allowed
+
+Gets whether the player is allowed to move and look around.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| On Object  | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Pass        | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+| Is Allowed  | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)     |
+
+#### Add Equipable
+
+Adds an equipable to the player's hotbar. Asset ID must point to an asset with `MIRROR_equipable` metadata defined in the GLTF file.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| On Object  | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+| Asset ID   | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Pass        | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+#### Clear Equipables
+
+Clears the player's hotbar of all equipables.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| On Object  | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Pass        | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+### Animation
+
+Animation blocks are used to control playing animations imported from GLTF files.
+
+#### Play Animation
+
+Plays the given animation on the given Node with the given speed. The node can either be an AnimationPlayer or the ancestor of one; this allows you to play an animation on a SpaceObject and it will automatically find the AnimationPlayer for you. The animation name can be one of the animations supplied by the GLTF model file, or it can be special names `stop` or `pause` to stop or pause the animation. If the animation does not exist, it will print an error and script execution will be stopped.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Node       | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+| Name       | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | "stop"        |
+| Speed      | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   | 1.0           |
+
+#### Is Animation Playing
+
+Returns true if the given animation is playing on the given Node. The animation name can be one of the animations supplied by the GLTF model file, or it can be empty to check for any animation playing. The node can either be an AnimationPlayer or the ancestor of one; this allows you to check if an animation is playing on a SpaceObject and it will automatically find the AnimationPlayer for you.
+
+| Input Name    | Data Type                                                                  | Default Value |
+| ------------- | -------------------------------------------------------------------------- | ------------- |
+| Node          | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+| Name Or Empty | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+
+| Output Name | Data Type                                                              |
+| ----------- | ---------------------------------------------------------------------- |
+| Is Playing  | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html) |
+
+#### Get Animation Speed
+
+Returns the speed of animation playback on the given Node. The node can either be an AnimationPlayer or the ancestor of one; this allows you to get the speed of an animation playing on a SpaceObject and it will automatically find the AnimationPlayer for you.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Node       | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Speed       | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) |
+
+### Audio
+
+Audio blocks are used to control playing audio clips and audio nodes.
+
+#### Play Audio Clip
+
+Plays the given Asset ID containing audio as a one-shot audio clip with the given settings. Audio clips are not connected to a persistent audio player node, they are for when you 'just want to play audio' without worrying about nodes. Audio clips cannot be tracked or stopped once started, and may have multiple playing at once, they are best used for short sound effects.
+
+| Input Name         | Data Type                                                                  | Default Value |
+| ------------------ | -------------------------------------------------------------------------- | ------------- |
+| Asset ID           | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+| Volume             | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   | 100.0         |
+| Speed              | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   | 1.0           |
+| Speed Randomness   | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   | 0.0           |
+| Is Spatial         | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)     | true          |
+| Spatial Range      | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   | 0.0           |
+| Spatial Max Volume | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   | 150.0         |
+
+#### Play Audio Node (Same Settings)
+
+Plays the given audio player node with the same settings as it was last played with. Audio player nodes allow you to persistently keep track of audio playback, including stopping it later, or running a signal when it finishes. Audio nodes may only have one audio playback playing at a time, they are best used for music or game-critical audio like performing an action when the final boss's monologue ends. The node can either be an audio player or the ancestor of one; this allows you to play audio on a SpaceObject and it will automatically find the audio player node for you.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Node       | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+#### Play Audio Node (Custom Settings)
+
+Plays the given audio player node with the given settings. Audio player nodes allow you to persistently keep track of audio playback, including stopping it later, or running a signal when it finishes. Audio nodes may only have one audio playback playing at a time, they are best used for music or game-critical audio like performing an action when the final boss's monologue ends. The node can either be an audio player or the ancestor of one; this allows you to play audio on a SpaceObject and it will automatically find the audio player node for you.
+
+| Input Name         | Data Type                                                                  | Default Value |
+| ------------------ | -------------------------------------------------------------------------- | ------------- |
+| Node               | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+| Loop               | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)     | false         |
+| Volume             | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   | 100.0         |
+| Speed              | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   | 1.0           |
+| Speed Randomness   | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   | 0.0           |
+| Is Spatial         | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)     | true          |
+| Spatial Range      | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   | 0.0           |
+| Spatial Max Volume | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   | 150.0         |
+
+#### Is Audio Node Playing
+
+Returns true if the given audio player node is currently playing audio. The node can either be an audio player or the ancestor of one; this allows you to check if a SpaceObject is playing audio and it will automatically find the audio player node for you.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Node       | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+| Output Name | Data Type                                                              |
+| ----------- | ---------------------------------------------------------------------- |
+| Is Playing  | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html) |
+
+#### Stop Playing Audio Node
+
+Stops the given audio player node from playing audio. The node can either be an audio player or the ancestor of one; this allows you to stop playing audio on a SpaceObject and it will automatically find the audio player node for you.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Node       | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+### Physics
+
+Physics blocks are used to manipulate physics objects.
+
+#### Apply Force Impulse
+
+Applies an Impulse force to the given Physics Body. This is a one-time force with a unit of Newton-seconds (kg⋅m/s). The physics body must be set to Dynamic to use this block.
+
+| Input Name   | Data Type                                                                    | Default Value |
+| ------------ | ---------------------------------------------------------------------------- | ------------- |
+| Physics Body | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html)   | null          |
+| Impulse      | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+
+#### Apply Force Over Time
+
+Applies a Force to the given Physics Body over a period of time specified by Duration. This is a continuous force with a unit of Newtons (kg⋅m/s²). The physics body must be set to Dynamic to use this block.
+
+| Input Name   | Data Type                                                                    | Default Value |
+| ------------ | ---------------------------------------------------------------------------- | ------------- |
+| Physics Body | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html)   | null          |
+| Force        | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+| Duration     | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 1.0           |
+
+#### Move And Collide
+
+Moves the given Physics Body by the given Movement Amount. This is not recommended if other blocks will work in its place, but is useful for moving a SpaceObject in well-defined steps when you want to have fine control over movement. The physics body must not be Static, but may be Kinematic, Dynamic, or Trigger.
+
+| Input Name      | Data Type                                                                    | Default Value |
+| --------------- | ---------------------------------------------------------------------------- | ------------- |
+| Physics Body    | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html)   | null          |
+| Movement Amount | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+
+#### Get Physics Material Properties
+
+Gets the Physics Material Properties of the given Physics Body: Friction and Bounciness (also known as restitution).
+
+| Input Name   | Data Type                                                                  | Default Value |
+| ------------ | -------------------------------------------------------------------------- | ------------- |
+| Physics Body | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+| Output Name | Data Type                                                                |
+| ----------- | ------------------------------------------------------------------------ |
+| Friction    | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) |
+| Bounciness  | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) |
+
+#### Set Physics Material Properties
+
+Sets the Physics Material Properties of the given Physics Body: Friction and Bounciness (also known as restitution).
+
+| Input Name   | Data Type                                                                  | Default Value |
+| ------------ | -------------------------------------------------------------------------- | ------------- |
+| Physics Body | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+| Friction     | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   | 0.2           |
+| Bounciness   | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   | 0.0           |
+
+#### Physics Raycast
+
+Performs a raycast from the From vector in the Direction vector. If Length is negative, the size of Direction is used as the length. If Sphere Radius is 0 then perform a raycast, otherwise this is the radius of the sphere to use as a shape cast. Hit Triggers allows controlling if the raycast hits triggers, if false only solid objects will be hit. The Ignore inputs allow ignoring self or other objects.
+
+The outputs correspond to the closest hit object. Body is the node that was hit. One of Depth or Fraction will be zero. If the cast started inside of the hit shape, Depth will correspond to the amount of penetration depth. If the cast started outside of the hit shape, Fraction is the ratio of the cast distance which the cast travels to hit it. Normal is the direction of contact, and Position is the location of contact, both in global world space.
+
+All Hits is an Array of Dictionaries that contains "body", "depth", "fraction", "normal", and "position" like the other outputs, but for all hits. When Has Hit is false, All Hits is empty. When Has Hit is true, index 0 is the same data as the outputs. All Hits may zero or one result for raycasts. All Hits may have zero, one, or many results for shape casts.
+
+| Input Name     | Data Type                                                                    | Default Value |
+| -------------- | ---------------------------------------------------------------------------- | ------------- |
+| From           | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+| Direction      | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+| Length         | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | -1.0          |
+| Sphere Radius  | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 0.0           |
+| Hit Triggers   | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)       | false         |
+| Ignore Self    | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)       | true          |
+| Ignore Objects | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html)     | []            |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Has Hit     | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)       |
+| Body        | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html)   |
+| Depth       | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     |
+| Fraction    | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     |
+| Normal      | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) |
+| Position    | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) |
+| All Hits    | [Array](https://docs.godotengine.org/en/stable/classes/class_array.html)     |
+
+### Environment
+
+Environment blocks are used to control the environment, like the sky, fog, and lighting.
+
+#### Get Environment Sun
+
+Gets the sun with the given index from the environment. You may have between 0 and 4 suns in your game. If the requested index does not exist, the script block will show error.
+
+| Input Name | Data Type                                                            | Default Value |
+| ---------- | -------------------------------------------------------------------- | ------------- |
+| Index      | [int](https://docs.godotengine.org/en/stable/classes/class_int.html) | 0             |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Sun         | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+#### Set Environment Fog
+
+Sets the environment's fog settings to the given parameters.
+
+| Input Name | Data Type                                                                | Default Value    |
+| ---------- | ------------------------------------------------------------------------ | ---------------- |
+| Enabled    | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)   | false            |
+| Volumetric | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)   | false            |
+| Density    | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 0.01             |
+| Color      | [Color](https://docs.godotengine.org/en/stable/classes/class_color.html) | (0.8, 0.9, 1, 1) |
+
+#### Set Environment Properties
+
+Sets the environment's Sun Count and Global Illumination to the given values. You may have between 0 and 4 suns in your game.
+
+| Input Name          | Data Type                                                              | Default Value |
+| ------------------- | ---------------------------------------------------------------------- | ------------- |
+| Sun Count           | [int](https://docs.godotengine.org/en/stable/classes/class_int.html)   | 1             |
+| Global Illumination | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html) | false         |
+
+#### Set Environment Sky Color
+
+Sets the environment's sky colors to the given colors.
+
+| Input Name    | Data Type                                                                | Default Value         |
+| ------------- | ------------------------------------------------------------------------ | --------------------- |
+| Top Color     | [Color](https://docs.godotengine.org/en/stable/classes/class_color.html) | (0.38, 0.45, 0.55, 1) |
+| Horizon Color | [Color](https://docs.godotengine.org/en/stable/classes/class_color.html) | (0.65, 0.65, 0.67, 1) |
+| Bottom Color  | [Color](https://docs.godotengine.org/en/stable/classes/class_color.html) | (0.2, 0.17, 0.13, 1)  |
+
+### Variables
+
+Variable blocks are used to store and retrieve values. Variables may be global or per-object. All variables are reset when starting a new match.
+
+#### Get Global Variable
+
+Gets the value of the global variable with the given name or path. The variable will be of the type specified by the script block. Variables may be accessed by name or by JSON pointer path. For example, `a/b` and `a.b` both refer to `"a": {"b": "this value"}`. Variables are for user-defined data and are automatically synced over the network.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Name       | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Value       | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) |
+
+#### Has Global Variable
+
+Returns true if the global variable with the given name or path exists, false otherwise. Variables may be accessed by name or by JSON pointer path. Variables are for user-defined data and are automatically synced over the network.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Name       | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+
+| Output Name  | Data Type                                                              |
+| ------------ | ---------------------------------------------------------------------- |
+| Has Variable | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html) |
+
+#### Set Global Variable
+
+Sets the value of the global variable with the given name or path. Variables may be accessed by name or by JSON pointer path. For example, `a/b` and `a.b` both refer to `"a": {"b": "this value"}`. If the path does not exist, it will be created. Variables are for user-defined data and are automatically synced over the network.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Name       | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | ""            |
+| Value      | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+
+#### Tween Global Variable
+
+Tweens the global variable with the given name or path with the given settings. Variables may be accessed by name or by JSON pointer path. For example, `a/b` and `a.b` both refer to `"a": {"b": "this value"}`. If the path does not exist, it will be created. Variables are for user-defined data and are automatically synced over the network.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Name       | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | ""            |
+| Value      | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+| Duration   | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 1.0           |
+| Transition | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | "Linear"      |
+| Easing     | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | "In Out"      |
+
+#### Get Object Variable
+
+Gets the value of the object variable with the given name or path. Variables may be accessed by name or by JSON pointer path. Variables are for user-defined data and are automatically synced over the network.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Object     | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+| Name       | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Value       | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) |
+
+#### Has Object Variable
+
+Returns true if the object variable with the given name or path exists, false otherwise. Variables may be accessed by name or by JSON pointer path. Variables are for user-defined data and are automatically synced over the network.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Object     | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+| Name       | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+
+| Output Name  | Data Type                                                              |
+| ------------ | ---------------------------------------------------------------------- |
+| Has Variable | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html) |
+
+#### Set Object Variable
+
+Sets the value of the object variable with the given name or path. Variables may be accessed by name or by JSON pointer path. If the path does not exist, it will be created. Variables are for user-defined data and are automatically synced over the network.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Object     | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html)   | null          |
+| Name       | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | ""            |
+| Value      | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+
+#### Tween Object Variable
+
+Tweens the object variable with the given name or path with the given settings. Variables may be accessed by name or by JSON pointer path. If the path does not exist, it will be created. Variables are for user-defined data and are automatically synced over the network.
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| Object     | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html)   | null          |
+| Name       | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | ""            |
+| Value      | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) | ""            |
+| Duration   | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 1.0           |
+| Transition | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | "Linear"      |
+| Easing     | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | "In Out"      |
+
+### Match
+
+Match blocks are used to control the match and rounds, like starting/ending the match, or adding points to a team.
+
+#### Start Match
+
+Start a new match and freeze players for the given time. If a match is already running, a new match will override the old one.
+
+| Input Name  | Data Type                                                                | Default Value |
+| ----------- | ------------------------------------------------------------------------ | ------------- |
+| Freeze Time | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 1.0           |
+
+#### End Match
+
+Ends the current match, declares the given team as the winner, and force-shows the scoreboard. If no match is running, a warning will be shown and the block will do nothing.
+
+| Input Name        | Data Type                                                                  | Default Value |
+| ----------------- | -------------------------------------------------------------------------- | ------------- |
+| Winning Team Name | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+
+#### Terminate Match
+
+Terminates the current match and does not declare a winner. This block will work even when no match is running.
+
+#### Is Match Running
+
+Returns true if a match is currently running.
+
+| Output Name | Data Type                                                              |
+| ----------- | ---------------------------------------------------------------------- |
+| Is Running  | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html) |
+
+#### Start Round
+
+Start a new round and freeze players for the given time. If a round is already running, a new round will override the old one. If no match is running, a warning will be shown and the block will do nothing.
+
+| Input Name  | Data Type                                                                | Default Value |
+| ----------- | ------------------------------------------------------------------------ | ------------- |
+| Freeze Time | [float](https://docs.godotengine.org/en/stable/classes/class_float.html) | 1.0           |
+
+#### End Round
+
+Ends the current round and adds 1 point to this round's winning team. If no round is running, a warning will be shown and the block will do nothing.
+
+| Input Name             | Data Type                                                                  | Default Value |
+| ---------------------- | -------------------------------------------------------------------------- | ------------- |
+| Winning Team Name      | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+| Auto Start Next        | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)     | true          |
+| Auto Start Wait Time   | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   | 3.0           |
+| Auto Start Freeze Time | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   | 1.0           |
+
+#### Terminate Round
+
+Terminates the current round without declaring a winner. The next round will not automatically start and no On Round End signal will be emitted. For normal gameplay loops, use End Round instead. If no match is running, a warning will be shown and the block will do nothing.
+
+#### Is Round Running
+
+Returns true if a round is currently running, false otherwise.
+
+| Output Name | Data Type                                                              |
+| ----------- | ---------------------------------------------------------------------- |
+| Is Running  | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html) |
+
+#### Set Match Settings
+
+Sets the match settings for the current match to the given Freeze Time, Friendly Fire, and Win Score settings. The settings will be saved to Space Variables. Friendly Fire may be set to "Enabled", "Disabled", "No Kills", or "Reflect".
+
+| Input Name    | Data Type                                                                  | Default Value |
+| ------------- | -------------------------------------------------------------------------- | ------------- |
+| Freeze Time   | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   | 1.0           |
+| Friendly Fire | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | "Enabled"     |
+| Win Score     | [int](https://docs.godotengine.org/en/stable/classes/class_int.html)       | 3             |
+
+#### Add Score To Team
+
+Adds the given Score to the given team's score. If the Team Name does not correspond to any team, no score will be set on a team, but if the score is high enough a victory will be triggered anyway. If no match is running, a warning will be shown and the block will do nothing.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Team Name  | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+| Score      | [int](https://docs.godotengine.org/en/stable/classes/class_int.html)       | 1             |
+
+#### Get Score For Team
+
+Gets the score of the given team. If the Team Name does not correspond to any team, -1 will be returned. This block may run even if no match is running.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Team Name  | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+
+| Output Name | Data Type                                                            |
+| ----------- | -------------------------------------------------------------------- |
+| Score       | [int](https://docs.godotengine.org/en/stable/classes/class_int.html) |
+
+#### Set Score For Team
+
+Sets the given team's score to the given New Score. If the Team Name does not correspond to any team, no score will be set on a team, but if the score is high enough a victory will be triggered anyway. If no match is running, a warning will be shown and the block will do nothing.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Team Name  | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+| New Score  | [int](https://docs.godotengine.org/en/stable/classes/class_int.html)       | 0             |
+
+#### Set Scoreboard Title
+
+Sets the title of the scoreboard to the given text.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Title      | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | "Scoreboard"  |
+
+#### Show Scoreboard
+
+Shows the scoreboard for players. If Player Or All is not specified, the scoreboard is shown for all players. Note: In Build mode, at least one button will always be shown, to prevent soft-locking yourself.
+
+| Input Name      | Data Type                                                                  | Default Value |
+| --------------- | -------------------------------------------------------------------------- | ------------- |
+| Player Or All   | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+| Allow Close     | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)     | true          |
+| Allow New Match | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)     | false         |
+
+#### Hide Scoreboard
+
+Hides the scoreboard for players. If Player Or All is not specified, the scoreboard is hidden for all players.
+
+| Input Name    | Data Type                                                                  | Default Value |
+| ------------- | -------------------------------------------------------------------------- | ------------- |
+| Player Or All | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+### Space
+
+Space blocks are for getting information about the Space.
+
+#### Get Space ID
+
+Gets the ID of the current Space. This is a unique identifier that can be used to identify the Space.
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Space ID    | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+
+### Rotation Degrees
+
+Rotation Degrees blocks are used to perform operations on Euler angle rotations in degrees.
+
+#### Get Rotation Degrees
+
+Gets the rotation in the form of Euler angles in degrees.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Object     | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+| Output Name      | Data Type                                                                    |
+| ---------------- | ---------------------------------------------------------------------------- |
+| Rotation Degrees | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) |
+
+#### Set Rotation Degrees
+
+Sets the rotation in the form of Euler angles in degrees.
+
+| Input Name       | Data Type                                                                    | Default Value |
+| ---------------- | ---------------------------------------------------------------------------- | ------------- |
+| Object           | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html)   | null          |
+| Rotation Degrees | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+
+#### Tween Rotation Degrees
+
+Tweens the rotation in the form of Euler angles in degrees over the given Duration with the given Transition and Easing.
+
+| Input Name       | Data Type                                                                    | Default Value |
+| ---------------- | ---------------------------------------------------------------------------- | ------------- |
+| Object           | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html)   | null          |
+| Rotation Degrees | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+| Duration         | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 1.0           |
+| Transition       | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | "Linear"      |
+| Easing           | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | "In Out"      |
+
+### Advanced
+
+Advanced blocks are used to perform advanced operations.
+
+#### Get Friendly Name
+
+Gets the friendly name of the given Object. For SpaceObject, this will get the name shown in the inspector. For Player, this will get the player's display name.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Object     | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+| Output Name   | Data Type                                                                  |
+| ------------- | -------------------------------------------------------------------------- |
+| Friendly Name | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+
+#### Get Node Name Or ID
+
+Gets the raw name of the given node. For SpaceObject and Player, this will return their unique ID.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| Object     | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+| Output Name     | Data Type                                                                  |
+| --------------- | -------------------------------------------------------------------------- |
+| Node Name or ID | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) |
+
+#### Attach Script
+
+Attaches the given Space script entity to the given SpaceObject. The Script Name must be the name of a script already present in the Space. If the script is already attached, this block will silently exit and do nothing.
+
+| Input Name        | Data Type                                                                  | Default Value |
+| ----------------- | -------------------------------------------------------------------------- | ------------- |
+| Space Object      | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+| Script Name       | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | ""            |
+| Run In Build Mode | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)     | true          |
+| Run On Client     | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)     | false         |
+| Run On Server     | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)     | true          |
+
+#### Is Server
+
+Returns true if the script is running on the server, false otherwise.
+
+| Output Name | Data Type                                                              |
+| ----------- | ---------------------------------------------------------------------- |
+| Is Server   | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html) |
+
+#### Evaluate Now
+
+Evaluates the given data script block(s) immediately. This is useful for controlling the evaluation order of data blocks. The connected input must be data block, not a run block. All inputs must be connected.
+
+| Input Name | Data Type            | Default Value |
+| ---------- | -------------------- | ------------- |
+| Input 1    | Connection (special) | null          |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Output 1    | [Variant](https://docs.godotengine.org/en/stable/classes/class_variant.html) |
+
+#### To Global
+
+Converts a local vector (relative to this node) to a global vector (relative to the world origin).
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| On Object  | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html)   | null          |
+| Local      | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Pass        | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html)   |
+| Global      | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) |
+
+#### To Local
+
+Converts a global vector (relative to the world origin) to a local vector (relative to this node).
+
+| Input Name | Data Type                                                                    | Default Value |
+| ---------- | ---------------------------------------------------------------------------- | ------------- |
+| On Object  | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html)   | null          |
+| Global     | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |
+
+| Output Name | Data Type                                                                    |
+| ----------- | ---------------------------------------------------------------------------- |
+| Pass        | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html)   |
+| Local       | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) |
+
+### Damageable
+
+Damageable blocks are used to hurt or heal damageable objects and players.
+
+#### Damage
+
+Damage the target object by the given amount. The object may be a SpaceObject or a Player. Amount should be positive, if you use a negative amount that will heal instead.
+
+| Input Name       | Data Type                                                                  | Default Value |
+| ---------------- | -------------------------------------------------------------------------- | ------------- |
+| On Object        | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+| Amount           | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   | 20.0          |
+| Source Of Damage | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | "scripting"   |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Pass        | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+#### Heal
+
+Heal the target object by the given amount. The object may be a SpaceObject or a Player. Amount should be positive, if you use a negative amount that will damage instead.
+
+| Input Name        | Data Type                                                                  | Default Value |
+| ----------------- | -------------------------------------------------------------------------- | ------------- |
+| On Object         | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+| Amount            | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)   | 20.0          |
+| Source Of Healing | [String](https://docs.godotengine.org/en/stable/classes/class_string.html) | "scripting"   |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Pass        | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+#### Revive
+
+Revive the target object from death.
+
+| Input Name | Data Type                                                                  | Default Value |
+| ---------- | -------------------------------------------------------------------------- | ------------- |
+| On Object  | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) | null          |
+
+| Output Name | Data Type                                                                  |
+| ----------- | -------------------------------------------------------------------------- |
+| Pass        | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html) |
+
+## Properties
+
+Properties all share a similar API. Properties can be get, set, and sometimes tweened, added to, and multiplied. If properties are set on the server, they will be synced to clients.
+
+| Property Name         | Data Type                                                                    | Default Value | Valid Values                                                |
+| --------------------- | ---------------------------------------------------------------------------- | ------------- | ----------------------------------------------------------- |
+| Collision Enabled     | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)       | true          |                                                             |
+| Physics Shape Type    | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | "Auto"        | "Auto", "Convex", "Concave", "Model Shapes", "Multi Bodies" |
+| Physics Body Type     | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | "Static"      | "Static", "Kinematic", "Dynamic", "Trigger"                 |
+| Mass                  | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 1.0           | Greater than zero                                           |
+| Gravity Scale         | [float](https://docs.godotengine.org/en/stable/classes/class_float.html)     | 1.0           |                                                             |
+| Angular Velocity      | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |                                                             |
+| Linear Velocity       | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |                                                             |
+| Model Offset          | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |                                                             |
+| Model Scale           | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (1, 1, 1)     | Non-zero                                                    |
+| Space Object Name     | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | ""            |                                                             |
+| Object Color          | [Color](https://docs.godotengine.org/en/stable/classes/class_color.html)     | (0, 0, 0, 1)  |                                                             |
+| Object Local Texture  | [Object](https://docs.godotengine.org/en/stable/classes/class_object.html)   | null          |                                                             |
+| Material Id           | [String](https://docs.godotengine.org/en/stable/classes/class_string.html)   | ""            | Valid ID                                                    |
+| Object Texture Size   | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     | Greater than zero                                           |
+| Object Texture Offset | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |                                                             |
+| Position              | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |                                                             |
+| Global Position       | [Vector3](https://docs.godotengine.org/en/stable/classes/class_vector3.html) | (0, 0, 0)     |                                                             |
+| Visible               | [bool](https://docs.godotengine.org/en/stable/classes/class_bool.html)       | true          |                                                             |

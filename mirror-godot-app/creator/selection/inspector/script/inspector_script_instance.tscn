@@ -1,0 +1,129 @@
+[gd_scene load_steps=9 format=3 uid="uid://w6p5ejl6eu04"]
+
+[ext_resource type="PackedScene" uid="uid://dkxqj3l0xm8uw" path="res://creator/selection/inspector/categories/inspector_category_base.tscn" id="1_r6kjn"]
+[ext_resource type="Script" path="res://creator/selection/inspector/script/inspector_script_instance.gd" id="2_trxqa"]
+[ext_resource type="PackedScene" uid="uid://nqtj3k1bv6uh" path="res://ui/hover_text/hoverable_button.tscn" id="3_wrwto"]
+[ext_resource type="Theme" uid="uid://dm7mf4jfy2m1y" path="res://ui/common/dark_button.theme.tres" id="4_63uwr"]
+[ext_resource type="Texture2D" uid="uid://dh2msit8cl803" path="res://creator/selection/inspector/script/script_edit_note.svg" id="4_kmsh2"]
+[ext_resource type="Texture2D" uid="uid://dfeqvh2v2br2j" path="res://art/ui/line_trash.png" id="4_thg0d"]
+[ext_resource type="PackedScene" uid="uid://b71qr3g838s8b" path="res://ui/hover_text/hoverable_checkbox.tscn" id="7_n6nwc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cqiph"]
+bg_color = Color(0.109804, 0.121569, 0.141176, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.109804, 0.121569, 0.141176, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="InspectorScriptInstance" instance=ExtResource("1_r6kjn")]
+offset_bottom = 220.0
+script = ExtResource("2_trxqa")
+
+[node name="Text" parent="CategoryTitle/ToggleButton/Name" index="3"]
+visible = false
+text = "SCRIPT NAME"
+
+[node name="Spacer2" type="Control" parent="CategoryTitle/ToggleButton/Name" index="4"]
+layout_mode = 2
+
+[node name="ScriptName" type="LineEdit" parent="CategoryTitle/ToggleButton/Name" index="5"]
+custom_minimum_size = Vector2(2.08165e-12, 26)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+placeholder_text = "Please name your script..."
+
+[node name="TrashButton" parent="CategoryTitle/ToggleButton/Name" index="6" instance=ExtResource("3_wrwto")]
+custom_minimum_size = Vector2(32, 22)
+layout_mode = 2
+icon = ExtResource("4_thg0d")
+flat = true
+expand_icon = true
+hover_tooltip_text = "Delete Script Instance"
+
+[node name="Properties" parent="." index="1"]
+visible = true
+
+[node name="ScriptOptions" type="HBoxContainer" parent="Properties/MarginContainer/PropertyList" index="0"]
+custom_minimum_size = Vector2(2.08165e-12, 30)
+layout_mode = 2
+
+[node name="OpenScriptEditorButton" type="Button" parent="Properties/MarginContainer/PropertyList/ScriptOptions" index="0"]
+custom_minimum_size = Vector2(100, 26)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme = ExtResource("4_63uwr")
+theme_override_styles/normal = SubResource("StyleBoxFlat_cqiph")
+text = "Open Script"
+icon = ExtResource("4_kmsh2")
+expand_icon = true
+
+[node name="RunEnabled" parent="Properties/MarginContainer/PropertyList/ScriptOptions" index="1" instance=ExtResource("7_n6nwc")]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Enabled"
+hover_tooltip_text = "If disabled, this script will never run. This allows temporarily disabling a script for testing."
+
+[node name="RunInEditMode" parent="Properties/MarginContainer/PropertyList/ScriptOptions" index="2" instance=ExtResource("7_n6nwc")]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Run In Build Mode"
+hover_tooltip_text = "If disabled, this script will not run while you are building your game."
+
+[node name="AdvancedOptions" type="HBoxContainer" parent="Properties/MarginContainer/PropertyList" index="1"]
+layout_mode = 2
+
+[node name="LabelHolder" type="MarginContainer" parent="Properties/MarginContainer/PropertyList/AdvancedOptions" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.75
+theme_override_constants/margin_left = 4
+
+[node name="Label" type="Label" parent="Properties/MarginContainer/PropertyList/AdvancedOptions/LabelHolder" index="0"]
+clip_contents = true
+custom_minimum_size = Vector2(20, 22)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "Advanced"
+vertical_alignment = 1
+clip_text = true
+
+[node name="RunOnClient" parent="Properties/MarginContainer/PropertyList/AdvancedOptions" index="1" instance=ExtResource("7_n6nwc")]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 7
+theme_override_font_sizes/font_size = 10
+text = "Run On Client"
+alignment = 0
+hover_tooltip_text = "If enabled, run this script on the client. This can be used to create client-only effects that are not synced to other players."
+
+[node name="RunOnServer" parent="Properties/MarginContainer/PropertyList/AdvancedOptions" index="2" instance=ExtResource("7_n6nwc")]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 7
+theme_override_font_sizes/font_size = 10
+text = "Run On Server"
+alignment = 0
+hover_tooltip_text = "If enabled, run this script on the server. This is the default. Interactions are sent from client to server, and effects are synced from server to client. Some script blocks, like physics blocks, may only run on the server."
+
+[node name="EntryList" type="VBoxContainer" parent="Properties/MarginContainer/PropertyList" index="2"]
+layout_mode = 2
+
+[node name="HSeparator" parent="." index="2"]
+visible = false
+custom_minimum_size = Vector2(0, 8)
+
+[connection signal="text_changed" from="CategoryTitle/ToggleButton/Name/ScriptName" to="." method="_on_script_name_text_changed"]
+[connection signal="pressed" from="CategoryTitle/ToggleButton/Name/TrashButton" to="." method="_on_trash_button_pressed"]
+[connection signal="pressed" from="Properties/MarginContainer/PropertyList/ScriptOptions/OpenScriptEditorButton" to="." method="_on_script_open_script_editor"]
+[connection signal="toggled" from="Properties/MarginContainer/PropertyList/ScriptOptions/RunEnabled" to="." method="_on_enabled_toggled"]
+[connection signal="toggled" from="Properties/MarginContainer/PropertyList/ScriptOptions/RunInEditMode" to="." method="_on_run_in_edit_mode_toggled"]
+[connection signal="toggled" from="Properties/MarginContainer/PropertyList/AdvancedOptions/RunOnClient" to="." method="_on_run_on_client_toggled"]
+[connection signal="toggled" from="Properties/MarginContainer/PropertyList/AdvancedOptions/RunOnServer" to="." method="_on_run_on_server_toggled"]

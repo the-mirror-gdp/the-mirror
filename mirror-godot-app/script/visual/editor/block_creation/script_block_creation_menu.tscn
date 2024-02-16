@@ -1,0 +1,63 @@
+[gd_scene load_steps=3 format=3 uid="uid://bwvqquifvwt0s"]
+
+[ext_resource type="PackedScene" uid="uid://bcn5yv8dwccr3" path="res://script/visual/editor/type_selection_button_all.tscn" id="1_4ndal"]
+[ext_resource type="Script" path="res://script/visual/editor/block_creation/script_block_creation_menu.gd" id="1_gbdb8"]
+
+[node name="ScriptBlockCreationMenu" type="VBoxContainer"]
+custom_minimum_size = Vector2(350, 300)
+offset_right = 359.0
+offset_bottom = 300.0
+script = ExtResource("1_gbdb8")
+
+[node name="Search" type="LineEdit" parent="."]
+layout_mode = 2
+placeholder_text = "Type here to search..."
+
+[node name="Filtering" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Show" type="Label" parent="Filtering"]
+layout_mode = 2
+size_flags_vertical = 5
+text = "Show"
+vertical_alignment = 1
+
+[node name="ConstraintType" type="OptionButton" parent="Filtering"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+item_count = 5
+selected = 0
+popup/item_0/text = "All Blocks"
+popup/item_0/id = 0
+popup/item_1/text = "Run Blocks"
+popup/item_1/id = 1
+popup/item_2/text = "Data Blocks"
+popup/item_2/id = 2
+popup/item_3/text = "Blocks with Input"
+popup/item_3/id = 3
+popup/item_4/text = "Blocks with Output"
+popup/item_4/id = 4
+
+[node name="OfType" type="Label" parent="Filtering"]
+layout_mode = 2
+size_flags_vertical = 5
+text = "of type"
+vertical_alignment = 1
+
+[node name="DataType" parent="Filtering" instance=ExtResource("1_4ndal")]
+layout_mode = 2
+size_flags_vertical = 1
+
+[node name="Tree" type="Tree" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+allow_rmb_select = true
+enable_recursive_folding = false
+hide_root = true
+scroll_horizontal_enabled = false
+
+[connection signal="text_changed" from="Search" to="." method="_on_search_text_changed"]
+[connection signal="item_selected" from="Filtering/ConstraintType" to="." method="_on_constraint_type_item_selected"]
+[connection signal="item_selected" from="Filtering/DataType" to="." method="_on_data_type_item_selected"]
+[connection signal="item_activated" from="Tree" to="." method="_on_tree_item_activated"]

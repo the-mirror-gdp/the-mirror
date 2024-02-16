@@ -1,0 +1,19 @@
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://drfre2fladfa4"]
+
+[ext_resource type="Shader" path="res://art/sky/volumetric_clouds.gdshader" id="1_v15jq"]
+[ext_resource type="CompressedTexture3D" uid="uid://7qq35u8ac45t" path="res://art/textures/perlworlnoise.png" id="2_k431g"]
+[ext_resource type="Texture2D" uid="uid://bjykkiwdmoqlo" path="res://art/textures/weather.bmp" id="3_yddwl"]
+[ext_resource type="CompressedTexture3D" uid="uid://cltk5t0q8jfvm" path="res://art/textures/worlnoise.bmp" id="4_mqta5"]
+
+[resource]
+shader = ExtResource("1_v15jq")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/emission = Color(0, 0, 0, 1)
+shader_parameter/_density = 0.03
+shader_parameter/cloud_coverage = 0.382
+shader_parameter/_time_scale = 0.02
+shader_parameter/_time_offset = 0.0
+shader_parameter/height_offset = 208.5
+shader_parameter/worlnoise = ExtResource("4_mqta5")
+shader_parameter/perlworlnoise = ExtResource("2_k431g")
+shader_parameter/weathermap = ExtResource("3_yddwl")

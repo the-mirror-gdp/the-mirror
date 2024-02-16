@@ -1,0 +1,579 @@
+[gd_scene load_steps=32 format=3 uid="uid://tgcx8ymhgpxe"]
+
+[ext_resource type="FontFile" uid="uid://s44wjlc18fo7" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_bold.ttf" id="1_chmdu"]
+[ext_resource type="Theme" uid="uid://bh8yrbn5ro73t" path="res://ui/main_menu/pages/avatar/avatar.theme.tres" id="1_dxy3m"]
+[ext_resource type="Texture2D" uid="uid://cr6fkxjlvwjht" path="res://ui/main_menu/pages/avatar/avatar_bg.jpg" id="2_s65jp"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/avatar/avatar.gd" id="2_xlv33"]
+[ext_resource type="Texture2D" uid="uid://cibiglfilejrb" path="res://ui/main_menu/pages/avatar/astronaut_thumb.png" id="3_uujm5"]
+[ext_resource type="Texture2D" uid="uid://cyrf2pikima4o" path="res://ui/main_menu/pages/avatar/female_thumb.png" id="4_clwhc"]
+[ext_resource type="FontFile" uid="uid://bjwepurchoc75" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_semi_bold.ttf" id="6_ghwx0"]
+[ext_resource type="Texture2D" uid="uid://cfn6g856rvk6u" path="res://ui/main_menu/pages/avatar/rpm_avatars.png" id="7_yffjy"]
+[ext_resource type="Texture2D" uid="uid://crx4sqlh2hyr4" path="res://ui/main_menu/pages/avatar/rpm_logo.svg" id="8_fa75x"]
+[ext_resource type="Theme" uid="uid://copqd8goen1q5" path="res://ui/common/buttons/mirror_blue/mirror_blue.theme.tres" id="11_lq7h3"]
+[ext_resource type="Theme" uid="uid://dyhkn1skc5j1r" path="res://ui/common/buttons/blue_outline/blue_outline.theme.tres" id="11_u0om5"]
+[ext_resource type="PackedScene" path="res://ui/main_menu/pages/avatar/avatar_preview/avatar_preview.tscn" id="15_5n4ln"]
+[ext_resource type="FontFile" uid="uid://wnq6gpmrsr6v" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_medium.ttf" id="15_57qhn"]
+[ext_resource type="Shader" path="res://ui/common/shaders/ui_blurr.gdshader" id="15_bmsjc"]
+[ext_resource type="FontVariation" uid="uid://bwp6hb31ol8la" path="res://ui/new_player_ui/inventory/title_font_bold.tres" id="18_xcu0i"]
+[ext_resource type="Texture2D" uid="uid://b71gc745aymka" path="res://ui/main_menu/pages/avatar/RPM_preview_page.png" id="19_qivqc"]
+[ext_resource type="Texture2D" uid="uid://iofbbwqk8prb" path="res://ui/main_menu/pages/avatar/circumference.png" id="20_ey3uo"]
+
+[sub_resource type="FontVariation" id="Font_b8rqi"]
+base_font = ExtResource("1_chmdu")
+
+[sub_resource type="FontVariation" id="Font_qve2c"]
+base_font = ExtResource("6_ghwx0")
+
+[sub_resource type="FontVariation" id="Font_oxmkv"]
+base_font = ExtResource("6_ghwx0")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mgbk0"]
+shader = ExtResource("15_bmsjc")
+shader_parameter/blur = 3.0
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/strength = 0.2
+
+[sub_resource type="FontVariation" id="Font_qd58g"]
+base_font = ExtResource("1_chmdu")
+
+[sub_resource type="FontVariation" id="Font_bw113"]
+base_font = ExtResource("15_57qhn")
+
+[sub_resource type="FontVariation" id="Font_7ehuq"]
+base_font = ExtResource("6_ghwx0")
+
+[sub_resource type="FontVariation" id="Font_fpc34"]
+base_font = ExtResource("6_ghwx0")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o1od6"]
+shader = ExtResource("15_bmsjc")
+shader_parameter/blur = 3.0
+shader_parameter/color = Color(0.780392, 0.780392, 0.780392, 1)
+shader_parameter/strength = 0.2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nsdtg"]
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n5tc3"]
+bg_color = Color(0, 0, 0, 0.160784)
+
+[sub_resource type="Animation" id="Animation_4tsk6"]
+resource_name = "FadeIn"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Popup:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_b8j64"]
+resource_name = "FadeOut"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Popup:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_18wfr"]
+_data = {
+"FadeIn": SubResource("Animation_4tsk6"),
+"FadeOut": SubResource("Animation_b8j64")
+}
+
+[node name="Avatar" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_dxy3m")
+script = ExtResource("2_xlv33")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_s65jp")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -660.0
+offset_right = 660.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 100
+metadata/_edit_layout_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("Font_b8rqi")
+theme_override_font_sizes/font_size = 40
+text = "Choose Your Avatar"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="Preset1" type="Button" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer/Preset1"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -87.0
+offset_top = -61.0
+offset_right = 87.0
+offset_bottom = 149.0
+grow_horizontal = 2
+texture = ExtResource("3_uujm5")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_layout_mode = 1
+
+[node name="Preset2" type="Button" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer/Preset2"]
+layout_mode = 0
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -93.5
+offset_top = -61.0
+offset_right = 88.5
+offset_bottom = 149.0
+grow_horizontal = 2
+texture = ExtResource("4_clwhc")
+expand_mode = 1
+stretch_mode = 5
+metadata/_edit_layout_mode = 1
+
+[node name="TextureButton" type="TextureButton" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+texture_normal = ExtResource("4_clwhc")
+
+[node name="HSeparator" type="HSeparator" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 17
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HSeparator"]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = SubResource("Font_qve2c")
+text = "OR"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel" type="Panel" parent="HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 250)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/Panel"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource("7_yffjy")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(50, 100)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("8_fa75x")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="ImportAvatar" type="Button" parent="HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme = ExtResource("11_u0om5")
+text = "Import Avatar"
+
+[node name="ContinueWithAvatar" type="Button" parent="HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme = ExtResource("11_lq7h3")
+theme_override_fonts/font = SubResource("Font_oxmkv")
+disabled = true
+text = "Continue with Avatar"
+
+[node name="AvatarPreview" type="SubViewportContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+stretch = true
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+
+[node name="SubViewport" type="SubViewport" parent="HBoxContainer/AvatarPreview"]
+own_world_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(610, 1440)
+render_target_update_mode = 4
+
+[node name="AvatarPreview" parent="HBoxContainer/AvatarPreview/SubViewport" instance=ExtResource("15_5n4ln")]
+
+[node name="Popup" type="ColorRect" parent="."]
+visible = false
+top_level = true
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0705882, 0.0784314, 0.156863, 0.741176)
+metadata/_edit_layout_mode = 1
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="Popup"]
+copy_mode = 2
+
+[node name="Panel" type="Panel" parent="Popup"]
+material = SubResource("ShaderMaterial_mgbk0")
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -404.0
+offset_top = -550.0
+offset_right = 404.0
+offset_bottom = 500.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_layout_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Popup/Panel"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 200
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 200
+theme_override_constants/margin_bottom = 100
+metadata/_edit_layout_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Popup/Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="TextureRect" type="TextureRect" parent="Popup/Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+texture = ExtResource("8_fa75x")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VSeparator5" type="VSeparator" parent="Popup/Panel/MarginContainer/VBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme_override_constants/separation = 60
+
+[node name="Label" type="Label" parent="Popup/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("Font_qd58g")
+theme_override_font_sizes/font_size = 40
+text = "Connect Avatar"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="Popup/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("Font_bw113")
+theme_override_font_sizes/font_size = 14
+text = "Copy & past your Ready Player Me avatar link below."
+horizontal_alignment = 1
+
+[node name="Url" type="LineEdit" parent="Popup/Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 55)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.415686, 0.454902, 0.52549, 1)
+theme_override_fonts/font = SubResource("Font_7ehuq")
+theme_override_font_sizes/font_size = 13
+placeholder_text = "URL"
+
+[node name="Connect" type="Button" parent="Popup/Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme = ExtResource("11_lq7h3")
+theme_override_fonts/font = SubResource("Font_fpc34")
+text = "Connect"
+
+[node name="Instructions" type="Panel" parent="Popup/Panel"]
+material = SubResource("ShaderMaterial_o1od6")
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -404.0
+offset_top = -22.0
+offset_right = 404.0
+offset_bottom = 525.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nsdtg")
+metadata/_edit_layout_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Popup/Panel/Instructions"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 110.0
+offset_top = 11.0
+offset_right = -94.0
+offset_bottom = -7.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Popup/Panel/Instructions/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="Label3" type="Label" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.223529, 0.478431, 0.905882, 1)
+theme_override_fonts/font = SubResource("Font_qd58g")
+theme_override_font_sizes/font_size = 30
+text = "Instructions"
+
+[node name="HSeparator" type="HSeparator" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.572549, 0.658824, 0.866667, 1)
+theme_override_fonts/font = SubResource("Font_qd58g")
+theme_override_font_sizes/font_size = 20
+text = "STEP 1"
+
+[node name="VSeparator" type="VSeparator" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer/HBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label5" type="Label" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("Font_qd58g")
+theme_override_font_sizes/font_size = 18
+text = "Go to your Ready Player Me Hub"
+
+[node name="VSeparator2" type="VSeparator" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer/HBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Button" type="Button" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.223529, 0.478431, 0.905882, 1)
+theme_override_colors/font_focus_color = Color(0.223529, 0.478431, 0.905882, 1)
+theme_override_colors/font_pressed_color = Color(0.223529, 0.478431, 0.905882, 1)
+theme_override_colors/font_hover_color = Color(0.517647, 0.713726, 0.945098, 1)
+theme_override_fonts/font = ExtResource("18_xcu0i")
+theme_override_font_sizes/font_size = 20
+text = "here"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.572549, 0.658824, 0.866667, 1)
+theme_override_fonts/font = SubResource("Font_qd58g")
+theme_override_font_sizes/font_size = 20
+text = "STEP 2"
+
+[node name="VSeparator2" type="VSeparator" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer/HBoxContainer2"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label5" type="Label" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("Font_qd58g")
+theme_override_font_sizes/font_size = 18
+text = "From you hub, click the icon"
+
+[node name="Label6" type="Label" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.529412, 0.988235, 0.988235, 1)
+theme_override_fonts/font = SubResource("Font_qd58g")
+theme_override_font_sizes/font_size = 18
+text = "circled"
+
+[node name="Label7" type="Label" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("Font_qd58g")
+theme_override_font_sizes/font_size = 18
+text = "below"
+
+[node name="TextureRect" type="TextureRect" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("19_qivqc")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Panel" type="Panel" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer/TextureRect"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_n5tc3")
+metadata/_edit_layout_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer/TextureRect/Panel"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 430.0
+offset_top = 241.0
+offset_right = -135.0
+offset_bottom = -61.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("20_ey3uo")
+expand_mode = 1
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.572549, 0.658824, 0.866667, 1)
+theme_override_fonts/font = SubResource("Font_qd58g")
+theme_override_font_sizes/font_size = 20
+text = "STEP 3"
+
+[node name="VSeparator2" type="VSeparator" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer/HBoxContainer3"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label5" type="Label" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("Font_qd58g")
+theme_override_font_sizes/font_size = 18
+text = "Click 'Copy Avatar Link' from the popup"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.572549, 0.658824, 0.866667, 1)
+theme_override_fonts/font = SubResource("Font_qd58g")
+theme_override_font_sizes/font_size = 20
+text = "STEP 4"
+
+[node name="VSeparator2" type="VSeparator" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer/HBoxContainer4"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Label5" type="Label" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("Font_qd58g")
+theme_override_font_sizes/font_size = 20
+text = "Paste"
+
+[node name="Label6" type="Label" parent="Popup/Panel/Instructions/MarginContainer/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("Font_qd58g")
+theme_override_font_sizes/font_size = 18
+text = "link in the URL field above"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_18wfr")
+}
+
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/HBoxContainer/Preset1" to="." method="_on_preset_1_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/HBoxContainer/Preset2" to="." method="_on_preset_2_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/ImportAvatar" to="." method="_on_import_avatar_pressed"]
+[connection signal="pressed" from="HBoxContainer/VBoxContainer/ContinueWithAvatar" to="." method="_on_continue_with_avatar_pressed"]
+[connection signal="gui_input" from="Popup" to="." method="_on_popup_gui_input"]
+[connection signal="pressed" from="Popup/Panel/MarginContainer/VBoxContainer/Connect" to="." method="_on_connect_pressed"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

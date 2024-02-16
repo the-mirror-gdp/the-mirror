@@ -1,0 +1,36 @@
+[gd_scene load_steps=4 format=3 uid="uid://w2yqlg0c2hvo"]
+
+[ext_resource type="PackedScene" uid="uid://dacr8ad8b62aw" path="res://creator/common/base_asset_slot.tscn" id="1_5lcla"]
+[ext_resource type="Script" uid="uid://bo13o3l1lwpgh" path="res://creator/common/asset_slot.gd" id="2_ih4xu"]
+[ext_resource type="Texture2D" uid="uid://48rhepqcbd3b" path="res://player/equipable/equipable_icon.svg" id="2_ma3kt"]
+
+[node name="AssetSlot" instance=ExtResource("1_5lcla")]
+script = ExtResource("2_ih4xu")
+is_preview_slot = false
+
+[node name="NeedsDownload" parent="Panel" index="5"]
+anchors_preset = 2
+anchor_left = 0.0
+anchor_right = 0.0
+offset_left = 6.0
+offset_top = -21.0
+offset_right = 22.0
+offset_bottom = -5.0
+grow_horizontal = 1
+
+[node name="IsEquipable" type="TextureRect" parent="Panel" index="6"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -19.0
+offset_top = -20.0
+offset_right = -3.0
+offset_bottom = -4.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("2_ma3kt")
+expand_mode = 1

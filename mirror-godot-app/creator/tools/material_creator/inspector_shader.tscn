@@ -1,0 +1,105 @@
+[gd_scene load_steps=8 format=3 uid="uid://po22xdo6f6vx"]
+
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_0in7c"]
+[ext_resource type="Script" path="res://creator/tools/material_creator/inspector_shader.gd" id="2_vhsjg"]
+[ext_resource type="PackedScene" uid="uid://cvntsvpvtu8by" path="res://creator/tools/material_creator/shader_code_editor.tscn" id="3_2on1q"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sim58"]
+bg_color = Color(0.109804, 0.121569, 0.141176, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.109804, 0.121569, 0.141176, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3ivr3"]
+bg_color = Color(0.109804, 0.121569, 0.141176, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.0705882, 1, 0.843137, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_trad2"]
+bg_color = Color(0.109804, 0.121569, 0.141176, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.0705882, 1, 0.843137, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ex55k"]
+bg_color = Color(0.109804, 0.121569, 0.141176, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.0705882, 1, 0.843137, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="InspectorButtonNoLabel" type="HBoxContainer"]
+custom_minimum_size = Vector2(256, 26)
+offset_right = 256.0
+offset_bottom = 20.0
+size_flags_horizontal = 3
+theme = ExtResource("1_0in7c")
+theme_override_constants/separation = 0
+script = ExtResource("2_vhsjg")
+current_value = "shader_type spatial;
+render_mode blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx;
+
+void vertex() {
+
+}
+
+
+void fragment() {
+
+}"
+
+[node name="LabelHolder" type="HBoxContainer" parent="."]
+visible = false
+layout_mode = 2
+
+[node name="Label" type="Label" parent="LabelHolder"]
+layout_mode = 2
+
+[node name="MainButton" type="Button" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_sim58")
+theme_override_styles/hover = SubResource("StyleBoxFlat_3ivr3")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_trad2")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_sim58")
+theme_override_styles/focus = SubResource("StyleBoxFlat_ex55k")
+text = "Edit Shader"
+
+[node name="ResetButton" type="Button" parent="."]
+visible = false
+layout_mode = 2
+
+[node name="Window" type="Window" parent="."]
+disable_3d = true
+visible = false
+
+[node name="CodeEdit" parent="Window" instance=ExtResource("3_2on1q")]
+
+[connection signal="pressed" from="MainButton" to="." method="_on_main_button_pressed"]
+[connection signal="close_requested" from="Window" to="." method="_on_window_close_requested"]
+[connection signal="text_changed" from="Window/CodeEdit" to="." method="_on_code_edit_text_changed"]

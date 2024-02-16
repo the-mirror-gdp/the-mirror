@@ -1,0 +1,103 @@
+[gd_scene load_steps=11 format=3 uid="uid://vkjivpbf7bfi"]
+
+[ext_resource type="Shader" path="res://ui/common/shaders/ui_blurr.gdshader" id="1_7p7bs"]
+[ext_resource type="Script" path="res://ui/in_game_menu/readycheck_popup.gd" id="1_m2ry2"]
+[ext_resource type="FontFile" uid="uid://s44wjlc18fo7" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_bold.ttf" id="3_cqakb"]
+[ext_resource type="FontFile" uid="uid://wnq6gpmrsr6v" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_medium.ttf" id="4_42qe4"]
+[ext_resource type="FontFile" uid="uid://bjwepurchoc75" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_semi_bold.ttf" id="5_ild43"]
+[ext_resource type="Theme" uid="uid://copqd8goen1q5" path="res://ui/common/buttons/mirror_blue/mirror_blue.theme.tres" id="6_87n0f"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mgbk0"]
+shader = ExtResource("1_7p7bs")
+shader_parameter/blur = 3.0
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/strength = 0.2
+
+[sub_resource type="FontVariation" id="Font_qd58g"]
+base_font = ExtResource("3_cqakb")
+
+[sub_resource type="FontVariation" id="Font_bw113"]
+base_font = ExtResource("4_42qe4")
+
+[sub_resource type="FontVariation" id="Font_fpc34"]
+base_font = ExtResource("5_ild43")
+
+[node name="ReadyCheckPopup" type="ColorRect"]
+top_level = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0705882, 0.0784314, 0.156863, 0.741176)
+script = ExtResource("1_m2ry2")
+metadata/_edit_layout_mode = 1
+
+[node name="Panel" type="Panel" parent="."]
+material = SubResource("ShaderMaterial_mgbk0")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -404.0
+offset_top = -262.0
+offset_right = 404.0
+offset_bottom = 193.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_layout_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 200
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 200
+theme_override_constants/margin_bottom = 100
+metadata/_edit_layout_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="VSeparator5" type="VSeparator" parent="Panel/MarginContainer/VBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+theme_override_constants/separation = 60
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("Font_qd58g")
+theme_override_font_sizes/font_size = 40
+text = "Ready Check"
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("Font_bw113")
+theme_override_font_sizes/font_size = 14
+text = "Stop Editing & Preview Play Mode?"
+horizontal_alignment = 1
+
+[node name="PlayButton" type="Button" parent="Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme = ExtResource("6_87n0f")
+theme_override_fonts/font = SubResource("Font_fpc34")
+text = "Play"
+
+[node name="RejectButton" type="Button" parent="Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme = ExtResource("6_87n0f")
+theme_override_fonts/font = SubResource("Font_fpc34")
+text = "No"
+
+[connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/RejectButton" to="." method="_on_reject_button_pressed"]

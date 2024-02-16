@@ -1,0 +1,46 @@
+[gd_scene load_steps=9 format=3 uid="uid://c4otrnhcvyyyi"]
+
+[ext_resource type="PackedScene" uid="uid://7r8pofugnpkb" path="res://ui/main_menu/pages/settings/sections/settings_section.tscn" id="1_7mnar"]
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="2_5nrgy"]
+[ext_resource type="Theme" uid="uid://dblj3nhoduter" path="res://ui/main_menu/pages/settings/theme/setting_theme.tres" id="3_w5c3x"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/settings/sections/script/script_quick_attach_existing.gd" id="4_p7o7v"]
+[ext_resource type="PackedScene" uid="uid://bdspx67qsqxcu" path="res://creator/selection/inspector/primitive/inspector_toggle.tscn" id="5_ubnej"]
+[ext_resource type="Theme" uid="uid://giim0icv3frs" path="res://ui/main_menu/pages/settings/sections/settings_menu_entry.theme.tres" id="6_rysl5"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/settings/sections/script/show_script_client_server_checkboxes.gd" id="7_62773"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/settings/sections/script/show_script_add_inspector_input.gd" id="8_55s2x"]
+
+[node name="Script" instance=ExtResource("1_7mnar")]
+theme = ExtResource("2_5nrgy")
+
+[node name="ScriptQuickAttachExisting" type="PanelContainer" parent="Options" index="0"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme = ExtResource("3_w5c3x")
+script = ExtResource("4_p7o7v")
+
+[node name="InspectorPropertyToggle" parent="Options/ScriptQuickAttachExisting" index="0" instance=ExtResource("5_ubnej")]
+layout_mode = 2
+theme = ExtResource("6_rysl5")
+label_text = "Quick Attach Existing Script"
+
+[node name="ScriptShowAddInspectorInput" type="PanelContainer" parent="Options" index="1"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme = ExtResource("3_w5c3x")
+script = ExtResource("8_55s2x")
+
+[node name="InspectorPropertyToggle" parent="Options/ScriptShowAddInspectorInput" index="0" instance=ExtResource("5_ubnej")]
+layout_mode = 2
+theme = ExtResource("6_rysl5")
+label_text = "Show Add Inspector Input Button"
+
+[node name="ScriptShowClientServerCheckboxes" type="PanelContainer" parent="Options" index="2"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme = ExtResource("3_w5c3x")
+script = ExtResource("7_62773")
+
+[node name="InspectorPropertyToggle" parent="Options/ScriptShowClientServerCheckboxes" index="0" instance=ExtResource("5_ubnej")]
+layout_mode = 2
+theme = ExtResource("6_rysl5")
+label_text = "Show Client Server Checkboxes"

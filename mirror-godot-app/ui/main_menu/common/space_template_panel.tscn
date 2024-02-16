@@ -1,0 +1,84 @@
+[gd_scene load_steps=7 format=3 uid="uid://cfnluk7d6osvy"]
+
+[ext_resource type="Script" path="res://ui/main_menu/common/space_template_panel.gd" id="1_egjws"]
+[ext_resource type="Theme" uid="uid://cs755sks03x2m" path="res://ui/common/panels/panel_hover.theme.tres" id="2_uu3ge"]
+[ext_resource type="Theme" uid="uid://ggwm8asxintx" path="res://ui/common/themes/menu_ui.theme.tres" id="3_0s00p"]
+[ext_resource type="Texture2D" uid="uid://cuqq3ychrk642" path="res://ui/common/images/space-default.jpg" id="4_a5o7n"]
+[ext_resource type="Script" path="res://ui/main_menu/common/UrlTextureRect.gd" id="5_fncsu"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uhqq3"]
+
+[node name="SpaceTemplate" type="PanelContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(300, 320)
+offset_right = 320.0
+offset_bottom = 320.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme = ExtResource("3_0s00p")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_uhqq3")
+script = ExtResource("1_egjws")
+hover_theme = ExtResource("2_uu3ge")
+normal_theme = ExtResource("3_0s00p")
+metadata/_edit_use_custom_anchors = false
+metadata/_edit_layout_mode = 1
+
+[node name="BorderPanel" type="Panel" parent="."]
+layout_mode = 2
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Spacer" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Preview" type="TextureRect" parent="VBoxContainer"]
+unique_name_in_owner = true
+clip_contents = true
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+texture = ExtResource("4_a5o7n")
+expand_mode = 1
+stretch_mode = 6
+script = ExtResource("5_fncsu")
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 15
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 5
+alignment = 1
+
+[node name="Title" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Empty Space Empty Space Empty Space Empty Space Empty Space Empty Space Empty Space Empty Space "
+autowrap_mode = 1
+text_overrun_behavior = 3
+
+[node name="Description" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Additional Detail"
+autowrap_mode = 1
+clip_text = true
+text_overrun_behavior = 3
+uppercase = true

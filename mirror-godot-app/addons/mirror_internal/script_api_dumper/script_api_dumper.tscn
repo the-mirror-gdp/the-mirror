@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ci0hkuf8dpg51"]
+
+[ext_resource type="Script" path="res://addons/mirror_internal/script_api_dumper/script_api_dumper.gd" id="1_pussx"]
+
+[node name="ScriptAPIDumper" type="Node"]
+script = ExtResource("1_pussx")

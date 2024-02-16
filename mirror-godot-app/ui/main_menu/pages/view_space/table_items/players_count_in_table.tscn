@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://be8e7b6xk45xc"]
+
+[ext_resource type="PackedScene" uid="uid://dr4g6e8b4buc6" path="res://ui/main_menu/pages/view_space/view_space_progressbar.tscn" id="1_8ord6"]
+[ext_resource type="Script" path="res://ui/main_menu/pages/view_space/table_items/players_count_in_table.gd" id="1_eoop6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8no3h"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.85098, 0.85098, 0.85098, 0.129412)
+
+[node name="PlayersCountInTable" type="PanelContainer"]
+theme_override_styles/panel = SubResource("StyleBoxFlat_8no3h")
+script = ExtResource("1_eoop6")
+
+[node name="ProgressBar" parent="." instance=ExtResource("1_8ord6")]
+layout_mode = 2
+value = 15.0

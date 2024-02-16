@@ -1,0 +1,38 @@
+[gd_scene load_steps=10 format=3 uid="uid://di6fs1fer0mp"]
+
+[ext_resource type="Script" path="res://test/integration/asset_client_integration_tests.gd" id="1"]
+[ext_resource type="Script" path="res://test/integration/user_client_integration_tests.gd" id="2"]
+[ext_resource type="Script" path="res://test/integration/integration_tests.gd" id="3"]
+[ext_resource type="Script" path="res://test/integration/space_client_integration_tests.gd" id="4"]
+[ext_resource type="Script" path="res://test/integration/file_client_integration_tests.gd" id="5"]
+[ext_resource type="Script" path="res://test/integration/terrain_client_integration_tests.gd" id="6_0xwa7"]
+[ext_resource type="Script" path="res://test/integration/environment_client_integration_tests.gd" id="6_e4ax8"]
+[ext_resource type="Script" path="res://test/integration/version_client_integration_tests.gd" id="8_hw38l"]
+[ext_resource type="Script" path="res://test/integration/zone_finder_integration_tests.gd" id="9_ach5n"]
+
+[node name="ClientIntegrationTests" type="Node"]
+script = ExtResource("3")
+
+[node name="VersionClientIntegrationTests" type="Node" parent="."]
+script = ExtResource("8_hw38l")
+
+[node name="UserClientIntegrationTests" type="Node" parent="."]
+script = ExtResource("2")
+
+[node name="AssetClientIntegrationTests" type="Node" parent="."]
+script = ExtResource("1")
+
+[node name="FileClientIntegrationTests" type="Node" parent="."]
+script = ExtResource("5")
+
+[node name="SpaceClientIntegrationTests" type="Node" parent="."]
+script = ExtResource("4")
+
+[node name="EnvironmentClientIntegrationTests" type="Node" parent="."]
+script = ExtResource("6_e4ax8")
+
+[node name="TerrainClientIntegrationTests" type="Node" parent="."]
+script = ExtResource("6_0xwa7")
+
+[node name="ZoneFinderIntegrationTests" type="Node" parent="."]
+script = ExtResource("9_ach5n")
