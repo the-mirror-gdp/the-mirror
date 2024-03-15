@@ -14,6 +14,8 @@ Cedric Duchaîne
 
 Christina Qin (QueenChristina)
 
+Devin Zimmerman (dzimmerman902)
+
 Gordon MacPherson (RevoluPowered)
 
 Jakub Grzesik (kubecz3k)
