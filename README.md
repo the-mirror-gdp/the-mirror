@@ -18,7 +18,7 @@ This repo is The Mirror's source code: the Godot app (client/server), the web se
 
 **3. Read our docs: [Site](https://docs.themirror.space), [monorepo `/mirror-docs`](https://github.com/the-mirror-gdp/the-mirror/tree/dev/mirror-docs)**
 
-**4. Visit our [website](https://themirror.space)**
+**4. Check out our [open-source announcement post](https://www.themirror.space/blog/freedom-to-own-open-sourcing-the-mirror)**
 
 **5. Follow us on [X/Twitter](https://twitter.com/themirrorgdp)**
 
