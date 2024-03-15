@@ -20,3 +20,17 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+CC BY 4.0:
+
+Game assets, including but not limited to 3D models, sounds, artwork, and images, are licensed under the CC BY 4.0 license with attribution, unless another license takes precedence.
+
+The Mirror's Game Assets (c) by The Mirror Megaverse Inc. and Jared McCluskey
+
+The Mirror's Game Assets is licensed under a
+Creative Commons Attribution 4.0 International License.
+
+You should have received a copy of the license along with this
+work. If not, see https://creativecommons.org/licenses/by/4.0.
