@@ -25,7 +25,7 @@ SOFTWARE.
 
 CC BY 4.0:
 
-Game assets, including but not limited to 3D models, sounds, artwork, and images, are licensed under the CC BY 4.0 license with attribution, unless another license takes precedence.
+Game assets, including but not limited to 3D models, sounds, artwork, and images, are licensed under the CC BY 4.0 license with attribution, unless another license takes precedence. This does not apply to code, which is licensed via the above MIT license.
 
 The Mirror's Game Assets (c) by The Mirror Megaverse Inc. and Jared McCluskey
 
