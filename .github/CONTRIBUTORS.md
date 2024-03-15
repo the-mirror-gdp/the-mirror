@@ -6,6 +6,8 @@ Andrea Catania (AndreaCatania)
 
 Andres Wolkovicz
 
+Bryan Galli
+
 Carlos Rios (CarlosRios)
 
 Cedric Duchaîne
