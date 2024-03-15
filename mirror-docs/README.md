@@ -1,6 +1,6 @@
 This repo uses Docusaurus and autodeploys on Vercel.
 
-# THIS WILL HELP! USE THE PASTE IMAGE VSCODE EXTENSION TO EASILY PASTE SCREENSHOTS AS YOU WRITE DOCS: https://marketplace.visualstudio.com/items?itemName=mushan.vscode-paste-image
+Recommended VSCode extension to help with pasting images: https://marketplace.visualstudio.com/items?itemName=mushan.vscode-paste-image
 
 ---
 
