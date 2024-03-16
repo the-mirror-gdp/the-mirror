@@ -3,6 +3,9 @@
 [ext_resource type="Texture2D" uid="uid://dfvy5ayk6pa8l" path="res://art/pcks/explosion01/images/colormap_explosion_5x5.png" id="1_sdkkw"]
 [ext_resource type="Texture2D" uid="uid://4r6oiycrk55r" path="res://art/pcks/explosion01/images/flowmap_explosion-flow.png" id="2_47cur"]
 
+[sub_resource type="JSphereShape3D" id="JSphereShape3D_y05nc"]
+radius = 1.5
+
 [sub_resource type="Shader" id="Shader_xomp8"]
 code = "shader_type spatial;
 render_mode blend_mix,diffuse_burley,specular_schlick_ggx,unshaded;
@@ -74,7 +77,7 @@ shader_parameter/texture_flowmap = ExtResource("2_47cur")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ndw05"]
 emission_shape = 1
-emission_sphere_radius = 2.5
+emission_sphere_radius = 1.0
 gravity = Vector3(0, 1, 0)
 anim_speed_min = 1.0
 anim_speed_max = 1.0
@@ -82,10 +85,10 @@ anim_speed_max = 1.0
 [sub_resource type="QuadMesh" id="QuadMesh_n15qf"]
 size = Vector2(6, 6)
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_iccbm"]
-radius = 0.8
-
-[node name="Explosion01" type="StaticBody3D"]
+[node name="Explosion01" type="JBody3D"]
+body_mode = 0
+shape = SubResource("JSphereShape3D_y05nc")
+metadata/imported_jbody_mode = true
 
 [node name="Explosion01" type="GPUParticles3D" parent="."]
 material_override = SubResource("ShaderMaterial_5fry4")
@@ -93,9 +96,6 @@ amount = 7
 speed_scale = 0.65
 explosiveness = 0.03
 randomness = 0.07
+visibility_aabb = AABB(-2.99332, -3.00471, -3.1658, 5.78655, 6.55868, 6.36531)
 process_material = SubResource("ParticleProcessMaterial_ndw05")
 draw_pass_1 = SubResource("QuadMesh_n15qf")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.167677, 0)
-shape = SubResource("SphereShape3D_iccbm")

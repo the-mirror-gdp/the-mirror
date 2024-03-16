@@ -15,7 +15,7 @@ var execute_on_server: bool = true
 
 ## Serializes a Dictionary of only valid JSON types for saving to the database.
 ## For example, we represent `Vector3(1, 2, 3)` as a JSON array of size 3 `[1, 2, 3]`.
-func serialize_to_json() -> Dictionary:
+func serialize_script_instance_to_json() -> Dictionary:
 	var ret: Dictionary = super()
 	ret["execute_on_client"] = execute_on_client
 	ret["execute_on_server"] = execute_on_server
@@ -72,12 +72,6 @@ func is_script_instance_setup() -> bool:
 	return script_builder != null
 
 
-func setup(node: Node, script_inst_dict: Dictionary) -> void:
-	target_node = node
-	var script_entity_data: Dictionary = await Net.script_client.get_script_entity(script_id)
-	setup_script_data(script_entity_data)
-
-
 func setup_script_instance_data(script_inst_dict: Dictionary) -> void:
 	if script_inst_dict.has("execute_on_client"):
 		execute_on_client = script_inst_dict["execute_on_client"]
@@ -87,7 +81,7 @@ func setup_script_instance_data(script_inst_dict: Dictionary) -> void:
 
 
 ## Must be run only after setup_script_instance_data()
-func setup_script_data(script_entity_data: Dictionary) -> void:
+func setup_script_entity_data(script_entity_data: Dictionary) -> void:
 	super(script_entity_data) # The code in this class is complex, so run super before.
 	if script_entity_data.has("blocks"):
 		_populate_blocks(script_entity_data["blocks"])
@@ -104,7 +98,7 @@ func update_script_entity_data_from_network(script_entity_data: Dictionary) -> v
 	if script_entity_data.has("blocks"):
 		var blocks_json = script_entity_data["blocks"]
 		if not is_instance_valid(script_builder) or \
-				JSON.stringify(blocks_json) != JSON.stringify(script_builder.serialize_to_json()):
+				JSON.stringify(blocks_json) != JSON.stringify(script_builder.serialize_visual_script_builder_to_json()):
 			_populate_blocks(blocks_json)
 	if script_entity_data.has("comments"):
 		var comments_json: Array = script_entity_data["comments"]
@@ -134,20 +128,7 @@ func _populate_event_node(entry_block: ScriptBlockEntryBase) -> void:
 
 func _create_event_node(entry_block: ScriptBlockEntryBase) -> void:
 	entry_block.entry_path = TMNodeUtil.get_unique_child_name(target_node, entry_block.entry_path)
-	var event_node: Node
-	if entry_block.entry_signal == "timeout":
-		var timer: Timer = Timer.new()
-		event_node = timer
-		timer.autostart = true
-	if entry_block.entry_signal in ["player_interact", "body_entered", "body_exited"]:
-		# Note: This code is intentionally kept very simplified.
-		# If users want to customize the position/shape further, they
-		# should use the extra nodes system to add a trigger shape.
-		var jbody := JBody3D.new()
-		jbody.body_mode = JBody3D.BodyMode.SENSOR
-		jbody.set_layer_name(&"TRIGGER")
-		jbody.shape = JSphereShape3D.new()
-		event_node = jbody
+	var event_node: Node = GDScriptEntry.create_node_for_entry_signal(entry_block.entry_signal)
 	if event_node == null:
 		Notify.error("Script Event", "Unable to make a node for the entry: " + entry_block.entry_id, _load_self_in_script_editor)
 		return
@@ -196,9 +177,9 @@ func _load_self_in_script_editor(script_block: ScriptBlock = null, error_text: S
 
 
 func serialize_script_entity_data() -> Dictionary:
-	# This is the inverse of setup_script_data, it saves data for the Entity or Asset, not Instance.
+	# This is the inverse of setup_script_entity_data, it saves data for the Entity or Asset, not Instance.
 	return {
-		"blocks": script_builder.serialize_to_json(),
+		"blocks": script_builder.serialize_visual_script_builder_to_json(),
 		"comments": _serialize_comments_to_json(),
 		"id": script_id,
 		"name": script_name,
@@ -213,7 +194,7 @@ func _serialize_comments_to_json() -> Array:
 func serialize_some_comments_to_json(comments_to_serialize: Array[VisualScriptComment]) -> Array:
 	var ret: Array[Dictionary] = []
 	for script_comment in comments_to_serialize:
-		ret.append(script_comment.serialize_to_json())
+		ret.append(script_comment.serialize_visual_script_comment_to_json())
 	return ret
 
 

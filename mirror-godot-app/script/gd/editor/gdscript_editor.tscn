@@ -1,11 +1,57 @@
-[gd_scene load_steps=2 format=3 uid="uid://bojc18otlfqd1"]
+[gd_scene load_steps=7 format=3 uid="uid://bojc18otlfqd1"]
 
+[ext_resource type="Theme" uid="uid://chpmeyn2g6o6r" path="res://script/visual/editor/script_editor.theme.tres" id="1_5y5h5"]
 [ext_resource type="Script" path="res://script/gd/editor/gdscript_editor.gd" id="1_kjxvw"]
+[ext_resource type="PackedScene" uid="uid://j35j6ipxfshe" path="res://script/gd/editor/gdscript_toolbar_buttons.tscn" id="2_0ox80"]
+[ext_resource type="FontFile" uid="uid://ck6yyvqvhv7tq" path="res://ui/common/fonts/source_code_pro/SourceCodePro-Medium.ttf" id="2_smdhb"]
+[ext_resource type="Script" path="res://script/gd/editor/gdscript_code_edit.gd" id="5_lu3y8"]
 
-[node name="GDScriptEditor" type="VBoxContainer"]
+[sub_resource type="TMUserGDScriptSyntaxHighlighter" id="TMUserGDScriptSyntaxHighlighter_h4ull"]
+
+[node name="GDScriptEditor" type="Panel"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_5y5h5")
 script = ExtResource("1_kjxvw")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GDScriptToolbarButtons" parent="VBoxContainer" instance=ExtResource("2_0ox80")]
+layout_mode = 2
+
+[node name="CodeEdit" type="CodeEdit" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("2_smdhb")
+deselect_on_focus_loss_enabled = false
+minimap_draw = true
+syntax_highlighter = SubResource("TMUserGDScriptSyntaxHighlighter_h4ull")
+draw_tabs = true
+line_folding = true
+line_length_guidelines = Array[int]([100, 120])
+gutters_draw_line_numbers = true
+gutters_draw_fold_gutter = true
+indent_automatic = true
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
+script = ExtResource("5_lu3y8")
+
+[node name="ErrorBar" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+text = "The code has not been loaded yet."
+
+[connection signal="text_changed" from="VBoxContainer/CodeEdit" to="." method="_on_code_edit_text_changed"]

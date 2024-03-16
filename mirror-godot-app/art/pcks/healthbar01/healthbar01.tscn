@@ -1,0 +1,62 @@
+[gd_scene load_steps=7 format=3 uid="uid://jy6b1rptbnco"]
+
+[ext_resource type="Script" path="res://art/pcks/healthbar01/healthbar01.gd" id="1_0swpi"]
+
+[sub_resource type="JBoxShape3D" id="JBoxShape3D_4mepk"]
+size = Vector3(1, 0.5, 0.1)
+
+[sub_resource type="Shader" id="Shader_5rdxf"]
+code = "// NOTE: Shader automatically converted from Godot Engine 4.3.dev's StandardMaterial3D.
+
+shader_type spatial;
+render_mode blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx,unshaded;
+uniform float health : hint_range(0.0, 1.0, 0.01);
+uniform vec4 health_color_high : source_color;
+uniform vec4 health_color_low: source_color;
+uniform vec4 background_color : source_color;
+
+
+
+void vertex() {
+	MODELVIEW_MATRIX = VIEW_MATRIX * mat4(INV_VIEW_MATRIX[0], INV_VIEW_MATRIX[1], INV_VIEW_MATRIX[2], MODEL_MATRIX[3]);
+	MODELVIEW_MATRIX = MODELVIEW_MATRIX * mat4(vec4(length(MODEL_MATRIX[0].xyz), 0.0, 0.0, 0.0), vec4(0.0, length(MODEL_MATRIX[1].xyz), 0.0, 0.0), vec4(0.0, 0.0, length(MODEL_MATRIX[2].xyz), 0.0), vec4(0.0, 0.0, 0.0, 1.0));
+	MODELVIEW_NORMAL_MATRIX = mat3(MODELVIEW_MATRIX);
+}
+
+
+
+
+
+
+void fragment() {
+	vec2 base_uv = UV;
+	vec4 health_color = mix(health_color_low, health_color_high, health);
+	ALBEDO = mix(health_color, background_color, float(UV.x > health)).rgb;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2h05t"]
+render_priority = 0
+shader = SubResource("Shader_5rdxf")
+shader_parameter/health = 0.8
+shader_parameter/health_color_high = Color(0.388551, 0.78125, 0.228882, 1)
+shader_parameter/health_color_low = Color(0.949219, 0.174271, 0.174271, 1)
+shader_parameter/background_color = null
+
+[sub_resource type="Gradient" id="Gradient_1jcvr"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_py1ij"]
+gradient = SubResource("Gradient_1jcvr")
+height = 5
+
+[node name="HealthBar" type="JBody3D"]
+body_mode = 0
+shape = SubResource("JBoxShape3D_4mepk")
+script = ExtResource("1_0swpi")
+metadata/imported_jbody_mode = true
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+material_override = SubResource("ShaderMaterial_2h05t")
+billboard = 1
+texture = SubResource("GradientTexture2D_py1ij")

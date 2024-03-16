@@ -31,7 +31,7 @@ func _ready() -> void:
 
 func set_script_instance_is_using_script_id(script_instance: ScriptInstance) -> void:
 	var script_id: String = script_instance.script_id
-	var instances: Array = _script_id_to_instances_using_it.get_or_set_default(script_id, [])
+	var instances: Array = _script_id_to_instances_using_it.get_or_add(script_id, [])
 	if not script_instance in instances:
 		instances.append(script_instance)
 
@@ -207,7 +207,7 @@ func _inform_script_entity_get_or_update(script_entity: Dictionary) -> void:
 
 
 func _get_and_validate_script_instances_using_id(script_id: String) -> Array:
-	var instances: Array = _script_id_to_instances_using_it.get_or_set_default(script_id, [])
+	var instances: Array = _script_id_to_instances_using_it.get_or_add(script_id, [])
 	for i in range(instances.size() - 1, -1, -1):
 		if not is_instance_valid(instances[i]):
 			instances.remove_at(i)
@@ -264,7 +264,7 @@ func client_clone_script_entity(script_instance: ScriptInstance) -> void:
 		return
 	_pending_script_instance = script_instance
 	# Clear the ID to instances cache of this script instance.
-	var script_instances_for_id: Array = _script_id_to_instances_using_it.get_or_set_default(script_instance.script_id, [])
+	var script_instances_for_id: Array = _script_id_to_instances_using_it.get_or_add(script_instance.script_id, [])
 	script_instances_for_id.erase(script_instance)
 	# Create a new script entity with a copy of the original's data.
 	var script_entity: Dictionary = script_instance.serialize_script_entity_data()
@@ -309,7 +309,7 @@ func _inform_client_script_entity_created(script_entity: Dictionary) -> void:
 
 func _update_pending_script_instance_with_new_script_entity(script_entity: Dictionary) -> void:
 	_pending_script_instance.script_id = script_entity["id"]
-	_pending_script_instance.setup_script_data(script_entity)
+	_pending_script_instance.setup_script_entity_data(script_entity)
 	set_script_instance_is_using_script_id(_pending_script_instance)
 	_pending_script_instance.target_node.script_instances_modified()
 	request_edit_script_instance.emit(_pending_script_instance)
@@ -322,7 +322,7 @@ func _add_new_script_instance_with_script_entity(target_node: Node, script_entit
 	new_script_instance.target_node = target_node
 	if not script_entity.is_empty():
 		# If it's empty, the data will be loaded later.
-		new_script_instance.setup_script_data(script_entity)
+		new_script_instance.setup_script_entity_data(script_entity)
 	set_script_instance_is_using_script_id(new_script_instance)
 	target_node.add_script_instance(new_script_instance)
 	script_instance_created.emit(new_script_instance)

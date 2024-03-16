@@ -508,12 +508,11 @@ func _server_delete_space_object(space_obj: Dictionary) -> void:
 
 
 func _server_is_ready(print_reason: bool = false) -> bool:
-	var voxels_ready = (not Zone.Voxels or Zone.Voxels.server_stream_is_ready())
 	var files_downloaded = _all_files_downloaded()
-	var is_ready: bool = voxels_ready and _server_data_received and files_downloaded
+	var is_ready: bool = _server_data_received and files_downloaded
 	if print_reason and not is_ready:
 		push_error("server is ready? Server data received: ", str(_server_data_received),
-			", files downloaded: ", str(files_downloaded), ", voxels ready: ", voxels_ready,
+			", files downloaded: ", str(files_downloaded),
 			", zone preloaded files: ", str(Zone.space_preload_done) )
 	return is_ready
 
@@ -583,7 +582,10 @@ func _client_create_objects(client_peer_id_to_sync: int, space_objects: Array) -
 		for prop_name in so_instance.get_additional_properties_names():
 			properties_to_send[prop_name] = so_instance.get_additional_property(prop_name)
 		var receipt: Dictionary = {} # Empty receipt because these are not newly placed objects.
-		assert(not space_object_data.has("receipt"), "The SpaceObject itself should not have a receipt.")
+		# disabled because this breaks loading a space the second connection attempt
+		if space_object_data.has("receipt"):
+			space_object_data.erase("receipt")
+			push_error("The SpaceObject itself should not have a receipt.")
 		Zone.client_create_object(client_peer_id_to_sync, space_object_data, receipt, properties_to_send)
 
 

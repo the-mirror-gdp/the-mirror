@@ -1,6 +1,6 @@
 ## Contains both signal parameter inputs and inspector parameter inputs.
 class_name ScriptEntryParameters
-extends RefCounted
+extends Object
 
 
 var inspector_parameters: Dictionary = {}
@@ -70,21 +70,23 @@ static func serialize_parameters_to_json(parameters: Dictionary) -> Dictionary:
 	return parameters
 
 
-static func from_dictionary(dict: Dictionary) -> ScriptEntryParameters:
+static func from_dictionary(dict: Dictionary, use_snake_case: bool = false) -> ScriptEntryParameters:
 	var ret := ScriptEntryParameters.new()
 	ret.does_signal_pass_caller = not ScriptSignalRegistration.is_mirror_registered_signal(dict.get("signal", ""))
 	if dict.has("inspectorParameters"):
-		ret.inspector_parameters = load_parameters_from_json(dict["inspectorParameters"])
+		ret.inspector_parameters = load_parameters_from_json(dict["inspectorParameters"], use_snake_case)
 	if dict.has("signalParameters"):
-		ret.signal_parameters = load_parameters_from_json(dict["signalParameters"])
+		ret.signal_parameters = load_parameters_from_json(dict["signalParameters"], use_snake_case)
 	return ret
 
 
-static func load_parameters_from_json(json_parameters: Dictionary) -> Dictionary:
+static func load_parameters_from_json(json_parameters: Dictionary, use_snake_case: bool = false) -> Dictionary:
 	var loaded_parameters: Dictionary
 	for parameter_name in json_parameters:
 		var parameter_data: Array = json_parameters[parameter_name]
 		var parameter_type: int = parameter_data[0]
 		var parameter_value: Variant = Serialization.type_convert_from_json(parameter_data[1], parameter_type)
+		if use_snake_case:
+			parameter_name = parameter_name.to_snake_case()
 		loaded_parameters[parameter_name] = [parameter_type, parameter_value]
 	return loaded_parameters

@@ -198,7 +198,7 @@ func _on_asset_deleted(asset_slot: BaseAssetSlot) -> void:
 		if recent_asset["id"] == asset_id:
 			_recently_used_assets.erase(recent_asset)
 			break
-	asset_deleted.emit()
+	asset_deleted.emit(self)
 
 
 func _on_net_asset_received(asset_data: Dictionary) -> void:

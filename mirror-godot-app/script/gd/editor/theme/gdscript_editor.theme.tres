@@ -1,0 +1,43 @@
+[gd_resource type="Theme" load_steps=16 format=3 uid="uid://chpmeyn2g6o6r"]
+
+[ext_resource type="StyleBox" uid="uid://c5cvnb1hsor73" path="res://script/visual/editor/theme/accept_window_panel.stylebox.tres" id="1_dxymh"]
+[ext_resource type="FontFile" uid="uid://bpw8ywxvp8ctj" path="res://ui/common/fonts/montserrat/montserrat_regular.ttf" id="1_j0da5"]
+[ext_resource type="FontFile" uid="uid://cgyrixnr8bppj" path="res://ui/common/fonts/montserrat/montserrat_medium.ttf" id="1_u186u"]
+[ext_resource type="StyleBox" uid="uid://d3h0d32csi0yu" path="res://ui/new_player_ui/inventory/panel_light_blue_disabled.tres" id="2_k4mia"]
+[ext_resource type="StyleBox" uid="uid://biwid7pf726cm" path="res://ui/new_player_ui/inventory/panel_light_blue_rounded.tres" id="2_wqte6"]
+[ext_resource type="StyleBox" uid="uid://d0agfj0dkjits" path="res://ui/new_player_ui/inventory/panel_light_blue_rounded_hover.tres" id="3_t3mh4"]
+[ext_resource type="StyleBox" uid="uid://bxdufxik1y0yu" path="res://ui/new_player_ui/inventory/panel_light_blue_rounded_pressed.tres" id="4_h5tli"]
+[ext_resource type="StyleBox" uid="uid://dggc3w58p1kd1" path="res://script/visual/editor/theme/text_edit_focus.stylebox.tres" id="6_73ffh"]
+[ext_resource type="StyleBox" uid="uid://qwbt4q1nhxdn" path="res://script/visual/editor/theme/text_edit_normal.stylebox.tres" id="7_4n1ra"]
+[ext_resource type="StyleBox" path="res://script/gd/editor/theme/code_edit_focus.stylebox.tres" id="7_oq03f"]
+[ext_resource type="StyleBox" uid="uid://bt24vdau5ebno" path="res://script/visual/editor/theme/text_edit_disabled.stylebox.tres" id="8_coop6"]
+[ext_resource type="StyleBox" path="res://script/gd/editor/theme/code_edit_normal.stylebox.tres" id="8_x1uxg"]
+[ext_resource type="StyleBox" uid="uid://kxn8c8ctn4xg" path="res://script/visual/editor/theme/tree_focus.stylebox.tres" id="9_t5kb0"]
+[ext_resource type="StyleBox" uid="uid://bdgw2ecsksalw" path="res://script/visual/editor/theme/embedded_window_border.stylebox.tres" id="12_4434j"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nohgm"]
+bg_color = Color(0.105882, 0.121569, 0.137255, 0.666667)
+
+[resource]
+default_font = ExtResource("1_j0da5")
+AcceptDialog/styles/panel = ExtResource("1_dxymh")
+Button/fonts/font = ExtResource("1_u186u")
+Button/styles/disabled = ExtResource("2_k4mia")
+Button/styles/focus = ExtResource("2_wqte6")
+Button/styles/hover = ExtResource("3_t3mh4")
+Button/styles/normal = ExtResource("2_wqte6")
+Button/styles/pressed = ExtResource("4_h5tli")
+CodeEdit/styles/focus = ExtResource("7_oq03f")
+CodeEdit/styles/normal = ExtResource("8_x1uxg")
+LineEdit/font_sizes/font_size = 16
+LineEdit/styles/focus = ExtResource("6_73ffh")
+LineEdit/styles/normal = ExtResource("7_4n1ra")
+LineEdit/styles/read_only = ExtResource("8_coop6")
+Panel/styles/panel = SubResource("StyleBoxFlat_nohgm")
+TextEdit/styles/focus = ExtResource("6_73ffh")
+TextEdit/styles/normal = ExtResource("7_4n1ra")
+TextEdit/styles/read_only = ExtResource("8_coop6")
+Tree/styles/focus = ExtResource("9_t5kb0")
+Tree/styles/panel = ExtResource("7_4n1ra")
+VBoxContainer/constants/separation = 8
+Window/styles/embedded_border = ExtResource("12_4434j")

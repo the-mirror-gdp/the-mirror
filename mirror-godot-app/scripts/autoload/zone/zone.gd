@@ -13,6 +13,7 @@ signal enable_asset_deselect()
 signal disable_asset_deselect()
 
 signal game_start()
+signal physics_process_every_frame(delta_time: float)
 signal process_every_frame(delta_time: float)
 
 const MAX_LOG_SIZE = 50
@@ -57,7 +58,6 @@ var space_preload_done: bool = false:
 			space_preloaded.emit()
 
 var Scene: SpaceScene
-var Voxels: VoxelEditor
 
 func _ready() -> void:
 	PriorityInput.register_actions([&"action_deselect"], enable_asset_deselect, disable_asset_deselect)
@@ -105,6 +105,10 @@ func wait_till_notifications_ready():
 func _unhandled_input(input_event: InputEvent) -> void:
 	if input_event.is_action_pressed(&"preview_mode_toggle"):
 		client_toggle_mode()
+
+
+func _physics_process(delta: float) -> void:
+	physics_process_every_frame.emit(delta)
 
 
 func _process(delta: float) -> void:

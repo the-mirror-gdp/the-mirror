@@ -100,10 +100,10 @@ func _convert_scene_node(state: GLTFState, gltf_node: GLTFNode, scene_node: Node
 
 func _get_or_create_state_constraints_in_state(state: GLTFState) -> Array:
 	var state_json: Dictionary = state.get_json()
-	var state_extensions: Dictionary = state_json.get_or_set_default("extensions", {})
-	var omi_physics_joint_doc_ext: Dictionary = state_extensions.get_or_set_default("OMI_physics_joint", {})
+	var state_extensions: Dictionary = state_json.get_or_add("extensions", {})
+	var omi_physics_joint_doc_ext: Dictionary = state_extensions.get_or_add("OMI_physics_joint", {})
 	state.add_used_extension("OMI_physics_joint", false)
-	var state_constraints: Array = omi_physics_joint_doc_ext.get_or_set_default("constraints", [])
+	var state_constraints: Array = omi_physics_joint_doc_ext.get_or_add("constraints", [])
 	return state_constraints
 
 
@@ -137,7 +137,7 @@ func _export_node(state: GLTFState, gltf_node: GLTFNode, json: Dictionary, _node
 	var gltf_physics_joint: GLTFPhysicsJoint = gltf_node.get_additional_data("GLTFPhysicsJoint")
 	if gltf_physics_joint == null:
 		return OK
-	var node_extensions = json.get_or_set_default("extensions", {})
+	var node_extensions = json.get_or_add("extensions", {})
 	var omi_physics_joint_node_ext: Dictionary = {}
 	# Populate the constraints.
 	var constraints: Array = gltf_physics_joint.get_constraints()

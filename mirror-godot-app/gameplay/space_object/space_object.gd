@@ -950,7 +950,7 @@ func serialize_script_instances() -> Array:
 	var serialized_script_instances: Array = []
 	for script_instance in _script_instances:
 		assert(is_instance_valid(script_instance))
-		serialized_script_instances.append(script_instance.serialize_to_json())
+		serialized_script_instances.append(script_instance.serialize_script_instance_to_json())
 	return serialized_script_instances
 
 

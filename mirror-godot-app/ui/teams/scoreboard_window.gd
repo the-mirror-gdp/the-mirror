@@ -13,6 +13,9 @@ var _force_shown: bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	# Bottom buttons are hidden when _force_shown is false, which it is by default.
+	# Do this in _ready() to allow the buttons to be visible in the editor.
+	_bottom_buttons.visible = false
 	# The data mapping
 	# This is used to extract the properties and reset the input row
 	# An example is provided with the correct columns for teams
@@ -62,7 +65,9 @@ func _ready() -> void:
 #	})
 
 
-func _is_scoreboard_shortcut_enabled():
+func is_scoreboard_shortcut_enabled():
+	if not ProjectSettings.get_setting("feature_flags/enable_scoreboard_shortcut", true):
+		return false
 	var scoreboard_enabled = Zone.script_network_sync.get_global_variable("scoreboard_shortcut_enabled")
 	if scoreboard_enabled == null:
 		Zone.script_network_sync.set_global_variable("scoreboard_shortcut_enabled", true)
@@ -77,7 +82,7 @@ func _process(_delta: float) -> void:
 	visible = _force_shown or (
 		not GameUI.is_keyboard_needed_for_ui()
 		and Input.is_action_pressed(&"scoreboard_visible")
-		and _is_scoreboard_shortcut_enabled()
+		and is_scoreboard_shortcut_enabled()
 	)
 	# we don't care about the actual data inside the player id's we're
 	# just using it as a mechanism to know the players are different

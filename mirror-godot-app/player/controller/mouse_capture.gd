@@ -30,20 +30,15 @@ func _notification(what):
 
 
 func _process(_delta: float) -> void:
-	var mouse_captured_last_frame = (Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED)
-	var mouse_captured = is_capturing()
-	var mouse_mode = (
-			Input.MOUSE_MODE_CAPTURED
-			if mouse_captured and is_app_focused
-			else Input.MOUSE_MODE_VISIBLE
-	)
-	if not mouse_captured_last_frame and mouse_captured:
-		_last_mouse_position = get_viewport().get_mouse_position() * \
-			get_viewport().content_scale_factor
-	Input.set_mouse_mode(mouse_mode)
-	if mouse_captured_last_frame and not mouse_captured:
+	var was_mouse_captured_last_frame: bool = (Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED)
+	var is_mouse_needed_by_ui: bool = GameUI.is_mouse_needed_for_ui()
+	var new_mouse_mode: Input.MouseMode = Input.MOUSE_MODE_VISIBLE
+	if not is_mouse_needed_by_ui:
+		if is_app_focused:
+			new_mouse_mode = Input.MOUSE_MODE_CAPTURED
+		if not was_mouse_captured_last_frame:
+			var window: Window = get_viewport()
+			_last_mouse_position = window.get_mouse_position() * window.content_scale_factor
+	Input.set_mouse_mode(new_mouse_mode)
+	if was_mouse_captured_last_frame and is_mouse_needed_by_ui:
 		Input.warp_mouse(_last_mouse_position)
-
-
-func is_capturing() -> bool:
-	return not GameUI.is_mouse_needed_for_ui()

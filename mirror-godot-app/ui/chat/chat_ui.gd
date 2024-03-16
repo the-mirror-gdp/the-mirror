@@ -5,6 +5,8 @@ extends Control
 signal chat_message_sent(text: String, user_id: String)
 
 const _CHAT_MESSAGE_SCENE: PackedScene = preload("res://ui/chat/chat_message.tscn")
+const _EMOJI_BUTTON_SCENE: PackedScene = preload("res://ui/chat/emoji_button.tscn")
+const _AVAILABLE_EMOJIS: PackedStringArray = ["🙂", "😀", "😲", "😎", "👍", "👎", "❤️", "☹️", "😢"]
 
 @onready var _chat_box: PanelContainer = $ChatBox
 @onready var _message_container: VBoxContainer = %MessageContainer
@@ -13,6 +15,10 @@ const _CHAT_MESSAGE_SCENE: PackedScene = preload("res://ui/chat/chat_message.tsc
 @onready var _line_edit: LineEdit = %LineEdit
 @onready var _chat_send_sound: AudioStreamPlayer = $ChatSendSound
 @onready var _chat_receive_sound: AudioStreamPlayer = $ChatReceiveSound
+@onready var _emoji_menu_button: Button = %EmojiMenuButton
+@onready var _emoji_menu: PanelContainer = %EmojiMenu
+@onready var _emoji_grid_container: GridContainer = %EmojiGridContainer
+
 
 var is_typing_in_chat: bool = false
 
@@ -38,6 +44,15 @@ func _ready() -> void:
 	if _use_large_text_size:
 		_line_edit.add_theme_font_size_override(&"font_size", _large_text_size)
 		_line_edit.custom_minimum_size = Vector2(0, 48)
+		_emoji_menu_button.custom_minimum_size = Vector2(48, 48)
+		_emoji_menu_button.add_theme_font_size_override(&"font_size", _large_text_size)
+	for emoji in _AVAILABLE_EMOJIS:
+		var emoji_button: Button = _EMOJI_BUTTON_SCENE.instantiate()
+		emoji_button.text = "%s " % emoji
+		emoji_button.add_theme_font_size_override(&"font_size", _large_text_size)
+		emoji_button.custom_minimum_size = Vector2(40, 40)
+		_emoji_grid_container.add_child(emoji_button)
+		emoji_button.pressed.connect(func(): _on_emoji_pressed(emoji))
 	Zone.social_manager.player_connected.connect(_on_player_connected)
 	Zone.social_manager.player_disconnected.connect(_on_player_disconnected)
 	Zone.client.disconnected.connect(clear_chat)
@@ -48,16 +63,14 @@ func _process(delta: float) -> void:
 	var safe_area_for_gui: Rect2 = GameUI.get_safe_area()
 	var new_position: Vector2 = _initial_position + safe_area_for_gui.position
 	_chat_box.position = new_position
-	if Input.is_action_just_pressed("player_open_chat", true) \
-			# is any full screen or modal visible except for self!
-			and not GameUI.is_any_full_screen_or_modal_ui_visible([self]) \
-			and get_viewport().gui_get_focus_owner() == null:
+	if Input.is_action_just_pressed("player_open_chat", true) and not GameUI.is_any_full_screen_or_modal_ui_visible([self]) and get_viewport().gui_get_focus_owner() == null:
 		_line_edit.grab_focus()
 	if not is_typing_in_chat and _time_since_last_opened > _fade_delay:
 		var visibility_loss_speed = delta * 0.5
 		_lower_visibility(_chat_box, visibility_loss_speed)
 		_lower_visibility(_line_edit, visibility_loss_speed)
 		_lower_visibility(_scrollbar, visibility_loss_speed)
+		_lower_visibility(_emoji_menu_button, visibility_loss_speed)
 
 
 func send_message_from_object(obj: Object, message: String, range: float) -> void:
@@ -165,6 +178,7 @@ func _on_line_edit_focus_exited() -> void:
 	is_typing_in_chat = false
 	_reset_chat_transparency()
 	_scroll_to_bottom()
+	_emoji_menu.hide()
 	GameUI.release_input_lock(self)
 
 
@@ -196,10 +210,12 @@ func _reset_chat_transparency() -> void:
 	_chat_box.self_modulate.a = 1.0
 	_line_edit.self_modulate.a = 1.0
 	_scrollbar.self_modulate.a = 1.0
+	_emoji_menu_button.self_modulate.a = 1.0
 	self.mouse_filter = Control.MOUSE_FILTER_STOP
 	_chat_box.mouse_filter = Control.MOUSE_FILTER_STOP
 	_line_edit.mouse_filter = Control.MOUSE_FILTER_STOP
 	_scrollbar.mouse_filter = Control.MOUSE_FILTER_STOP
+	_emoji_menu_button.mouse_filter = Control.MOUSE_FILTER_STOP
 
 
 func _clear_chat_input() -> void:
@@ -217,6 +233,39 @@ func _lower_visibility(control: Control, speed: float) -> void:
 	_chat_box.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_line_edit.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_scrollbar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_emoji_menu_button.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	control.self_modulate.a -= speed
 	if control.self_modulate.a <= 0.0:
 		control.self_modulate.a = 0.0
+
+
+func _on_emoji_menu_button_mouse_entered() -> void:
+	_emoji_menu_button.text = "😀 "
+
+
+func _on_emoji_menu_button_mouse_exited() -> void:
+	_emoji_menu_button.text = "🙂 "
+
+
+func _on_emoji_menu_button_pressed() -> void:
+	_emoji_menu.show()
+	_line_edit.grab_focus()
+	var open_offset := Vector2(12.0, 12.0)
+	var shift_offset := Vector2(16.0, 16.0)
+	_emoji_menu.position = get_global_mouse_position() + open_offset
+	size = Vector2.ZERO
+	var viewport_size: Vector2i = get_viewport_rect().size
+	if _emoji_menu.position.x + _emoji_menu.size.x > viewport_size.x:
+		_emoji_menu.position.x -= _emoji_menu.size.x + shift_offset.x
+	if position.y + size.y > viewport_size.y:
+		_emoji_menu.position.y -= _emoji_menu.size.y + shift_offset.y
+
+
+func _on_emoji_pressed(emoji: String) -> void:
+	if Zone.is_host():
+		return
+	var player: Player = PlayerData.get_local_player()
+	if not player:
+		return
+	_clear_chat_input()
+	player.create_emoji.rpc(emoji)

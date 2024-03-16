@@ -79,7 +79,7 @@ func _export_preflight(state: GLTFState, root: Node) -> Error:
 
 func _export_node(state: GLTFState, _gltf_node: GLTFNode, json: Dictionary, node: Node) -> Error:
 	if node is ModelPrimitive:
-		var extensions: Dictionary = json.get_or_set_default("extensions", {})
+		var extensions: Dictionary = json.get_or_add("extensions", {})
 		var mi_model_ext: Dictionary = node.serialize_to_mi_model_gltf_extension()
 		extensions["MIRROR_model_primitive"] = mi_model_ext
 		state.add_used_extension("MIRROR_model_primitive", false)

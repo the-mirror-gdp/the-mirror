@@ -19,6 +19,8 @@ var asset_data: AssetData = AssetData.new()
 
 func _ready() -> void:
 	super()
+	if Engine.is_editor_hint():
+		return # Can't connect Net signals from a @tool script.
 	Net.asset_client.asset_received.connect(_on_asset_received)
 	Net.asset_client.asset_deleted.connect(_on_asset_deleted)
 	asset_data.preview_generated.connect(_refresh_preview_image)

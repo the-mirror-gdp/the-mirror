@@ -535,9 +535,9 @@ func _on_logged_in_join_beta() -> void:
 	_queued_beta = false
 
 
-func _find_zone_by_space(space_id: String) -> void:
-	# When we can ask mirror-web-server for an already existing server to connect too, first
-	#   Then we will replace that flag, with that request being done and responded too.
+func _join_new_server_locally(space_id: String) -> bool:
+	# When we can ask mirror-web-server for an already existing server to connect to, first
+	# Then we will replace that flag, with that request being done and responded.
 	var should_create_a_new_server_locally = ProjectSettings.get_setting("feature_flags/always_spin_up_local_server", false)
 	if should_create_a_new_server_locally and pid == null:
 		var firebase_auth = str(Firebase.Auth.auth.refreshtoken)
@@ -546,6 +546,11 @@ func _find_zone_by_space(space_id: String) -> void:
 		print("SERVER ARGS: ", arguments)
 		pid = OS.create_process(OS.get_executable_path(), arguments, true)
 		start_join_localhost()
+		return true
+	return false
+
+func _find_zone_by_space(space_id: String) -> void:
+	if _join_new_server_locally(space_id):
 		return
 	
 	# Normal join process with dedicated servers
@@ -559,6 +564,8 @@ func _find_zone_by_space(space_id: String) -> void:
 
 
 func _find_play_space(space_id: String) -> void:
+	if _join_new_server_locally(space_id):
+		return
 	var promise = Net.zone_finder.join_play_server(space_id)
 	var play_space = await promise.wait_till_fulfilled()
 	if promise.is_error():

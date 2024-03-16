@@ -7,17 +7,7 @@ func _execute_callback(_stack_count: int) -> Error:
 	var variable_value: Variant = inputs[2].value
 	if target_object == null:
 		target_object = attached_object
-	if target_object is Node:
-		# This will also set it locally immediately.
-		Zone.script_network_sync.set_variable_on_node(target_object, variable_name, variable_value)
-	else:
-		# Allow setting on non-Node objects, but only locally, since we don't
-		# have a way to keep track of non-Node references over the network.
-		if not target_object.has_meta(&"MirrorScriptObjectVariables"):
-			target_object.set_meta(&"MirrorScriptObjectVariables", {})
-		var object_variables: Dictionary = target_object.get_meta(&"MirrorScriptObjectVariables")
-		TMDataUtil.set_variable_by_json_path_string(object_variables, variable_name, variable_value)
-		Zone.script_network_sync.object_variable_changed.emit(target_object, variable_name, variable_value)
+	Mirror.set_object_variable(target_object, variable_name, variable_value)
 	return OK
 
 

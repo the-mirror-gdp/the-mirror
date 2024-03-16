@@ -92,7 +92,7 @@ func _export_node(gltf_state: GLTFState, gltf_node: GLTFNode, json: Dictionary, 
 		if scene_node == constraint.source_node:
 			constraint.source_node_index = i
 			break
-	var extensions: Dictionary = json.get_or_set_default("extensions", {})
+	var extensions: Dictionary = json.get_or_add("extensions", {})
 	extensions["VRMC_node_constraint"] = constraint.to_dictionary()
 	node.remove_meta(&"GLTFBoneNodeConstraint")
 	return OK

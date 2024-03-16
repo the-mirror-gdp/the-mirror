@@ -12,6 +12,9 @@
 offset_bottom = 418.0
 script = ExtResource("2_08jxy")
 
+[node name="ToggleButton" parent="CategoryTitle" index="0" node_paths=PackedStringArray("properties")]
+properties = NodePath("../../Properties")
+
 [node name="Text" parent="CategoryTitle/ToggleButton/Name" index="3"]
 text = "OBJECT"
 
@@ -36,7 +39,8 @@ wrap_mode = 1
 
 [node name="Creator" parent="Properties/MarginContainer/PropertyList" index="2" instance=ExtResource("5_vsf3c")]
 layout_mode = 2
-button_text = "Creato"
+button_text = "Loading..."
+enabled = true
 label_text = "Creator"
 
 [node name="LabelHolder" parent="Properties/MarginContainer/PropertyList/Creator" index="0"]
@@ -46,6 +50,7 @@ size_flags_stretch_ratio = 0.75
 text = "Creator"
 
 [node name="MainButton" parent="Properties/MarginContainer/PropertyList/Creator" index="1"]
+text = "Loading..."
 text_overrun_behavior = 3
 
 [node name="Asset" parent="Properties/MarginContainer/PropertyList" index="3" instance=ExtResource("4_qpmmi")]

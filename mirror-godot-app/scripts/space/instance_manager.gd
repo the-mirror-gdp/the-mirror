@@ -279,6 +279,8 @@ func create_space_object(space_object_dictionary: Dictionary, receipt: Dictionar
 	instance.populate(space_object_dictionary)
 	if instance.is_preloaded and not Zone.is_host() and not instance.is_ready():
 		await _await_assets_preloaded()
+		if not is_instance_valid(instance):
+			return
 		_readd_space_object(instance)
 
 	# joining the game should not run this code

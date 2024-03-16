@@ -30,7 +30,7 @@ func can_asset_be_deleted() -> bool:
 func delete_asset() -> void:
 	assert(can_asset_be_deleted())
 	Net.asset_client.delete_asset(asset_id)
-	asset_deleted.emit()
+	asset_deleted.emit(self)
 
 
 func edit_asset() -> void:

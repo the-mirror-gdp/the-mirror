@@ -9,15 +9,23 @@ extends HBoxContainer
 
 
 func _ready() -> void:
-	assert(not visible, "Normal Mode Hotkeys should be hidden when the app starts.")
+	if visible:
+		push_error("Normal Mode Hotkeys should be hidden when the app starts.")
 	Zone.mode_changed.connect(refresh_ui_new_mode)
 	Zone.client.connected.connect(refresh_ui)
 	Zone.client.disconnected.connect(hide)
 
 
 func set_build_mode_ui_hint_state(state: bool) -> void:
+	var scoreboard_shortcut_enabled: bool = GameUI.scoreboard_window.is_scoreboard_shortcut_enabled()
+	var team_shortcut_enabled: bool = GameUI.teams_handler.is_teams_shortcut_enabled()
+	var build_shortcuts_enabled: bool = ProjectSettings.get_setting("feature_flags/enable_build_shortcuts", true)
+	$TeamSelection.visible = team_shortcut_enabled
+	$Scoreboard.visible = scoreboard_shortcut_enabled
+	$Chat.visible = true
+	$CinematicMode.visible = true
 	for ui_element in ui_build_mode_only:
-		ui_element.visible = state
+		ui_element.visible = state and build_shortcuts_enabled
 
 
 # duplicated because signal will never fire due to having an argument we must ignore.
