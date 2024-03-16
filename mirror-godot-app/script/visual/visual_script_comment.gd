@@ -24,7 +24,7 @@ func duplicate() -> VisualScriptComment:
 	return ret
 
 
-func serialize_to_json() -> Dictionary:
+func serialize_visual_script_comment_to_json() -> Dictionary:
 	var ret: Dictionary = {}
 	if not color.is_equal_approx(_DEFAULT_COLOR):
 		# The default color is a common case, so let's just not save it in those cases.

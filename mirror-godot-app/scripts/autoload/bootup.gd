@@ -69,7 +69,7 @@ static func critical_error(error: Client.JOINER_ERRORS, description) -> void:
 		return
 
 	var error_string = ProjectSettings.get_setting("mirror/critical_app_error/error_string", "")
-	push_error("Criticial Error: ", error_name, error_string)
+	push_error("Critical Error: ", error_name, error_string)
 	var popup = notification_ui.notify(
 		str(error_name),
 		description +

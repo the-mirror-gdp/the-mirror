@@ -39,6 +39,7 @@ func setup(script_instance: ScriptInstance) -> void:
 	target_script_instance = script_instance
 	target_script_instance.script_contents_changed.connect(_on_script_contents_changed)
 	target_script_instance.script_entity_data_updated_from_network.connect(_on_script_contents_changed)
+	target_script_instance.script_entries_changed.connect(_on_script_entries_changed)
 	_setup()
 
 
@@ -55,7 +56,9 @@ func _refresh_name_and_buttons() -> void:
 		_name_line_edit.text = _name_text_label.text
 	_run_enabled.set_pressed_no_signal(target_script_instance.script_enabled)
 	_run_in_edit.set_pressed_no_signal(target_script_instance.execute_in_edit)
-	if target_script_instance is VisualScriptInstance:
+	if target_script_instance is GDScriptInstance:
+		_advanced_options.hide()
+	elif target_script_instance is VisualScriptInstance:
 		_setup_client_server_checkboxes(target_script_instance.execute_on_client, target_script_instance.execute_on_server)
 
 
@@ -158,6 +161,11 @@ func _on_script_name_text_changed(new_text: String) -> void:
 
 func _on_script_contents_changed() -> void:
 	_refresh_name_and_buttons()
+
+
+func _on_script_entries_changed() -> void:
+	var can_edit: bool = Util.can_local_user_edit_scripts()
+	_setup_entry_parameter_inspectors(can_edit)
 
 
 func queue_update_script_entity() -> void:

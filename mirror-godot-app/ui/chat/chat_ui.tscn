@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://bompdcbpjbtli"]
+[gd_scene load_steps=7 format=3 uid="uid://bompdcbpjbtli"]
 
 [ext_resource type="Script" path="res://ui/chat/chat_ui.gd" id="1_wp7mh"]
+[ext_resource type="FontFile" uid="uid://bpw8ywxvp8ctj" path="res://ui/common/fonts/montserrat/montserrat_regular.ttf" id="2_imn8p"]
 [ext_resource type="AudioStream" uid="uid://ippsowd2uk20" path="res://ui/chat/chat_send.wav" id="2_iy67r"]
 [ext_resource type="AudioStream" uid="uid://bqvawxu4dbvyx" path="res://ui/chat/chat_receive.wav" id="3_i2jyh"]
 
@@ -71,8 +72,46 @@ max_length = 200
 caret_blink = true
 caret_blink_interval = 0.5
 
+[node name="EmojiMenuButton" type="Button" parent="ChatBox/VBoxContainer/LineEdit"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -8.0
+grow_horizontal = 0
+grow_vertical = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("2_imn8p")
+text = "🙂 "
+flat = true
+text_overrun_behavior = 1
+
+[node name="EmojiMenu" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_eu63x")
+
+[node name="EmojiGridContainer" type="GridContainer" parent="EmojiMenu"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 3
+
 [node name="ChatSendSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_iy67r")
 
 [node name="ChatReceiveSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_i2jyh")
+
+[connection signal="mouse_entered" from="ChatBox/VBoxContainer/LineEdit/EmojiMenuButton" to="." method="_on_emoji_menu_button_mouse_entered"]
+[connection signal="mouse_exited" from="ChatBox/VBoxContainer/LineEdit/EmojiMenuButton" to="." method="_on_emoji_menu_button_mouse_exited"]
+[connection signal="pressed" from="ChatBox/VBoxContainer/LineEdit/EmojiMenuButton" to="." method="_on_emoji_menu_button_pressed"]

@@ -10,7 +10,9 @@ func _ready():
 	zone_mode_changed(Zone.current_mode)
 
 
-func _is_teams_shortcut_enabled():
+func is_teams_shortcut_enabled():
+	if not ProjectSettings.get_setting("feature_flags/enable_teams_shortcut", true):
+			return false
 	var teams_shortcut_enabled = Zone.script_network_sync.get_global_variable("teams_shortcut_enabled")
 	if teams_shortcut_enabled == null:
 		Zone.script_network_sync.set_global_variable("teams_shortcut_enabled", true)
@@ -26,7 +28,7 @@ func _process(_delta) -> void:
 			return
 		if get_viewport().gui_get_focus_owner() != null:
 			return
-		if not _is_teams_shortcut_enabled():
+		if not is_teams_shortcut_enabled():
 			hide()
 			return
 		toggle_teams_editor()

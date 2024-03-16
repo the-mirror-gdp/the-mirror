@@ -24,6 +24,9 @@ corner_radius_bottom_left = 10
 offset_bottom = 220.0
 script = ExtResource("2_trxqa")
 
+[node name="ToggleButton" parent="CategoryTitle" index="0" node_paths=PackedStringArray("properties")]
+properties = NodePath("../../Properties")
+
 [node name="Text" parent="CategoryTitle/ToggleButton/Name" index="3"]
 visible = false
 text = "SCRIPT NAME"

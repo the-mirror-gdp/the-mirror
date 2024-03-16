@@ -10,13 +10,7 @@ func evaluate() -> void:
 	var variable_name = inputs[1].value
 	if variable_object == null:
 		variable_object = attached_object
-	var type = outputs[0].port_type
-	if not variable_object.has_meta(&"MirrorScriptObjectVariables"):
-		outputs[0].value = false
-		return
-	var object_variables = variable_object.get_meta(&"MirrorScriptObjectVariables")
-	var value = TMDataUtil.has_variable_by_json_path_string(object_variables, variable_name)
-	outputs[0].value = value
+	outputs[0].value = Mirror.has_object_variable(variable_object, variable_name)
 
 
 func get_script_block_type() -> String:

@@ -15,6 +15,7 @@ dest_files=["res://.godot/imported/montserrat_extra_light_italic.ttf-1325698e7f9
 Rendering=null
 antialiasing=1
 generate_mipmaps=false
+disable_embedded_bitmaps=true
 multichannel_signed_distance_field=false
 msdf_pixel_range=8
 msdf_size=48

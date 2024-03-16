@@ -9,10 +9,12 @@ const OUTPUT_TABLE_HEADER: PackedStringArray = ["Output Name", "Data Type"]
 
 const PAGE_HEADER: String = """---
 sidebar_position: 3.9
+title: Visual Scripting API Reference
+sidebar_label: VS API Reference
 note: This page is auto-generated from the script API, do not manually edit it. See res://addons/mirror_internal/script_api_dumper/script_api_dumper.gd in the Godot app.
 ---
 
-# API Reference
+# Visual Scripting API Reference
 
 This page contains a reference of the entire visual scripting API available to you in The Mirror.
 """
@@ -107,7 +109,7 @@ static func all_script_blocks_to_markdown(script_blocks: Array[Dictionary]) -> S
 	var blocks_by_category: Dictionary = {}
 	for block in script_blocks:
 		var category_name: String = block.get("category", "Misc")
-		var category_blocks: Array = blocks_by_category.get_or_set_default(category_name, [])
+		var category_blocks: Array = blocks_by_category.get_or_add(category_name, [])
 		category_blocks.append(block)
 	var ret: String = ""
 	for category_name in blocks_by_category:

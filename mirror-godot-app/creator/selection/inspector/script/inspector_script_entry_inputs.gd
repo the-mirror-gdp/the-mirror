@@ -40,7 +40,7 @@ func _setup_parameter(parameter_name: String, parameter_data: Array) -> void:
 	if param_type == ScriptBlock.PortType.INT:
 		param_scene.step = 1.0
 	param_scene.label_text = parameter_name
-	param_scene.reset_value = _target_script_instance.get_default_value_of_entry_inspector_parameter(_entry_id, parameter_name)
+	param_scene.reset_value = Serialization.type_convert_any(_target_script_instance.get_default_value_of_entry_inspector_parameter(_entry_id, parameter_name), param_type)
 	# Be careful, the order matters here! Value editors with setters
 	# that use onready vars can only be used after adding as a child,
 	# and then we need to refresh if a refresh method exists.

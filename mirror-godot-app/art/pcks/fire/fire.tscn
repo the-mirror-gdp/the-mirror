@@ -1,8 +1,10 @@
 [gd_scene load_steps=52 format=3 uid="uid://bphc6yd3mfbrf"]
 
 [ext_resource type="Shader" uid="uid://dbifx7w3uxmev" path="res://art/pcks/fire/fire.tres" id="1_kwp77"]
-[ext_resource type="Texture2D" uid="uid://cwitpxm8ohkex" path="res://art/pcks/fire/PNG/flame_04.png" id="2_loap5"]
-[ext_resource type="Texture2D" uid="uid://buqhqnkuixure" path="res://art/pcks/fire/PNG/trace_01.png" id="3_i8tqf"]
+[ext_resource type="Texture2D" uid="uid://cwitpxm8ohkex" path="res://art/pcks/fire/png/flame_04.png" id="2_loap5"]
+[ext_resource type="Texture2D" uid="uid://buqhqnkuixure" path="res://art/pcks/fire/png/trace_01.png" id="3_i8tqf"]
+
+[sub_resource type="JSphereShape3D" id="JSphereShape3D_6dh5j"]
 
 [sub_resource type="Gradient" id="Gradient_3uhp5"]
 interpolation_mode = 2
@@ -50,11 +52,11 @@ point_count = 3
 curve = SubResource("Curve_nowea")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_81otj"]
+angle_min = -180.0
+angle_max = 180.0
 gravity = Vector3(0, 5, 0)
 damping_min = 1.06
 damping_max = 2.0
-angle_min = -180.0
-angle_max = 180.0
 scale_curve = SubResource("CurveTexture_vcvfe")
 color_ramp = SubResource("GradientTexture1D_cxj22")
 
@@ -364,19 +366,19 @@ curve = SubResource("Curve_jxraa")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hlrar"]
 lifetime_randomness = 0.19
-emission_shape = 2
-emission_sphere_radius = 0.4
 particle_flag_align_y = true
 particle_flag_rotate_y = true
-direction = Vector3(1, 0, 1)
-spread = 144.2
-gravity = Vector3(0, 7, 0)
-initial_velocity_min = 0.5
-initial_velocity_max = 1.0
-radial_accel_min = -1.1
-radial_accel_max = 1.06
+emission_shape = 2
+emission_sphere_radius = 0.4
 angle_min = -30.0
 angle_max = 30.0
+direction = Vector3(1, 0, 1)
+spread = 144.2
+initial_velocity_min = 0.5
+initial_velocity_max = 1.0
+gravity = Vector3(0, 7, 0)
+radial_accel_min = -1.1
+radial_accel_max = 1.06
 scale_min = 0.1
 scale_max = 0.25
 scale_curve = SubResource("CurveTexture_h5pj0")
@@ -384,12 +386,10 @@ turbulence_noise_speed = Vector3(0.4, 0.5, 0.4)
 
 [sub_resource type="QuadMesh" id="QuadMesh_kxsio"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_oyayp"]
-radius = 0.419023
-
-[node name="Fire" type="StaticBody3D"]
-collision_layer = 1036
-collision_mask = 240
+[node name="Fire" type="JBody3D"]
+body_mode = 0
+shape = SubResource("JSphereShape3D_6dh5j")
+metadata/imported_jbody_mode = true
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="."]
 material_override = SubResource("ShaderMaterial_5jsy0")
@@ -414,7 +414,3 @@ draw_pass_1 = SubResource("QuadMesh_kxsio")
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 light_color = Color(1, 0.941176, 0.858824, 1)
 omni_range = 1.90284
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(0.999806, 0.019686, 0, -0.019686, 0.999806, 0, 0, 0, 1, 0, 0, 0)
-shape = SubResource("SphereShape3D_oyayp")

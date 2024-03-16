@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://1ja2qvyjl80c"]
+
+[ext_resource type="FontFile" uid="uid://bpw8ywxvp8ctj" path="res://ui/common/fonts/montserrat/montserrat_regular.ttf" id="1_yub3r"]
+
+[node name="EmojiButton" type="Button"]
+custom_minimum_size = Vector2(30, 30)
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("1_yub3r")
+text = "🙂 "
+flat = true
+text_overrun_behavior = 1

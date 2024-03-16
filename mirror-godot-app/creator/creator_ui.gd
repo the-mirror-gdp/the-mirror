@@ -306,7 +306,21 @@ func get_safe_area() -> Rect2:
 	return rect
 
 
-func open_visual_script_editor(script_instance: ScriptInstance, script_block: ScriptBlock, error_text: String) -> void:
+func show_error_in_gd_script_editor_if_open(script_instance: GDScriptInstance, line_number: int, error_text: String) -> bool:
+	return _script_editor.show_error_in_gd_script_editor_if_open(script_instance, line_number, error_text)
+
+
+## Opens only GDScriptInstances, focusing on a specific line.
+func open_gd_script_editor(script_instance: GDScriptInstance, line_number: int, error_text: String) -> void:
+	if visible:
+		if script_instance.target_node is SpaceObject:
+			object_selection.select_object(script_instance.target_node)
+			object_selection.set_inspector_tab(1)
+		_script_editor.focus_line_in_text_script(script_instance, line_number, error_text)
+
+
+## Opens only VisualScriptInstances, focusing on a specific visual block.
+func open_visual_script_editor(script_instance: VisualScriptInstance, script_block: ScriptBlock, error_text: String) -> void:
 	if visible:
 		if script_instance.target_node is SpaceObject:
 			object_selection.select_object(script_instance.target_node)

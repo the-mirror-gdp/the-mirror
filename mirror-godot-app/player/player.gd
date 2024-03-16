@@ -309,7 +309,7 @@ func _process(delta: float) -> void:
 		process_interaction(camera_get_raycast_dict(), is_intent_to_interact())
 	if (
 			Input.is_action_just_pressed("player_kill") and
-			ProjectSettings.get_setting("feature_flags/suicide_keybinding")
+			ProjectSettings.get_setting("feature_flags/suicide_keybinding", false)
 	):
 		damage_handler.damage(1e6, get_user_id()) # A million damage should do.
 

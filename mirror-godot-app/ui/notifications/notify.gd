@@ -19,7 +19,10 @@ func get_notifications_ui():
 
 
 ## Use for generic informational messages.
+@rpc("call_remote", "authority", "reliable")
 func info(title: String, description: String, click_callable = null, is_static: bool = false, is_closable: bool = true, clickable_url = null) -> void:
+	if Zone.is_host():
+		info.rpc(title, description)
 	if _notifications_ui:
 		_notifications_ui.notify(title, description, click_callable, is_static, is_closable, clickable_url)
 	else:
@@ -27,7 +30,10 @@ func info(title: String, description: String, click_callable = null, is_static: 
 
 
 ## Use for success messages.
+@rpc("call_remote", "authority", "reliable")
 func success(title: String, description: String, click_callable = null) -> void:
+	if Zone.is_host():
+		success.rpc(title, description)
 	if _notifications_ui:
 		_notifications_ui.notify_success(title, description, click_callable)
 	else:
@@ -35,7 +41,10 @@ func success(title: String, description: String, click_callable = null) -> void:
 
 
 ## Use for warning messages.
+@rpc("call_remote", "authority", "reliable")
 func warning(title: String, description: String, click_callable = null) -> void:
+	if Zone.is_host():
+		warning.rpc(title, description)
 	if _notifications_ui:
 		_notifications_ui.notify_warning(title, description, click_callable)
 	else:
@@ -43,16 +52,22 @@ func warning(title: String, description: String, click_callable = null) -> void:
 
 
 ## Use for error messages.
+@rpc("call_remote", "authority", "reliable")
 func error(title: String, description: String, click_callable = null, is_static: bool = false, is_closable: bool = true) -> void:
+	if Zone.is_host():
+		error.rpc(title, description)
 	if _notifications_ui:
 		_notifications_ui.notify_error(title, description, click_callable, is_static, is_closable)
 	else:
 		_print_with_color("red", title, description)
 
 
-func status(title: String, description: String, status: Enums.NotifyStatus, click_callable = null) -> void:
+@rpc("call_remote", "authority", "reliable")
+func status(title: String, description: String, status_enum: Enums.NotifyStatus, click_callable = null) -> void:
+	if Zone.is_host():
+		status.rpc(title, description, status_enum)
 	if _notifications_ui:
-		_notifications_ui.notify_status(title, description, status, click_callable)
+		_notifications_ui.notify_status(title, description, status_enum, click_callable)
 	else:
 		match status:
 			Enums.NotifyStatus.INFO:

@@ -21,12 +21,7 @@ script = ExtResource("1_286av")
 layout_mode = 1
 
 [node name="GDScriptEditor" parent="." instance=ExtResource("3_2io6g")]
-layout_mode = 0
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-grow_horizontal = 1
-grow_vertical = 1
+layout_mode = 1
 
 [node name="ScriptEntryCreationDialog" type="ConfirmationDialog" parent="."]
 title = "Create Script Entry"
@@ -45,12 +40,17 @@ offset_bottom = 308.0
 script = ExtResource("7_w8ott")
 
 [connection signal="request_save_script_as_asset" from="VisualScriptEditor" to="." method="_on_request_save_script_as_asset"]
+[connection signal="request_script_editor_visibility" from="VisualScriptEditor" to="." method="set_visual_script_editor_visibility"]
 [connection signal="request_show_entry_creation_dialog" from="VisualScriptEditor" to="." method="_on_request_show_entry_creation_dialog"]
 [connection signal="request_toggle_variable_editor" from="VisualScriptEditor" to="." method="_on_request_toggle_variable_editor"]
 [connection signal="request_track_recently_used_space_script" from="VisualScriptEditor" to="." method="_on_request_track_recently_used_space_script"]
-[connection signal="request_visual_script_editor_visibility" from="VisualScriptEditor" to="." method="set_visual_script_editor_visibility"]
-[connection signal="confirmed" from="ScriptEntryCreationDialog" to="ScriptEntryCreationDialog" method="_on_confirmed" flags=18]
+[connection signal="request_save_script_as_asset" from="GDScriptEditor" to="." method="_on_request_save_script_as_asset"]
+[connection signal="request_script_editor_visibility" from="GDScriptEditor" to="." method="set_gd_script_editor_visibility"]
+[connection signal="request_show_entry_creation_dialog" from="GDScriptEditor" to="." method="_on_request_show_entry_creation_dialog"]
+[connection signal="request_toggle_variable_editor" from="GDScriptEditor" to="." method="_on_request_toggle_variable_editor"]
+[connection signal="request_track_recently_used_space_script" from="GDScriptEditor" to="." method="_on_request_track_recently_used_space_script"]
+[connection signal="confirmed" from="ScriptEntryCreationDialog" to="ScriptEntryCreationDialog" method="_on_confirmed"]
 [connection signal="create_entry_block" from="ScriptEntryCreationDialog" to="." method="_on_script_entry_creation_dialog_create_entry_block"]
 [connection signal="focus_entered" from="ScriptEntryCreationDialog" to="." method="_on_dialog_focus_entered"]
 [connection signal="focus_exited" from="ScriptEntryCreationDialog" to="." method="_on_dialog_focus_exited"]
-[connection signal="script_entry_creation_confirmed" from="ScriptEntryCreationDialog/ScriptEntryCreationMenu" to="ScriptEntryCreationDialog" method="_on_script_entry_creation_menu_confirmed" flags=18]
+[connection signal="script_entry_creation_confirmed" from="ScriptEntryCreationDialog/ScriptEntryCreationMenu" to="ScriptEntryCreationDialog" method="_on_script_entry_creation_menu_confirmed"]

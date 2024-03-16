@@ -53,7 +53,7 @@ func load_global_script_instances(serialized_script_instances: Array) -> void:
 func serialize_global_script_instances() -> Array:
 	var serialized_script_instances: Array = []
 	for script_inst in _script_instances:
-		var serialized: Dictionary = script_inst.serialize_to_json()
+		var serialized: Dictionary = script_inst.serialize_script_instance_to_json()
 		serialized_script_instances.append(serialized)
 	return serialized_script_instances
 

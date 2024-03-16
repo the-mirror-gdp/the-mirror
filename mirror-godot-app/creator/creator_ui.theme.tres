@@ -1,21 +1,17 @@
-[gd_resource type="Theme" load_steps=50 format=3 uid="uid://d1qd6ity2mdpl"]
+[gd_resource type="Theme" load_steps=46 format=3 uid="uid://d1qd6ity2mdpl"]
 
 [ext_resource type="FontVariation" uid="uid://bwp6hb31ol8la" path="res://ui/new_player_ui/inventory/title_font_bold.tres" id="1_qhqot"]
 [ext_resource type="StyleBox" uid="uid://biwid7pf726cm" path="res://ui/new_player_ui/inventory/panel_light_blue_rounded.tres" id="2_qkk8i"]
 [ext_resource type="StyleBox" uid="uid://d0agfj0dkjits" path="res://ui/new_player_ui/inventory/panel_light_blue_rounded_hover.tres" id="3_608lk"]
 [ext_resource type="StyleBox" uid="uid://bxdufxik1y0yu" path="res://ui/new_player_ui/inventory/panel_light_blue_rounded_pressed.tres" id="4_7gl5v"]
-[ext_resource type="Texture2D" uid="uid://dcxshtwsv4wbm" path="res://ui/art/checkbox_checked.svg" id="5_2lk37"]
 [ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="5_6nu1u"]
 [ext_resource type="FontFile" uid="uid://bjwepurchoc75" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_semi_bold.ttf" id="5_51sdf"]
-[ext_resource type="Texture2D" uid="uid://ctucqgbgww85m" path="res://ui/art/checkbox_unchecked.svg" id="6_3dbnd"]
 [ext_resource type="FontFile" uid="uid://bpw8ywxvp8ctj" path="res://ui/common/fonts/montserrat/montserrat_regular.ttf" id="6_3wysr"]
 [ext_resource type="FontFile" uid="uid://cgyrixnr8bppj" path="res://ui/common/fonts/montserrat/montserrat_medium.ttf" id="7_lkgfu"]
 [ext_resource type="StyleBox" uid="uid://dcdx4uxyjvmqv" path="res://ui/new_player_ui/inventory/panel_transparent_bg.tres" id="8_54h55"]
 [ext_resource type="FontFile" uid="uid://cyqoty8fo8udu" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_regular.ttf" id="9_fj6hh"]
 [ext_resource type="StyleBox" uid="uid://uqa5bs2gkql3" path="res://creator/common/theme/panel_slot_active.stylebox.tres" id="11_1dgo2"]
-[ext_resource type="Texture2D" uid="uid://7tnro5gaclt3" path="res://ui/art/radiobutton-selected-small.svg" id="11_v5w74"]
 [ext_resource type="StyleBox" uid="uid://bd8ph5tqojh8w" path="res://creator/common/theme/panel_slot_hover.stylebox.tres" id="12_6n06b"]
-[ext_resource type="Texture2D" uid="uid://cgjjs2r35tdy" path="res://ui/art/radiobutton-unselected-small.svg" id="12_lgtmx"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xvxpf"]
 content_margin_left = 5.0
@@ -392,8 +388,8 @@ ButtonLarge/styles/hover = SubResource("StyleBoxFlat_08h8l")
 ButtonLarge/styles/normal = SubResource("StyleBoxFlat_bxypn")
 ButtonLarge/styles/pressed = SubResource("StyleBoxFlat_vmgx3")
 CheckBox/font_sizes/font_size = 15
-CheckBox/icons/checked = ExtResource("5_2lk37")
-CheckBox/icons/unchecked = ExtResource("6_3dbnd")
+CheckBox/icons/checked = null
+CheckBox/icons/unchecked = null
 CheckBox/styles/disabled = SubResource("StyleBoxEmpty_7qqml")
 CheckBox/styles/focus = SubResource("StyleBoxEmpty_7qqml")
 CheckBox/styles/hover = SubResource("StyleBoxEmpty_7qqml")
@@ -436,8 +432,8 @@ PopupMenu/constants/item_end_padding = 4
 PopupMenu/constants/item_start_padding = 4
 PopupMenu/font_sizes/font_size = 16
 PopupMenu/fonts/font = SubResource("FontVariation_0g3hl")
-PopupMenu/icons/radio_checked = ExtResource("11_v5w74")
-PopupMenu/icons/radio_unchecked = ExtResource("12_lgtmx")
+PopupMenu/icons/radio_checked = null
+PopupMenu/icons/radio_unchecked = null
 PopupMenu/styles/hover = SubResource("StyleBoxFlat_glqot")
 PopupMenu/styles/panel = SubResource("StyleBoxFlat_rxdm6")
 RichTextLabel/fonts/normal_font = ExtResource("1_qhqot")

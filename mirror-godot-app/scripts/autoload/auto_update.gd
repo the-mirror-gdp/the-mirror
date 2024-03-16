@@ -169,7 +169,7 @@ func _win32_copy_and_run_executable(new_binary_path: String) -> bool:
 			push_error("_win32_copy_and_run_executable, Failed to create game instance for executable: ", new_binary_path)
 			return false
 		print("Successfully ran new executable - this process will now close")
-		get_tree().quit(0)
+		Zone.client.quit(0)
 		return true
 	print("failed to copy absolute executable win32 [critical error]")
 	push_error("failed to copy absolute executable win32 [critical error]")
@@ -265,7 +265,7 @@ func _extract_and_relaunch() -> void:
 			push_error("Failed to create game instance for executable: ", platform_executable)
 	report_progress.emit(100, "Rebooting game")
 	print("===== Rebooting game =====")
-	get_tree().quit(0)
+	Zone.client.quit(0)
 
 
 func _try_create_update_directory() -> void:

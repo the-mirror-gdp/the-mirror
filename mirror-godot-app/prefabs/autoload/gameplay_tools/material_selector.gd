@@ -43,7 +43,7 @@ func _get_body(camera: Camera3D) -> JBody3D:
 		return null
 	var gizmo_raycast_dict = camera.get_mouse_raycast([
 		"STATIC",
-		"RIGID",
+		"DYNAMIC",
 		"NO_COLLIDE"
 	])
 	if not gizmo_raycast_dict.has("collider"):

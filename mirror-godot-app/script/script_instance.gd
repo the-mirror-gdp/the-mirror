@@ -1,8 +1,8 @@
 ## ScriptInstance combines together multiple things:
-## * A script with entries that connect to signals to run.
+## * Script data loaded from an entity or an asset.
+## * A node to be attached to (treated as the "self" object of the script).
+## * A list of entries that connect to signals to run.
 ## * A list of parameters that get passed to the entries when run.
-## * A node to be attached to (treated as the "self" object of the script)
-## TODO: Create derived classes VisualScriptInstance and GDScriptInstance.
 class_name ScriptInstance
 extends Object
 
@@ -16,6 +16,8 @@ signal script_contents_deleted()
 ## Emitted when the script contents are updated from the network.
 ## This should never be connected to anything that sends a network update.
 signal script_entity_data_updated_from_network()
+## Emitted when the script entries change and therefore the inspector needs to be refreshed.
+signal script_entries_changed()
 ## Emitted when the instance changes locally, but not the script data,
 ## and only the instance needs to be synced over the network.
 signal request_save_script_instance()
@@ -34,6 +36,10 @@ var script_name: String = ""
 var is_script_asset: bool = false
 
 
+func apply_inspector_parameter_values() -> void:
+	assert(false, "This method must be overridden in a derived class.")
+
+
 func can_execute() -> bool:
 	if not script_enabled:
 		return false
@@ -47,9 +53,18 @@ func cleanup_script_instance() -> void:
 	target_node = null
 
 
+func get_default_value_of_entry_inspector_parameter(entry_id: String, parameter_name: String) -> Variant:
+	assert(false, "This method must be overridden in a derived class.")
+	return null
+
+
+func get_friendly_name_of_entry_id(entry_id: String) -> String:
+	return entry_id
+
+
 ## Serializes a Dictionary of only valid JSON types for saving to the database.
 ## For example, we represent `Vector3(1, 2, 3)` as a JSON array of size 3 `[1, 2, 3]`.
-func serialize_to_json() -> Dictionary:
+func serialize_script_instance_to_json() -> Dictionary:
 	var ret: Dictionary = {
 		"enabled": script_enabled,
 		"execute_in_edit": execute_in_edit,
@@ -70,6 +85,12 @@ func is_script_instance_setup() -> bool:
 	return false
 
 
+func setup(node: Node, script_inst_dict: Dictionary) -> void:
+	target_node = node
+	var script_entity_data: Dictionary = await Net.script_client.get_script_entity(script_id)
+	setup_script_entity_data(script_entity_data)
+
+
 func setup_script_instance_data(script_inst_dict: Dictionary) -> void:
 	if script_inst_dict.has("enabled"):
 		script_enabled = script_inst_dict["enabled"]
@@ -83,7 +104,7 @@ func setup_script_instance_data(script_inst_dict: Dictionary) -> void:
 
 
 ## Must be run only after setup_script_instance_data()
-func setup_script_data(script_entity_data: Dictionary) -> void:
+func setup_script_entity_data(script_entity_data: Dictionary) -> void:
 	if script_entity_data.has("name"):
 		script_name = script_entity_data["name"]
 

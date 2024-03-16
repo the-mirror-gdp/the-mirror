@@ -25,7 +25,6 @@ expand_icon = true
 [node name="CreateGDScript" type="Button" parent="CreateNewScript"]
 custom_minimum_size = Vector2(150, 2.08165e-12)
 layout_mode = 2
-disabled = true
 text = "New GDScript"
 icon = ExtResource("3_jay8g")
 expand_icon = true

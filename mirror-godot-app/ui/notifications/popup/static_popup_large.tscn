@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://bbl6spxk57ndw"]
 
 [ext_resource type="Theme" uid="uid://cxlukwwcd2wrt" path="res://ui/notifications/popup/base_popup.theme.tres" id="1_hda8g"]
-[ext_resource type="Script" path="res://ui/notifications/popup/static_popup.gd" id="2_uvdde"]
+[ext_resource type="Script" path="res://ui/notifications/popup/static_popup.gd" id="2_0myl8"]
 [ext_resource type="Texture2D" uid="uid://c2q0pg4sn4j4l" path="res://ui/notifications/popup/info_icon.png" id="3_lug6c"]
 [ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="4_8b1f2"]
 [ext_resource type="Texture2D" uid="uid://pyiiu7es8s11" path="res://ui/art/close.svg" id="5_jyftu"]
@@ -17,9 +17,9 @@ corner_radius_bottom_left = 5
 font = ExtResource("4_8b1f2")
 font_size = 28
 
-[node name="StaticPopup" type="Panel"]
+[node name="StaticPopupLarge" type="Panel"]
 custom_minimum_size = Vector2(600, 400)
-anchors_preset = -1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 100.0
@@ -33,9 +33,10 @@ size_flags_vertical = 3
 mouse_filter = 1
 theme = ExtResource("1_hda8g")
 theme_override_styles/panel = SubResource("StyleBoxFlat_v6j2s")
-script = ExtResource("2_uvdde")
+script = ExtResource("2_0myl8")
 
 [node name="TopBorder" type="ColorRect" parent="."]
+unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(0, 5)
 layout_mode = 0
@@ -65,7 +66,8 @@ visible = false
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 
-[node name="Circle" type="TextureRect" parent="ContentContainer/HBoxContainer/Icon"]
+[node name="IconTexture" type="TextureRect" parent="ContentContainer/HBoxContainer/Icon"]
+unique_name_in_owner = true
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0

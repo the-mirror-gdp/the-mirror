@@ -70,7 +70,7 @@ func _update_tags() -> bool:
 		if old_tags.has(updated_tag.name):
 			old_tags.erase(updated_tag.name) # remove it from this array
 		else:
-			add_tags.get_or_set_default(updated_tag.type,[]).append(updated_tag.name)
+			add_tags.get_or_add(updated_tag.type,[]).append(updated_tag.name)
 	# everything that was a leftover in old_tags array should be removed:
 	var promises = []
 	for tag_name in old_tags:

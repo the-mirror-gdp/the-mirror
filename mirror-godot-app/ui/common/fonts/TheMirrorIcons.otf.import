@@ -15,6 +15,7 @@ dest_files=["res://.godot/imported/TheMirrorIcons.otf-6f7e6e7d22e5dc0bf3781e2a5e
 Rendering=null
 antialiasing=1
 generate_mipmaps=false
+disable_embedded_bitmaps=true
 multichannel_signed_distance_field=true
 msdf_pixel_range=8
 msdf_size=48

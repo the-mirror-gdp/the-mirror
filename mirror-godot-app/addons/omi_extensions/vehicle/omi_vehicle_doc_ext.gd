@@ -73,10 +73,10 @@ func _convert_scene_node(state: GLTFState, gltf_node: GLTFNode, scene_node: Node
 
 func _get_or_create_state_wheels_in_state(gltf_state: GLTFState) -> Array:
 	var state_json: Dictionary = gltf_state.get_json()
-	var state_extensions: Dictionary = state_json.get_or_set_default("extensions", {})
-	var omi_vehicle_wheel_ext: Dictionary = state_extensions.get_or_set_default("OMI_vehicle_wheel", {})
+	var state_extensions: Dictionary = state_json.get_or_add("extensions", {})
+	var omi_vehicle_wheel_ext: Dictionary = state_extensions.get_or_add("OMI_vehicle_wheel", {})
 	gltf_state.add_used_extension("OMI_vehicle_wheel", false)
-	var state_wheels: Array = omi_vehicle_wheel_ext.get_or_set_default("wheels", [])
+	var state_wheels: Array = omi_vehicle_wheel_ext.get_or_add("wheels", [])
 	return state_wheels
 
 
@@ -95,12 +95,12 @@ func _export_node(state: GLTFState, gltf_node: GLTFNode, node_json: Dictionary, 
 	var gltf_vehicle_body: GLTFVehicleBody = gltf_node.get_additional_data(&"GLTFVehicleBody")
 	if gltf_vehicle_body != null:
 		gltf_vehicle_body.pilot_seat_index = _node_index_from_scene_node(state, gltf_vehicle_body.pilot_seat_node)
-		var node_extensions = node_json.get_or_set_default("extensions", {})
+		var node_extensions = node_json.get_or_add("extensions", {})
 		state.add_used_extension("OMI_vehicle_body", false)
 		node_extensions["OMI_vehicle_body"] = gltf_vehicle_body.to_dictionary()
 	var gltf_vehicle_wheel: GLTFVehicleWheel = gltf_node.get_additional_data(&"GLTFVehicleWheel")
 	if gltf_vehicle_wheel != null:
-		var node_extensions = node_json.get_or_set_default("extensions", {})
+		var node_extensions = node_json.get_or_add("extensions", {})
 		var state_wheels = _get_or_create_state_wheels_in_state(state)
 		var size = state_wheels.size()
 		var omi_vehicle_wheel_ext: Dictionary = {}

@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://clraq8sj7pby6"]
-
-[ext_resource type="Script" path="res://player/cameras/voxel_viewer/camera_voxel_viewer.gd" id="1_thawl"]
-
-[node name="CameraVoxelViewer" type="Node3D"]
-script = ExtResource("1_thawl")

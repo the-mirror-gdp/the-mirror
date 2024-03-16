@@ -82,7 +82,7 @@ func _export_node(state: GLTFState, _gltf_node: GLTFNode, json: Dictionary, node
 	if node.has_meta(&"OMI_seat"):
 		var omi_seat_ext: Dictionary = _export_omi_seat(node.get_meta(&"OMI_seat"))
 		# Write to the GLTF node JSON.
-		var extensions: Dictionary = json.get_or_set_default("extensions", {})
+		var extensions: Dictionary = json.get_or_add("extensions", {})
 		extensions["OMI_seat"] = omi_seat_ext
 		state.add_used_extension("OMI_seat", false)
 	return OK

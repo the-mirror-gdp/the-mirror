@@ -360,7 +360,7 @@ func duplicate_script_blocks(old_blocks: Array[ScriptBlock], offset: Vector2) ->
 
 
 # Serialization/saving methods.
-func serialize_to_json() -> Array[Dictionary]:
+func serialize_visual_script_builder_to_json() -> Array[Dictionary]:
 	return serialize_some_blocks_to_json(all_blocks)
 
 

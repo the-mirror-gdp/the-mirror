@@ -1,6 +1,4 @@
-[gd_resource type="ShaderMaterial" load_steps=18 format=3 uid="uid://barqn422xmitk"]
-
-[ext_resource type="Texture2D" uid="uid://cpv0poxcglr16" path="res://player/equipable/gun/muzzle_flash/flame.png" id="1_ay6xa"]
+[gd_resource type="ShaderMaterial" load_steps=17 format=3 uid="uid://barqn422xmitk"]
 
 [sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_fc5t2"]
 input_name = "uv"
@@ -56,7 +54,6 @@ default_value = 3.0
 operator = 2
 
 [sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_303w0"]
-texture = ExtResource("1_ay6xa")
 
 [sub_resource type="VisualShaderNodeUVFunc" id="VisualShaderNodeUVFunc_aydj7"]
 default_input_values = [1, Vector2(0.5, 0.5), 2, Vector2(0.5, 0.5)]

@@ -375,7 +375,7 @@ func _delete_global_variable_network(variable_name: String) -> void:
 
 # Node properties.
 func set_property_on_node(node: Node, property: StringName, value: Variant) -> void:
-	var net_queue_props: Dictionary = _net_queue_node_properties.get_or_set_default(node, {})
+	var net_queue_props: Dictionary = _net_queue_node_properties.get_or_add(node, {})
 	net_queue_props[property] = value
 	_set_property_on_node(node, property, value)
 
@@ -416,7 +416,7 @@ func tween_property_on_node(node: Node, property: StringName, to_value: Variant,
 	if to_value is Object:
 		Notify.error("Tween Failed", "Tweening an object is not a sensible operation. Aborting.")
 		return
-	var net_queue_props: Dictionary = _net_queue_tweened_node_properties.get_or_set_default(node, {})
+	var net_queue_props: Dictionary = _net_queue_tweened_node_properties.get_or_add(node, {})
 	net_queue_props[property] = [to_value, duration, trans, easing]
 
 
@@ -466,13 +466,13 @@ func get_variables_on_node_at_path(node_path: NodePath) -> Dictionary:
 
 func set_variable_on_node_at_path(node_path: NodePath, variable: String, value: Variant) -> void:
 	var node: Node = get_node(node_path)
-	var net_queue_vars: Dictionary = _net_queue_node_variables.get_or_set_default(node, {})
+	var net_queue_vars: Dictionary = _net_queue_node_variables.get_or_add(node, {})
 	net_queue_vars[variable] = value
 	_set_variable_on_node(node, variable, value)
 
 
 func set_variable_on_node(node: Node, variable: String, value: Variant) -> void:
-	var net_queue_vars: Dictionary = _net_queue_node_variables.get_or_set_default(node, {})
+	var net_queue_vars: Dictionary = _net_queue_node_variables.get_or_add(node, {})
 	net_queue_vars[variable] = value
 	_set_variable_on_node(node, variable, value)
 
@@ -510,7 +510,7 @@ func _set_variable_on_node(node: Node, variable_name: String, variable_value: Va
 	TMDataUtil.set_variable_by_json_path_string(object_variables, variable_name, variable_value)
 	# Keep track of all node variables ever set for use with the variable editor.
 	var node_path: NodePath = node.get_path()
-	var node_variables_in_all: Dictionary = _all_set_variables_on_nodes.get_or_set_default(node_path, {})
+	var node_variables_in_all: Dictionary = _all_set_variables_on_nodes.get_or_add(node_path, {})
 	TMDataUtil.set_variable_by_json_path_string(node_variables_in_all, variable_name, variable_value)
 
 
@@ -518,7 +518,7 @@ func tween_variable_on_node(node: Node, variable: String, to_value: Variant, dur
 	if to_value is Object:
 		Notify.error("Tween Failed", "Tweening an Object value is not a sensible operation. Aborting.")
 		return
-	var net_queue_vars: Dictionary = _net_queue_tweened_node_variables.get_or_set_default(node, {})
+	var net_queue_vars: Dictionary = _net_queue_tweened_node_variables.get_or_add(node, {})
 	net_queue_vars[variable] = [to_value, duration, trans, easing]
 
 
@@ -682,7 +682,7 @@ func _serialize_node_vars_props(input_data: Dictionary) -> Dictionary:
 func _serialize_node_vars_props_for_path(node_path: NodePath, input_node_data: Dictionary, destination: Dictionary) -> void:
 	for i in range(1, node_path.get_name_count()):
 		var path_name: StringName = node_path.get_name(i)
-		destination = destination.get_or_set_default(path_name, {})
+		destination = destination.get_or_add(path_name, {})
 	_serialize_var_prop_data(input_node_data, destination)
 
 
@@ -808,6 +808,45 @@ func _server_stop_audio_node_on_clients_network(audio_player_path: NodePath) -> 
 	var audio_player_node = get_node(audio_player_path)
 	if audio_player_node is AudioStreamPlayer or audio_player_node is AudioStreamPlayer3D:
 		audio_player_node.stop()
+
+
+# GDScript runtime error handling.
+func handle_tmusergdscript_runtime_error(script_instance: GDScriptInstance, error_message: String, line_number: int) -> void:
+	if Zone.is_client():
+		_handle_tmusergdscript_runtime_error_on_clients(script_instance, error_message, line_number)
+		return
+	var target_node_path = script_instance.target_node.get_path()
+	_handle_tmusergdscript_runtime_error_server_to_clients.rpc(target_node_path, script_instance.script_id, error_message, line_number)
+
+
+@rpc("call_remote", "authority", "reliable")
+func _handle_tmusergdscript_runtime_error_server_to_clients(target_node_path: NodePath, script_id: String, error_message: String, line_number: int) -> void:
+	var target_node: Node = get_node(target_node_path)
+	if target_node and target_node.has_method(&"get_script_instances"):
+		var script_instances: Array[ScriptInstance] = target_node.get_script_instances()
+		for script_inst in script_instances:
+			if script_inst.script_id == script_id:
+				_handle_tmusergdscript_runtime_error_on_clients(script_inst, error_message, line_number)
+				return
+	# No matching script on the object? Plan B, do we have any script instance matching this?
+	var any_script_inst: ScriptInstance = Net.script_client.get_any_script_instance_for_script_id(script_id)
+	if any_script_inst:
+		_handle_tmusergdscript_runtime_error_on_clients(any_script_inst, error_message, line_number)
+	# Plan C, just print the message bare.
+	Notify.error("GDScript Error", error_message)
+
+
+func _handle_tmusergdscript_runtime_error_on_clients(script_instance: ScriptInstance, error_message: String, line_number: int) -> void:
+	if GameUI.creator_ui:
+		if GameUI.creator_ui.show_error_in_gd_script_editor_if_open(script_instance, line_number, error_message):
+			return
+	# If the script editor is not open, display a notification with a link to open.
+	var obj_name_error: String = error_message
+	if script_instance.target_node is SpaceObject:
+		obj_name_error = script_instance.target_node.get_space_object_name() + ": " + error_message
+	elif script_instance.target_node is SpaceGlobalScripts:
+		obj_name_error = "Global script: " + error_message
+	Notify.error("GDScript Error", obj_name_error, GameUI.creator_ui.show_error_in_gd_script_editor_if_open.bind(script_instance, line_number, error_message))
 
 
 # Physics.

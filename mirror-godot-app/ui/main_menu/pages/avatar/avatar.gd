@@ -118,9 +118,11 @@ func _on_connect_pressed() -> void:
 	_on_avatar_downloaded()
 
 
-func _promise_set_preview_model(url: String) -> void:
-	_target_avatar_url = url
-	var promise = Net.file_client.get_model_instance_promise(url)
+func _promise_set_preview_model(avatar_url: String) -> void:
+	if _target_avatar_url == avatar_url:
+		return # Already loaded.
+	_target_avatar_url = avatar_url
+	var promise = Net.file_client.get_model_instance_promise(avatar_url)
 	_avatar_preview.show_loading()
 	await promise.wait_till_fulfilled()
 	if promise.is_error():
@@ -131,7 +133,6 @@ func _promise_set_preview_model(url: String) -> void:
 
 
 func _on_avatar_downloaded() -> void:
-	_target_avatar_url = _avatar_download_url
 	_connect_btn.text = "Connect"
 	_promise_set_preview_model(_avatar_download_url)
 

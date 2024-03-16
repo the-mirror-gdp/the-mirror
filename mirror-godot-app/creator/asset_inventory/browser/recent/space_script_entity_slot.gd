@@ -49,7 +49,7 @@ func edit_script_entity() -> void:
 	else:
 		recent_script_instance = VisualScriptInstance.new()
 	recent_script_instance.script_id = script_entity_id
-	recent_script_instance.setup_script_data(script_entity)
+	recent_script_instance.setup_script_entity_data(script_entity)
 	request_edit_script_instance.emit(recent_script_instance)
 
 

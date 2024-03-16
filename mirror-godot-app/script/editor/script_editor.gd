@@ -49,7 +49,7 @@ func load_from_asset_data(asset_data: AssetData) -> void:
 	if not result is Dictionary:
 		return
 	var script_instance := ScriptInstance.create(result)
-	script_instance.setup_script_data(result)
+	script_instance.setup_script_entity_data(result)
 	# Note: This ID code must be separate from the setup_script_instance_data()
 	# script_id code, which is for Entities, not Assets.
 	script_instance.script_id = result["id"]
@@ -66,6 +66,7 @@ func _load_from_script_instance(script_instance: ScriptInstance, rezoom: bool = 
 	_script_instance = script_instance
 	_track_recently_edited_script(script_instance)
 	if script_instance is GDScriptInstance:
+		_gd_script_editor.load_from_script_instance(script_instance)
 		set_gd_script_editor_visibility(true)
 	elif script_instance is VisualScriptInstance:
 		_visual_script_editor.load_from_script_instance(script_instance, rezoom)
@@ -137,24 +138,29 @@ func focus_block_in_visual_script(script_instance: ScriptInstance, script_block:
 	set_visual_script_editor_visibility(true)
 
 
+func focus_line_in_text_script(script_instance: ScriptInstance, line_number: int, error_text: String) -> void:
+	_gd_script_editor.focus_line_in_script(script_instance, line_number, error_text)
+	set_gd_script_editor_visibility(true)
+
+
 func delete_selection() -> void:
 	if _visual_script_editor.visible:
-		_visual_script_editor.delete_selected_script_blocks()
+		_visual_script_editor.delete_selection()
 
 
 func duplicate_selection() -> void:
 	if _visual_script_editor.visible:
-		_visual_script_editor.duplicate_selected_script_blocks()
+		_visual_script_editor.duplicate_selection()
 
 
 func copy_selection() -> void:
 	if _visual_script_editor.visible:
-		_visual_script_editor.copy_selected_script_blocks()
+		_visual_script_editor.copy_selection()
 
 
 func paste_copied_data() -> void:
 	if _visual_script_editor.visible:
-		_visual_script_editor.paste_copied_script_blocks()
+		_visual_script_editor.paste_copied_data()
 
 
 func set_gd_script_editor_visibility(is_editor_visible: bool) -> void:
@@ -167,6 +173,10 @@ func set_visual_script_editor_visibility(is_editor_visible: bool) -> void:
 	_script_editor_holder.visible = is_editor_visible
 	_gd_script_editor.visible = not is_editor_visible
 	_visual_script_editor.visible = is_editor_visible
+
+
+func show_error_in_gd_script_editor_if_open(script_instance: GDScriptInstance, line_number: int, error_text: String) -> bool:
+	return _gd_script_editor.show_error_if_script_open(script_instance, line_number, error_text)
 
 
 func _update_script_editor_position() -> void:
@@ -218,8 +228,16 @@ func _on_request_show_entry_creation_dialog(target_node: Node) -> void:
 
 
 func _on_script_entry_creation_dialog_create_entry_block(block_json: Dictionary) -> void:
+	if _gd_script_editor.visible:
+		if block_json["type"] == "entry":
+			_gd_script_editor.create_entry_from_dialog(block_json)
+		else:
+			assert(false, "This should never be reached, GDScript does not have visual script blocks.")
 	if _visual_script_editor.visible:
-		_visual_script_editor.create_new_script_block_from_json(block_json)
+		if block_json["type"] == "entry":
+			_visual_script_editor.create_entry_from_dialog(block_json)
+		else:
+			_visual_script_editor.create_new_script_block_from_json(block_json)
 
 
 func _on_request_save_script_as_asset(script_instance: ScriptInstance) -> void:

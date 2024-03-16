@@ -22,3 +22,4 @@ corner_detail = 5
 [resource]
 Panel/styles/panel = SubResource("StyleBoxFlat_cm3ri")
 Panel/styles/panel_fg = SubResource("StyleBoxFlat_3rc0u")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_cm3ri")

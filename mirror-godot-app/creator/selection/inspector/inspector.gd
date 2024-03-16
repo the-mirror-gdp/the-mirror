@@ -18,7 +18,6 @@ const _VISIBILITY_CATEGORY = preload("res://creator/selection/inspector/categori
 const _SCRIPT_INSTANCE_CATEGORY = preload("res://creator/selection/inspector/script/inspector_script_instance.tscn")
 const _MODEL_NODES_CATEGORY = preload("res://creator/selection/inspector/nodes/inspector_model_nodes.tscn")
 const _EXTRA_NODE_CATEGORY = preload("res://creator/selection/inspector/nodes/inspector_extra_node.tscn")
-const _TERRAIN_CATEGORY = preload("res://creator/selection/inspector/categories/inspector_terrain.tscn")
 const _TRANSFORM_CATEGORY = preload("res://creator/selection/inspector/categories/inspector_transform.tscn")
 const _MODEL_PRIMITIVE_CATEGORY = preload("res://creator/selection/inspector/categories/inspector_model_primitive.tscn")
 const _MODEL_ROOT_CATEGORY = preload("res://creator/selection/inspector/categories/inspector_model_root.tscn")
@@ -310,8 +309,6 @@ func _setup_new_categories(target_nodes: Array[Node]) -> void:
 		if target_node is SpaceObject and target_node.asset_type == Enums.ASSET_TYPE.MESH:
 			_setup_category(target_node, _PHYSICS_CATEGORY, custom_suffix)
 			_setup_category(target_node, _VISIBILITY_CATEGORY, custom_suffix)
-		if target_node is SpaceTemplate:
-			_setup_category(target_node, _TERRAIN_CATEGORY, custom_suffix)
 		if target_node is WorldEnvironment:
 			_setup_category(target_node, _ENVIRONMENT_CATEGORY, custom_suffix)
 		if target_node is ModelPrimitive:

@@ -4,13 +4,18 @@ class_name ScriptBlockEntryBase
 extends ScriptBlockSequenced
 
 
-var script_instance: ScriptInstance
+var script_instance: VisualScriptInstance
 var entry_id: String = "" # For a script to keep track of inspector parameters.
 var entry_node: Node # The node that emits the signal this entry listens for.
 var entry_path: String = "" # NodePath as String for interop reasons.
 var entry_signal: String = ""
 var entry_connection_valid: bool = false
 var parameters: ScriptEntryParameters
+
+
+func cleanup_script_block_for_deletion() -> void:
+	super()
+	parameters.free()
 
 
 func setup(block_json: Dictionary) -> void:
@@ -81,9 +86,13 @@ func setup_signal() -> void:
 				entry_connection_valid = false
 				return
 			_add_user_signal(entry_signal_sname)
+			var signal_params_snake: Dictionary = {}
+			for param in parameters.signal_parameters:
+				var snake: String = param.to_snake_case()
+				signal_params_snake[snake] = parameters.signal_parameters[param]
 			var signal_signature: Dictionary = {
 				"signal": entry_signal_sname,
-				"signalParameters": parameters.signal_parameters,
+				"signalParameters": signal_params_snake,
 			}
 			ScriptSignalRegistration.register_user_signal_signature(signal_signature)
 	var signal_callable: Callable = _get_callable_for_event_signal()

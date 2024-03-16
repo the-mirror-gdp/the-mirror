@@ -197,7 +197,7 @@ static func _add_registered_struct_methods_to_registered_blocks(script_blocks: A
 			for_struct_type["name"] = struct_type_friendly_name + " " + friendly_method_name
 			for_struct_type["category"] = struct_type_friendly_name
 			# If we have any math ports, convert them to the struct type.
-			var inputs: Array = for_struct_type.get_or_set_default("inputs", [])
+			var inputs: Array = for_struct_type.get_or_add("inputs", [])
 			for input in inputs:
 				if input[1] == ScriptBlock.PortType.MATH:
 					input[1] = struct_type
@@ -205,7 +205,7 @@ static func _add_registered_struct_methods_to_registered_blocks(script_blocks: A
 			# Add one input port for the struct, and one output port to pass it through.
 			var port: Array = [struct_type_friendly_name, struct_type, type_convert("", struct_type)]
 			inputs.push_front(port)
-			var outputs: Array = for_struct_type.get_or_set_default("outputs", [])
+			var outputs: Array = for_struct_type.get_or_add("outputs", [])
 			if not typed_output_name.is_empty():
 				port = port.duplicate(false)
 				port[0] = typed_output_name
@@ -1326,7 +1326,7 @@ const _REGISTERED_BLOCKS: Array[Dictionary] = [
 		]
 	},
 	{
-		"name": "Is dead",
+		"name": "Is Dead",
 		"type": "is_dead",
 		"category": "SpaceObject",
 		"description": "Returns true when the SpaceObject or Character is dead.",

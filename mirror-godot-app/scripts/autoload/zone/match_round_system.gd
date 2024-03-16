@@ -115,7 +115,7 @@ func get_score_for_team(team_name: String) -> int:
 	var teams: Array = Zone.script_network_sync.get_global_variable("teams")
 	for team in teams:
 		if team_name.nocasecmp_to(team.get("team_name", "_ERROR_")) == 0: # 0 if equal.
-			var score: int = team.get_or_set_default("score", 0)
+			var score: int = team.get_or_add("score", 0)
 			return score
 	return -1
 

@@ -1,4 +1,4 @@
-extends StaticPopup
+extends BasePopup
 
 
 @export var _self_destruct_timeout: float = 3.5

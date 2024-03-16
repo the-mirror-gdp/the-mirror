@@ -1,12 +1,5 @@
-extends Control
+extends AbstractScriptEditor
 
-
-signal request_save_script_as_asset(script_instance: ScriptInstance)
-signal request_show_entry_creation_dialog(target_node: Node)
-signal request_toggle_variable_editor()
-signal request_visual_script_editor_visibility(is_visible: bool)
-
-signal request_track_recently_used_space_script(script_instance: VisualScriptInstance)
 
 var _creation_constraint: int
 var _creation_data_type: int
@@ -40,7 +33,7 @@ func setup(signal_tree_populator: ScriptEntrySignalTreePopulator) -> void:
 	_script_graph_edit.setup(script_block_signatures)
 
 
-func load_from_script_instance(script_instance: ScriptInstance, rezoom: bool = true) -> void:
+func load_from_script_instance(script_instance: VisualScriptInstance, rezoom: bool = true) -> void:
 	# Clean up old data.
 	if is_instance_valid(_script_instance):
 		_script_instance.script_about_to_run_from_signal.disconnect(_script_graph_edit.hide_all_errors)
@@ -71,19 +64,19 @@ func focus_block_in_visual_script(script_instance: ScriptInstance, script_block:
 		_script_graph_edit.focus_script_block(script_block, error_text)
 
 
-func copy_selected_script_blocks() -> void:
+func copy_selection() -> void:
 	_script_graph_edit.copy_selected_script_blocks()
 
 
-func paste_copied_script_blocks() -> void:
+func paste_copied_data() -> void:
 	_script_graph_edit.paste_copied_script_blocks()
 
 
-func duplicate_selected_script_blocks() -> void:
+func duplicate_selection() -> void:
 	_script_graph_edit.duplicate_selected_script_blocks()
 
 
-func delete_selected_script_blocks() -> void:
+func delete_selection() -> void:
 	_script_graph_edit.delete_selected_script_blocks()
 
 
@@ -114,7 +107,7 @@ func cleanup_and_clear_script_editor() -> void:
 
 func _cleanup_and_close_script_editor() -> void:
 	cleanup_and_clear_script_editor()
-	request_visual_script_editor_visibility.emit(false)
+	request_script_editor_visibility.emit(false)
 
 
 ## This is not a block that the builder knows about, just a comment.
@@ -215,6 +208,19 @@ func _connect_port_for_creation_constraint(script_block: ScriptBlock) -> void:
 						_creation_from_block.outputs[0].value = output.value
 					_creation_from_block.graph_node.reset_ports()
 					break
+
+
+func create_entry_from_dialog(block_json: Dictionary) -> void:
+	# Add a new entry block to the script with the requested event signal.
+	var new_entry: ScriptBlockEntryBase = _script_instance.script_builder.create_block(block_json)
+	if new_entry.graph_position == Vector2.ZERO:
+		new_entry.graph_position = _creation_position
+	_script_instance.sync_script_inst_params_with_script_data()
+	_script_instance.setup_entry_block_with_node(new_entry)
+	# Now that the script is set up with the entry, update the script editor.
+	_script_graph_edit.create_block_graph_node(new_entry)
+	_script_graph_edit.reset_graph_error_and_connections()
+	_script_instance.script_data_contents_changed()
 
 
 func _on_input_value_changed() -> void:

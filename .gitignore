@@ -1,4 +1,17 @@
+# Godot 4+ specific ignores
+.godot/
+
+# System specific ignores
+.directory
+.DS_Store
+*~
+
+# NodeJS
+node_modules
+
+# System specific executables
 *.exe
 *.x86_64
+*.arm64
 *.app/
 *.app.zip

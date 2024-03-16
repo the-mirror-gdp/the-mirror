@@ -6,6 +6,10 @@
 [ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="4_iygvx"]
 [ext_resource type="Texture2D" uid="uid://pyiiu7es8s11" path="res://ui/art/close.svg" id="5_ku34j"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_5r17g"]
+font = ExtResource("4_iygvx")
+font_size = 15
+
 [sub_resource type="Animation" id="Animation_s2u66"]
 resource_name = "FadeIn"
 length = 0.3
@@ -16,7 +20,7 @@ tracks/0/path = NodePath(".:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3),
+"times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
@@ -27,53 +31,65 @@ _data = {
 "FadeIn": SubResource("Animation_s2u66")
 }
 
-[sub_resource type="LabelSettings" id="LabelSettings_5r17g"]
-font = ExtResource("4_iygvx")
-font_size = 15
-
-[node name="PopupMessage" type="Panel"]
-custom_minimum_size = Vector2(300, 100)
+[node name="PopupMessage" type="PanelContainer"]
+custom_minimum_size = Vector2(300, 90)
 offset_right = 300.0
-offset_bottom = 100.0
+offset_bottom = 90.0
 theme = ExtResource("1_seo6j")
 script = ExtResource("2_exgdq")
 
-[node name="SelfDestruct" type="Timer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_b4p60")
-}
-
-[node name="TopBorder" type="ColorRect" parent="."]
+[node name="TopBorder" type="ColorRect" parent="VBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 5)
-layout_mode = 0
-anchor_right = 1.0
-offset_bottom = 5.0
-grow_horizontal = 2
+layout_mode = 2
 color = Color(0.145098, 0.419608, 0.984314, 1)
 
-[node name="ContentContainer" type="MarginContainer" parent="."]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="CloseButton" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_horizontal = 8
+flat = true
+
+[node name="ButtonTexture" type="TextureRect" parent="VBoxContainer/CloseButton"]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -5.0
+offset_top = -5.0
+offset_right = 5.0
+offset_bottom = 5.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 25
-theme_override_constants/margin_top = 25
-theme_override_constants/margin_right = 25
+mouse_filter = 2
+texture = ExtResource("5_ku34j")
+expand_mode = 1
+
+[node name="ContentContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 25
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ContentContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/ContentContainer"]
 layout_mode = 2
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="Icon" type="Control" parent="ContentContainer/HBoxContainer"]
+[node name="Icon" type="Control" parent="VBoxContainer/ContentContainer/HBoxContainer"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 
-[node name="Circle" type="TextureRect" parent="ContentContainer/HBoxContainer/Icon"]
+[node name="IconTexture" type="TextureRect" parent="VBoxContainer/ContentContainer/HBoxContainer/Icon"]
+unique_name_in_owner = true
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -83,12 +99,12 @@ texture = ExtResource("3_1k125")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ContentContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/ContentContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 alignment = 1
 
-[node name="Title" type="Label" parent="ContentContainer/HBoxContainer/VBoxContainer"]
+[node name="Title" type="Label" parent="VBoxContainer/ContentContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 14)
 layout_mode = 2
@@ -96,7 +112,7 @@ text = "Title Text"
 label_settings = SubResource("LabelSettings_5r17g")
 autowrap_mode = 3
 
-[node name="Description" type="RichTextLabel" parent="ContentContainer/HBoxContainer/VBoxContainer"]
+[node name="Description" type="RichTextLabel" parent="VBoxContainer/ContentContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 12)
 layout_mode = 2
@@ -105,20 +121,9 @@ theme_override_font_sizes/normal_font_size = 12
 text = "Description"
 fit_content = true
 
-[node name="CloseButton" type="TextureButton" parent="."]
-unique_name_in_owner = true
-layout_mode = 0
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -17.0
-offset_top = 12.0
-offset_right = -7.0
-offset_bottom = 22.0
-grow_horizontal = 0
-texture_normal = ExtResource("5_ku34j")
-ignore_texture_size = true
-stretch_mode = 5
+[node name="SelfDestruct" type="Timer" parent="."]
 
-[connection signal="mouse_entered" from="." to="." method="_on_popup_message_mouse_entered"]
-[connection signal="mouse_exited" from="." to="." method="_on_popup_message_mouse_exited"]
-[connection signal="pressed" from="CloseButton" to="." method="_close_popup"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_b4p60")
+}
