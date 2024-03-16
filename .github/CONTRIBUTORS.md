@@ -22,6 +22,8 @@ Jakub Grzesik (kubecz3k)
 
 Jared McCluskey (Kluskey)
 
+Jeff Brooks (jeffgamedev)
+
 Jen Armstrong (Arrive.Design)
 
 Jeronimo (Jeronimo-schreyer)
