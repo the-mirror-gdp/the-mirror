@@ -58,6 +58,6 @@ The Mirror is built on a custom fork of Godot and required to use The Mirror's c
 
 # Documentation
 
-[The docs site](https://docs.themirror.space) (`/mirror-docs`) is our primary source of truth for documentation, not this README. We intend to keep this README slim since documentation is and will continue to be extensive.
+[The docs site](https://docs.themirror.space/docs/open-source-code) (`/mirror-docs`) is our primary source of truth for documentation, not this README. We intend to keep this README slim since documentation is and will continue to be extensive.
 
 _Analytics Disclaimer: We use posthog and it automatically collects analytics in the open source repo. You can disable this manually by commenting out the `mirror-godot-app/scripts/autoload/analytics/analytics.gd` file methods. We will make this easier in the future to disable. The Mirror Megaverse Inc., a US Delaware C Corp, is the data controller of the Posthog instance. You are free to disable the analytics and even plug in your own Posthog API key to capture the analytics yourself for your games!_
