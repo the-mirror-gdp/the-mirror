@@ -170,7 +170,7 @@ const config = {
           '<b>&#11088; <a target="_blank" rel="noopener noreferrer" href="https://github.com/the-mirror-gdp/the-mirror">Star on Github!</a> The Mirror is now open-source, MIT-licensed.</b>',
         backgroundColor: '#00CFFF',
         textColor: '#06011F',
-        isCloseable: false,
+        isCloseable: true,
       },
       prism: {
         theme: lightCodeTheme,
