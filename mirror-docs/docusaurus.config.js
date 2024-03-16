@@ -8,7 +8,7 @@ const darkTheme = require('prism-react-renderer/themes/vsDark/index.cjs.js')
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'The Mirror',
-  tagline: 'The Ultimate Sandbox',
+  tagline: 'Open-Source Roblox & UEFN Alternative',
   url: 'https://docs.themirror.space',
   baseUrl: '/',
   onBrokenLinks: 'throw',
@@ -17,7 +17,7 @@ const config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'the-mirror-megaverse', // Usually your GitHub org/user name.
+  organizationName: 'the-mirror-gdp', // Usually your GitHub org/user name.
   projectName: 'The Mirror: Docs', // Usually your repo name.
 
   // Even if you don't use internalization, you can use this field to set useful

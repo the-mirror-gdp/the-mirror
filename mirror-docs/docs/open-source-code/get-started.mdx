@@ -16,9 +16,15 @@ sidebar_position: 1
 
 # Docker Approach
 
+:::info
+**You don't need Docker if you're only running `mirror-godot-app` locally**. You can still hit our deployed Mirror Official server instance via the top-right environment dropdown (select `official`; see pic below) and login with your Mirror account to manage assets, saved data, etc. **The Docker approach is for running the full stack yourself (including `mirror-web-server` locally, not just the `mirror-godot-app`).**
+:::
+
+![Official env](2024-03-16-15-47-58.jpg)
+
 Docker isn't required, but is recommended for ease to run the web server and other dependencies in a consistent environment across different hardware.
 
-## How to Run
+## How to Run the Full Stack with Docker (Windows)
 
 1. Install Docker for Windows
 
@@ -29,7 +35,7 @@ Setup was tested with WSL2 (defualt for not Professional versions of Windows)
 
 3. Configure your `./mirror-server/.env`
 
-Use this settings (that I know about). For rest I used default but needs to be changed
+Use these settings (that I know about). For rest I used defaults but these docs needs to be updated.
 
 ```
 MONGODB_URL=mongodb://root:example@mongo:27017/themirror?retryWrites=true&w=majority&authSource=admin
@@ -37,11 +43,18 @@ MONGODB_URL=mongodb://root:example@mongo:27017/themirror?retryWrites=true&w=majo
 GOOGLE_APPLICATION_CREDENTIALS=/app/the-mirror-backend-dev-firebase-admin.json
 ```
 
-4. Configure your `the-mirror-backend-dev-firebase-admin.json` - NOT really sure used defaults for now
+4. Configure your `the-mirror-backend-dev-firebase-admin.json` to plug in your own Firebase instance. This is required if you're running `mirror-web-server` locally since `mirror-web-server` requires admin permissions.
 
 5. Launch WSL2 terminal and go to your project directory `cd /YOUR_PROJECT_DIR`
 
 6. Run `docker compose up`
+
+:::tip
+If you run into an error like this:
+`ERROR: for the_mirror_server  Cannot start service mirror-server: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: exec: "./auto-migrate.sh": permission denied: unknown`
+
+Try running `chmod +x auto-migrate.sh` from the `mirror-web-server` directory.
+:::
 
 7. Use your godot-app with `local` preset in top right corner of Godot editor.
 
