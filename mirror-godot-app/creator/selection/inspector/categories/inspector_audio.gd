@@ -72,7 +72,8 @@ func _on_base_volume_value_changed(new_value: float) -> void:
 	if not _spatial_subset.visible:
 		_max_volume.current_value = new_value
 		_max_volume.refresh()
-	target_node.base_volume_percentage = new_value
+	if target_node is TMAudioPlayer3D:
+		target_node.base_volume_percentage = new_value
 	_inspected_object_updated(target_node.get_parent())
 
 
