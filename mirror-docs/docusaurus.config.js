@@ -167,9 +167,9 @@ const config = {
       announcementBar: {
         id: 'alpha_notice',
         content:
-          'Star on Github <a target="_blank" rel="noopener noreferrer" href="https://github.com/the-mirror-gdp/the-mirro">here!</a> The Mirror is now open-source, MIT-licensed.',
-        backgroundColor: '#191E2E',
-        textColor: '#C3C5D0',
+          '<b>&#11088; <a target="_blank" rel="noopener noreferrer" href="https://github.com/the-mirror-gdp/the-mirro">Star on Github!</a> The Mirror is now open-source, MIT-licensed.</b>',
+        backgroundColor: '#00CFFF',
+        textColor: '#06011F',
         isCloseable: false,
       },
       prism: {
@@ -177,7 +177,7 @@ const config = {
         darkTheme: {
           plain: {
             color: '#D4D4D4',
-            backgroundColor: '#06011F',
+            backgroundColor: '#1F1C36',
           },
           styles: [
             {
