@@ -17,16 +17,22 @@ function HomepageHeader() {
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <div className="container">
         <img src="img/white_transparent_logo.png" width={600}></img>
-        <h1 style={{ marginTop: 15, marginBottom: 30 }} >Welcome to the Docs</h1>
+        <h1 style={{ marginTop: 15, marginBottom: 20 }} >Freedom to Own</h1>
+        <h1 style={{ marginTop: 0, marginBottom: 30 }} >The Open-Source Roblox & UEFN Alternative</h1>
         <div className={styles.buttons}>
           <Link
             className="button mirror-success-button button--lg"
-            to="/docs/get-started">
-            Get Started: 2 min ⏱️
+            to="/docs/get-started" style={{ marginRight: '15px' }}>
+            App Docs
+          </Link>
+          <Link
+            className="button mirror-success-button button--lg"
+            to="/docs/open-source-code/get-started">
+            Open-Source Docs
           </Link>
         </div>
       </div>
-    </header>
+    </header >
   );
 }
 

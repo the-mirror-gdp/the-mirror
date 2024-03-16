@@ -60,7 +60,7 @@ const config = {
             type: 'doc',
             docId: 'get-started',
             position: 'left',
-            label: 'Docs: Platform',
+            label: 'Docs: App',
           },
           {
             type: 'doc',
