@@ -33,16 +33,16 @@ Docker isn't required, but is recommended for ease to run the web server and oth
 Download and proceed with instructions from: https://docs.docker.com/desktop/install/windows-install/
 Setup was tested with WSL2 (defualt for not Professional versions of Windows)
 
-2. Clone mirror-server to ./mirror-server `git clone git@github.com:the-mirror-megaverse/mirror-server.git`
+2. Clone mthe main repo: `git clone git@github.com:the-mirror-gdp/the-mirror.git`.
 
-3. Configure your `./mirror-server/.env`
+3. Configure your `./mirror-web-server/.env`
 
-Use these settings (that I know about). For rest I used defaults but these docs needs to be updated.
+Use these settings. For the rest, I used defaults but these docs need to be updated.
 
 ```
 MONGODB_URL=mongodb://root:example@mongo:27017/themirror?retryWrites=true&w=majority&authSource=admin
 # Do not change paths here since they are relative to docker container
-GOOGLE_APPLICATION_CREDENTIALS=/app/the-mirror-backend-dev-firebase-admin.json
+GOOGLE_APPLICATION_CREDENTIALS=/app/the-mirror-backend-dev-firebase-admin.json # <- You'll supply this in the next step
 ```
 
 4. Configure your `the-mirror-backend-dev-firebase-admin.json` to plug in your own Firebase instance. This is required if you're running `mirror-web-server` locally since `mirror-web-server` requires admin permissions.
