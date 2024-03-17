@@ -14,7 +14,7 @@ This repo is The Mirror's source code: the Godot app (client/server), the web se
 
 **1. Join our [Discord](https://discord.com/invite/CK6fH3Cynk)**
 
-**2. Check out our [Roadmap](https://github.com/orgs/the-mirror-gdp/projects)**
+**2. Check out our [Roadmap](https://github.com/orgs/the-mirror-gdp/projects/7)**
 
 **3. Read our docs: [Site](https://docs.themirror.space), [monorepo `/mirror-docs`](https://github.com/the-mirror-gdp/the-mirror/tree/dev/mirror-docs)**
 
@@ -51,8 +51,8 @@ This repo is The Mirror's source code: the Godot app (client/server), the web se
 
 3. Open the Godot editor (The Mirror fork), click import, and choose the `project.godot` from the `/mirror-godot-app` folder.
 4. Close the Godot editor and open it again, to ensure that everything loads correctly, now that all files have been imported.
-4. Hit play in the Godot editor!
-5. Create a new Space, and you will automatically join it. Or, join an existing Space.
+5. Hit play in the Godot editor!
+6. Create a new Space, and you will automatically join it. Or, join an existing Space.
 
 ## Godot Fork
 
