@@ -21,7 +21,9 @@ We recommend using the [Itch.io desktop app](https://itch.io/app). We push updat
   </a>
 </div>
 
-Once you've downloaded Itch Desktop and logged in, search for "mirror" in the top-left and select The Mirror.
+Once you've downloaded Itch Desktop and logged in, paste this direct link into the Itch desktop app URL bar: https://themirrorgdp.itch.io/the-mirror
+
+![](2024-03-16-21-12-48.jpg)
 
 ### Direct Download
 
