@@ -64,8 +64,7 @@ func _fetch_data(_cnt_items_to_fetch: int) -> Array:
 		SPACE_SOURCE.MY_SPACES:
 			promise = Net.space_client.get_current_user_spaces(params)
 		_, SPACE_SOURCE.POPULAR:
-			return []
-			promise = Net.space_client.get_popular_spaces()
+			promise = Net.space_client.get_discover_spaces(params)
 	var list = await promise.wait_till_fulfilled()
 	if promise.is_error():
 		push_error("Failed to retrieve spaces: ", promise.get_error_message())
