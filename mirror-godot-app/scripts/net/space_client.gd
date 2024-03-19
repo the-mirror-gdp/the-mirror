@@ -100,13 +100,13 @@ static func _get_paginated_search_params(params: SpaceListRequestParameters) -> 
 ## Gets the spaces that belong to the current user.
 func get_current_user_spaces(params: SpaceListRequestParameters) -> Promise:
 	var query = _get_paginated_search_params(params)
-	return self.get_request(GET_USER_SPACES, "/space/me-v2?%s" % query)
+	return self.get_request(GET_USER_SPACES, "/space/me-v3?%s" % query)
 
 
 ## Gets the spaces that do not belong to the current user but are editable for them.
 func get_discover_spaces(params: SpaceListRequestParameters) -> Promise:
 	var query = _get_paginated_search_params(params)
-	return self.get_request(GET_DISCOVER_SPACES, "/space/discover-v2?%s" % query)
+	return self.get_request(GET_DISCOVER_SPACES, "/space/discover-v3?%s" % query)
 
 
 ## Gets only the spaces that are already published by creators

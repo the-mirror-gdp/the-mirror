@@ -64,9 +64,11 @@ func _fetch_data(_cnt_items_to_fetch: int) -> Array:
 		SPACE_SOURCE.MY_SPACES:
 			promise = Net.space_client.get_current_user_spaces(params)
 		_, SPACE_SOURCE.POPULAR:
+			return []
 			promise = Net.space_client.get_popular_spaces()
 	var list = await promise.wait_till_fulfilled()
 	if promise.is_error():
+		push_error("Failed to retrieve spaces: ", promise.get_error_message())
 		return []
 
 	if list is Dictionary:
@@ -162,8 +164,12 @@ func _on_space_pressed(space: Dictionary) -> void:
 	GameUI.main_menu_ui.change_subpage(&"ViewSpace", space)
 	_audio_stream_player_click.play()
 
+var _currently_populating = false
 
 func fetch_and_populate(forced_start_size = Vector2.ZERO) -> void:
+	if _currently_populating:
+		return
+	_currently_populating = true
 	var items_per_row = max(_calculate_max_per_row(), 3)
 	# uses a maximum number of items per row, not a returned number
 	# This will make sure that items are always aligned to left
@@ -173,6 +179,7 @@ func fetch_and_populate(forced_start_size = Vector2.ZERO) -> void:
 	_show_loading_items(items_per_row)
 	var items: Array = await _fetch_data(items_per_row)
 	await _populate_items(items, items_per_row)
+	_currently_populating = false
 
 
 func _ready() -> void:
