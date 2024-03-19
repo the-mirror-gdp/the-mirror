@@ -8,7 +8,7 @@ If you build on others like Roblox, UEFN/Unreal/Fortnite, and Unity, you don't a
 
 _We're here to change that_. 3D is arguably the next step of the internet and we can't let it be beholden to an oligopoly of companies that want to own your data and creations.
 
-Akin to "Figma" for game development, The Mirror is both tool and editor that let's you edit a game with friends in real-time. It's intended use can be extended because you have the source code. It can be used as a complete game base, to build what you want on top, you can use this to accelerate your game, get it built and released. This saves you time: imagine not having to write pesky things like infrastructure, backend code, asset management, and various systems from scratch.
+Akin to "Figma" for game development, The Mirror is both tool and editor that let's you edit a game with friends in real-time. Its intended use can be extended because you have the source code. It can be used as a complete game base, to build what you want on top, you can use this to accelerate your game, get it built and released. This saves you time: imagine not having to write pesky things like infrastructure, backend code, asset management, and various systems from scratch.
 
 This repo is The Mirror's source code: the Godot app (client/server), the web server, and the docs in one place. We've included everything we can provide to help you build your games as fast as possible.
 
