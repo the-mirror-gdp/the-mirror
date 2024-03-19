@@ -120,8 +120,14 @@ func populate(space: Dictionary) -> void:
 	var updated = Time.get_datetime_dict_from_datetime_string(_space.get('updatedAt', ""), false)
 	_updated_at_label.text = Util.datetime_dict_to_mmm_dd_yyyy(updated)
 	_url_label.text = _construct_space_url(_space.get("_id", "unknown"))
-	var creator_name = _space.get("creator", {}).get("displayName", tr("Unknown"))
-	_creator_label.text = tr("Created by {0}").format([creator_name])
+	var creator_promise: Promise = Net.user_client.get_user_profile(_space.creator)
+	creator_promise.connect_func_to_fulfill(func(): 
+		if creator_promise.is_error():
+			push_error("Failed to get creator")
+		var data = creator_promise.get_result()
+		var creator_name = data.get("displayName", tr("Unknown"))
+		_creator_label.text = tr("Created by {0}").format([creator_name])
+	)
 	_description_label.text = _preprocess_description(_space.get("description",""))
 	if _description_label.text == "":
 		_description_label.text = tr("No description was provided for this space.")
