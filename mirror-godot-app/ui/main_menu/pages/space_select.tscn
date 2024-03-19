@@ -1,10 +1,12 @@
-[gd_scene load_steps=12 format=3 uid="uid://b6kuvk63etfpw"]
+[gd_scene load_steps=14 format=3 uid="uid://b6kuvk63etfpw"]
 
 [ext_resource type="Script" path="res://ui/main_menu/pages/space_select.gd" id="1_1ynam"]
 [ext_resource type="PackedScene" uid="uid://cvyh06rrrcdyc" path="res://ui/main_menu/common/space_panel.tscn" id="2_ed1sy"]
 [ext_resource type="PackedScene" uid="uid://7geveyvf002c" path="res://ui/common/components/endless_scroll_flow_container.tscn" id="3_68pjp"]
 [ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="3_xdod4"]
 [ext_resource type="PackedScene" uid="uid://bahpo436m8hut" path="res://creator/asset_inventory/browser/search_field.tscn" id="4_atsy6"]
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="4_othw4"]
+[ext_resource type="FontFile" uid="uid://cv5tkor0qdxqq" path="res://ui/common/fonts/fontawesome-free-6/Font Awesome 6 Free-Solid-900.otf" id="5_4vfgi"]
 [ext_resource type="AudioStream" uid="uid://b1wqy8isen5sg" path="res://audio/mouseclick.wav" id="6_jogvj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_to6xd"]
@@ -18,23 +20,23 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0gnba"]
-content_margin_left = 8.0
-content_margin_top = 12.0
-content_margin_right = 8.0
-content_margin_bottom = 0.0
-bg_color = Color(0, 0, 0, 0.6)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_44eih"]
 content_margin_left = 8.0
 content_margin_top = 12.0
 content_margin_right = 8.0
 content_margin_bottom = 0.0
 bg_color = Color(0, 0, 0, 0.8)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0gnba"]
+content_margin_left = 8.0
+content_margin_top = 12.0
+content_margin_right = 8.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0.6)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -107,9 +109,9 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 13
 theme_override_styles/focus = SubResource("StyleBoxFlat_to6xd")
-theme_override_styles/normal = SubResource("StyleBoxFlat_0gnba")
 theme_override_styles/hover = SubResource("StyleBoxFlat_44eih")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_44eih")
+theme_override_styles/normal = SubResource("StyleBoxFlat_0gnba")
 item_count = 2
 selected = 0
 popup/item_0/text = "Popular"
@@ -125,6 +127,14 @@ offset_right = 41.0
 offset_bottom = 18.0
 text = "Sort by"
 label_settings = SubResource("LabelSettings_p2v8i")
+
+[node name="Refresh" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+theme = ExtResource("4_othw4")
+theme_override_fonts/font = ExtResource("5_4vfgi")
+theme_override_font_sizes/font_size = 16
+text = ":refresh:"
 
 [node name="SearchField" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_atsy6")]
 unique_name_in_owner = true
@@ -171,6 +181,7 @@ stream = ExtResource("6_jogvj")
 volume_db = -10.0
 
 [connection signal="item_selected" from="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/SourceOptionButton" to="." method="_on_source_option_button_item_selected"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/Refresh" to="." method="_on_refresh_pressed"]
 [connection signal="text_changed" from="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/SearchField" to="." method="on_search_title"]
 
 [editable path="VBoxContainer/Panel/MarginContainer/EndlessScrollFlowContainer"]

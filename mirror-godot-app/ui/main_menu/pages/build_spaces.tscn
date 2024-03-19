@@ -29,7 +29,7 @@ layout_mode = 1
 _data_source = 1
 
 [node name="Title" parent="Pages/DiscoverSpaceSelect/VBoxContainer/MarginContainer/VBoxContainer" index="1"]
-text = "Build Spaces"
+text = "Discover Spaces"
 
 [node name="ViewSpace" parent="Pages" instance=ExtResource("5_1b50l")]
 visible = false

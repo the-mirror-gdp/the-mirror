@@ -106,7 +106,7 @@ func toggle_main_menu_open(show_space_settings: bool = false) -> void:
 			_audio_stream_player.play()
 			return
 		if show_space_settings:
-			change_page(&"Build")
+			change_page(&"Discover")
 			change_subpage(&"ViewSpace", Zone.space)
 			change_subpage(&"EditSpace", Zone.space)
 		elif GameUI.should_display_space_listings:
