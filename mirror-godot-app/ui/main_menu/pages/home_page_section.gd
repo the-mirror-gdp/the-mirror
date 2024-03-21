@@ -194,14 +194,11 @@ func _ready() -> void:
 	visibility_changed.connect(_on_visibility_changed, CONNECT_DEFERRED)
 	get_tree().get_root().size_changed.connect(_on_resized)
 
-var _first_refresh_completed = false
 func _on_visibility_changed() -> void:
 	if not is_visible_in_tree():
 		return
-	if not _first_refresh_completed:
-		fetch_and_populate()
-		_first_refresh_completed = true
+	await fetch_and_populate()
 
 
 func _on_resized() -> void:
-	_on_visibility_changed()
+	await _on_visibility_changed()
