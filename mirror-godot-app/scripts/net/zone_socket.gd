@@ -90,8 +90,6 @@ func _get_ws_url() -> String:
 ## Initializes the websocket connection to the Mirror API.
 func init_ws_client() -> void:
 	assert(Zone.is_host())
-	
-
 	_next_reconnect_time = 0
 	_zone_server_uuid = Util.get_commandline_id_val("uuid")
 	_ws_client = WebSocketClient.new()
@@ -107,7 +105,6 @@ func init_ws_client() -> void:
 		"space: %s" % Zone.server.space_id,
 		"zone: %s" % _zone_server_uuid
 	]
-	print("WS header: ", headers)
 	print("connecting ws to %s" % url)
 	_ws_client.handshake_headers = headers
 	_ws_client.tls_verify = false

@@ -27,7 +27,6 @@ func _process(_delta: float) -> void:
 		return
 	for deeplink in _cached_deeplinks:
 		var url = String(deeplink) # ensure to deep copy string from thread data
-		print("Processing deeplink: ", url)
 		get_window().request_attention()
 		# neither of these work for making the app focus the window to the top on the OS
 		#get_window().grab_focus()
@@ -41,7 +40,9 @@ func _process(_delta: float) -> void:
 			if not Net.is_logged_in() and command != _JOIN_AUTHED_SPACE_CMD:
 				Notify.warning("Sign In", "You must sign in to use the link provided, once you sign in I will open the link.")
 				GameUI.login_ui.login_succeeded.connect(func(): _handle_deeplink_url(url), CONNECT_ONE_SHOT)
+				print("Processing login...")
 			else:
+				print("Processing deeplink: ", url)
 				_process_command(command, args)
 	_deeplink_mutex.lock()
 	_cached_deeplinks.clear()
@@ -135,8 +136,8 @@ func _process_command(command: String, args: Array) -> void:
 			var access_token: String = args[0]
 			var refresh_token: String = args[1]
 			var space_id: String = args[2]
-			print_verbose("access token: ", access_token)
-			print_verbose("refresh token: ", refresh_token)
+			print_verbose("[SECRET] access token: ", access_token)
+			print_verbose("[SECRET] refresh token: ", refresh_token)
 			print_verbose("space id: ", space_id)
 			join_authed_space.emit(access_token, refresh_token, space_id)
 		_: Notify.error("Invalid link", "Command is not registered in this version of the application")
