@@ -127,15 +127,17 @@ func _reset():
 		return
 	_endless_scroll_flow_container.setup(size)
 
+var _first_refresh_completed = false
 
 func _on_visibility_changed() -> void:
 	if not is_visible_in_tree():
 		_last_visibility_state = false
 		return
 	# Do not refresh if state changed from visible to visible
-	if _last_visibility_state != true:
+	if _last_visibility_state != true and not _first_refresh_completed:
 		_reset()
 		_last_visibility_state = true
+		_first_refresh_completed = true
 
 
 func _is_able_to_refresh() -> bool:
@@ -186,3 +188,7 @@ func _on_source_option_button_item_selected(index):
 func populate(search: String) -> void:
 	_search_field.set_text(search)
 	on_search_title(search)
+
+
+func _on_refresh_pressed():
+	_reset()

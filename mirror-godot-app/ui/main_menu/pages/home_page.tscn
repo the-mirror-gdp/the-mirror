@@ -1,11 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://0mra323xtoht"]
+[gd_scene load_steps=10 format=3 uid="uid://0mra323xtoht"]
 
+[ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_ddtg3"]
 [ext_resource type="Script" path="res://ui/main_menu/pages/home_page.gd" id="1_g044v"]
 [ext_resource type="Texture2D" uid="uid://dado8tm3ai4q" path="res://ui/common/images/logo-default.svg" id="2_byxtm"]
 [ext_resource type="PackedScene" uid="uid://48n8qruuys5w" path="res://ui/main_menu/pages/home/home_spaces_section.tscn" id="2_l3jcy"]
 [ext_resource type="PackedScene" uid="uid://d0ritou4okory" path="res://ui/main_menu/pages/home/home_space_panel_empty.tscn" id="3_scd2x"]
 [ext_resource type="PackedScene" uid="uid://bxip7xuk82fsr" path="res://ui/main_menu/pages/view_space.tscn" id="4_57sjc"]
 [ext_resource type="PackedScene" uid="uid://brrda4tvbd43x" path="res://ui/main_menu/pages/edit_space/edit_space.tscn" id="6_duhnl"]
+[ext_resource type="FontFile" uid="uid://cv5tkor0qdxqq" path="res://ui/common/fonts/fontawesome-free-6/Font Awesome 6 Free-Solid-900.otf" id="6_por32"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tw1n3"]
 
@@ -16,6 +18,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_ddtg3")
 script = ExtResource("1_g044v")
 
 [node name="Pages" type="Control" parent="."]
@@ -37,7 +42,6 @@ theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
-metadata/_edit_use_anchors_ = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Pages/HomeSpaceSelect"]
 layout_mode = 2
@@ -110,10 +114,23 @@ layout_mode = 2
 empty_item_scene = ExtResource("3_scd2x")
 _include_localhost_item = true
 
-[node name="Create" type="Button" parent="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer/SpacesSectionPopular/TitleBar" index="1"]
-custom_minimum_size = Vector2(0, 40)
+[node name="HBoxContainer" type="HBoxContainer" parent="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer/SpacesSectionPopular/TitleBar" index="1"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Reload" type="Button" parent="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer/SpacesSectionPopular/TitleBar/HBoxContainer"]
+custom_minimum_size = Vector2(16, 16)
 layout_mode = 2
 size_flags_horizontal = 10
+theme = ExtResource("1_ddtg3")
+theme_override_fonts/font = ExtResource("6_por32")
+theme_override_font_sizes/font_size = 16
+text = ":refresh:"
+
+[node name="Create" type="Button" parent="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer/SpacesSectionPopular/TitleBar/HBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 8
 text = "+ New Space"
 
 [node name="SpacesSectionRecents" parent="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("2_l3jcy")]
@@ -136,9 +153,9 @@ _include_new_space_item = true
 layout_mode = 2
 size_flags_horizontal = 10
 theme_override_colors/font_color = Color(0.333333, 1, 0.831373, 1)
+theme_override_colors/font_focus_color = Color(0.333333, 1, 0.831373, 1)
 theme_override_colors/font_pressed_color = Color(0.333333, 1, 0.831373, 1)
 theme_override_colors/font_hover_color = Color(0.333333, 0.952941, 1, 1)
-theme_override_colors/font_focus_color = Color(0.333333, 1, 0.831373, 1)
 theme_override_colors/font_hover_pressed_color = Color(0.333333, 1, 0.831373, 1)
 text = "VIEW ALL"
 flat = true
@@ -153,7 +170,8 @@ visible = false
 layout_mode = 1
 offset_top = 80.0
 
-[connection signal="pressed" from="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer/SpacesSectionPopular/TitleBar/Create" to="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer/SpacesSectionPopular" method="_on_create_pressed"]
+[connection signal="pressed" from="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer/SpacesSectionPopular/TitleBar/HBoxContainer/Reload" to="." method="_on_reload_pressed"]
+[connection signal="pressed" from="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer/SpacesSectionPopular/TitleBar/HBoxContainer/Create" to="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer/SpacesSectionPopular" method="_on_create_pressed"]
 [connection signal="pressed" from="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer/SpacesSectionMy/TitleBar/ViewMySpaces" to="." method="_on_view_my_spaces_pressed"]
 
 [editable path="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer/SpacesSectionPopular"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://ch0uw2fa08s6a"]
+[gd_scene load_steps=39 format=3 uid="uid://ch0uw2fa08s6a"]
 
 [ext_resource type="Theme" uid="uid://ggwm8asxintx" path="res://ui/common/themes/menu_ui.theme.tres" id="1_bsgag"]
 [ext_resource type="Script" path="res://ui/main_menu/main_menu_ui.gd" id="2_0tnty"]
@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://dkowcs24a0rg" path="res://ui/main_menu/pages/my_spaces.tscn" id="6_dxmr5"]
 [ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="7_3j0pc"]
 [ext_resource type="PackedScene" uid="uid://cprw7dhdbphw3" path="res://ui/main_menu/pages/build_spaces.tscn" id="7_al6u3"]
-[ext_resource type="PackedScene" uid="uid://sndmfviwx31d" path="res://ui/main_menu/pages/play_spaces.tscn" id="8_m64q5"]
 [ext_resource type="Shader" path="res://ui/common/shaders/ui_blurr.gdshader" id="8_w8ibq"]
 [ext_resource type="PackedScene" uid="uid://tgcx8ymhgpxe" path="res://ui/main_menu/pages/avatar/avatar.tscn" id="9_aqh2v"]
 [ext_resource type="PackedScene" uid="uid://cx2mo1w80rpi6" path="res://ui/main_menu/pages/settings/settings.tscn" id="10_6f3nv"]
@@ -130,26 +129,23 @@ grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="Home" parent="Pages" instance=ExtResource("4_ra4e2")]
-visible = false
 layout_mode = 1
 
 [node name="My_Spaces" parent="Pages" instance=ExtResource("6_dxmr5")]
 visible = false
 layout_mode = 1
 
-[node name="Build" parent="Pages" instance=ExtResource("7_al6u3")]
+[node name="Discover" parent="Pages" instance=ExtResource("7_al6u3")]
 visible = false
 layout_mode = 1
 theme = ExtResource("7_3j0pc")
-
-[node name="Play" parent="Pages" instance=ExtResource("8_m64q5")]
-layout_mode = 1
 
 [node name="Avatar" parent="Pages" instance=ExtResource("9_aqh2v")]
 visible = false
 layout_mode = 1
 
 [node name="Settings" parent="Pages" instance=ExtResource("10_6f3nv")]
+visible = false
 layout_mode = 1
 
 [node name="HeaderMenu" parent="." instance=ExtResource("10_jeyvr")]

@@ -32,9 +32,8 @@ item_width = 376
 
 [node name="MySpaceSelect" parent="Pages" instance=ExtResource("2_38vl8")]
 layout_mode = 1
-_data_source = 0
 
-[node name="NewButton" type="Button" parent="Pages/MySpaceSelect/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" index="2"]
+[node name="NewButton" type="Button" parent="Pages/MySpaceSelect/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" index="3"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "+ New Space"
