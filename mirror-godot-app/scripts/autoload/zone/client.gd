@@ -539,7 +539,9 @@ func _join_new_server_locally(space_id: String) -> bool:
 	# When we can ask mirror-web-server for an already existing server to connect to, first
 	# Then we will replace that flag, with that request being done and responded.
 	var should_create_a_new_server_locally = ProjectSettings.get_setting("feature_flags/always_spin_up_local_server", false)
-	if should_create_a_new_server_locally and pid == null:
+	if should_create_a_new_server_locally:
+		if pid != null:
+			OS.kill(pid)
 		var firebase_auth = str(Firebase.Auth.auth.refreshtoken)
 		print(firebase_auth)
 		var arguments = ["--server", "--space", space_id, "--mode", "edit", "--uuid", "localhost", "--server_login", firebase_auth, "--headless", "--remote-debug", "tcp://127.0.0.1:6008"]
@@ -552,7 +554,6 @@ func _join_new_server_locally(space_id: String) -> bool:
 func _find_zone_by_space(space_id: String) -> void:
 	if _join_new_server_locally(space_id):
 		return
-	
 	# Normal join process with dedicated servers
 	var promise = Net.zone_finder.join_build_server(space_id)
 	var build_server = await promise.wait_till_fulfilled()
