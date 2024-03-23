@@ -121,7 +121,7 @@ func populate(space: Dictionary) -> void:
 	_updated_at_label.text = Util.datetime_dict_to_mmm_dd_yyyy(updated)
 	_url_label.text = _construct_space_url(_space.get("_id", "unknown"))
 	var creator_promise: Promise = Net.user_client.get_user_profile(_space.creator)
-	creator_promise.connect_func_to_fulfill(func(): 
+	creator_promise.connect_func_to_fulfill(func():
 		if creator_promise.is_error():
 			push_error("Failed to get creator")
 		var data = creator_promise.get_result()
