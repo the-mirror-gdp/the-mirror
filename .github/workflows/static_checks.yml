@@ -1,0 +1,13 @@
+name: 📊 Static Checks
+on: push
+
+jobs:
+  format:
+    name: File formatting (mirror-godot-app/.workflows/scripts/file_format.sh)
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v3
+      - name: File formatting checks (file_format.sh)
+        run: |
+          cd ./mirror-godot-app/
+          bash .github/scripts/file_format.sh
