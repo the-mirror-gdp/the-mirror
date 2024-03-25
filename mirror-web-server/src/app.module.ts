@@ -1,6 +1,7 @@
 require('dotenv').config()
 
 import * as os from 'os'
+import { join } from 'path'
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { AppController } from './app.controller'
@@ -39,7 +40,6 @@ import { FileAnalyzingModule } from './util/file-analyzing/file-analyzing.module
 import { CronModule } from './cron/cron.module'
 import { MirrorDBModule } from './mirror-db/mirror-db.module'
 import { ServeStaticModule } from '@nestjs/serve-static'
-import { join } from 'path'
 
 const envFromFirebase = process.env.GCP_PROJECT_ID || ''
 let env = 'dev'
