@@ -81,7 +81,7 @@
     "mongoose": "^7.3.1",
     "multer": "^1.4.5-lts.1",
     "nest-winston": "^1.9.3",
-    "node-fetch": "2.0.0",
+    "node-fetch": "2.6.7",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "piscina": "^4.2.0",
