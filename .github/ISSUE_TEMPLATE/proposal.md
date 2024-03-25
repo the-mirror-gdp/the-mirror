@@ -2,7 +2,7 @@
 name: Proposal
 about: Propose something for The Mirror!
 title: "[Proposal]"
-labels: discussion/idea/proposal
+labels: ''
 assignees: ''
 
 ---
