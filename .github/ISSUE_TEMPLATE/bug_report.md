@@ -7,21 +7,20 @@ assignees: ''
 
 ---
 
-**Describe the bug**
+**Which environment? Mirror Official app (Itch/Steam/Epic), open-source docker, or open-source no-docker?**
+_Add the label as well please_.
+
 
 **To Reproduce**
-Steps to reproduce the behavior:
+Steps to reproduce:
 1. Go to ...
-
-
-**Expected behavior**
 
 
 **Screenshots or Videos**
 
 
 **Hardware specs**
-_The more, the better. At a minimum, include the OS, OS version, CPU, and GPU_.
+_At a minimum, include the OS, OS version, CPU, and GPU_.
 
 
 **Additional context**
