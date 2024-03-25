@@ -1,0 +1,6 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: Discord
+    url: https://themirror.space/discord
+    about: For general discussion outside of a Github issue or PR.
