@@ -1,5 +1,6 @@
 require('dotenv').config()
 
+import * as os from 'os'
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { AppController } from './app.controller'
@@ -8,7 +9,6 @@ import { CustomDataService } from './custom-data/custom-data.service'
 import { SpaceObjectModule } from './space-object/space-object.module'
 import { ScheduleModule } from '@nestjs/schedule'
 import { SentryModule } from '@ntegral/nestjs-sentry'
-import * as os from 'os'
 import { AssetModule } from './asset/asset.module'
 import { AuthModule } from './auth/auth.module'
 import { BlockModule } from './block/block.module'
