@@ -2,7 +2,6 @@ require('dotenv').config()
 import { ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { NestExpressApplication } from '@nestjs/platform-express'
-import { IoAdapter } from '@nestjs/platform-socket.io'
 import { WsAdapter } from '@nestjs/platform-ws'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import { SentryService } from '@ntegral/nestjs-sentry'
