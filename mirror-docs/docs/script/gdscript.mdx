@@ -1,6 +1,6 @@
 ---
 sidebar_position: 3.6
-title: The Mirror-flavored GDScript
+title: 'Mirror-Flavored GDScript'
 sidebar_label: GDScript
 ---
 
@@ -10,7 +10,7 @@ The Mirror provides access to the power of Godot's GDScript. This is like normal
 
 The Mirror provides GDScript primarily for existing Godot users, and as such, The Mirror's documentation will not cover every aspect of the GDScript language. For more information on GDScript, please refer to [the Godot documentation](https://docs.godotengine.org/en/stable/getting_started/scripting/gdscript/gdscript_basics.html).
 
-## The Mirror-flavored GDScript
+## Mirror-Flavored GDScript
 
 You may use functions and variables just like you would in normal GDScript. As a part of The Mirror's support for multiple scripts per object, you can use members of SpaceObject the same way you use inherited members in Godot. For example, `print(position)` will print a SpaceObject's position. In this way, your GDScript code behaves as if it were directly in a script attached to the SpaceObject, without actually being attached to it.
 
@@ -22,25 +22,17 @@ You must not write `class_name` or `extends` in your script. The Mirror's suppor
 
 Entry points can be added to a script by clicking the "Add Entry" button in the script editor. This is the same as the "Entry" section of the "Add Script Block" menu in visual scripting. These use Godot signals under the hood, but The Mirror handles the connection for you.
 
-import AddEntry from "./img/gdscript/add_entry.webp";
+import AddEntry from './img/gdscript/add_entry.webp';
 
-<img
-	src={AddEntry}
-	alt=""
-	width="840"
-/>
+<img src={AddEntry} alt="" width="840" />
 
 When an entry is connected, it will show a green arrow icon to the left of the function signature. If you do not see a green arrow, then the entry is not connected, and you may need to add it from the Add Entry menu again. To delete an entry, erase the function text, and then the signal will automatically be disconnected.
 
 The callback functions `_ready`, `_process`, and `_physics_process` are available, however others such as the input callbacks are not available. When detected, they will show a blue arrow. These are provided for convenience and compatibility with regular GDScript. Generally, the entry points added through "Add Entry" are the preferred way to receive signals from The Mirror.
 
-import EntryIcons from "./img/gdscript/entry_icons.webp";
+import EntryIcons from './img/gdscript/entry_icons.webp';
 
-<img
-	src={EntryIcons}
-	alt="GDScript Editor with Entry Icons"
-	width="580"
-/>
+<img src={EntryIcons} alt="GDScript Editor with Entry Icons" width="580" />
 
 ## API
 
@@ -52,22 +44,18 @@ Many helper functions for functionality present in visual scripting are availabl
 
 Here is a simple script that counts every frame and prints to the notification area with `Notify.info`.
 
-import CounterMember from "./img/gdscript/counter_member.webp";
+import CounterMember from './img/gdscript/counter_member.webp';
 
-<img
-	src={CounterMember}
-	alt="Counter Member Example Script"
-	width="840"
-/>
+<img src={CounterMember} alt="Counter Member Example Script" width="840" />
 
 However, the above uses a member variable. This is useful for its own reasons, but it is not accessible by other scripts, it is not persistent and so will reset if the server restarts, and will reset any time you change the script. If you want a variable that is persistent, or something that can share data between scripts, you can use an object variable. You can use the `get_object_variable` and `set_object_variable` functions to access these.
 
-import CounterObjVar from "./img/gdscript/counter_obj_var.webp";
+import CounterObjVar from './img/gdscript/counter_obj_var.webp';
 
 <img
-	src={CounterObjVar}
-	alt="Counter Object Variable Example Script"
-	width="840"
+  src={CounterObjVar}
+  alt="Counter Object Variable Example Script"
+  width="840"
 />
 
 The Mirror's object and global variables behave the same way in GDScript as they do in visual scripting.
@@ -76,13 +64,9 @@ The Mirror's object and global variables behave the same way in GDScript as they
 
 Aside from setting variables on yourself, you can also use the `Mirror.get_object_variable` and `Mirror.set_object_variable` functions to access variables on other objects. These functions work on any node, including SpaceObjects, model subnodes, and even players. By itself, `get_object_variable(...)` is a shorthand for `Mirror.get_object_variable(target_object, ...)`. You can also use `Mirror.get_global_variable` and `Mirror.set_global_variable` to access global variables.
 
-import HasRedKey from "./img/gdscript/has_red_key.webp";
+import HasRedKey from './img/gdscript/has_red_key.webp';
 
-<img
-	src={HasRedKey}
-	alt="Has Red Key Example Script"
-	width="800"
-/>
+<img src={HasRedKey} alt="Has Red Key Example Script" width="800" />
 
 By default, the above script will show an "Access Denied" message if the `"has_red_key"` variable is null or false, indicating that the player does not have the red key. If another script granted the player the red key by setting `"has_red_key"` to true, then it will show an "Access Granted" message instead.
 
