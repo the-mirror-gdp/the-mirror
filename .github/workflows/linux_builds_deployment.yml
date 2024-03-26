@@ -40,6 +40,7 @@ jobs:
             bin: "./bin/godot.linuxbsd.editor.x86_64"
             artifact-name: "MirrorGodotEditorLinux.x86_64"
             artifact: true
+            tests: no
 
           - name: Template
             cache-name: linux-template
@@ -49,6 +50,7 @@ jobs:
             bin: "./bin/godot.linuxbsd.template_debug.x86_64"
             artifact-name: "linux_release.x86_64"
             artifact: true
+            tests: no
 
     steps:
       - uses: actions/checkout@v4
