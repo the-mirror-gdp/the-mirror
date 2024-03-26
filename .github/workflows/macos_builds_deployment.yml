@@ -65,7 +65,8 @@ jobs:
         uses: ./godot-engine/.github/actions/godot-deps
       - name: Setup Vulkan SDK
         run: |
-          sh ./godot-engine/misc/scripts/install_vulkan_sdk_macos.sh
+          chmod +x ./.github/workflows/install_vulkan_sdk_macos.sh
+          ./.github/workflows/install_vulkan_sdk_macos.sh
       - name: Setup Godot build cache
         uses: ./godot-engine/.github/actions/godot-cache
         with:
