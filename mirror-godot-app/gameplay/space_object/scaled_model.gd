@@ -259,7 +259,7 @@ func _setup_new_physics_colliders(desired_shape_type: String) -> void:
 			model_body.set_layer_name(&"NO_COLLIDE")
 		var asset_hash = Net.file_client._file_cache.get_hash_for_asset(_space_object.asset_data.file_url)
 		var cache_key = asset_hash + "-" + desired_shape_type
-		
+
 		if desired_shape_type == "Model Shapes":
 			var promise = await _generate_model_shape_collision(cache_key)
 			await promise.wait_till_fulfilled()
@@ -296,7 +296,7 @@ func _generate_model_shape_collision(cache_key: String) -> Promise:
 	else:
 		Zone.hash_requests[cache_key] = 1
 		Zone.physics_hash_promises[cache_key] = Promise.new()
-	
+
 	var shapes: Array[JShape3D] = []
 	var transforms: Array[Transform3D] = []
 	for model_body in _model_provided_bodies:
@@ -337,7 +337,7 @@ func _generate_mesh_collision(cache_key: String, is_concave: bool) -> Promise:
 
 	var async_collider_construction = true
 	var shape: JShape3D = null
-	
+
 	if not async_collider_construction:
 		shape = Zone.shapes_generator.generate_shape_for_meshes(body, mesh_instances, is_concave)[0]
 	else:
@@ -345,7 +345,7 @@ func _generate_mesh_collision(cache_key: String, is_concave: bool) -> Promise:
 		assert(promise != null)
 		await promise.wait_till_fulfilled()
 		shape = promise.get_result()
-	
+
 	assert(shape != null)
 	body.shape = shape
 	# to ensure the pointers always match we must set it to the same reference

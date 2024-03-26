@@ -86,15 +86,15 @@ jobs:
         run: |
           strip bin/godot.*
 
-      - name: Shrink debug symbols
-        if: ${{ !matrix.strip }}
-        run: |
-          # remove duplicate symbols from binary
-          dwz ${{ matrix.bin }} -L none -o Middleman.debug
-          # make the debug symbols compressed
-          objcopy --compress-debug-sections Middleman.debug FinalMan.debug
-          # overwrite the original file
-          mv FinalMan.debug ${{ matrix.bin }}
+      # - name: Shrink debug symbols
+      #   if: ${{ !matrix.strip }}
+      #   run: |
+      #     # remove duplicate symbols from binary
+      #     dwz ${{ matrix.bin }} -L none -o Middleman.debug
+      #     # make the debug symbols compressed
+      #     objcopy --compress-debug-sections Middleman.debug FinalMan.debug
+      #     # overwrite the original file
+      #     mv FinalMan.debug ${{ matrix.bin }}
 
       - name: Prepare artifact
         if: ${{ matrix.artifact }}
