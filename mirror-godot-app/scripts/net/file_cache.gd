@@ -5,7 +5,9 @@ signal threaded_model_loaded(cache_key: String, node: Node)
 
 const _STORAGE_CACHE_FILENAME: String = "cache.json"
 
-var _storage_cache: Dictionary = {}
+var _storage_cache: Dictionary = {} # url, filename
+var _file_hashes: Dictionary = {} # url, hash
+var _duplicate_hash_counter: Dictionary = {} # hash, times occoured
 
 var _model_load_queue: Array[KeyPromisePair] = []
 
@@ -115,6 +117,30 @@ func save_bytes_file(file_name: String, file_data: PackedByteArray) -> bool:
 func get_file_path(file_name: String) -> String:
 	var storage_path_format = Util.get_files_directory_path() + "%s"
 	return storage_path_format % file_name
+
+
+func get_hash_for_asset(cache_key: String) -> Variant:
+	cache_key = cache_key.uri_decode()
+	if not _storage_cache.has(cache_key):
+		return ""
+	var file_name: String = _storage_cache[cache_key]
+	var file_path: String = get_file_path(file_name)
+	if not FileAccess.file_exists(file_path):
+		return ""
+	if not _file_hashes.has(cache_key):
+		var ctx = HashingContext.new()
+		ctx.start(HashingContext.HASH_SHA1)
+		var file = FileAccess.open(file_path, FileAccess.READ)
+		while not file.eof_reached():
+			ctx.update(file.get_buffer(1024))
+		var res = ctx.finish()
+		var hash_string: String = res.hex_encode()
+		_file_hashes[cache_key] = hash_string
+		_duplicate_hash_counter[hash_string] = 0
+		return hash_string
+	else:
+		_duplicate_hash_counter[_file_hashes[cache_key]] += 1
+		return _file_hashes[cache_key]
 
 
 ## Tries to load a file into memory from disk cache and returns the payload or null.
