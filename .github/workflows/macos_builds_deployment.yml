@@ -1,0 +1,127 @@
+name: 🍎 macOS Builds
+on: push
+# on: 
+#   push:
+#     paths:
+#       - godot-engine/**
+
+defaults:
+  run:
+    working-directory: ./godot-engine
+
+# Global Settings
+env:
+  # Used for the cache key. Add version suffix to force clean build.
+  GODOT_BASE_BRANCH: master
+  SCONSFLAGS: verbose=yes warnings=extra werror=no module_text_server_fb_enabled=yes fontconfig=no use_volk=no
+
+concurrency:
+  # workflow name - PR || fallback to unique run id, this happens when you're not building a PR
+  # this ensures all branches build properly and cancel their previous runs
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-macos:
+    runs-on: "macos-latest"
+    name: ${{ matrix.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Editor
+            cache-name: macos-editor
+            target: editor
+            tests: false
+            strip: true
+            sconsflags: debug_symbols=no optimize=speed production=yes
+            dist-app: "macos_tools.app"
+            packaged-app: "MirrorGodotEditorMac.app"
+            bin-name: "godot.macos.editor.universal"
+            bin-name-x86_64: "godot.macos.editor.x86_64"
+            bin-name-arm64: "godot.macos.editor.arm64"
+            artifact-bin-name: "Godot"
+            artifact-name: "MirrorGodotEditorMac.app"
+
+          - name: Template
+            cache-name: macos-template
+            target: template_debug
+            tests: false
+            strip: true
+            sconsflags: debug_symbols=no optimize=speed
+            dist-app: "macos_template.app"
+            packaged-app: "macos_template.app"
+            bin-name: "godot.macos.template_debug.universal"
+            bin-name-x86_64: "godot.macos.template_debug.x86_64"
+            bin-name-arm64: "godot.macos.template_debug.arm64"
+            artifact-bin-name: "godot_macos_release.universal"
+            artifact-name: "macos_template.app"
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          clean: true
+          token: ${{ secrets.CI_TOKEN_GITHUB }}
+          submodules: recursive
+
+      - name: Setup Godot build cache
+        uses: ./godot-engine/.github/actions/godot-cache
+        with:
+          cache-name: ${{ matrix.cache-name }}
+        continue-on-error: true
+
+      - name: Setup scons (python is already installed on self-hosted runners!)
+        shell: bash
+        run: |
+          python3 -c "import sys; print(sys.version)"
+          python3 -m ensurepip --upgrade
+          python3 -m pip install --user scons
+          scons --version
+
+      - name: Setup cmake
+        shell: bash
+        run: |
+          brew install cmake
+          cmake --version
+
+      - name: Remove existing binaries
+        run: |
+          rm -Rf bin/
+
+      - name: Compilation (x86_64)
+        uses: ./godot-engine/.github/actions/godot-build
+        with:
+          sconsflags: ${{ env.SCONSFLAGS }} arch=x86_64
+          platform: macos
+          target: ${{ matrix.target }}
+          tests: ${{ matrix.tests }}
+
+      - name: Compilation (arm64)
+        uses: ./godot-engine/.github/actions/godot-build
+        with:
+          sconsflags: ${{ env.SCONSFLAGS }} arch=arm64
+          platform: macos
+          target: ${{ matrix.target }}
+          tests: ${{ matrix.tests }}
+
+      - name: Strip binaries
+        if: ${{ matrix.strip }}
+        run: |
+          echo "Stripping binaries"
+          strip bin/*
+
+      - name: Prepare universal executable
+        run: |
+          lipo -create bin/${{ matrix.bin-name-x86_64 }} bin/${{ matrix.bin-name-arm64 }} -output bin/${{ matrix.bin-name }}
+          chmod -R +x bin/*
+
+      - name: Package in macOS app bundle
+        shell: sh
+        run: |
+          cp -R misc/dist/${{ matrix.dist-app }} bin/${{ matrix.packaged-app }}
+          cd bin/
+          mkdir -p ${{ matrix.packaged-app }}/Contents/MacOS
+          cp ${{ matrix.bin-name }} ${{ matrix.packaged-app }}/Contents/MacOS/${{ matrix.artifact-bin-name }}
+          chmod -R +x ${{ matrix.packaged-app }}
+          xattr -rc ${{ matrix.packaged-app }}
+          zip -q -9 -r ${{ matrix.artifact-name }}.zip ${{ matrix.packaged-app }}
