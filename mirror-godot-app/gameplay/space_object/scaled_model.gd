@@ -257,37 +257,23 @@ func _setup_new_physics_colliders(desired_shape_type: String) -> void:
 			# Note: Trigger or not doesn't matter because the layer is NO_COLLIDE.
 			model_body.body_mode = JBody3D.BodyMode.STATIC
 			model_body.set_layer_name(&"NO_COLLIDE")
+		var asset_hash = Net.file_client._file_cache.get_hash_for_asset(_space_object.asset_data.file_url)
+		var cache_key = asset_hash + "-" + desired_shape_type
+		
 		if desired_shape_type == "Model Shapes":
-			_generate_model_shape_collision()
+			var promise = await _generate_model_shape_collision(cache_key)
+			await promise.wait_till_fulfilled()
+			_space_object.shape = promise.get_result()
+			_model_provided_shapes_require_static = not _space_object.shape.is_convex()
 		elif desired_shape_type == "Capsule":
 			_generate_capsule_shape_collision()
 		else: # Concave or Convex mesh shape.
-			_generate_mesh_collision(desired_shape_type == "Concave")
+			var promise = await _generate_mesh_collision(cache_key, desired_shape_type == "Concave")
+			await promise.wait_till_fulfilled()
+			_space_object.shape = promise.get_result()
 
 	await get_tree().create_timer(2.0).timeout
 	_space_object.set_ignore_state_sync(false)
-
-
-func _generate_model_shape_collision() -> void:
-	var shapes: Array[JShape3D] = []
-	var transforms: Array[Transform3D] = []
-
-	for model_body in _model_provided_bodies:
-		if not is_instance_valid(model_body):
-			printerr("A model body was invalid! Model nodes should never be freed while the SpaceObject still exists.")
-			continue
-		var body_transform: Transform3D = TMNodeUtil.get_relative_transform(_space_object.interpolated_node, model_body)
-		var shape: JShape3D = model_body.shape
-		if shape:
-			shapes.push_back(shape)
-			transforms.push_back(body_transform)
-
-	var compound_shape := JCompoundShape3D.new()
-	compound_shape.shapes = shapes
-	compound_shape.transforms = transforms
-	_space_object.shape = compound_shape
-
-	_model_provided_shapes_require_static = not compound_shape.is_convex()
 
 
 func _generate_capsule_shape_collision() -> void:
@@ -303,9 +289,45 @@ func _generate_capsule_shape_collision() -> void:
 	_model_provided_shapes_require_static = false
 
 
+func _generate_model_shape_collision(cache_key: String) -> Promise:
+	if Zone.hash_requests.has(cache_key):
+		Zone.hash_requests[cache_key] += 1
+		return Zone.physics_hash_promises[cache_key]
+	else:
+		Zone.hash_requests[cache_key] = 1
+		Zone.physics_hash_promises[cache_key] = Promise.new()
+	
+	var shapes: Array[JShape3D] = []
+	var transforms: Array[Transform3D] = []
+	for model_body in _model_provided_bodies:
+		if not is_instance_valid(model_body):
+			printerr("A model body was invalid! Model nodes should never be freed while the SpaceObject still exists.")
+			continue
+		var body_transform: Transform3D = TMNodeUtil.get_relative_transform(_space_object.interpolated_node, model_body)
+		var shape: JShape3D = model_body.shape
+		if shape:
+			shapes.push_back(shape)
+			transforms.push_back(body_transform)
+	var compound_shape := JCompoundShape3D.new()
+	compound_shape.shapes = shapes
+	compound_shape.transforms = transforms
+	var promise = Zone.physics_hash_promises[cache_key]
+	promise.set_result(compound_shape)
+	return promise
 
-func _generate_mesh_collision(is_concave: bool) -> void:
-	var mi: Array[Node] = TMNodeUtil.recursive_find_nodes_by_type(self, MeshInstance3D)
+
+static var cumulative_collision_mesh_assignment_time = 0
+
+
+func _generate_mesh_collision(cache_key: String, is_concave: bool) -> Promise:
+	if Zone.hash_requests.has(cache_key):
+		Zone.hash_requests[cache_key] += 1
+		return Zone.physics_hash_promises[cache_key]
+	else:
+		Zone.hash_requests[cache_key] = 1
+		Zone.physics_hash_promises[cache_key] = Promise.new()
+	var start_time = Time.get_unix_time_from_system()
+	var mi := Util.recursive_find_nodes_of_type(self, MeshInstance3D)
 	var mesh_instances: Array[MeshInstance3D] = []
 	mesh_instances.resize(mi.size())
 	for i in range(mi.size()):
@@ -315,6 +337,7 @@ func _generate_mesh_collision(is_concave: bool) -> void:
 
 	var async_collider_construction = true
 	var shape: JShape3D = null
+	
 	if not async_collider_construction:
 		shape = Zone.shapes_generator.generate_shape_for_meshes(body, mesh_instances, is_concave)[0]
 	else:
@@ -322,9 +345,19 @@ func _generate_mesh_collision(is_concave: bool) -> void:
 		assert(promise != null)
 		await promise.wait_till_fulfilled()
 		shape = promise.get_result()
-
+	
 	assert(shape != null)
 	body.shape = shape
+	# to ensure the pointers always match we must set it to the same reference
+	# this de-duplicates the shapes
+	# this is faster because one pointer for 50+ shapes, and 0 generation time for them.
+	var promise = Zone.physics_hash_promises[cache_key]
+	promise.set_result(body.shape)
+	var shape_time = Time.get_unix_time_from_system() - start_time
+	print("took ", shape_time, "to generate collision shape")
+	cumulative_collision_mesh_assignment_time += shape_time
+	print("cumulatively we have taken: ", cumulative_collision_mesh_assignment_time,  " seconds")
+	return promise
 
 
 ## Ensure concave shapes are static, since physics engines do not support
