@@ -544,7 +544,9 @@ func _join_new_server_locally(space_id: String) -> bool:
 			OS.kill(pid)
 		var firebase_auth = str(Firebase.Auth.auth.refreshtoken)
 		print(firebase_auth)
-		var arguments = ["--server", "--space", space_id, "--mode", "edit", "--uuid", "localhost", "--server_login", firebase_auth, "--headless", "--remote-debug", "tcp://127.0.0.1:6008"]
+		# For debugging this allows you to grab breakpoints from the server "--remote-debug", "tcp://127.0.0.1:6008"]
+		# If enabled it could cause join time to be much longer when booting server
+		var arguments = ["--server", "--space", space_id, "--mode", "edit", "--uuid", "localhost", "--server_login", firebase_auth, "--headless"]
 		print("SERVER ARGS: ", arguments)
 		pid = OS.create_process(OS.get_executable_path(), arguments, true)
 		start_join_localhost()
