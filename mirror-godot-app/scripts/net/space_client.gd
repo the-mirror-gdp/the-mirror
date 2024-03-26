@@ -50,19 +50,19 @@ func kick_me_from_spaces(space_id: String) -> Promise:
 
 ## Gets the most popular spaces.
 func get_popular_spaces() -> Promise:
-	var extras: String = "populateCreator=true"
+	var extras: String = "populateCreator=false"
 	return self.get_request(GET_POPULAR, "/space/popular?%s" % extras)
 
 
 ## Gets the most popular spaces.
 func get_favorites_spaces() -> Promise:
-	var extras: String = "populateCreator=true"
+	var extras: String = "populateCreator=false"
 	return self.get_request(GET_FAVORITES, "/space/favorites?%s" % extras)
 
 
 ## Gets the most popular spaces.
 func get_recent_spaces() -> Promise:
-	var extras: String = "populateCreator=true"
+	var extras: String = "populateCreator=false"
 	return self.get_request(GET_RECENTS, "/space/recents?%s" % extras)
 
 
