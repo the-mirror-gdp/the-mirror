@@ -120,7 +120,7 @@ func populate(space: Dictionary) -> void:
 	var updated = Time.get_datetime_dict_from_datetime_string(_space.get('updatedAt', ""), false)
 	_updated_at_label.text = Util.datetime_dict_to_mmm_dd_yyyy(updated)
 	_url_label.text = _construct_space_url(_space.get("_id", "unknown"))
-	
+
 	if _space.creator is String:
 		var creator_promise: Promise = Net.user_client.get_user_profile(_space.creator)
 		creator_promise.connect_func_to_fulfill(func():
