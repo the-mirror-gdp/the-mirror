@@ -87,7 +87,7 @@ jobs:
           rm -Rf bin/
 
       - name: Compilation (x86_64)
-        uses: ./godot-engine/.github/actions/godot-build
+        uses: ./.github/actions/godot-build
         with:
           sconsflags: ${{ env.SCONSFLAGS }} arch=x86_64
           platform: macos
@@ -95,7 +95,7 @@ jobs:
           tests: ${{ matrix.tests }}
 
       - name: Compilation (arm64)
-        uses: ./godot-engine/.github/actions/godot-build
+        uses: ./.github/actions/godot-build
         with:
           sconsflags: ${{ env.SCONSFLAGS }} arch=arm64
           platform: macos

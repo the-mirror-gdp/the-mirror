@@ -72,7 +72,7 @@ jobs:
         uses: ammaraskar/gcc-problem-matcher@master
 
       - name: Compilation
-        uses: ./godot-engine/.github/actions/godot-build
+        uses: ./.github/actions/godot-build
         with:
           sconsflags: ${{ env.SCONSFLAGS }} ${{ matrix.sconsflags }}
           platform: linuxbsd
