@@ -78,8 +78,6 @@ jobs:
           platform: linuxbsd
           target: ${{ matrix.target }}
           tests: ${{ matrix.tests }}
-          template-encryption: ${{ matrix.template-encryption }}
-          pck-encryption-key: ${{ secrets[matrix.pck-encryption-key] }}
 
       - name: Strip binaries
         if: ${{ matrix.strip }}
