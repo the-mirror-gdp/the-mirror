@@ -43,9 +43,6 @@ enum DENIED_REASON {
 @onready var _ws_debug_prints = ProjectSettings.get_setting("debug_flags/show_web_socket_debug", false)
 @onready var _space_scene: PackedScene = preload("res://scenes/space_scene.tscn")
 
-var hash_requests: Dictionary = {}
-var physics_hash_promises: Dictionary = {}
-
 var current_mode = ZONE_MODE.EDIT
 var space: Dictionary = {}
 var space_objects: Array = []

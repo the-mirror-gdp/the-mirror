@@ -14,8 +14,8 @@ var _mesh_rid_to_convex_shape_map = {
 var _meshes_to_generate_queue = [
 	#MeshPromisePair, (...)
 ]
-# var _generate_thread: Thread = Thread.new()
-var cumulative_collision_shape_generation_time = 0.0
+var _generate_thread: Thread = Thread.new()
+
 func async_generate_shape_for_meshes(body: JBody3D, in_meshes: Array[MeshInstance3D], is_concave: bool) -> Promise:
 	var promise = Promise.new()
 
@@ -43,7 +43,6 @@ func _thread_generate_collision(mesh_promise_pair: MeshPromisePair):
 
 
 func generate_shape_for_meshes(body: JBody3D, in_meshes: Array[MeshInstance3D], is_concave: bool) -> Array:
-	var start_time = Time.get_unix_time_from_system()
 	var generated_shapes: Array[JShape3D]
 	var generated_shapes_rid: Array[RID]
 	var shapes: Array[JShape3D]
@@ -106,10 +105,6 @@ func generate_shape_for_meshes(body: JBody3D, in_meshes: Array[MeshInstance3D], 
 
 	# The shape is 100% expected at this point.
 	assert(result_shape)
-	var cumulative_time = Time.get_unix_time_from_system() - start_time
-	print("Import time for shape: ", cumulative_time)
-	cumulative_collision_shape_generation_time += cumulative_time
-	print("[", Zone.get_instance_type(), "] Cumulative import time ", cumulative_collision_shape_generation_time)
 	return [result_shape, generated_shapes, generated_shapes_rid]
 
 
