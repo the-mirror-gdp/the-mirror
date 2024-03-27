@@ -165,7 +165,6 @@ func _client_on_connected_to_server() -> void:
 
 	Analytics.track_event_client(AnalyticsEvent.TYPE.SPACE_JOIN_ATTEMPT_SUCCESS, {"spaceId": _queued_space_id})
 	Zone.change_to_space_scene()
-	Zone.instance_manager.reset_all_instances()
 	# TODO: Instead of true, determine if the player has creator permissions for the space.
 	GameUI.on_enter_space(true)
 
@@ -543,15 +542,14 @@ func _join_new_server_locally(space_id: String) -> bool:
 		if pid != null:
 			OS.kill(pid)
 		var firebase_auth = str(Firebase.Auth.auth.refreshtoken)
-		print(firebase_auth)
 		# For debugging this allows you to grab breakpoints from the server "--remote-debug", "tcp://127.0.0.1:6008"]
 		# If enabled it could cause join time to be much longer when booting server
-		var arguments = ["--server", "--space", space_id, "--mode", "edit", "--uuid", "localhost", "--server_login", firebase_auth, "--headless"]
-		print("SERVER ARGS: ", arguments)
+		var arguments = ["--server", "--space", space_id, "--mode", "edit", "--uuid", "localhost", "--server_login", firebase_auth, "--headless"] # "--remote-debug", "tcp://127.0.0.1:6008"]
 		pid = OS.create_process(OS.get_executable_path(), arguments, true)
 		start_join_localhost()
 		return true
 	return false
+
 
 func _find_zone_by_space(space_id: String) -> void:
 	if _join_new_server_locally(space_id):

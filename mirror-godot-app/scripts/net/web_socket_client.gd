@@ -18,8 +18,8 @@ signal message_received(message: Variant)
 
 
 func connect_to_url(url) -> int:
-	_socket.set_inbound_buffer_size(_socket.get_inbound_buffer_size() * 4)
-	_socket.set_outbound_buffer_size(_socket.get_outbound_buffer_size() * 4)
+	_socket.set_inbound_buffer_size(_socket.get_inbound_buffer_size() * 16)
+	_socket.set_outbound_buffer_size(_socket.get_outbound_buffer_size() * 16)
 	_socket.supported_protocols = supported_protocols
 	_socket.handshake_headers = handshake_headers
 	var tls := TLSOptions.client(tls_trusted_certificate)

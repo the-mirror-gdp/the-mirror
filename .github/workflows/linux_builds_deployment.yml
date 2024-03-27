@@ -1,0 +1,103 @@
+name: 🐧 Linux Builds
+on: 
+  push:
+    paths:
+    - godot-engine/**
+
+defaults:
+  run:
+    working-directory: ./godot-engine
+
+# Global Settings
+env:
+  # Used for the cache key. Add version suffix to force clean build.
+  GODOT_BASE_BRANCH: master
+  SCONSFLAGS: verbose=yes warnings=extra werror=no module_text_server_fb_enabled=yes fontconfig=no
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  TSAN_OPTIONS: suppressions=misc/error_suppressions/tsan.txt
+
+concurrency:
+  # workflow name - PR || fallback to unique run id, this happens when you're not building a PR
+  # this ensures all branches build properly and cancel their previous runs
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-linux:
+    runs-on: "ubuntu-20.04" # MUST run on the old version for GLIBC compatibility
+    name: ${{ matrix.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Editor
+            cache-name: linux-editor
+            target: editor
+            sconsflags: arch=x86_64 debug_symbols=no optimize=speed production=yes
+            strip: false
+            bin: "./bin/godot.linuxbsd.editor.x86_64"
+            artifact-name: "MirrorGodotEditorLinux.x86_64"
+            artifact: true
+            tests: no
+
+          - name: Template
+            cache-name: linux-template
+            target: template_debug
+            strip: true
+            sconsflags: arch=x86_64 debug_symbols=no optimize=speed
+            bin: "./bin/godot.linuxbsd.template_debug.x86_64"
+            artifact-name: "linux_release.x86_64"
+            artifact: true
+            tests: no
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Godot build cache
+        uses: ./godot-engine/.github/actions/godot-cache
+        with:
+          cache-name: ${{ matrix.cache-name }}
+        continue-on-error: true
+
+      - name: Setup scons
+        shell: bash
+        run: |
+          python -c "import sys; print(sys.version)"
+          python -m pip install scons==4.4.0
+          scons --version
+
+      - name: Setup GCC problem matcher
+        uses: ammaraskar/gcc-problem-matcher@master
+
+      - name: Compilation
+        uses: ./.github/actions/godot-build
+        with:
+          sconsflags: ${{ env.SCONSFLAGS }} ${{ matrix.sconsflags }}
+          platform: linuxbsd
+          target: ${{ matrix.target }}
+          tests: ${{ matrix.tests }}
+
+      - name: Strip binaries
+        if: ${{ matrix.strip }}
+        run: |
+          strip bin/godot.*
+
+      # - name: Shrink debug symbols
+      #   if: ${{ !matrix.strip }}
+      #   run: |
+      #     # remove duplicate symbols from binary
+      #     dwz ${{ matrix.bin }} -L none -o Middleman.debug
+      #     # make the debug symbols compressed
+      #     objcopy --compress-debug-sections Middleman.debug FinalMan.debug
+      #     # overwrite the original file
+      #     mv FinalMan.debug ${{ matrix.bin }}
+
+      - name: Prepare artifact
+        if: ${{ matrix.artifact }}
+        run: |
+          chmod +x bin/godot.*
+          mv ${{ matrix.bin }} bin/${{ matrix.artifact-name }}
+
