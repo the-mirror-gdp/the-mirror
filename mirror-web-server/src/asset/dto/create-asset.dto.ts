@@ -104,6 +104,11 @@ export class CreateAssetDto {
   currentFile?: string
 
   @IsOptional()
+  @MaxLength(64)
+  @ApiProperty({ required: false })
+  fileHash?: string
+
+  @IsOptional()
   @IsBoolean()
   @ApiProperty({ required: false })
   public?: boolean

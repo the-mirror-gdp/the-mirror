@@ -99,6 +99,8 @@ export class AssetPublicData {
   isSoftDeleted: boolean
   @ApiProperty()
   softDeletedAt: string
+  @ApiProperty()
+  fileHash: string
 }
 
 export type AssetDocument = Asset & Document // Note: we also have subclasses/disciminators for materials and textures (as of 2023-02-04 20:18:08). Walkthrough: https://www.loom.com/share/7e09d2777ef94368bcd5fd8c8341b5ef
@@ -206,6 +208,10 @@ export class Asset {
   @Prop()
   @ApiProperty()
   currentFile: string
+
+  @Prop({ required: false })
+  @ApiProperty()
+  fileHash?: string
 
   // Transform properties.
   @Prop({})
