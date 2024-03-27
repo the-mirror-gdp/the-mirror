@@ -123,9 +123,12 @@ func _preload_space_objects() -> void:
 func setup_space_objects() -> void:
 	assert(Zone.is_host())
 	clear_children()
+	print("Preloading space objects: ", Time.get_datetime_string_from_system())
 	# preload necessary space_objects on server first
 	_preload_space_objects()
 	_load_object_start_time = Time.get_unix_time_from_system()
+	
+	print("Creating standard space objects: ", Time.get_datetime_string_from_system())
 	for space_obj in Zone.space_objects:
 		if space_obj.get("preloadBeforeSpaceStarts", false):
 			continue
@@ -139,6 +142,7 @@ func setup_space_objects() -> void:
 			create_space_object(space_obj, {})
 	await wait_until_ready_to_simulate()
 	print("Completed loading server objects took %d seconds" % (Time.get_unix_time_from_system() - _load_object_start_time))
+	print("Physics Ready at: ", Time.get_datetime_string_from_system())
 	space_objects_created.emit()
 
 

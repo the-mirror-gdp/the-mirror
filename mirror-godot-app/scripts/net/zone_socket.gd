@@ -300,7 +300,7 @@ func update_status(status: Dictionary) -> void:
 func get_space_objects_page(space_id: String, page: int=1) -> void:
 	var request = {
 		"event": ZONE_GET_SPACE_OBJECTS_PAGE,
-		"data": { "id": space_id, "page": page, "perPage": 40 }
+		"data": { "id": space_id, "page": page, "perPage": 150 }
 	}
 	_requests.push_back(request)
 
