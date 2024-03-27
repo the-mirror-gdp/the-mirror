@@ -3,6 +3,7 @@ on:
   push:
     paths:
     - godot-engine/**
+    - .github/**
 
 defaults:
   run:
@@ -94,4 +95,9 @@ jobs:
         run: |
           mv ${{ matrix.bin }}.exe bin/${{ matrix.artifact-name }}.exe
 
-
+      - name: Upload artifact
+        uses: ./.github/actions/upload-artifact
+        if: ${{ matrix.artifact }}
+        with:
+          path: bin/${{ matrix.artifact-name }}.exe
+          name: ${{ matrix.artifact-name }}.exe
