@@ -304,7 +304,8 @@ func _on_zone_socket_space_object_page_received(space_objects_page: Dictionary) 
 		Zone.instance_manager.setup_space_objects()
 		_server_data_received = true
 		return
-	# get the next page
+	# Get all the next pages
+	# Put all the requests in a block and get all the data back much sooner to facilitate this we increased the web socket buffer size.
 	if page == 1:
 		for page_id in range(2, total_pages+1):
 			Net.zone_socket.get_space_objects_page(space_id, page_id)
