@@ -137,4 +137,4 @@ jobs:
         uses: ./.github/actions/upload-artifact
         with:
           name: "${{ matrix.artifact-name }}.zip"
-          path: "bin/${{ matrix.artifact-name }}.zip"
+          path: "./godot-engine/bin/${{ matrix.artifact-name }}.zip"

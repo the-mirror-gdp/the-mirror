@@ -99,5 +99,5 @@ jobs:
         uses: ./.github/actions/upload-artifact
         if: ${{ matrix.artifact }}
         with:
-          path: bin/${{ matrix.artifact-name }}.exe
+          path: ./godot-engine/bin/${{ matrix.artifact-name }}.exe
           name: ${{ matrix.artifact-name }}.exe
