@@ -1,9 +1,8 @@
 name: 🍎 macOS Builds
-on: push
-# on: 
-#   push:
-#     paths:
-#       - godot-engine/**
+on: 
+  push:
+    paths:
+    - godot-engine/**
 
 defaults:
   run:
