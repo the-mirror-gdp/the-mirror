@@ -1223,7 +1223,6 @@ func _interaction_set_transform(new_transform: Transform3D):
 	global_transform = new_transform
 	interpolated_node.update_space_object_transform(0.0, global_transform)
 
-
 func get_creator() -> Dictionary:
 	var creator_user_id: String = ""
 	if space_object_data.has("creator"):

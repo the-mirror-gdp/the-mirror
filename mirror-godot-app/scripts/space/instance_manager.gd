@@ -122,7 +122,6 @@ func _preload_space_objects() -> void:
 
 func setup_space_objects() -> void:
 	assert(Zone.is_host())
-	clear_children()
 	print("Preloading space objects: ", Time.get_datetime_string_from_system())
 	# preload necessary space_objects on server first
 	_preload_space_objects()
