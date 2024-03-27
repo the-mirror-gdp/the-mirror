@@ -1,0 +1,42 @@
+---
+sidebar_position: 2
+---
+
+# Architecture
+
+## [`mirror-web-server`](https://github.com/the-mirror-gdp/the-mirror/tree/dev/mirror-web-server)
+
+As mentioned in our [open-source announcement blog post](https://www.themirror.space/blog/freedom-to-own-open-sourcing-the-mirror), one of the key things missing from typical game development is an out-of-the-box web server that handles everything, which `mirror-web-server` provides in a stable, highly-efficient, and scalable manner:
+
+- Authentication via Firebase
+- MongoDB: NoSQL Database
+- Mongoose: Flexible ODM (Object Document Mapper, the document DB version of an ORM from SQL)
+- HTTP requests
+- Websockets
+- Modular and extendable architecture
+- Pub/sub functionality via Redis
+- Type safety with Typescript
+- Dockerized
+- All neatly bundled with OpenAPI Swagger documentation
+
+The Mirror's web server is built on [NestJS](https://nestjs.com/), arguably the best thing to happen to NodeJS since [Express](https://expressjs.com/). It uses TypeScript, which is a superset of JavaScript that compiles to plain JavaScript.
+
+### Database: MongoDB
+
+The Mirror uses MongoDB: a NoSQL database that stores data in flexible, JSON-like documents. It is a popular choice for many modern web applications because it can store data of any structure, which is particularly useful when the data is not known in advance.
+
+### Why MongoDB and Mongoose?
+
+We get this question a lot and especially "Why not SQL?"". Here are the reasons:
+
+- **Flexibility**: The schemaless of MongoDB nature allow for maximum flexibility. For example, if the text you need to store is 1000 characters instead of 64, you don't need to run a migration. In fact, you could have just set the field (a SQL column) to "text" and that's it; no need to specify character limits ahead of time. It saves you tons of time with architecture so you can get up and running quickly
+- **Application-level schema**: Mongoose keeps the schema at the application level instead of DB level, allowing for faster development iterations with minimal (or zero) migration
+- **JSON Data Format**: The data format is quite close to JSON (BSON), which is the primary data transfer format of the web. The saves you from needing extra serialization
+- **JSON & TS/JS**: JSON and Typescript/Javascript go hand-in-hand, so this allows for rapid development on the web dev side
+- **Open-Source**: MongoDB is open-source and has a huge community behind it
+- **Scalable**: MongoDB is horizontally scalable, which means you can add more servers to your MongoDB database to handle more traffic. You can also use sharding to distribute data across multiple servers
+- **Minimal migration headaches**: Migrations technically aren't required _**at all**_ with MongoDB. You can just add a new field to your schema and start using it immediately, a massive time saver
+
+---
+
+_More architecture details coming soon!_
