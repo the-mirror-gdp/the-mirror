@@ -126,7 +126,7 @@ func setup_space_objects() -> void:
 	# preload necessary space_objects on server first
 	_preload_space_objects()
 	_load_object_start_time = Time.get_unix_time_from_system()
-	
+
 	print("Creating standard space objects: ", Time.get_datetime_string_from_system())
 	for space_obj in Zone.space_objects:
 		if space_obj.get("preloadBeforeSpaceStarts", false):
