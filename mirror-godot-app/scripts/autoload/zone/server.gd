@@ -243,6 +243,7 @@ func _on_edit_server_zone_socket_logged_in() -> void:
 		push_error("Critical: cannot start server: ", promise.get_error_message())
 		return
 	_on_zone_socket_space_received(promise.get_result())
+	print("Started getting space objects: ", Time.get_datetime_string_from_system())
 	Net.zone_socket.get_space_objects_page(space_id, 1)
 
 
@@ -272,31 +273,41 @@ func _handle_zone_socket_error(request: Dictionary) -> void:
 	push_error(error_msg, " ", request)
 	print(error_msg)
 
-
+var _loaded_pages = 0
+var _queued_assets = []
 func _on_zone_socket_space_object_page_received(space_objects_page: Dictionary) -> void:
 	var page = space_objects_page.get("page", 1)
 	var total_pages = space_objects_page.get("totalPage", 1)
 	var space_objects_arr = space_objects_page.get("result", [])
-	for obj in space_objects_arr:
-		# if we already have the asset in memory, no need to get it again
-		if not Net.asset_client.get_asset_json(obj["asset"]).is_empty():
-			continue
-		Net.zone_socket.queue_download_asset(obj["asset"])
+	_loaded_pages +=1
+	print("Loaded page: ", page, " time: ", Time.get_datetime_string_from_system())
+	print("Total pages loaded: ", _loaded_pages, " total pages ", total_pages)
 
-	for space_obj in space_objects_arr:
-		#assert(not space_obj.has("receipt"), "May happen with old spaces, but should not happen with new spaces.")
-		if space_obj.has("receipt"):
-			space_obj["creator"] = space_obj["receipt"].get("created_by_user", "")
-			space_obj.erase("receipt")
 	Zone.space_objects.append_array(space_objects_arr)
 	# if we've reached the final page, we're done getting all the data
-	if page >= total_pages:
-		print("All Space Objects Received")
+	if _loaded_pages >= total_pages:
+		print("All Space Objects Received: ", Time.get_datetime_string_from_system())
+		print("Downloading assets for space objects")
+		for obj in Zone.space_objects:
+			if obj.has("receipt"):
+				obj["creator"] = obj["receipt"].get("created_by_user", "")
+				obj.erase("receipt")
+			# if we already have the asset in memory, no need to get it again
+			if not Net.asset_client.get_asset_json(obj["asset"]).is_empty():
+				continue
+			var asset_id = obj["asset"]
+			if not _queued_assets.has(asset_id):
+				Net.zone_socket.queue_download_asset(asset_id)
+				_queued_assets.push_back(asset_id)
+		print("All assets have been queued: ", Time.get_datetime_string_from_system())
+
 		Zone.instance_manager.setup_space_objects()
 		_server_data_received = true
 		return
 	# get the next page
-	Net.zone_socket.get_space_objects_page(space_id, page + 1)
+	if page == 1:
+		for page_id in range(2, total_pages+1):
+			Net.zone_socket.get_space_objects_page(space_id, page_id)
 
 
 func _on_zone_socket_asset_received(asset: Variant) -> void:
