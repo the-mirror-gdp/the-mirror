@@ -1,3 +1,7 @@
+ ![Windows](https://github.com/the-mirror-gdp/the-mirror/actions/workflows/windows_builds_deployment.yml/badge.svg?branch=dev)
+ ![Linux](https://github.com/the-mirror-gdp/the-mirror/actions/workflows/linux_builds_deployment.yml/badge.svg?branch=dev)
+ ![MacOS](https://github.com/the-mirror-gdp/the-mirror/actions/workflows/macos_builds_deployment.yml/badge.svg?branch=dev)
+
 # What is The Mirror and why?
 
 ![image](https://github.com/the-mirror-gdp/the-mirror/assets/11920077/13ffc0bd-bef2-4c1d-a12d-f11fdedf7b11)
