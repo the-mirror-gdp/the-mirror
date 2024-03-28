@@ -3,6 +3,7 @@ on:
   push:
     paths:
     - godot-engine/**
+    - .github/**
 
 defaults:
   run:
@@ -131,3 +132,9 @@ jobs:
           chmod -R +x ${{ matrix.packaged-app }}
           xattr -rc ${{ matrix.packaged-app }}
           zip -q -9 -r ${{ matrix.artifact-name }}.zip ${{ matrix.packaged-app }}
+
+      - name: Upload artifact
+        uses: ./.github/actions/upload-artifact
+        with:
+          name: "${{ matrix.artifact-name }}.zip"
+          path: "./godot-engine/bin/${{ matrix.artifact-name }}.zip"
