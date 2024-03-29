@@ -61,7 +61,7 @@
     "@socket.io/redis-adapter": "^8.2.1",
     "@types/jsforce": "^1.11.0",
     "@types/lodash": "^4.14.195",
-    "axios": "^1.4.0",
+    "axios": "^1.6.8",
     "bcrypt": "^5.1.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
