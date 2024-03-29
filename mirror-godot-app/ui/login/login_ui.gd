@@ -84,7 +84,7 @@ func _deeplink_login_as_user(access_token: String, refresh_token: String, space_
 func _logged_out():
 	_connect_popup.hide()
 	_sign_in_menu.show()
-	Firebase.Auth.remove_auth()
+	# don't call remove_auth here; that's handled by the Firebase addon when logout() is called. Otherwise, Remember Me will fail
 
 
 ## Retrieves a profile for this firebase UID
@@ -267,12 +267,6 @@ func _on_sign_up_here_pressed() -> void:
 		AnalyticsEvent.TYPE.LOGIN_UI_SIGN_UP_HERE_PRESSED,
 		{"base_url": url}
 	)
-
-
-func _on_remember_me_changed(state: bool) -> void:
-	# ensure we empty the auth token on setting it false
-	if not state:
-		Firebase.Auth.remove_auth()
 
 
 func _on_login_anonymously_pressed():
