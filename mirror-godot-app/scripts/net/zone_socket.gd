@@ -305,8 +305,15 @@ func get_space_objects_page(space_id: String, page: int=1) -> void:
 	_requests.push_back(request)
 
 
+var _duplicate_request = {}
 func queue_download_asset(asset_id: String) -> Promise:
+	if _duplicate_request.has(asset_id):
+		var duplication_count = _duplicate_request[asset_id].count
+		_duplicate_request[asset_id].count += 1
+		print("Duplicate asset found: duplicate count: ", duplication_count)
+		return _duplicate_request[asset_id].promise
 	var promise: Promise = Promise.new()
+	_duplicate_request[asset_id] = { "count": 1, "promise": promise }
 	var event_id: String = UUID.generate_guid()
 	var request = {
 		"event": ZONE_GET_ASSET,

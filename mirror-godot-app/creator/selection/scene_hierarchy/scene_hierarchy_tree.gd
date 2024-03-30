@@ -304,6 +304,8 @@ func _is_any_node_ancestor(node: Node, possible_ancestors: Array) -> bool:
 
 
 func create_tree_item_for_node(node: Node) -> void:
+	if Zone.is_host():
+		return # not required on server
 	if _is_node_map(node):
 		recursively_populate_tree(node, get_root().get_child(_TopLevelItemIndices.MAPS))
 	else:

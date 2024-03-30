@@ -116,8 +116,22 @@ func get_file_path(file_name: String) -> String:
 	var storage_path_format = Util.get_files_directory_path() + "%s"
 	return storage_path_format % file_name
 
+# Retrieve a file hash
+static func get_file_hash(file_path: String) -> String:
+	var ctx = HashingContext.new()
+	ctx.start(HashingContext.HASH_SHA1)
+	var file = FileAccess.open(file_path, FileAccess.READ)
+	while not file.eof_reached():
+		ctx.update(file.get_buffer(4096))
+	var res = ctx.finish()
+	var hash_string: String = res.hex_encode()
+	return hash_string
 
 ## Tries to load a file into memory from disk cache and returns the payload or null.
+## TODO: CACHE
+
+var duplicate_load_from_cache = {}
+
 func try_load_cached_file(cache_key: String) -> Variant:
 	cache_key = cache_key.uri_decode()
 	if not _storage_cache.has(cache_key):
@@ -126,6 +140,13 @@ func try_load_cached_file(cache_key: String) -> Variant:
 	var file_path: String = get_file_path(file_name)
 	if not FileAccess.file_exists(file_path):
 		return null
+	#var file_hash: String = get_file_hash(file_path)
+	#if duplicate_load_from_cache.has(file_hash):
+		#duplicate_load_from_cache[file_hash].count +=1
+		#print("Attempted to load file from OS multiple times: ", duplicate_load_from_cache[file_hash].count)
+	#else:
+		#duplicate_load_from_cache[file_hash] = { "count": 1 }
+		#print("No duplicate yet: ", file_hash)
 	if Util.path_is_model(file_path):
 		return TMFileUtil.load_gltf_file_as_node(file_path, Zone.is_host())
 	elif Util.path_is_image(file_path):

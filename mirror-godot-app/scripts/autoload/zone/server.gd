@@ -328,7 +328,7 @@ func _refresh_space_objects_with_asset_id(asset_id: String, asset_data: Dictiona
 		if space_obj:
 			space_obj.on_asset_received(asset_data)
 
-
+ 
 func _on_space_partial_update_received(update: Dictionary) -> void:
 	for spath in update["partial_data"]:
 		Zone.receive_space_update(spath, update["partial_data"][spath])
@@ -613,21 +613,7 @@ func _server_send_sync_space(client_peer_id_to_sync: int) -> void:
 
 
 func _get_unique_space_objects_sorted_by_dst_to_spawn() -> Array:
-	var all_objs: Array = Zone.space_objects.duplicate()
-	var no_duplicates = []
-	for index in range(all_objs.size()):
-		var dup_exists_after = false
-		for sub_index in range(index + 1, all_objs.size()):
-			if all_objs[index]["_id"] == all_objs[sub_index]["_id"]:
-				# To prevent the client ingesting invalid objects that have been duplicated. It alleviates the issue for now and lets us release.
-				# If they get to the client nothing works properly. I will fix this in a follow up PR properly.
-				push_error("Duplicate ID found in the server list of objects, I have skipped it: ", all_objs[index]["_id"])
-				dup_exists_after = true
-				break
-		if not dup_exists_after:
-			no_duplicates.append(all_objs[index])
-	no_duplicates.sort_custom(_sort_by_dst_to_origin)
-	return no_duplicates
+	return Zone.space_objects
 
 
 func _sort_by_dst_to_origin(in_a, in_b):
