@@ -1,9 +1,10 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
-const darkTheme = require('prism-react-renderer/themes/vsDark/index.cjs.js')
+const themes = require('prism-react-renderer').themes;
+const lightCodeTheme = themes.github;
+const darkCodeTheme = themes.dracula;
+const darkTheme = themes.vsDark;
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -167,7 +168,7 @@ const config = {
       announcementBar: {
         id: 'alpha_notice',
         content:
-          '<b>&#11088; <a target="_blank" rel="noopener noreferrer" href="https://github.com/the-mirror-gdp/the-mirror">Star on Github!</a> The Mirror is now open-source, MIT-licensed.</b>',
+          '<b>&#11088; <a rel="noopener noreferrer" href="https://github.com/the-mirror-gdp/the-mirror" target="_blank">Star on Github!</a> The Mirror is now open-source, MIT-licensed.</b>',
         backgroundColor: '#00CFFF',
         textColor: '#06011F',
         isCloseable: true,
