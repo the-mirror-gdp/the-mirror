@@ -3,7 +3,7 @@
  * bundles Infima by default. Infima is a CSS framework designed to
  * work well for content-centric websites.
  */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;500;600;700&display=swap");
 /* You can override the default Infima variables here. */
 :root {
   --ifm-color-primary: #1b1e37;
@@ -15,13 +15,13 @@
   --ifm-color-primary-lightest: #3cad6e;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
-  font-family: 'Montserrat';
+  font-family: "Montserrat";
 
   --ifm-footer-background-color: red !important;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
-[data-theme='dark'] {
+[data-theme="dark"] {
   --ifm-color-primary: #256bfb;
   --ifm-color-primary-dark: #030012;
   --ifm-color-primary-darker: #0e0e0e;
@@ -52,13 +52,13 @@
   outline: 1px solid var(--ifm-color-primary);
 }
 
-.aa-Form[role='search'] {
+.aa-Form[role="search"] {
   border-radius: 1rem;
   background: rgb(27 30 61);
   border: 0;
 }
 
-.aa-Form[role='search']:focus-within {
+.aa-Form[role="search"]:focus-within {
   outline: none;
   box-shadow: none;
   outline: 1px solid var(--ifm-color-primary);
@@ -98,6 +98,10 @@
   color: #fff;
   box-shadow: 0 2px 40px 0px rgba(7, 121, 255, 0.4);
   transition: all 100ms ease-in-out;
+}
+
+.mirror-success-button p {
+  margin: 0;
 }
 
 .mirror-success-button:hover {

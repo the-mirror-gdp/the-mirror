@@ -16,7 +16,7 @@ We recommend using the [Itch.io desktop app](https://itch.io/app). We push updat
 
 <div >
   <a
-    className="button mirror-success-button button--lg" href="https://itch.io/app">
+    className="button mirror-success-button button--lg" href="https://itch.io/app" target="_blank">
     Download Itch Desktop
   </a>
 </div>
@@ -31,7 +31,7 @@ Alternatively, you can download the client directly from our [Itch.io page](http
 
   <div >
     <a
-      className="button mirror-success-button button--lg" href="https://themirrorgdp.itch.io/the-mirror">
+      className="button mirror-success-button button--lg" href="https://themirrorgdp.itch.io/the-mirror" target="_blank">
       Download Directly on Itch
     </a>
   </div>
