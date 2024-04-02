@@ -167,8 +167,8 @@ size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.145098, 0.419608, 0.984314, 1)
 theme_override_fonts/font = SubResource("Font_oqr4b")
 theme_override_font_sizes/font_size = 14
-theme_override_styles/normal = ExtResource("17_i5gqh")
 theme_override_styles/hover = ExtResource("18_hffas")
+theme_override_styles/normal = ExtResource("17_i5gqh")
 text = "sign up here"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/SignInMenu/MarginContainer/LoginContainer"]
@@ -209,8 +209,8 @@ caret_blink = true
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 placeholder_text = "Password"
-secret = true
 caret_blink = true
+secret = true
 
 [node name="RememberMe" type="CheckBox" parent="VBoxContainer/SignInMenu/MarginContainer/LoginContainer"]
 unique_name_in_owner = true
@@ -237,8 +237,8 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.145098, 0.419608, 0.984314, 1)
 theme_override_fonts/font = SubResource("Font_oqr4b")
-theme_override_styles/normal = ExtResource("17_i5gqh")
 theme_override_styles/hover = ExtResource("18_hffas")
+theme_override_styles/normal = ExtResource("17_i5gqh")
 text = "Forgot Password?"
 
 [node name="RegisterContainer" type="VBoxContainer" parent="VBoxContainer/SignInMenu/MarginContainer"]
@@ -278,8 +278,8 @@ size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.145098, 0.419608, 0.984314, 1)
 theme_override_fonts/font = SubResource("Font_oqr4b")
 theme_override_font_sizes/font_size = 14
-theme_override_styles/normal = ExtResource("17_i5gqh")
 theme_override_styles/hover = ExtResource("18_hffas")
+theme_override_styles/normal = ExtResource("17_i5gqh")
 text = "Sign in here"
 
 [node name="LineSeparator" type="HSeparator" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer"]
@@ -322,8 +322,8 @@ text = "Please enter your email"
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 placeholder_text = "Password"
-secret = true
 caret_blink = true
+secret = true
 
 [node name="ErrorLabel" type="Label" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/Password"]
 visible = false
@@ -338,8 +338,8 @@ text = "Please enter your password"
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 placeholder_text = "Confirm Password"
-secret = true
 caret_blink = true
+secret = true
 
 [node name="ErrorLabel" type="Label" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/ConfirmPassword"]
 visible = false
@@ -375,8 +375,8 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.145098, 0.419608, 0.984314, 1)
 theme_override_fonts/font = SubResource("Font_oqr4b")
-theme_override_styles/normal = ExtResource("17_i5gqh")
 theme_override_styles/hover = ExtResource("18_hffas")
+theme_override_styles/normal = ExtResource("17_i5gqh")
 text = "Terms of Service"
 
 [node name="Label2" type="Label" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/ToS"]
@@ -392,8 +392,8 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.145098, 0.419608, 0.984314, 1)
 theme_override_fonts/font = SubResource("Font_oqr4b")
-theme_override_styles/normal = ExtResource("17_i5gqh")
 theme_override_styles/hover = ExtResource("18_hffas")
+theme_override_styles/normal = ExtResource("17_i5gqh")
 text = "Privacy Policy"
 
 [node name="SignUp" type="Button" parent="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer"]
@@ -457,7 +457,6 @@ text = "Cancel"
 [connection signal="item_selected" from="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/DevLoginOptions" to="." method="_on_dev_login_options_item_selected"]
 [connection signal="text_submitted" from="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/Username" to="." method="_on_text_submitted"]
 [connection signal="text_submitted" from="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/Password" to="." method="_on_text_submitted"]
-[connection signal="toggled" from="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/RememberMe" to="." method="_on_remember_me_changed"]
 [connection signal="pressed" from="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/SignIn" to="." method="_on_sign_in_pressed"]
 [connection signal="pressed" from="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/LoginAnonymously" to="." method="_on_login_anonymously_pressed"]
 [connection signal="pressed" from="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/ForgotPassword" to="." method="_on_forgot_password_pressed"]
@@ -466,7 +465,6 @@ text = "Cancel"
 [connection signal="text_submitted" from="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/Email" to="." method="_on_text_submitted"]
 [connection signal="text_submitted" from="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/Password" to="." method="_on_text_submitted"]
 [connection signal="text_submitted" from="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/ConfirmPassword" to="." method="_on_text_submitted"]
-[connection signal="toggled" from="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/ToS/ToSCheckbox" to="." method="_on_remember_me_changed"]
 [connection signal="pressed" from="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/ToS/ToSLink" to="." method="_on_tos_link_pressed"]
 [connection signal="pressed" from="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/ToS/PrivacyLink" to="." method="_on_privacy_link_pressed"]
 [connection signal="pressed" from="VBoxContainer/SignInMenu/MarginContainer/RegisterContainer/SignUp" to="." method="_on_sign_up_pressed"]
