@@ -34,6 +34,9 @@ func _start_client():
 	# make request for version from server
 	Net.version_client.get_client_version()
 	var version = await Net.version_client.version_received
+	if version != Util.get_version_string():
+		critical_error(Client.JOINER_ERRORS.VERSION_MISMATCH, "Your client is out of date, please update it to %s from %s" % [version, Util.get_version_string()] )
+		return
 	if ProjectSettings.get_setting("feature_flags/disable_login", false) and not Zone.client.is_client_connected_to_server():
 		var title = ProjectSettings.get_setting("mirror/disable_login/notify/title",
 			"Please open The Mirror web app"
