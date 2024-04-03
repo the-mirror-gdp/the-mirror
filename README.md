@@ -45,9 +45,9 @@ This repo is The Mirror's source code: the Godot app (client/server), the web se
 1. Git clone the repository (you do **not** need to clone with submodules; they are optional)
 2. Download the precompiled Mirror fork of Godot engine (required to use)
 
-- Windows: [Download](https://storage.googleapis.com/mirror_native_client_builds/Engine/41ba769a/MirrorGodotEditorWindows.exe)
-- Mac: **v buggy**; taking contributions for fixes :) [Download](https://storage.googleapis.com/mirror_native_client_builds/Engine/41ba769a/MirrorGodotEditorMac.app.zip). On Mac you will see a zip file; extract it and open the editor binary with CMD + Right-Click then select the Open option.
-- Linux: [Download](https://storage.googleapis.com/mirror_native_client_builds/Engine/41ba769a/MirrorGodotEditorLinux.x86_64)
+- Windows: [Download](https://storage.googleapis.com/mirror_native_client_builds/Engine/latest-editor/MirrorGodotEditorWindows.exe.zip)
+- Mac: **v buggy**; taking contributions for fixes :) [Download](https://storage.googleapis.com/mirror_native_client_builds/Engine/latest-editor/MirrorGodotEditorMac.app.zip.zip). On Mac you will see a zip file; extract it and open the editor binary with CMD + Right-Click then select the Open option.
+- Linux: [Download](https://storage.googleapis.com/mirror_native_client_builds/Engine/latest-editor/MirrorGodotEditorLinux.x86_64.zip)
 
 3. Open the Godot editor (The Mirror fork), click import, and choose the `project.godot` from the `/mirror-godot-app` folder.
 4. Close the Godot editor and open it again, to ensure that everything loads correctly, now that all files have been imported.
