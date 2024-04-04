@@ -1,0 +1,133 @@
+---
+sidebar_position: 3.2
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import Table from '/src/components/Table';
+import YouTube from 'react-youtube';
+
+# Saving Scripts
+
+Once you have made a script, a common desire is to save it for later use. The Mirror provides 2 ways to do this: Saving as a script asset, and copying the script contents as JSON.
+
+Before saving a script for later, you should first give the script a meaningful name. This can either be done from in the script editor or in the inspector.
+
+import ScriptSetNameEditor from './img/saving/script_set_name_editor.webp';
+import ScriptSetNameInspector from './img/saving/script_set_name_inspector.webp';
+
+<img
+  src={ScriptSetNameEditor}
+  alt="Script editor set name field in a red box"
+  width="294"
+/>
+<img
+  src={ScriptSetNameInspector}
+  alt="Script inspector set name field in a red box"
+  width="400"
+/>
+
+## Script Assets
+
+When you have a script that you want to save for later, you can click the "Save As New Script" button to save the script as a new script asset.
+
+import ScriptAssetSave from './img/saving/script_asset_save.webp';
+
+<img
+  src={ScriptAssetSave}
+  alt="Script editor save as new script button in a red box"
+  width="600"
+/>
+
+This will create a new script asset and place it in "MY ASSETS", which you can find in the sidebar.
+
+import ScriptAssetSidebar from './img/saving/script_asset_sidebar.webp';
+
+<img
+  src={ScriptAssetSidebar}
+  alt="Script asset sidebar hovering over the new script asset to show its name"
+  width="410"
+/>
+
+You can click on a script asset to edit the name, edit the description, delete the asset, and view its contents. When viewing the script asset, entry blocks will be surrounded with a yellow outline, indicating that it is not active. If you hover over it, there will be an explanation of why it is not active.
+
+import ScriptAssetEdit from './img/saving/script_asset_edit.webp';
+
+<img
+  src={ScriptAssetEdit}
+  alt="Script editor editing a script asset with a yellow outline around the entry block"
+  width="1025"
+/>
+
+When you want to instance a script asset, drag-and-drop the script into the hierarchy. Scripts can be either attached globally to the Space (drag onto "GLOBAL SCRIPTS") or to a specific object (drag onto that object).
+
+import ScriptAssetInstance from './img/saving/script_asset_instance.webp';
+
+<img
+  src={ScriptAssetInstance}
+  alt="Script asset instance process with red arrows pointing from the asset sidebar to the scene hierarchy"
+  width="1422"
+/>
+
+In the future, we will add the ability for users to publish assets for other people to use, including script assets.
+
+## Copying Scripts
+
+You can select script blocks and copy them using the shortcut below. This will copy the selected script blocks into your OS clipboard. You can paste back into the script editor, or paste anywhere else you'd like.
+
+<Tabs queryString="os">
+  {[
+    { label: 'Windows', value: 'windows', cmdCtrlKey: 'CTRL' },
+    { label: 'Mac', value: 'mac', cmdCtrlKey: 'CMD' },
+    { label: 'Linux', value: 'linux', cmdCtrlKey: 'CTRL' },
+  ].map((os) => {
+    {
+      /* React MDX isn't working here for some reason. Should be able to use the below */
+    }
+    const cmdCtrlKey = os.cmdCtrlKey;
+    const headers = [`Input`, `Action`];
+    const data = [
+      [`${cmdCtrlKey} + C`, `Copy selection`],
+      [`${cmdCtrlKey} + V`, `Paste selection`],
+      [`${cmdCtrlKey} + D`, `Duplicate selection`],
+    ];
+    return (
+      <TabItem value={os.value} label={os.label} default>
+        <Table headers={headers} data={data} />
+      </TabItem>
+    );
+  })}
+</Tabs>
+
+The copied data will be the selected script blocks encoded as JSON, it will look like this:
+
+```json
+{
+  "blocks": [
+    {
+      "flows": [-1],
+      "inputs": [
+        ["Title", 4, "Script Notification"],
+        ["Message", 0, "Hello World!"],
+        ["Notify Status", 4, "Info"]
+      ],
+      "name": "Print Notify",
+      "type": "print_notify"
+    }
+  ],
+  "name": "Example",
+  "type": "MirrorVisualScript"
+}
+```
+
+You can paste this data into a variety of places:
+
+- Paste it back into The Mirror's script editor to load the JSON data as script blocks.
+- Paste it into a text editor and save it as a file (suggested file extension: `.vs.json`).
+- Paste it in Discord and share it with your friends (surround with ``` characters to format as code).
+
+Note that, for safety reasons, you cannot paste entry blocks. This ensures that pasting will never result in the pasted blocks immediately running. Nothing you paste will run until you connect the pasted blocks to an entry or click the white triangle, you have control over when blocks run.
+
+When pasting, your existing selection is preserved, and the pasted blocks will be added to the selection. The paste position will be relative to the mouse.
+
+When copy-pasting data within the same script, prefer using Duplicate instead. When duplicating, only the new blocks will be selected, so you can drag them elsewhere. The blocks will be initially placed in nearly the same position as the original blocks, but will be offset to the bottom-right by 100 pixels.

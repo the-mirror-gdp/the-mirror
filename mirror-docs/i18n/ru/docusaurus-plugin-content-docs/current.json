@@ -1,0 +1,70 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.tutorialSidebar.category.Build": {
+    "message": "Build",
+    "description": "The label for category Build in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Build.link.generated-index.description": {
+    "message": "There are 2 main modes in The Mirror: Build and Play. Build Mode has the power of a full-blown game engine for whatever you can imagine, developed in real-time with your fellow builders.",
+    "description": "The generated-index page description for category Build in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Scripting": {
+    "message": "Scripting",
+    "description": "The label for category Scripting in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Scripting.link.generated-index.description": {
+    "message": "Bring your games to life with The Mirror's high-level visual scripting. Coding can be daunting, which is why The Mirror provides no-code visual scripting out-of-the-box to make it easy for people of any skill level to build in The Mirror. Visual scripting is still programming, but high-level, and without needing to write code as text. Full support for GDScript is also available if you prefer writing text-based code.",
+    "description": "The generated-index page description for category Scripting in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Physics": {
+    "message": "Physics",
+    "description": "The label for category Physics in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Physics.link.generated-index.description": {
+    "message": "The Mirror includes Jolt physics, an advanced physics engine. Everything is exposed with a high-level API and is networked out of the box.",
+    "description": "The generated-index page description for category Physics in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Play": {
+    "message": "Play",
+    "description": "The label for category Play in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Play.link.generated-index.description": {
+    "message": "There are 2 main modes in The Mirror: Build and Play. Play Mode is where your published games take flight and can be played by anyone in the world.",
+    "description": "The generated-index page description for category Play in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Users": {
+    "message": "Users",
+    "description": "The label for category Users in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Users.link.generated-index.description": {
+    "message": "Showcase your Mirror Image and interact with other people in The Mirror.",
+    "description": "The generated-index page description for category Users in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Monetize": {
+    "message": "Monetize",
+    "description": "The label for category Monetize in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Monetize.link.generated-index.description": {
+    "message": "Easily monetize your game with in-Space transactions, buy/sell assets, perks, power-ups, levels, quests, items, skins, and much more",
+    "description": "The generated-index page description for category Monetize in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.REST API": {
+    "message": "REST API",
+    "description": "The label for category REST API in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.REST API.link.generated-index.description": {
+    "message": "The Mirror exposes a REST API to query Spaces, Objects, Assets, and more.",
+    "description": "The generated-index page description for category REST API in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Open-Source Code": {
+    "message": "Open-Source Code",
+    "description": "The label for category Open-Source Code in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Open-Source Code.link.generated-index.description": {
+    "message": "Documentation for The Mirror's open-source monorepo: https://github.com/the-mirror-gdp/the-mirror",
+    "description": "The generated-index page description for category Open-Source Code in sidebar tutorialSidebar"
+  }
+}

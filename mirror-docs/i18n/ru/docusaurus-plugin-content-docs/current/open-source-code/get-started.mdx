@@ -1,0 +1,124 @@
+---
+sidebar_position: 1
+---
+
+# Быстрый старт
+
+:::info
+Обратите, пожалуйста, внимание, что основная документация The Mirror написана на английском языке. Документация The Mirror на русском языке может быть не полностью переведена с английского языка, а также учитывайте, что документация по The Mirror регулярно обновляется, и актуализация документации на русском языке занимает время. Если вы хотите получить всегда самую актуальную документацию, используйте, пожалуйста, документацию на английском языке.
+:::
+
+**Простейший подход:**: We'll walk you through how to get started developing **with the Godot app** and plug into the Mirror Official server (our deployed `mirror-web-server`). This gives you access to your full accounts, assets, Spaces, etc. [In The Mirror](https://in.themirror.space) (our web app). With it, you can start developing without needing to run the full stack locally.
+
+1. Git clone the repository: `git clone https://github.com/the-mirror-gdp/the-mirror.git` (you do **not** need to clone with submodules; they are optional)
+2. Download the precompiled Mirror fork of Godot engine (required to use)
+
+- **Windows: [Download](https://storage.googleapis.com/mirror_native_client_builds/Engine/41ba769a/MirrorGodotEditorWindows.exe)**
+- **Mac: [Download](https://storage.googleapis.com/mirror_native_client_builds/Engine/41ba769a/MirrorGodotEditorMac.app.zip)** **Note: very buggy**; taking contributions for fixes :) On Mac you will see a zip file; extract it and open the editor binary with CMD + Right-Click then select the Open option.
+- **Linux: [Download](https://storage.googleapis.com/mirror_native_client_builds/Engine/41ba769a/MirrorGodotEditorLinux.x86_64)**
+
+3. Open the Godot editor (The Mirror fork you downloaded in step 2), click import, and choose the `project.godot` from the `/mirror-godot-app` folder.
+4. Hit play once it loads!
+
+# Docker Approach
+
+:::info
+**You don't need Docker if you're only running `mirror-godot-app` locally**. You can still hit our deployed Mirror Official server instance via the top-right environment dropdown (select `official`; see pic below) and login with your Mirror account to manage assets, saved data, etc. **The Docker approach is for running the full stack yourself (including `mirror-web-server` locally, not just the `mirror-godot-app`).**
+:::
+
+![Official env](2024-03-16-15-47-58.jpg)
+
+Docker isn't required, but is recommended for ease to run the web server and other dependencies in a consistent environment across different hardware.
+
+## How to Run the Full Stack with Docker (Windows)
+
+1. Install Docker for Windows
+
+Download and proceed with instructions from: https://docs.docker.com/desktop/install/windows-install/
+Setup was tested with WSL2 (defualt for not Professional versions of Windows)
+
+2. Clone mthe main repo: `git clone git@github.com:the-mirror-gdp/the-mirror.git`.
+
+3. Configure your `./mirror-web-server/.env`
+
+Use these settings. For the rest, I used defaults but these docs need to be updated.
+
+```
+MONGODB_URL=mongodb://root:example@mongo:27017/themirror?retryWrites=true&w=majority&authSource=admin
+# Do not change paths here since they are relative to docker container
+GOOGLE_APPLICATION_CREDENTIALS=/app/the-mirror-backend-dev-firebase-admin.json # <- You'll supply this in the next step
+```
+
+4. Configure your `the-mirror-backend-dev-firebase-admin.json` to plug in your own Firebase instance. This is required if you're running `mirror-web-server` locally since `mirror-web-server` requires admin permissions.
+
+5. Launch WSL2 terminal and go to your project directory `cd /YOUR_PROJECT_DIR`
+
+6. Run `docker compose up`
+
+:::tip
+If you run into an error like this:
+`ERROR: for the_mirror_server  Cannot start service mirror-server: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: exec: "./auto-migrate.sh": permission denied: unknown`
+
+Try running `chmod +x auto-migrate.sh` from the `mirror-web-server` directory.
+:::
+
+7. Use your godot-app with `local` preset in top right corner of Godot editor.
+
+8. Localhost Space should load with terrain and environment
+
+## Troubleshooting
+
+1. I messed up & I can't login
+
+Probably issue with mirror-server configuration files
+Rember to run `docker compose build` after every change to configs!
+
+2. My localhost space is empty (not even a terrrain and environment)
+
+Something went wrong with your migration of DB. After fixes to your dump file make sure to rm container running mongodb (otherwise init script restoring dump will not launch)
+
+3. My database is not empty even though it should be.
+
+Your mongo container maybe stopped but it is not removed. Try `docker rm mongo_container_id`. If this does not help try `docker system prune`
+
+## Other
+
+### Connection String for MongoDB Compass (the GUI for MongoDB):
+
+`mongodb://root:example@localhost:27017/themirror?retryWrites=true&w=majority&authSource=admin`
+
+Download MongoDB Compass [here](https://www.mongodb.com/try/download/compass).
+
+### Creating a New Dump of the Database
+
+1. Find container ID for Mongo:
+
+`docker ps`
+
+2. Enter the container bash:
+
+`docker exec -it CONATAINER_ID /bin/bash`
+
+3. Inside container:
+
+`cd / && mongordump  --uri="mongodb://root:example@localhost:27017/themirror?retryWrites=true&w=majority&authSource=admin" -d themirror --archive=/database_dump/dump.archive
+`
+
+4. Now we have a dump but it's inside a container. Run in other WSL shell:
+
+`docker cp CONTAINER_ID:dump.archive .`
+
+Your dump should be in current dir called `dump.archive`
+
+5. Connecting to different localhost space in godot-app
+
+In the main folder of godot-app find `project.godot` and edit:
+
+```
+[editor]
+
+run/main_run_args="%command% --server --space NEW_SPACE_ID --mode edit --uuid localhost"
+```
+
+You can also edit it using godot editor. Go to `Project` -> `Project Settings` . Enable `Advanced Settings` Checkbox.
+Go to `Editor` -> `Run` Category and change Space ID in `Main Run Args` field.

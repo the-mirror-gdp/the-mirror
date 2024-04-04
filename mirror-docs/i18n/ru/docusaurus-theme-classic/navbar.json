@@ -1,0 +1,22 @@
+{
+  "logo.alt": {
+    "message": "The Mirror Logo",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.Docs: App": {
+    "message": "Docs: App",
+    "description": "Navbar item with label Docs: App"
+  },
+  "item.label.Docs: Open-Source Code": {
+    "message": "Docs: Open-Source Code",
+    "description": "Navbar item with label Docs: Open-Source Code"
+  },
+  "item.label.Github Monorepo": {
+    "message": "Github Monorepo",
+    "description": "Navbar item with label Github Monorepo"
+  },
+  "item.label.In The Mirror": {
+    "message": "In The Mirror",
+    "description": "Navbar item with label In The Mirror"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "label": "REST API",
+  "position": 8,
+  "link": {
+    "type": "generated-index",
+    "description": "The Mirror exposes a REST API to query Spaces, Objects, Assets, and more."
+  }
+}

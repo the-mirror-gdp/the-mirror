@@ -1,0 +1,8 @@
+{
+  "label": "Scripting",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Bring your games to life with The Mirror's high-level visual scripting. Coding can be daunting, which is why The Mirror provides no-code visual scripting out-of-the-box to make it easy for people of any skill level to build in The Mirror. Visual scripting is still programming, but high-level, and without needing to write code as text. Full support for GDScript is also available if you prefer writing text-based code."
+  }
+}
