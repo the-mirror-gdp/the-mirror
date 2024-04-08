@@ -1,10 +1,9 @@
-[gd_scene load_steps=32 format=3 uid="uid://tgcx8ymhgpxe"]
+[gd_scene load_steps=31 format=3 uid="uid://tgcx8ymhgpxe"]
 
 [ext_resource type="FontFile" uid="uid://s44wjlc18fo7" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_bold.ttf" id="1_chmdu"]
 [ext_resource type="Theme" uid="uid://bh8yrbn5ro73t" path="res://ui/main_menu/pages/avatar/avatar.theme.tres" id="1_dxy3m"]
-[ext_resource type="Texture2D" uid="uid://cr6fkxjlvwjht" path="res://ui/main_menu/pages/avatar/avatar_bg.jpg" id="2_s65jp"]
 [ext_resource type="Script" path="res://ui/main_menu/pages/avatar/avatar.gd" id="2_xlv33"]
-[ext_resource type="Texture2D" uid="uid://cibiglfilejrb" path="res://ui/main_menu/pages/avatar/astronaut_thumb.png" id="3_uujm5"]
+[ext_resource type="Texture2D" uid="uid://clj7egq88dkx5" path="res://ui/common/images/teal_bg.jpg" id="3_e25bj"]
 [ext_resource type="Texture2D" uid="uid://cyrf2pikima4o" path="res://ui/main_menu/pages/avatar/female_thumb.png" id="4_clwhc"]
 [ext_resource type="FontFile" uid="uid://bjwepurchoc75" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_semi_bold.ttf" id="6_ghwx0"]
 [ext_resource type="Texture2D" uid="uid://cfn6g856rvk6u" path="res://ui/main_menu/pages/avatar/rpm_avatars.png" id="7_yffjy"]
@@ -112,7 +111,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_s65jp")
+texture = ExtResource("3_e25bj")
 expand_mode = 1
 stretch_mode = 6
 
@@ -151,20 +150,20 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="TextureRect" type="TextureRect" parent="HBoxContainer/VBoxContainer/HBoxContainer/Preset1"]
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/Preset1"]
+auto_translate_mode = 1
 layout_mode = 1
-anchors_preset = 5
+anchors_preset = -1
 anchor_left = 0.5
+anchor_top = 0.5
 anchor_right = 0.5
-offset_left = -87.0
-offset_top = -61.0
-offset_right = 87.0
-offset_bottom = 149.0
+anchor_bottom = 0.5
 grow_horizontal = 2
-texture = ExtResource("3_uujm5")
-expand_mode = 1
-stretch_mode = 5
-metadata/_edit_layout_mode = 1
+grow_vertical = 2
+theme_override_fonts/font = SubResource("Font_b8rqi")
+theme_override_font_sizes/font_size = 28
+text = "Default"
+horizontal_alignment = 1
 
 [node name="Preset2" type="Button" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
 visible = false
