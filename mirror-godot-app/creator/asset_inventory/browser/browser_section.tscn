@@ -37,6 +37,15 @@ _data = {
 script = ExtResource("2_od8yq")
 _asset_source = 0
 
+[node name="Plus" parent="SectionHeader/ToggleCollapse/MarginContainer/Header" index="0"]
+custom_minimum_size = Vector2(14, 14)
+
+[node name="Minus" parent="SectionHeader/ToggleCollapse/MarginContainer/Header" index="1"]
+custom_minimum_size = Vector2(14, 14)
+
+[node name="Icon" parent="SectionHeader/ToggleCollapse/MarginContainer/Header" index="2"]
+custom_minimum_size = Vector2(14, 14)
+
 [node name="SectionNameLabel" parent="SectionHeader/ToggleCollapse/MarginContainer/Header" index="3"]
 text = "Assets"
 
@@ -50,7 +59,7 @@ layout_mode = 2
 theme_override_constants/h_separation = 7
 
 [node name="BackButton" type="Button" parent="SectionHolder/MarginContainer/SectionContainer/NavigationContainer/HBoxContainer" index="0"]
-custom_minimum_size = Vector2(20, 0)
+custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("10_hrnjv")
 theme_override_font_sizes/font_size = 13
@@ -73,6 +82,7 @@ text = ""
 self_modulate = Color(0.145098, 0.419608, 0.984314, 1)
 layout_mode = 2
 theme_override_constants/line_spacing = 1
+theme_override_font_sizes/font_size = 14
 text = "SUBCATEGORY"
 
 [node name="SearchField" parent="SectionHolder/MarginContainer/SectionContainer" index="1" instance=ExtResource("9_spchq")]
@@ -133,12 +143,14 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"LabelRegular"
+theme_override_font_sizes/font_size = 14
 horizontal_alignment = 2
 
 [node name="LabelResultKeyword" type="Label" parent="SectionHolder/MarginContainer/SectionContainer/ResultsContainer/HBoxContainer/FilterWithPills/VBoxContainer/HBoxContainer" index="1"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
 
 [node name="SortPillBadge" parent="SectionHolder/MarginContainer/SectionContainer/ResultsContainer/HBoxContainer/FilterWithPills/VBoxContainer/PillsContainer" index="0"]
 title = "Sort By"
@@ -151,6 +163,9 @@ title = "Graphics"
 
 [node name="AssetTypePillBadge" parent="SectionHolder/MarginContainer/SectionContainer/ResultsContainer/HBoxContainer/FilterWithPills/VBoxContainer/PillsContainer" index="3"]
 title = "Type"
+
+[node name="FilterButton" parent="SectionHolder/MarginContainer/SectionContainer/ResultsContainer/HBoxContainer/FilterWithPills" index="1"]
+custom_minimum_size = Vector2(30, 30)
 
 [node name="LoadingSpinner" type="Control" parent="SectionHolder/MarginContainer/SectionContainer/ResultsContainer" index="1"]
 visible = false
@@ -195,10 +210,10 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="SectionHolder/MarginContainer/SectionContainer/ResultsContainer/LoadingSpinner/Container/LoadingSpinner" index="0"]
-autoplay = "Roll"
 libraries = {
 "": SubResource("AnimationLibrary_2nhbe")
 }
+autoplay = "Roll"
 
 [node name="NoResultsLabel" type="Label" parent="SectionHolder/MarginContainer/SectionContainer/ResultsContainer" index="2"]
 visible = false
@@ -206,8 +221,8 @@ layout_mode = 2
 size_flags_horizontal = 5
 size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("4_76ata")
-theme_override_font_sizes/font_size = 12
-text = "Looks like there's nothing here."
+theme_override_font_sizes/font_size = 14
+text = "Looks like there's nothing here"
 horizontal_alignment = 1
 vertical_alignment = 1
 

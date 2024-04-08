@@ -32,9 +32,9 @@
 [ext_resource type="StyleBox" uid="uid://dh8ascnco0746" path="res://ui/new_player_ui/inventory/panel_white_rounded.tres" id="24_71tn0"]
 [ext_resource type="Texture2D" uid="uid://bpo6jsaofusqn" path="res://creator/tools/build_bar/publish_icon.svg" id="24_bfhm6"]
 [ext_resource type="Script" path="res://creator/tools/build_bar/build_bar_fancy_button.gd" id="24_f3ued"]
-[ext_resource type="Texture2D" path="res://creator/tools/build_bar/version.svg" id="25_gtv01"]
+[ext_resource type="Texture2D" uid="uid://djlkst722aru0" path="res://creator/tools/build_bar/version.svg" id="25_gtv01"]
 [ext_resource type="Shader" path="res://ui/common/shaders/ui_blurr.gdshader" id="26_h62p1"]
-[ext_resource type="Texture2D" path="res://creator/tools/build_bar/version-light.svg" id="27_30sds"]
+[ext_resource type="Texture2D" uid="uid://x80nor7c51yd" path="res://creator/tools/build_bar/version-light.svg" id="27_30sds"]
 [ext_resource type="AudioStream" uid="uid://b1wqy8isen5sg" path="res://audio/mouseclick.wav" id="28_41r8t"]
 [ext_resource type="Theme" uid="uid://b2jbwic4wjvr0" path="res://creator/tools/build_bar/build_bar_social_button.theme.tres" id="30_okk3n"]
 
@@ -202,10 +202,12 @@ size_flags_vertical = 4
 theme_override_constants/separation = 12
 
 [node name="Terrain" parent="Left" instance=ExtResource("4_8p2xd")]
+visible = false
 custom_minimum_size = Vector2(80, 32)
 layout_mode = 2
 theme = ExtResource("11_xgitw")
 theme_override_constants/icon_max_width = 24
+theme_override_font_sizes/font_size = 14
 disabled = true
 toggle_mode = true
 button_group = ExtResource("9_fqcsf")
@@ -219,6 +221,7 @@ custom_minimum_size = Vector2(72, 32)
 layout_mode = 2
 theme = ExtResource("11_xgitw")
 theme_override_constants/icon_max_width = 24
+theme_override_font_sizes/font_size = 14
 toggle_mode = true
 button_group = ExtResource("9_fqcsf")
 text = "Map"
@@ -231,6 +234,7 @@ custom_minimum_size = Vector2(134, 32)
 layout_mode = 2
 theme = ExtResource("11_xgitw")
 theme_override_constants/icon_max_width = 24
+theme_override_font_sizes/font_size = 14
 toggle_mode = true
 button_group = ExtResource("9_fqcsf")
 text = "Primitive Builder"
@@ -302,11 +306,12 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(0, 22)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_7nf0e")
+theme_override_font_sizes/font_size = 14
 text = "CLOSE BUILD UI"
 vertical_alignment = 1
 
 [node name="VariableEditor" parent="Right" instance=ExtResource("17_u7xva")]
-custom_minimum_size = Vector2(110, 30)
+custom_minimum_size = Vector2(128, 30)
 layout_mode = 2
 hover_tooltip_text = "Toggle Variable Editor"
 
@@ -325,10 +330,11 @@ texture = ExtResource("16_orkvn")
 expand_mode = 1
 
 [node name="TextLabel" parent="Right/VariableEditor/HBoxContainer" index="1"]
+theme_override_font_sizes/font_size = 14
 text = "VARIABLES"
 
 [node name="Teams" parent="Right" instance=ExtResource("17_u7xva")]
-custom_minimum_size = Vector2(90, 30)
+custom_minimum_size = Vector2(95, 30)
 layout_mode = 2
 hover_tooltip_text = "Toggle Teams Editor"
 
@@ -349,6 +355,7 @@ expand_mode = 1
 
 [node name="TextLabel" parent="Right/Teams/HBoxContainer" index="1"]
 custom_minimum_size = Vector2(39, 22)
+theme_override_font_sizes/font_size = 14
 text = "TEAMS"
 
 [node name="FilterMenu" parent="Right/Teams" instance=ExtResource("15_gv6i4")]
@@ -368,6 +375,7 @@ grow_horizontal = 0
 placeholder_text = "Search users..."
 
 [node name="UsersPresent" parent="Right" instance=ExtResource("17_u7xva")]
+custom_minimum_size = Vector2(110, 30)
 layout_mode = 2
 hover_tooltip_text = "View Users"
 
@@ -390,6 +398,7 @@ stretch_mode = 4
 
 [node name="TextLabel" parent="Right/UsersPresent/HBoxContainer" index="1"]
 custom_minimum_size = Vector2(39, 22)
+theme_override_font_sizes/font_size = 14
 
 [node name="IconDown" type="Label" parent="Right/UsersPresent/HBoxContainer" index="2"]
 layout_mode = 2
@@ -417,7 +426,7 @@ grow_horizontal = 0
 placeholder_text = "Search users..."
 
 [node name="Teleport" parent="Right" instance=ExtResource("17_u7xva")]
-custom_minimum_size = Vector2(102, 30)
+custom_minimum_size = Vector2(115, 30)
 layout_mode = 2
 hover_tooltip_text = "Teleport Here"
 
@@ -425,10 +434,11 @@ hover_tooltip_text = "Teleport Here"
 theme_override_constants/separation = 5
 
 [node name="TextLabel" parent="Right/Teleport/HBoxContainer" index="1"]
+theme_override_font_sizes/font_size = 14
 text = "TELEPORT"
 
 [node name="PlayButton" parent="Right" instance=ExtResource("17_u7xva")]
-custom_minimum_size = Vector2(98, 30)
+custom_minimum_size = Vector2(113, 30)
 layout_mode = 2
 hover_tooltip_text = "Preview/Play Space"
 
@@ -438,11 +448,12 @@ text = "F"
 label_settings = SubResource("LabelSettings_pijhr")
 
 [node name="TextLabel" parent="Right/PlayButton/HBoxContainer" index="1"]
+theme_override_font_sizes/font_size = 14
 text = "PREVIEW"
 
 [node name="VersionButton" type="Button" parent="Right"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(110, 30)
+custom_minimum_size = Vector2(123, 30)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -489,6 +500,7 @@ stretch_mode = 4
 custom_minimum_size = Vector2(39, 22)
 layout_mode = 2
 size_flags_vertical = 8
+theme_override_font_sizes/font_size = 14
 text = "VERSION"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -496,10 +508,10 @@ metadata/_edit_layout_mode = 1
 
 [node name="IconDown" type="Label" parent="Right/VersionButton/HBoxContainer/TextLabel"]
 layout_mode = 2
-offset_left = 58.0
-offset_top = 3.0
-offset_right = 69.0
-offset_bottom = 17.0
+offset_left = 71.0
+offset_top = 4.0
+offset_right = 82.0
+offset_bottom = 18.0
 size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("17_eaxku")
 text = "chevron-down"
@@ -569,7 +581,7 @@ icon = ExtResource("6_yhqwl")
 alignment = 0
 
 [node name="PublishButton" parent="Right" instance=ExtResource("17_u7xva")]
-custom_minimum_size = Vector2(94, 30)
+custom_minimum_size = Vector2(105, 30)
 layout_mode = 2
 hover_tooltip_text = "Publish Space"
 
@@ -590,6 +602,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="TextLabel" parent="Right/PublishButton/HBoxContainer" index="1"]
+theme_override_font_sizes/font_size = 14
 text = "PUBLISH"
 
 [node name="SocialContainer" type="HBoxContainer" parent="Right"]
@@ -660,8 +673,8 @@ volume_db = -10.0
 [connection signal="toggled" from="Left/Undo" to="." method="_on_undo_toggled"]
 [connection signal="toggled" from="Left/Redo" to="." method="_on_redo_toggled"]
 [connection signal="pressed" from="Left/Terrain" to="." method="_on_terrain_pressed"]
-[connection signal="pressed" from="Left/Map" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Left/Map" to="." method="_on_map_pressed"]
+[connection signal="pressed" from="Left/Map" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Left/PrimitiveModelBuilder" to="." method="_on_primitive_model_builder_pressed"]
 [connection signal="pressed" from="Left/PrimitiveModelBuilder" to="." method="_on_button_pressed"]
 [connection signal="gizmo_button_pressed" from="Left/BuildBarGizmoOptions" to="." method="_on_build_bar_gizmo_options_gizmo_button_pressed"]
@@ -671,8 +684,8 @@ volume_db = -10.0
 [connection signal="toggled" from="Left/VisibleCollisions" to="." method="_on_visible_collisions_toggled"]
 [connection signal="pressed" from="Right/VariableEditor" to="." method="_on_variable_editor_pressed"]
 [connection signal="pressed" from="Right/VariableEditor" to="." method="_on_button_pressed"]
-[connection signal="pressed" from="Right/Teams" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Right/Teams" to="." method="_on_teams_pressed"]
+[connection signal="pressed" from="Right/Teams" to="." method="_on_button_pressed"]
 [connection signal="item_selected" from="Right/Teams/FilterMenu" to="." method="_on_user_present_filter_menu_item_selected"]
 [connection signal="pressed" from="Right/UsersPresent" to="." method="_on_users_present_pressed"]
 [connection signal="pressed" from="Right/UsersPresent" to="." method="_on_button_pressed"]
@@ -684,11 +697,11 @@ volume_db = -10.0
 [connection signal="pressed" from="Right/VersionButton" to="." method="_on_version_button_pressed"]
 [connection signal="pressed" from="Right/VersionButton/VersionMenu/VersionPopup/VBoxContainer/SaveButton" to="." method="_on_save_version_button_pressed"]
 [connection signal="pressed" from="Right/VersionButton/VersionMenu/VersionPopup/VBoxContainer/RestoreButton" to="." method="_on_restore_space_pressed"]
-[connection signal="pressed" from="Right/PublishButton" to="." method="_on_publish_button_pressed"]
 [connection signal="pressed" from="Right/PublishButton" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Right/PublishButton" to="." method="_on_publish_button_pressed"]
 [connection signal="open_space_settings_pressed" from="Right/SocialContainer" to="." method="_on_open_space_settings_pressed"]
-[connection signal="pressed" from="Right/SocialContainer/SaveSpace" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Right/SocialContainer/SaveSpace" to="." method="_on_save_space_pressed"]
+[connection signal="pressed" from="Right/SocialContainer/SaveSpace" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Right/SocialContainer/Help" to="." method="_on_help_pressed"]
 [connection signal="pressed" from="Right/SocialContainer/Help" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Right/SocialContainer/ShareButton" to="." method="_on_button_pressed"]

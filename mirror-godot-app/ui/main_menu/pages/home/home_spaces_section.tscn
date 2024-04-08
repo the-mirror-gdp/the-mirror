@@ -21,7 +21,7 @@ size_flags_horizontal = 4
 
 [node name="TitleLabel" type="Label" parent="TitleBar"]
 layout_mode = 2
-text = "Popular spaces"
+text = "Discover"
 label_settings = SubResource("LabelSettings_gcepv")
 uppercase = true
 

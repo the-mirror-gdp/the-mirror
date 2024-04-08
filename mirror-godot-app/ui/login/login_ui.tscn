@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" path="res://ui/login/login_ui.gd" id="1_jnny8"]
 [ext_resource type="Theme" uid="uid://ggwm8asxintx" path="res://ui/common/themes/menu_ui.theme.tres" id="1_ltd4e"]
-[ext_resource type="Texture2D" uid="uid://kq6e5t72lfel" path="res://ui/login/login-background.png" id="3_f1hcg"]
+[ext_resource type="Texture2D" uid="uid://cteylgdhn7712" path="res://ui/login/new_bg.jpg" id="3_2ajkh"]
+[ext_resource type="Texture2D" uid="uid://b8a6plrtwhc1x" path="res://ui/login/mirror_light_horizontal_new.png" id="4_offpx"]
 [ext_resource type="Script" path="res://ui/login/app_logo_branding_from_config.gd" id="5_8lxjt"]
-[ext_resource type="Texture2D" uid="uid://dado8tm3ai4q" path="res://ui/common/images/logo-default.svg" id="7_tbjhu"]
 [ext_resource type="FontFile" uid="uid://s44wjlc18fo7" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_bold.ttf" id="8_28d3i"]
 [ext_resource type="StyleBox" uid="uid://nen4cpg1225q" path="res://ui/common/panels/panel_basic_rounded.stylebox.tres" id="8_eu7c4"]
 [ext_resource type="Shader" path="res://ui/common/shaders/ui_blurr.gdshader" id="8_uraan"]
@@ -25,7 +25,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tm8vm"]
 shader = ExtResource("8_uraan")
 shader_parameter/blur = 3.0
-shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/color = Color(1, 1, 1, 0)
 shader_parameter/strength = 0.15
 
 [sub_resource type="Theme" id="Theme_ij11x"]
@@ -67,12 +67,13 @@ script = ExtResource("1_jnny8")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 self_modulate = Color(0.239216, 0.247059, 0.309804, 0.878431)
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("3_f1hcg")
+texture = ExtResource("3_2ajkh")
 expand_mode = 1
 stretch_mode = 6
 
@@ -93,7 +94,7 @@ metadata/_edit_layout_mode = 1
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 56)
 layout_mode = 2
-texture = ExtResource("7_tbjhu")
+texture = ExtResource("4_offpx")
 expand_mode = 1
 stretch_mode = 5
 script = ExtResource("5_8lxjt")
@@ -140,7 +141,7 @@ theme_override_constants/separation = 30
 layout_mode = 2
 theme_override_fonts/font = SubResource("Font_mbwka")
 theme_override_font_sizes/font_size = 40
-text = "Sign in
+text = "Sign In
 "
 horizontal_alignment = 1
 vertical_alignment = 1

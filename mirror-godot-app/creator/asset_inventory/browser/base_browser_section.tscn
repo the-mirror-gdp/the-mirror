@@ -11,7 +11,7 @@
 [sub_resource type="LabelSettings" id="LabelSettings_tkddn"]
 line_spacing = 0.0
 font = ExtResource("8_bx0pw")
-font_size = 12
+font_size = 14
 
 [node name="BaseBrowserSection" type="VBoxContainer"]
 offset_right = 420.0

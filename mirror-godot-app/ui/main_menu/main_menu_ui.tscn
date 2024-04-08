@@ -1,17 +1,21 @@
-[gd_scene load_steps=39 format=3 uid="uid://ch0uw2fa08s6a"]
+[gd_scene load_steps=44 format=3 uid="uid://ch0uw2fa08s6a"]
 
 [ext_resource type="Theme" uid="uid://ggwm8asxintx" path="res://ui/common/themes/menu_ui.theme.tres" id="1_bsgag"]
 [ext_resource type="Script" path="res://ui/main_menu/main_menu_ui.gd" id="2_0tnty"]
-[ext_resource type="Texture2D" uid="uid://dai4ge7mods7c" path="res://ui/common/images/gui_background.jpg" id="3_vn3vv"]
+[ext_resource type="Texture2D" uid="uid://dmhs7xypyms7g" path="res://ui/common/images/blue_bg.jpg" id="3_fbtol"]
 [ext_resource type="PackedScene" uid="uid://0mra323xtoht" path="res://ui/main_menu/pages/home_page.tscn" id="4_ra4e2"]
 [ext_resource type="PackedScene" uid="uid://dkowcs24a0rg" path="res://ui/main_menu/pages/my_spaces.tscn" id="6_dxmr5"]
+[ext_resource type="Texture2D" uid="uid://b2c8c1u26wpl8" path="res://ui/common/images/yellow_bg.jpg" id="6_e07s2"]
 [ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="7_3j0pc"]
 [ext_resource type="PackedScene" uid="uid://cprw7dhdbphw3" path="res://ui/main_menu/pages/build_spaces.tscn" id="7_al6u3"]
 [ext_resource type="Shader" path="res://ui/common/shaders/ui_blurr.gdshader" id="8_w8ibq"]
 [ext_resource type="PackedScene" uid="uid://tgcx8ymhgpxe" path="res://ui/main_menu/pages/avatar/avatar.tscn" id="9_aqh2v"]
+[ext_resource type="Texture2D" uid="uid://ynudu6op5xa4" path="res://ui/common/images/red_bg.jpg" id="9_wg5xp"]
 [ext_resource type="PackedScene" uid="uid://cx2mo1w80rpi6" path="res://ui/main_menu/pages/settings/settings.tscn" id="10_6f3nv"]
 [ext_resource type="PackedScene" uid="uid://qan235j7m5xi" path="res://ui/main_menu/header.tscn" id="10_jeyvr"]
+[ext_resource type="Texture2D" uid="uid://clj7egq88dkx5" path="res://ui/common/images/teal_bg.jpg" id="11_5ctgy"]
 [ext_resource type="Texture2D" uid="uid://15cvus520agc" path="res://ui/common/images/logo-icon.svg" id="11_8pcq8"]
+[ext_resource type="Texture2D" uid="uid://c8ylhrvmq43sr" path="res://ui/common/images/purple_bg.jpg" id="11_amoyd"]
 [ext_resource type="Texture2D" uid="uid://pyiiu7es8s11" path="res://ui/art/close.svg" id="12_a3gvo"]
 [ext_resource type="Texture2D" uid="uid://cbl1xcmq3sicl" path="res://ui/art/accordian_open.png" id="12_pjn6c"]
 [ext_resource type="Theme" uid="uid://6eru14yfat8d" path="res://ui/in_game_menu/in_game_menu_ui_theme.tres" id="14_4mpjs"]
@@ -30,6 +34,9 @@
 [ext_resource type="Texture2D" uid="uid://diaokdq2eymny" path="res://ui/main_menu/respawn_stars.svg" id="26_6uqyx"]
 [ext_resource type="Script" path="res://ui/main_menu/end_preview_button.gd" id="26_nsk5e"]
 [ext_resource type="AudioStream" uid="uid://cvgwto68ecirv" path="res://ui/main_menu/audio/back_close.wav" id="31_rrg3a"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_4jjhp"]
+load_path = "res://.godot/imported/blue_bg.jpg-9388e80f4f099bfea8a9c2c05cb56a97.ctex"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0aacv"]
 shader = ExtResource("8_w8ibq")
@@ -116,7 +123,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("3_vn3vv")
+texture = SubResource("CompressedTexture2D_4jjhp")
 expand_mode = 1
 
 [node name="Pages" type="Control" parent="."]
@@ -130,23 +137,28 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Home" parent="Pages" instance=ExtResource("4_ra4e2")]
 layout_mode = 1
+metadata/bg_texture = ExtResource("3_fbtol")
 
 [node name="My_Spaces" parent="Pages" instance=ExtResource("6_dxmr5")]
 visible = false
 layout_mode = 1
+metadata/bg_texture = ExtResource("6_e07s2")
 
 [node name="Discover" parent="Pages" instance=ExtResource("7_al6u3")]
 visible = false
 layout_mode = 1
 theme = ExtResource("7_3j0pc")
+metadata/bg_texture = ExtResource("9_wg5xp")
 
 [node name="Avatar" parent="Pages" instance=ExtResource("9_aqh2v")]
 visible = false
 layout_mode = 1
+metadata/bg_texture = ExtResource("11_5ctgy")
 
 [node name="Settings" parent="Pages" instance=ExtResource("10_6f3nv")]
 visible = false
 layout_mode = 1
+metadata/bg_texture = ExtResource("11_amoyd")
 
 [node name="HeaderMenu" parent="." instance=ExtResource("10_jeyvr")]
 layout_mode = 1

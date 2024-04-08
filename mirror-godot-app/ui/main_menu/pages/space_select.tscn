@@ -45,7 +45,7 @@ corner_radius_bottom_left = 5
 [sub_resource type="LabelSettings" id="LabelSettings_p2v8i"]
 line_spacing = 0.0
 font = ExtResource("3_xdod4")
-font_size = 8
+font_size = 10
 font_color = Color(0.403922, 0.45098, 0.592157, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8y7rc"]
@@ -112,8 +112,8 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_to6xd")
 theme_override_styles/hover = SubResource("StyleBoxFlat_44eih")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_44eih")
 theme_override_styles/normal = SubResource("StyleBoxFlat_0gnba")
-item_count = 2
 selected = 0
+item_count = 2
 popup/item_0/text = "Popular"
 popup/item_0/id = 0
 popup/item_1/text = "Last Updated"
@@ -122,11 +122,17 @@ popup/item_1/id = 1
 [node name="Label" type="Label" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/SourceOptionButton"]
 layout_mode = 0
 offset_left = 8.0
-offset_top = 4.0
-offset_right = 41.0
-offset_bottom = 18.0
+offset_top = 2.0
+offset_right = 46.0
+offset_bottom = 16.0
 text = "Sort by"
 label_settings = SubResource("LabelSettings_p2v8i")
+
+[node name="SearchField" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_atsy6")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Search..."
 
 [node name="Refresh" type="Button" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(32, 32)
@@ -135,12 +141,6 @@ theme = ExtResource("4_othw4")
 theme_override_fonts/font = ExtResource("5_4vfgi")
 theme_override_font_sizes/font_size = 16
 text = ":refresh:"
-
-[node name="SearchField" parent="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_atsy6")]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "Search..."
 
 [node name="Panel" type="Panel" parent="VBoxContainer"]
 layout_mode = 2
@@ -181,7 +181,7 @@ stream = ExtResource("6_jogvj")
 volume_db = -10.0
 
 [connection signal="item_selected" from="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/SourceOptionButton" to="." method="_on_source_option_button_item_selected"]
-[connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/Refresh" to="." method="_on_refresh_pressed"]
 [connection signal="text_changed" from="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/SearchField" to="." method="on_search_title"]
+[connection signal="pressed" from="VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/Refresh" to="." method="_on_refresh_pressed"]
 
 [editable path="VBoxContainer/Panel/MarginContainer/EndlessScrollFlowContainer"]
