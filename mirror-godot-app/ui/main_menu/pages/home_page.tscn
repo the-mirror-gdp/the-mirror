@@ -2,8 +2,8 @@
 
 [ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="1_ddtg3"]
 [ext_resource type="Script" path="res://ui/main_menu/pages/home_page.gd" id="1_g044v"]
-[ext_resource type="Texture2D" uid="uid://dado8tm3ai4q" path="res://ui/common/images/logo-default.svg" id="2_byxtm"]
 [ext_resource type="PackedScene" uid="uid://48n8qruuys5w" path="res://ui/main_menu/pages/home/home_spaces_section.tscn" id="2_l3jcy"]
+[ext_resource type="Texture2D" uid="uid://bbmccijfyoejn" path="res://ui/common/images/mirror-light-horizontal-sm.png" id="3_7cptg"]
 [ext_resource type="PackedScene" uid="uid://d0ritou4okory" path="res://ui/main_menu/pages/home/home_space_panel_empty.tscn" id="3_scd2x"]
 [ext_resource type="PackedScene" uid="uid://bxip7xuk82fsr" path="res://ui/main_menu/pages/view_space.tscn" id="4_57sjc"]
 [ext_resource type="PackedScene" uid="uid://brrda4tvbd43x" path="res://ui/main_menu/pages/edit_space/edit_space.tscn" id="6_duhnl"]
@@ -63,7 +63,7 @@ layout_mode = 2
 
 [node name="MainLogo" type="TextureRect" parent="Pages/HomeSpaceSelect/VBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-texture = ExtResource("2_byxtm")
+texture = ExtResource("3_7cptg")
 stretch_mode = 3
 
 [node name="Description" type="Label" parent="Pages/HomeSpaceSelect/VBoxContainer/MarginContainer/VBoxContainer"]
@@ -106,7 +106,7 @@ size_flags_vertical = 3
 [node name="Title" type="Label" parent="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 40
-text = "Welcome to The Mirror Alpha"
+text = "Welcome to the Alpha"
 horizontal_alignment = 1
 
 [node name="SpacesSectionPopular" parent="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("2_l3jcy")]
