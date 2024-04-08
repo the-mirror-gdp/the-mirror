@@ -12,7 +12,7 @@ jobs:
   bump-version:
     name: 'Bump version on dev merge'
     runs-on: ubuntu-latest
-
+    environment: dev
     steps:
       - uses: actions/checkout@v3
         with:
@@ -32,7 +32,7 @@ jobs:
           #   # defaults to a patch bump.
           rc-wording: 'rc'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_SECRET_WRITE_TOKEN }}
           PACKAGEJSON_DIR: ./mirror-godot-app
 
       - name: cat package.json
