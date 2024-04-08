@@ -159,7 +159,7 @@ jobs:
           mv ${{ inputs.custom-project-file }} project.godot
 
       - name: Download editor artifact
-        uses: dawidd6/action-download-artifact@v2
+        uses: dawidd6/action-download-artifact@v3
         with:
           github_token: ${{ secrets.cicd-token-github }}
           workflow: ${{ inputs.editor-binary-workflow }}
@@ -172,7 +172,7 @@ jobs:
           unzip -o ${{ inputs.editor-binary-download }}
 
       - name: Download export template artifact
-        uses: dawidd6/action-download-artifact@v2
+        uses: dawidd6/action-download-artifact@v3
         with:
           github_token: ${{ secrets.cicd-token-github }}
           workflow: ${{ inputs.template-binary-workflow }}
