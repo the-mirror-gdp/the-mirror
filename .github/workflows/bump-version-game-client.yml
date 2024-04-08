@@ -1,9 +1,11 @@
-name: 📈 Bump Version
+name: 📈 Bump Version (mirror-godot-app)
 
 on:
   push:
     branches:
-      - 'dev'
+    - 'dev'
+    paths:
+    - mirror-godot-app/**
 
 jobs:
   bump-version:
@@ -28,7 +30,8 @@ jobs:
           #   # defaults to a patch bump.
           rc-wording: 'rc'
         env:
-          GITHUB_TOKEN: ${{ secrets.CI_TOKEN_GITHUB }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGEJSON_DIR: ./mirror-godot-app
 
       - name: cat package.json
         run: cat ./package.json
