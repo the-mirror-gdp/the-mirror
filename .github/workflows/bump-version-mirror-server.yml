@@ -6,6 +6,7 @@ on:
     - 'dev'
     paths:
     - mirror-web-server/**
+    - .github/**
 
 jobs:
   bump-version:
@@ -18,7 +19,7 @@ jobs:
           persist-credentials: false
 
       - name: 'cat package.json'
-        run: cat ./package.json
+        run: cat ./mirror-web-server/package.json
 
       - name: Automated Version Bump
         id: version_bump
@@ -34,7 +35,7 @@ jobs:
           PACKAGEJSON_DIR: ./mirror-web-server
 
       - name: cat package.json
-        run: cat ./package.json
+        run: cat ./mirror-web-server/package.json
 
       - name: Output Step
         env:

@@ -6,6 +6,7 @@ on:
     - 'dev'
     paths:
     - mirror-godot-app/**
+    - .github/**
 
 jobs:
   bump-version:
@@ -18,7 +19,8 @@ jobs:
           persist-credentials: false
 
       - name: 'cat package.json'
-        run: cat ./package.json
+        run: cat ./mirror-godot-app/package.json
+
 
       - name: Automated Version Bump
         id: version_bump
@@ -34,7 +36,7 @@ jobs:
           PACKAGEJSON_DIR: ./mirror-godot-app
 
       - name: cat package.json
-        run: cat ./package.json
+        run: cat ./mirror-godot-app/package.json
 
       - name: Output Step
         env:
