@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cb6qvpd6kuoi5"]
+[gd_scene load_steps=9 format=3 uid="uid://cb6qvpd6kuoi5"]
 
 [ext_resource type="Theme" uid="uid://dqjg12tafkeu2" path="res://creator/tools/build_bar/build_bar.theme.tres" id="1_3iya4"]
 [ext_resource type="Script" path="res://creator/tools/toolbar_gizmo_options.gd" id="1_rjlml"]
@@ -12,6 +12,9 @@ line_spacing = 0.0
 font = ExtResource("4_mv4hy")
 font_size = 20
 shadow_size = 0
+
+[sub_resource type="Theme" id="Theme_xqkng"]
+default_font_size = 14
 
 [node name="BuildBarGizmoOptions" type="HBoxContainer" node_paths=PackedStringArray("_grab_button", "_move_button", "_rotate_button", "_scale_button", "_relative_checkbox", "_snap_checkbox", "_snap_amount")]
 custom_minimum_size = Vector2(350, 30)
@@ -127,10 +130,11 @@ hover_tooltip_text = "If enabled, snap to the specified snap amount."
 
 [node name="SnapAmount" type="SpinBox" parent="."]
 clip_contents = true
-custom_minimum_size = Vector2(0, 30)
+custom_minimum_size = Vector2(0, 28)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
+theme = SubResource("Theme_xqkng")
 max_value = 1000.0
 step = 0.01
 alignment = 1

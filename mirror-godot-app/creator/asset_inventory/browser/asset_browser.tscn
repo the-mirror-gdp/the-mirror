@@ -28,13 +28,13 @@ line_spacing = 0.0
 font = SubResource("FontVariation_f1kvq")
 font_size = 13
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p1m02"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_50mv2"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lukbj"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r8tti"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_50mv2"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p1m02"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_x7ond"]
 font = ExtResource("9_v2w2y")
@@ -98,10 +98,10 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(30, 10)
 layout_mode = 2
 focus_mode = 0
-theme_override_styles/normal = SubResource("StyleBoxEmpty_p1m02")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_50mv2")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_lukbj")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_r8tti")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_50mv2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_p1m02")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Title/HBoxContainer/CloseButton"]
 layout_mode = 0

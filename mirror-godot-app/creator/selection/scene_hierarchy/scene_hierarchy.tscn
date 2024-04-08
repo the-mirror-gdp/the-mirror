@@ -76,7 +76,7 @@ _effect_icon = ExtResource("10_4j087")
 _lock_icon = ExtResource("11_un7qt")
 _script_icon = ExtResource("13_yg6cs")
 _privileges_icon = ExtResource("14_xtqf8")
-_top_level_font_color = Color(0.505882, 0.517647, 0.568627, 1)
+_top_level_font_color = Color(1, 1, 1, 1)
 _top_level_bg_color = Color(0, 0, 0, 0.333333)
 metadata/_edit_layout_mode = 1
 

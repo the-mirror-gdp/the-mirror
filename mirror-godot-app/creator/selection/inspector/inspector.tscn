@@ -54,6 +54,7 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/side_margin = 0
 tab_alignment = 1
+current_tab = 0
 
 [node name="Properties" type="ScrollContainer" parent="VBoxContainer/TabContainer"]
 layout_mode = 2

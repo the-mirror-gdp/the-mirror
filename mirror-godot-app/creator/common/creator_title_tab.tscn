@@ -12,13 +12,13 @@ line_spacing = 0.0
 font = ExtResource("3_bfbtp")
 font_size = 13
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p1m02"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_50mv2"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lukbj"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r8tti"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_50mv2"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p1m02"]
 
 [node name="CreatorTitleTab" type="VBoxContainer"]
 offset_right = 350.0
@@ -77,10 +77,10 @@ uppercase = true
 visible = false
 custom_minimum_size = Vector2(32, 10)
 layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxEmpty_p1m02")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_50mv2")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_lukbj")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_r8tti")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_50mv2")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_p1m02")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Title/HBoxContainer/CloseButton"]
 layout_mode = 0
