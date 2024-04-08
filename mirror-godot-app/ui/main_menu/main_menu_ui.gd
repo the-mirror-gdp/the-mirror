@@ -172,6 +172,7 @@ func change_page(page_name: StringName) -> void:
 	_previous_page = _current_page
 	_current_page = new_current_page
 	_reset_subpages(_current_page)
+	_check_update_background_image()
 	_current_page.show()
 	print("Page changed to %s" % str(_current_page.name))
 	_keep_page_as_selected(_previous_page.name)
@@ -181,6 +182,13 @@ func change_page(page_name: StringName) -> void:
 	page_changed.emit(_current_page.name)
 	_audio_stream_player.stream = TAB_SELECT_SFX
 	_audio_stream_player.play()
+
+
+# Updates the BG if there's metadata for it
+func _check_update_background_image() -> void:
+	var bg_texture = _current_page.get_meta(&"bg_texture", null)
+	if bg_texture != null:
+		_background.texture = bg_texture
 
 
 func get_page_from_name(page_name) -> Control:
