@@ -119,7 +119,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="Reload" type="Button" parent="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer/SpacesSectionPopular/TitleBar/HBoxContainer"]
-custom_minimum_size = Vector2(16, 16)
+custom_minimum_size = Vector2(38, 16)
 layout_mode = 2
 size_flags_horizontal = 10
 theme = ExtResource("1_ddtg3")
@@ -128,9 +128,10 @@ theme_override_font_sizes/font_size = 16
 text = ":refresh:"
 
 [node name="Create" type="Button" parent="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer/SpacesSectionPopular/TitleBar/HBoxContainer"]
-custom_minimum_size = Vector2(0, 40)
+custom_minimum_size = Vector2(150, 40)
 layout_mode = 2
 size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 18
 text = "+ New Space"
 
 [node name="SpacesSectionRecents" parent="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("2_l3jcy")]
