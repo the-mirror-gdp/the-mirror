@@ -18,13 +18,9 @@ concurrency:
 jobs:
   get-or-build-engine:
     name: Building Engine
-    runs-on: "ubuntu-20.04"
-    steps:
-      - uses: actions/checkout@v4
-      - name: build engine
-        uses: ./.github/workflows/engine.yml
-        with:
-          cicd-token-github: ${{ secrets.GCP_BUCKET_UPLOAD }}
+    uses: ./.github/workflows/engine.yml
+    secrets:
+      cicd-token-github: ${{ secrets.GCP_BUCKET_UPLOAD }}
 
   build-windows-client:
     name: 🏁 Build Windows Dev PR
