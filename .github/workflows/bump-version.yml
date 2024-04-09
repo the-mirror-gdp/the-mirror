@@ -2,8 +2,8 @@ name: 📈 Bump Version
 
 on:
   push:
-    branches:
-    - 'dev'
+    tags-ignore:
+      - '**'
     paths:
     - mirror-godot-app/**
     - mirror-web-server/**
@@ -76,7 +76,9 @@ jobs:
           cat ./mirror-web-server/package.json
 
       - name: Push to git
-        if: steps.changes.outputs.mirror-web-server == 'true' || steps.changes.outputs.mirror-godot-app == 'true'
+        # do not update if we have no changes to the files and ensure we don't have a "version bump to" in the string for execution
+        # this prevents looping being a problem
+        if: (steps.changes.outputs.mirror-web-server == 'true' || steps.changes.outputs.mirror-godot-app == 'true') && !contains(github.event.head_commit.message, 'version bump to')
         run: |
           git config --local user.email 'engineering@themirror.space'
           git config --local user.name 'Auto Version'
