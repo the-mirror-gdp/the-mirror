@@ -58,23 +58,6 @@ const config = {
         },
         items: [
           {
-            type: 'doc',
-            docId: 'get-started',
-            position: 'left',
-            label: 'Docs: App',
-          },
-          {
-            type: 'doc',
-            docId: 'open-source-code/get-started',
-            position: 'left',
-            label: 'Docs: Open-Source Code',
-          },
-          {
-            href: 'https://github.com/the-mirror-gdp/the-mirror',
-            position: 'left',
-            label: 'Github Monorepo'
-          },
-          {
             href: 'https://in.themirror.space',
             position: 'left',
             label: 'In The Mirror'
