@@ -3,6 +3,10 @@ on:
   push:
     tags:
       - 'v*'
+    paths:
+      - godot-engine/**
+      - .github/**
+      - mirror-godot-app/**
 
 defaults:
   run:
