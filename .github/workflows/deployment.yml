@@ -24,6 +24,7 @@ jobs:
     name: Building Engine
     runs-on: "ubuntu-20.04"
     steps:
+      - uses: actions/checkout@v4
       - name: build engine
         uses: ./.github/workflows/engine.yml
         with:
