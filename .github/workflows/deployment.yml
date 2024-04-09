@@ -13,15 +13,6 @@ defaults:
   run:
     working-directory: ./godot-engine
 
-# Global Settings
-env:
-  # Used for the cache key. Add version suffix to force clean build.
-  GODOT_BASE_BRANCH: master
-  SCONSFLAGS: verbose=yes warnings=extra werror=no module_text_server_fb_enabled=yes fontconfig=no
-  DOTNET_NOLOGO: true
-  DOTNET_CLI_TELEMETRY_OPTOUT: true
-  TSAN_OPTIONS: suppressions=misc/error_suppressions/tsan.txt
-
 concurrency:
   # workflow name - PR || fallback to unique run id, this happens when you're not building a PR
   # this ensures all branches build properly and cancel their previous runs
@@ -29,286 +20,19 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-windows:
-    runs-on: "windows-latest"
-    name: ${{ matrix.name }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: Windows Editor
-            cache-name: windows-editor
-            target: editor
-            strip: true
-            tests: false
-            sconsflags: arch=x86_64 debug_symbols=no windows_subsystem=console optimize=speed production=yes
-            bin: "./bin/godot.windows.editor.x86_64"
-            artifact-name: "MirrorGodotEditorWindows"
-            artifact: true
-
-          - name: Windows Template
-            cache-name: windows-template
-            target: template_debug
-            strip: true
-            tests: false
-            sconsflags: arch=x86_64 debug_symbols=no optimize=speed
-            bin: "./bin/godot.windows.template_debug.x86_64"
-            artifact-name: "windows_release_x86_64"
-            artifact: true
-
+  get-or-build-engine:
+    name: Building Engine
+    runs-on: "ubuntu-20.04"
     steps:
-      - uses: actions/checkout@v4
+      - name: build engine
+        uses: ./.github/workflows/engine.yml
         with:
-          submodules: recursive
+          cicd-token-github: ${{ secrets.GCP_BUCKET_UPLOAD }}
 
-      - name: Setup Godot build cache
-        uses: ./godot-engine/.github/actions/godot-cache
-        with:
-          cache-name: ${{ matrix.cache-name }}
-        continue-on-error: true
-
-      - name: Setup python and scons
-        uses: ./godot-engine/.github/actions/godot-deps
-
-      #- name: Download Direct3D 12 SDK components
-      #  run: python ./misc/scripts/install_d3d12_sdk_windows.py
-
-      - name: Setup MSVC problem matcher
-        uses: ammaraskar/msvc-problem-matcher@master
-
-      - name: Compilation
-        uses: ./.github/actions/godot-build
-        with:
-          sconsflags: ${{ env.SCONSFLAGS }} ${{ matrix.sconsflags }}
-          platform: windows
-          target: ${{ matrix.target }}
-          tests: ${{ matrix.tests }}
-
-      - name: Strip binaries
-        if: ${{ matrix.strip }}
-        run: |
-          Remove-Item bin/* -Include *.exp,*.lib,*.pdb -Force
-
-      - name: Move PDB file (if not stripped)
-        if: ${{ !matrix.strip }}
-        run: |
-          dir -Path ./bin/
-          mv ${{matrix.bin}}.pdb bin/${{ matrix.artifact-name}}.pdb
-
-      - name: Prepare artifact
-        if: ${{ matrix.artifact }}
-        run: |
-          mv ${{ matrix.bin }}.exe bin/${{ matrix.artifact-name }}.exe
-
-      - name: Upload artifact
-        uses: ./.github/actions/upload-artifact
-        if: ${{ matrix.artifact }}
-        with:
-          path: ./godot-engine/bin/${{ matrix.artifact-name }}.exe
-          name: ${{ matrix.artifact-name }}.exe
-  build-macos:
-    runs-on: "macos-latest"
-    name: ${{ matrix.name }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: MacOS Editor
-            cache-name: macos-editor
-            target: editor
-            tests: false
-            strip: true
-            sconsflags: debug_symbols=no optimize=speed production=yes
-            dist-app: "macos_tools.app"
-            packaged-app: "MirrorGodotEditorMac.app"
-            bin-name: "godot.macos.editor.universal"
-            bin-name-x86_64: "godot.macos.editor.x86_64"
-            bin-name-arm64: "godot.macos.editor.arm64"
-            artifact-bin-name: "Godot"
-            artifact-name: "MirrorGodotEditorMac.app"
-
-          - name: MacOS Template
-            cache-name: macos-template
-            target: template_debug
-            tests: false
-            strip: true
-            sconsflags: debug_symbols=no optimize=speed
-            dist-app: "macos_template.app"
-            packaged-app: "macos_template.app"
-            bin-name: "godot.macos.template_debug.universal"
-            bin-name-x86_64: "godot.macos.template_debug.x86_64"
-            bin-name-arm64: "godot.macos.template_debug.arm64"
-            artifact-bin-name: "godot_macos_release.universal"
-            artifact-name: "macos_template.app"
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-      - name: Setup python and scons
-        uses: ./godot-engine/.github/actions/godot-deps
-      - name: Setup Vulkan SDK
-        run: |
-          # Download and install the Vulkan SDK.
-          curl -L "https://sdk.lunarg.com/sdk/download/latest/mac/vulkan-sdk.dmg" -o /tmp/vulkan-sdk.dmg
-          hdiutil attach /tmp/vulkan-sdk.dmg -mountpoint /Volumes/vulkan-sdk
-          /Volumes/vulkan-sdk/InstallVulkan.app/Contents/MacOS/InstallVulkan \
-              --accept-licenses --default-answer --confirm-command install
-
-      - name: Setup Godot build cache
-        uses: ./godot-engine/.github/actions/godot-cache
-        with:
-          cache-name: ${{ matrix.cache-name }}
-        continue-on-error: true
-
-      - name: Setup scons (python is already installed on self-hosted runners!)
-        shell: bash
-        run: |
-          python3 -c "import sys; print(sys.version)"
-          python3 -m ensurepip --upgrade
-          python3 -m pip install --user scons
-          scons --version
-
-      - name: Setup cmake
-        shell: bash
-        run: |
-          brew install cmake
-          cmake --version
-
-      - name: Remove existing binaries
-        run: |
-          rm -Rf bin/
-
-      - name: Compilation (x86_64)
-        uses: ./.github/actions/godot-build
-        with:
-          sconsflags: ${{ env.SCONSFLAGS }} arch=x86_64
-          platform: macos
-          target: ${{ matrix.target }}
-          tests: ${{ matrix.tests }}
-
-      - name: Compilation (arm64)
-        uses: ./.github/actions/godot-build
-        with:
-          sconsflags: ${{ env.SCONSFLAGS }} arch=arm64
-          platform: macos
-          target: ${{ matrix.target }}
-          tests: ${{ matrix.tests }}
-
-      - name: Strip binaries
-        if: ${{ matrix.strip }}
-        run: |
-          echo "Stripping binaries"
-          strip bin/*
-
-      - name: Prepare universal executable
-        run: |
-          lipo -create bin/${{ matrix.bin-name-x86_64 }} bin/${{ matrix.bin-name-arm64 }} -output bin/${{ matrix.bin-name }}
-          chmod -R +x bin/*
-
-      - name: Package in macOS app bundle
-        shell: sh
-        run: |
-          cp -R misc/dist/${{ matrix.dist-app }} bin/${{ matrix.packaged-app }}
-          cd bin/
-          mkdir -p ${{ matrix.packaged-app }}/Contents/MacOS
-          cp ${{ matrix.bin-name }} ${{ matrix.packaged-app }}/Contents/MacOS/${{ matrix.artifact-bin-name }}
-          chmod -R +x ${{ matrix.packaged-app }}
-          xattr -rc ${{ matrix.packaged-app }}
-          zip -q -9 -r ${{ matrix.artifact-name }}.zip ${{ matrix.packaged-app }}
-
-      - name: Upload artifact
-        uses: ./.github/actions/upload-artifact
-        with:
-          name: "${{ matrix.artifact-name }}.zip"
-          path: "./godot-engine/bin/${{ matrix.artifact-name }}.zip"
-  build-linux:
-    runs-on: "ubuntu-20.04" # MUST run on the old version for GLIBC compatibility
-    name: ${{ matrix.name }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: Linux Editor
-            cache-name: linux-editor
-            target: editor
-            sconsflags: arch=x86_64 debug_symbols=no optimize=speed production=yes
-            strip: false
-            bin: "./bin/godot.linuxbsd.editor.x86_64"
-            artifact-name: "MirrorGodotEditorLinux.x86_64"
-            artifact: true
-            tests: no
-
-          - name: Linux Template
-            cache-name: linux-template
-            target: template_debug
-            strip: true
-            sconsflags: arch=x86_64 debug_symbols=no optimize=speed
-            bin: "./bin/godot.linuxbsd.template_debug.x86_64"
-            artifact-name: "linux_release.x86_64"
-            artifact: true
-            tests: no
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-
-      - name: Setup Godot build cache
-        uses: ./godot-engine/.github/actions/godot-cache
-        with:
-          cache-name: ${{ matrix.cache-name }}
-        continue-on-error: true
-
-      - name: Setup scons
-        shell: bash
-        run: |
-          python -c "import sys; print(sys.version)"
-          python -m pip install scons==4.4.0
-          scons --version
-
-      - name: Setup GCC problem matcher
-        uses: ammaraskar/gcc-problem-matcher@master
-
-      - name: Compilation
-        uses: ./.github/actions/godot-build
-        with:
-          sconsflags: ${{ env.SCONSFLAGS }} ${{ matrix.sconsflags }}
-          platform: linuxbsd
-          target: ${{ matrix.target }}
-          tests: ${{ matrix.tests }}
-
-      - name: Strip binaries
-        if: ${{ matrix.strip }}
-        run: |
-          strip bin/godot.*
-
-      # - name: Shrink debug symbols
-      #   if: ${{ !matrix.strip }}
-      #   run: |
-      #     # remove duplicate symbols from binary
-      #     dwz ${{ matrix.bin }} -L none -o Middleman.debug
-      #     # make the debug symbols compressed
-      #     objcopy --compress-debug-sections Middleman.debug FinalMan.debug
-      #     # overwrite the original file
-      #     mv FinalMan.debug ${{ matrix.bin }}
-
-      - name: Prepare artifact
-        if: ${{ matrix.artifact }}
-        run: |
-          chmod +x bin/godot.*
-          mv ${{ matrix.bin }} bin/${{ matrix.artifact-name }}
-
-      - name: Upload artifact
-        uses: ./.github/actions/upload-artifact
-        if: ${{ matrix.artifact }}
-        with:
-          path: ./godot-engine/bin/${{ matrix.artifact-name }}
-          name: ${{ matrix.artifact-name }}
   build-windows-client:
     name: 🏁 Build Windows Dev PR
     uses: ./.github/workflows/client-build-tool.yml
-    needs: build-windows
+    needs: get-or-build-engine
     secrets:
       gcp-secret: ""
       cicd-token-github: ${{ secrets.GITHUB_TOKEN }}
@@ -330,56 +54,58 @@ jobs:
       game-binary-name: The Mirror Dev.exe
       bucket-name: no-bucket
       os: "windows-latest"
-  build-macos-client:
-    name: 🍎 Build MacOS Dev PR
-    uses: ./.github/workflows/client-build-tool.yml
-    needs: build-macos
-    secrets:
-      gcp-secret: ""
-      cicd-token-github: ${{ secrets.GITHUB_TOKEN }}
-    with:
-      should-deploy: false
-      should-run-unit-tests: true
-      should-notify-on-failure: false
-      should-unzip-editor: true
-      should-install-timeout-macos: true
-      editor-binary-workflow: deployment.yml
-      editor-binary-download: MirrorGodotEditorMac.app.zip
-      editor-binary-name: MirrorGodotEditorMac.app/Contents/MacOS/Godot
-      editor-binary-branch: themirror
-      editor-template-directory: ~/Library/Application\ Support/Godot/export_templates/4.3.dev
-      template-binary-workflow: deployment.yml
-      template-binary-name: macos_template.app.zip
-      template-binary-branch: dev
-      export-template-file: macos.zip
-      game-environment-cfg-name: official
-      game-export-preset: MacOS-themirror-dev
-      game-binary-name: The Mirror Dev.app
-      bucket-name: no-bucket
-      os: "macos-latest"
-  build-linux-client:
-    name: 🐧 Build Linux Dev PR
-    uses: ./.github/workflows/client-build-tool.yml
-    needs: build-linux
-    secrets:
-      gcp-secret: ""
-      cicd-token-github: ${{ secrets.GITHUB_TOKEN }}
-    with:
-      should-deploy: false
-      should-run-unit-tests: true
-      should-notify-on-failure: false
-      editor-binary-workflow: deployment.yml
-      editor-binary-name: MirrorGodotEditorLinux.x86_64
-      editor-binary-download: MirrorGodotEditorLinux.x86_64
-      editor-binary-branch: dev
-      editor-template-directory: ~/.local/share/godot/export_templates/4.3.dev
-      template-binary-workflow: deployment.yml
-      template-binary-name: linux_release.x86_64
-      template-binary-branch: themirror
-      export-template-file: linux_release.x86_64
-      game-environment-cfg-name: official
-      game-export-preset: Linux
-      game-binary-name: The Mirror Dev.x86_64
-      bucket-name: no-bucket
-      os: "ubuntu-20.04"
+      editor-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/${{needs.get-or-build-engine.outputs.commit_hash}}/MirrorGodotEditorWindows.exe
+      template-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/${{needs.get-or-build-engine.outputs.commit_hash}}/windows_release_x86_64.exe
+  # build-macos-client:
+  #   name: 🍎 Build MacOS Dev PR
+  #   uses: ./.github/workflows/client-build-tool.yml
+  #   needs: get-or-build-engine
+  #   secrets:
+  #     gcp-secret: ""
+  #     cicd-token-github: ${{ secrets.GITHUB_TOKEN }}
+  #   with:
+  #     should-deploy: false
+  #     should-run-unit-tests: true
+  #     should-notify-on-failure: false
+  #     should-unzip-editor: true
+  #     should-install-timeout-macos: true
+  #     editor-binary-workflow: deployment.yml
+  #     editor-binary-download: MirrorGodotEditorMac.app.zip
+  #     editor-binary-name: MirrorGodotEditorMac.app/Contents/MacOS/Godot
+  #     editor-binary-branch: themirror
+  #     editor-template-directory: ~/Library/Application\ Support/Godot/export_templates/4.3.dev
+  #     template-binary-workflow: deployment.yml
+  #     template-binary-name: macos_template.app.zip
+  #     template-binary-branch: dev
+  #     export-template-file: macos.zip
+  #     game-environment-cfg-name: official
+  #     game-export-preset: MacOS-themirror-dev
+  #     game-binary-name: The Mirror Dev.app
+  #     bucket-name: no-bucket
+  #     os: "macos-latest"
+  # build-linux-client:
+  #   name: 🐧 Build Linux Dev PR
+  #   uses: ./.github/workflows/client-build-tool.yml
+  #   needs: get-or-build-engine
+  #   secrets:
+  #     gcp-secret: ""
+  #     cicd-token-github: ${{ secrets.GITHUB_TOKEN }}
+  #   with:
+  #     should-deploy: false
+  #     should-run-unit-tests: true
+  #     should-notify-on-failure: false
+  #     editor-binary-workflow: deployment.yml
+  #     editor-binary-name: MirrorGodotEditorLinux.x86_64
+  #     editor-binary-download: MirrorGodotEditorLinux.x86_64
+  #     editor-binary-branch: dev
+  #     editor-template-directory: ~/.local/share/godot/export_templates/4.3.dev
+  #     template-binary-workflow: deployment.yml
+  #     template-binary-name: linux_release.x86_64
+  #     template-binary-branch: themirror
+  #     export-template-file: linux_release.x86_64
+  #     game-environment-cfg-name: official
+  #     game-export-preset: Linux
+  #     game-binary-name: The Mirror Dev.x86_64
+  #     bucket-name: no-bucket
+  #     os: "ubuntu-20.04"
 
