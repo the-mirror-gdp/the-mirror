@@ -20,7 +20,7 @@ jobs:
     name: Building Engine
     uses: ./.github/workflows/engine.yml
     secrets:
-      cicd-token-github: ${{ secrets.GCP_BUCKET_UPLOAD }}
+      GCP_BUCKET_UPLOAD: ${{ secrets.GCP_BUCKET_UPLOAD }}
 
   build-windows-client:
     name: 🏁 Build Windows Dev PR
