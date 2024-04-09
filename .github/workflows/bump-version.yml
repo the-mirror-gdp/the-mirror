@@ -92,5 +92,4 @@ jobs:
           echo "Game Client Version: v$APP_VERSION"
           git commit -m "ci: version bump to v$APP_VERSION"
           git tag v$APP_VERSION
-          git push
-          git push --tags
+          git push --tags && git push
