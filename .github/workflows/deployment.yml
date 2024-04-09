@@ -9,10 +9,6 @@ on:
     - .github/**
     - mirror-godot-app/**
 
-defaults:
-  run:
-    working-directory: ./godot-engine
-
 concurrency:
   # workflow name - PR || fallback to unique run id, this happens when you're not building a PR
   # this ensures all branches build properly and cancel their previous runs
