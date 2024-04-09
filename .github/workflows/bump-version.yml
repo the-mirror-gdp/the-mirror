@@ -2,8 +2,10 @@ name: 📈 Bump Version
 
 on:
   push:
+    branches:
+    - "dev"
     tags-ignore:
-      - '**'
+    - '**'
     paths:
     - mirror-godot-app/**
     - mirror-web-server/**
