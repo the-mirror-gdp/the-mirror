@@ -1,0 +1,8 @@
+{
+  "label": "Assets",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Assets are key building blocks of The Mirror, such as a mesh, image/texture, material, audio, and more. Assets can be imported and instanced as Objects and programmed via scripts."
+  }
+}

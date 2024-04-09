@@ -1,0 +1,115 @@
+---
+sidebar_position: 3.3
+---
+
+# Match/Round System
+
+The Mirror includes a high-level system for match-based games, with optional rounds.
+
+## Matches
+
+Matches represent the overall game loop for match-based games. If your Space is just a place for people to hang out, or your Space is a game with no way to achieve victory, you don't need to use matches.
+
+You can set the match settings using the Set Match Settings script block. You can run this when the game starts, or just run it once in Build mode. This block does not necessarily need to be present in the final game, you can run it once in Build mode, and then the match settings will be saved in the Space Variables. You can start a match by using the Start Match block.
+
+When a new match starts, all Space Variables are reset to the values they had when the Space was published, and all players will respawn. Matches can be ended manually or by achieving victory (see the "Victory" section below).
+
+## Rounds
+
+Rounds are optional. A match may have many rounds, or no rounds at all.
+
+A game using rounds is like Counter-Strike. The team's score is the number of rounds the team has won. You can end a round in script using the End Round block, which will add 1 to the winning team's score. By default, the End Round block will also start the next round after a short delay; this can be configured by adjusting the block's inputs. When the next round starts, all players will respawn. Variables will not be reset between rounds, so the game state is preserved. For example, in a game like Counter-Strike, money can be preserved between rounds.
+
+A game not using rounds is like Team Fortress. In script, you can add to the team's score when the team completes an objective. The objective could be something simple like "capture a flag" or "kill an enemy player", or it can be as elaborate as you'd like, regardless it is all determined by your script.
+
+## Victory
+
+The match can end in one of three ways:
+
+- For round-based games, you can end a round using an End Round script block. This will add 1 to the winning team's score. When the team's score reaches the win score, that team is declared the winner and the match ends.
+- For non-round-based games, you can add points using an Add Score To Team script block. When the team's score reaches the win score, that team is declared the winner and the match ends.
+- You can end the match at any time in script using either an End Match block or a Terminate Match block.
+
+When a match ends, the scoreboard will be force-shown on the screen. The scoreboard will have the winning team's name displayed and will have a button at the bottom to start a new match.
+
+You can also terminate the match, which will end the match without declaring a winner or showing the scoreboard. You can use this to implement your own system for showing the winner and restarting the match. For example, you may want to teleport the players to an open field and set off red fireworks if the red team wins, or blue fireworks if the blue team wins. Then to restart the match, you could have it do so after a few seconds, or provide a button on a pedestal that users can press to restart.
+
+## Example: Team Deathmatch
+
+Here is an example of a simple team deathmatch game. This example uses matches but not rounds, so we want to add to the score directly when a player killed another.
+
+First, we will make a script that runs when a player kills a player. This script will add 1 to the killer's team's score. Then to make sure it's working, we will print a message with the team's score.
+
+import MatchScoreKill from './img/match/match_score_kill.webp';
+
+<img
+  src={MatchScoreKill}
+  alt="Script that gives 1 point to the killer"
+  width="1170"
+/>
+
+Next, we will make a script that handles the rest of the game. When the game starts, we want to start a match and set the match settings. Remember that starting a match will reset all Space Variables, so if you want to set custom settings it needs to be done after the Start Match block. And of course, we need to give players guns when they spawn so they can kill each other.
+
+import MatchSetupAndWeapon from './img/match/match_setup_and_weapon.webp';
+
+<img
+  src={MatchSetupAndWeapon}
+  alt="Script that starts a match, sets the match settings, and gives players guns"
+  width="940"
+/>
+
+Note: In the above example we disabled friendly fire in the match settings because the first script does not handle friendly fire. Here is a similar script that handles friendly fire. It subtracts 1 (add -1) from the team score and print "Friendly Fire!" when a player kills a player on the same team.
+
+import MatchScoreKillHandleFF from './img/match/match_score_kill_handle_ff.webp';
+
+<img
+  src={MatchScoreKillHandleFF}
+  alt="Script that gives 1 point to the killer, or subtracts 1 if the killer and victim are on the same team"
+  width="1440"
+/>
+
+Furthermore, the logic in this script seems quite big due to all of the printing. If we did not print anything, we could simplify this a lot by using an If Value script block. The below script can be read as "When a player is killed, add points to the killer's team, -1 if friendly fire or 1 if not friendly fire".
+
+import MatchScoreKillIfValue from './img/match/match_score_kill_if_value.webp';
+
+<img
+  src={MatchScoreKillIfValue}
+  alt="Script that add points to the killer's team, -1 if friendly fire or 1 if not friendly fire"
+  width="900"
+/>
+
+## GDScript
+
+The match/round system API can also be accessed from GDScript via the `Zone.match_system` singleton. You can access them like this:
+
+```gdscript
+Zone.match_system.add_score_to_team(team_name, score_to_add)
+Zone.match_system.end_match(winning_team_name)
+Zone.match_system.end_round(winning_team_name, auto_start_next, auto_start_wait_time, auto_start_freeze_time)
+Zone.match_system.get_score_for_team(team_name)
+Zone.match_system.get_team_names()
+Zone.match_system.is_match_running()
+Zone.match_system.is_round_running()
+Zone.match_system.set_score_for_team(team_name, new_score)
+Zone.match_system.start_match(freeze_time)
+Zone.match_system.start_round(freeze_time)
+Zone.match_system.terminate_match()
+Zone.match_system.terminate_round()
+```
+
+Here are the function signatures:
+
+```gdscript
+func add_score_to_team(team_name: String, score_to_add: int) -> bool:
+func end_match(winning_team_name: String) -> void:
+func end_round(winning_team_name: String, auto_start_next: bool, auto_start_wait_time: float, auto_start_freeze_time: float) -> void:
+func get_score_for_team(team_name: String) -> int:
+func get_team_names() -> Array[String]:
+func is_match_running() -> bool:
+func is_round_running() -> bool:
+func set_score_for_team(team_name: String, new_score: int) -> bool:
+func start_match(freeze_time: float = -1.0) -> void:
+func start_round(freeze_time: float = -1.0) -> void:
+func terminate_match() -> void:
+func terminate_round() -> void:
+```
