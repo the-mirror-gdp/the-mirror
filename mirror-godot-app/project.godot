@@ -80,7 +80,7 @@ global_script_class_icons={
 [application]
 
 config/name="The Mirror"
-config/version=""
+config/version="."
 run/main_scene="res://scenes/boot_scene.tscn"
 config/features=PackedStringArray("4.3", "4309e8e8", "mirror")
 boot_splash/bg_color=Color(0.0745098, 0.0862745, 0.184314, 1)
