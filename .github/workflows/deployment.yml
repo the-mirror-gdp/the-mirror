@@ -1,6 +1,9 @@
 name: Deployment
-on: 
+on:
   push:
+    tags:
+      - 'v*'
+  pull_request:
     paths:
     - godot-engine/**
     - .github/**

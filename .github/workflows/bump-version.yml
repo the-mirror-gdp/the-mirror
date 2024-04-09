@@ -1,4 +1,4 @@
-name: 📈 Bump Version (mirror-godot-app)
+name: 📈 Bump Version
 
 on:
   push:
@@ -33,7 +33,7 @@ jobs:
           cat ./mirror-godot-app/package.json
           cat ./mirror-web-server/package.json
 
-      - name: Automated Version Bump
+      - name: Automated Version Bump (mirror-godot-app)
         if: steps.changes.outputs.mirror-godot-app == 'true'
         id: version_bump_game_client
         uses: 'phips28/gh-action-bump-version@master'
@@ -50,7 +50,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_SECRET_WRITE_TOKEN }}
           PACKAGEJSON_DIR: ./mirror-godot-app
 
-      - name: Automated Version Bump Server
+      - name: Automated Version Bump (mirror-web-server)
         if: steps.changes.outputs.mirror-web-server == 'true'
         id: version_bump_web_server
         uses: 'phips28/gh-action-bump-version@master'
@@ -88,4 +88,5 @@ jobs:
           echo "Game Client Version: v$APP_VERSION"
           git commit -m "ci: version bump to v$APP_VERSION"
           git tag v$APP_VERSION
+          git push
           git push --tags
