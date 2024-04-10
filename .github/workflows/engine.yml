@@ -72,6 +72,9 @@ jobs:
         id: vars
         run: echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
 
+      - name: Test Hash exists
+        run: echo "Test value is ${{steps.vars.outputs.sha_short}}"
+
       - name: Setup Godot build cache
         uses: ./godot-engine/.github/actions/godot-cache
         with:
