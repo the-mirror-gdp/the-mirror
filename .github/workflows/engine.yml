@@ -62,7 +62,7 @@ jobs:
             artifact: true
             bucket-name: mirror_native_client_builds/Engine
     outputs:
-      commit_hash: ${{ steps.vars.outputs.vars }}
+      commit_hash: ${{ steps.vars.outputs.sha_short }}
     steps:
       - uses: actions/checkout@v4
         with:
