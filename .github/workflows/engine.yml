@@ -15,6 +15,7 @@ on:
 defaults:
   run:
     working-directory: ./godot-engine
+    shell: bash
 
 # Global Settings
 env:
@@ -73,6 +74,7 @@ jobs:
         run: |
           echo "Git hash: $(git rev-parse --short=8 HEAD)"
           echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
+
 
       - name: Test Hash exists
         run: echo "Test value is ${{steps.vars.outputs.sha_short}}"
