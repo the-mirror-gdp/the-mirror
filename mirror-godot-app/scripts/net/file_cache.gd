@@ -17,8 +17,10 @@ class KeyPromisePair:
 ## Initializes and loads the file cache library json into memory on startup.
 func _init() -> void:
 	# wait a bit to ensure is status of this aplication is determined (server or client)
-	_load_stored_files_cache.call_deferred()
-	_setup_storage_directory.call_deferred()
+	await Zone.wait_till_booted()
+	_load_stored_files_cache()
+	_setup_storage_directory()
+
 
 
 func _process(_delta: float) -> void:

@@ -11,7 +11,7 @@ const _AVATARS_CFG_PATH: String = "res://avatars.cfg"
 var files: Dictionary = Dictionary()
 var resource_avatars: Dictionary = Dictionary()
 
-var _file_cache: FileCache = FileCache.new()
+var _file_cache: FileCache = await FileCache.new()
 var _file_requests_queued: Dictionary = {}
 
 
