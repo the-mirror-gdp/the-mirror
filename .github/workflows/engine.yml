@@ -1,12 +1,16 @@
 name: Engine
 on:
-    workflow_call:
-      secrets:
-        GCP_BUCKET_UPLOAD:
-          required: true
-      outputs:
-        commit_hash:
-          value: ${{ jobs.build-windows.outputs.commit_hash }}
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+    secrets:
+      GCP_BUCKET_UPLOAD:
+        required: true
+    outputs:
+      commit_hash:
+        value: ${{ jobs.build-windows.outputs.commit_hash }}
 
 defaults:
   run:
@@ -31,6 +35,7 @@ jobs:
   build-windows:
     runs-on: "windows-latest"
     name: ${{ matrix.name }}
+    environment: ${{ inputs.environment }}
     strategy:
       fail-fast: false
       matrix:
@@ -113,8 +118,7 @@ jobs:
           path: ./godot-engine/bin/${{ matrix.artifact-name }}.exe
           name: ${{ matrix.artifact-name }}.exe
 
-      - name: Google Cloud Platform authentication
-        uses: 'google-github-actions/auth@v2'
+      - uses: 'google-github-actions/auth@v2'
         with:
           credentials_json: '${{ secrets.GCP_BUCKET_UPLOAD }}'
 
