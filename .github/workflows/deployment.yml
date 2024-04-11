@@ -80,6 +80,7 @@ jobs:
       os: "macos-latest"
       editor-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/${{needs.get-or-build-engine.outputs.commit_hash}}/MirrorGodotEditorMac.app.zip
       template-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/${{needs.get-or-build-engine.outputs.commit_hash}}/macos_template.app.zip
+  build-linux-client:
     name: 🐧 Build Linux Dev PR
     uses: ./.github/workflows/client-build-tool.yml
     needs: get-or-build-engine
