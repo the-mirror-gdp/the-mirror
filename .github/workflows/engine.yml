@@ -136,6 +136,7 @@ jobs:
   build-macos:
     runs-on: "macos-latest"
     name: ${{ matrix.name }}
+    environment: ${{ inputs.environment }}
     strategy:
       fail-fast: false
       matrix:
@@ -276,6 +277,7 @@ jobs:
   build-linux:
     runs-on: "ubuntu-20.04" # MUST run on the old version for GLIBC compatibility
     name: ${{ matrix.name }}
+    environment: ${{ inputs.environment }}
     strategy:
       fail-fast: false
       matrix:
