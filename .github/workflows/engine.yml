@@ -378,5 +378,5 @@ jobs:
       - name: Upload binary
         uses: 'google-github-actions/upload-cloud-storage@v2'
         with:
-          path: ./godot-engine/bin/${{ matrix.artifact-name }}.zip
+          path: ./godot-engine/bin/${{ matrix.artifact-name }}
           destination: ${{ matrix.bucket-name }}/${{steps.vars.outputs.sha_short}}/
