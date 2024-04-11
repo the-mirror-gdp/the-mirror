@@ -96,6 +96,12 @@ on:
       custom-project-file:
         required: false
         type: string
+      editor-download-url:
+        required: true
+        type: string
+      template-download-url:
+        required: true
+        type: string
     outputs:
       url:
         value: ${{ jobs.client-build-tool.outputs.url }}
@@ -158,26 +164,15 @@ jobs:
           rm -Rf project.godot
           mv ${{ inputs.custom-project-file }} project.godot
 
-      - name: Download editor artifact
-        uses: dawidd6/action-download-artifact@v3
-        with:
-          github_token: ${{ secrets.cicd-token-github }}
-          workflow: ${{ inputs.editor-binary-workflow }}
-          workflow_conclusion: "in_progress"
-          name: ${{ inputs.editor-binary-download }}
+      - name: Download editor and template
+        run: |
+          curl ${{ inputs.editor-download-url }} > ${{ inputs.editor-binary-download }}
+          curl ${{ inputs.template-download-url }} > ${{ inputs.template-binary-name }}
 
       - name: Unzip editor binary
         if: ${{ inputs.should-unzip-editor }}
         run: |
           unzip -o ${{ inputs.editor-binary-download }}
-
-      - name: Download export template artifact
-        uses: dawidd6/action-download-artifact@v3
-        with:
-          github_token: ${{ secrets.cicd-token-github }}
-          workflow: ${{ inputs.template-binary-workflow }}
-          workflow_conclusion: "in_progress" # must be in_progress otherwise we can't find them for our current job 
-          name: ${{ inputs.template-binary-name }}
 
       - name: Set up template in system-wide editor data
         run: |
