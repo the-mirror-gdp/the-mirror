@@ -18,6 +18,7 @@ jobs:
       GCP_BUCKET_UPLOAD: ${{ secrets.GCP_BUCKET_UPLOAD }}
     with:
       environment: "dev"
+      
 
   build-windows-client:
     name: 🏁 Build Windows Dev PR

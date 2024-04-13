@@ -24,6 +24,7 @@ env:
   DOTNET_NOLOGO: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   TSAN_OPTIONS: suppressions=misc/error_suppressions/tsan.txt
+  windows-runner: ['"windows-latest", ""']
 
 concurrency:
   # workflow name - PR || fallback to unique run id, this happens when you're not building a PR
@@ -33,7 +34,7 @@ concurrency:
 
 jobs:
   build-windows:
-    runs-on: "windows-latest"
+    runs-on: ${{ vars.windows-runner }}
     name: ${{ matrix.name }}
     environment: ${{ inputs.environment }}
     strategy:
@@ -134,7 +135,7 @@ jobs:
           path: ./godot-engine/bin/${{ matrix.artifact-name }}.exe
           destination: ${{ matrix.bucket-name }}/${{steps.vars.outputs.sha_short}}/
   build-macos:
-    runs-on: "macos-latest"
+    runs-on: ${{ inputs.macos-runner }}
     name: ${{ matrix.name }}
     environment: ${{ inputs.environment }}
     strategy:
@@ -275,7 +276,7 @@ jobs:
           path: ./godot-engine/bin/${{ matrix.artifact-name }}.zip
           destination: ${{ matrix.bucket-name }}/${{steps.vars.outputs.sha_short}}/
   build-linux:
-    runs-on: "ubuntu-20.04" # MUST run on the old version for GLIBC compatibility
+    runs-on: ${{ inputs.linux-runner }}
     name: ${{ matrix.name }}
     environment: ${{ inputs.environment }}
     strategy:
