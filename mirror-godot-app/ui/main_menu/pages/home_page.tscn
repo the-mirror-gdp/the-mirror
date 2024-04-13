@@ -112,7 +112,6 @@ horizontal_alignment = 1
 [node name="SpacesSectionPopular" parent="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer" instance=ExtResource("2_l3jcy")]
 layout_mode = 2
 empty_item_scene = ExtResource("3_scd2x")
-_include_localhost_item = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Pages/HomeSpaceSelect/VBoxContainer/Panel/MarginContainer/ScrollContainer/VBoxContainer/SpacesSectionPopular/TitleBar" index="1"]
 layout_mode = 2
