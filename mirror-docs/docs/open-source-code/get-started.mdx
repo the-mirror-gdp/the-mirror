@@ -28,28 +28,18 @@ Docker isn't required, but is recommended for ease to run the web server and oth
 
 ## How to Run the Full Stack with Docker (Windows)
 
-1. Install Docker for Windows
+1. Install [Docker for Windows](https://docs.docker.com/desktop/install/windows-install/) and [git bash, which comes with `git`](https://git-scm.com/downloads) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) (git bash is easier)
 
 Download and proceed with instructions from: https://docs.docker.com/desktop/install/windows-install/
 Setup was tested with WSL2 (defualt for not Professional versions of Windows)
 
-2. Clone mthe main repo: `git clone git@github.com:the-mirror-gdp/the-mirror.git`.
+2. Clone the main repo: `git clone git@github.com:the-mirror-gdp/the-mirror.git`.
 
-3. Configure your `./mirror-web-server/.env`
+3. Configure your `./mirror-web-server/.env` by duplicating your `.env.example` file and renaming it to `.env`. Use the defaults where needed and plug in your own env variables where necessary.
 
-Use these settings. For the rest, I used defaults but these docs need to be updated.
+4. [Create a new Firebase project](https://firebase.google.com/) and [download your service account JSON](https://firebase.google.com/docs/admin/setup) file to `/mirror-web-server/the-mirror-backend-dev-firebase-admin.json`, which will plug the `mirror-web-server` into your own Firebase instance. This is required if you're running `mirror-web-server` locally since `mirror-web-server` requires admin permissions.
 
-```
-MONGODB_URL=mongodb://root:example@mongo:27017/themirror?retryWrites=true&w=majority&authSource=admin
-# Do not change paths here since they are relative to docker container
-GOOGLE_APPLICATION_CREDENTIALS=/app/the-mirror-backend-dev-firebase-admin.json # <- You'll supply this in the next step
-```
-
-4. Configure your `the-mirror-backend-dev-firebase-admin.json` to plug in your own Firebase instance. This is required if you're running `mirror-web-server` locally since `mirror-web-server` requires admin permissions.
-
-5. Launch WSL2 terminal and go to your project directory `cd /YOUR_PROJECT_DIR`
-
-6. Run `docker compose up`
+5. From git bash or WSL, from `YOUR_PROJECT_DIR/mirror-web-server/`, run `docker compose up`
 
 :::tip
 If you run into an error like this:
