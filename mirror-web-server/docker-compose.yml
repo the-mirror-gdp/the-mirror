@@ -1,22 +1,22 @@
-version: "3.9"
+version: '3.9'
 services:
   mirror-server:
     container_name: the_mirror_server
     build:
-      dockerfile: "dev.Dockerfile"
+      dockerfile: 'dev.Dockerfile'
     volumes:
-      - ./monorepo.env:/app/.env
+      - ./.env:/app/.env
       - .:/app
       - /app/node_modules
     ports:
-      - "3000:3000"
-      - "9000:9000"
-      - "9001:9001"
-      - "8080:8080"
+      - '3000:3000'
+      - '9000:9000'
+      - '9001:9001'
+      - '8080:8080'
     depends_on:
       - redis
       - mongo
-  
+
   redis:
     container_name: redis
     image: 'redis:latest'
@@ -34,7 +34,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
     # ports section is only needed if you want to use mongo-db compass on host, remove when not used
     ports:
-      - "27017:27017"
+      - '27017:27017'
 
 volumes:
   mongodb_data:
