@@ -1,0 +1,19 @@
+{
+    // Ensure that copy pasting in .vscode always works with YML files
+    // This means you can copy paste properly in VSCode with YML files. Like GitHub actions.
+    // It improves the situation with whitespace centric tooling.
+    "editor.autoIndent": "keep",
+    // Use the US English standard dictionary for the project.
+    // For cSpell
+    "cSpell.language": "en,en-US",
+    "cSpell.enableFiletypes": [
+        "bat",
+        "dockercompose",
+        "dockerfile",
+        "gdscript",
+        "gdshader",
+        "github-actions-workflow",
+        "makefile",
+        "shellscript"
+    ]
+}
