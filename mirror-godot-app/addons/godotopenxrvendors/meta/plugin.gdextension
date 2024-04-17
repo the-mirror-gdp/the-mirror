@@ -1,0 +1,16 @@
+[configuration]
+
+entry_symbol = "plugin_library_init"
+compatibility_minimum = "4.2"
+android_aar_plugin = true
+
+[libraries]
+
+android.debug.arm64 = "res://addons/godotopenxrvendors/meta/.bin/debug/arm64-v8a/libgodotopenxrmeta.so"
+android.release.arm64 = "res://addons/godotopenxrvendors/meta/.bin/release/arm64-v8a/libgodotopenxrmeta.so"
+macos.debug = "res://addons/godotopenxrvendors/meta/.bin/libgodotopenxrmeta.macos.template_debug.framework"
+macos.release = "res://addons/godotopenxrvendors/meta/.bin/libgodotopenxrmeta.macos.template_release.framework"
+windows.debug.x86_64 = "res://addons/godotopenxrvendors/meta/.bin/libgodotopenxrmeta.windows.template_debug.x86_64.dll"
+windows.release.x86_64 = "res://addons/godotopenxrvendors/meta/.bin/libgodotopenxrmeta.windows.template_release.x86_64.dll"
+linux.debug.x86_64 = "res://addons/godotopenxrvendors/meta/.bin/libgodotopenxrmeta.linux.template_debug.x86_64.so"
+linux.release.x86_64 = "res://addons/godotopenxrvendors/meta/.bin/libgodotopenxrmeta.linux.template_release.x86_64.so"
