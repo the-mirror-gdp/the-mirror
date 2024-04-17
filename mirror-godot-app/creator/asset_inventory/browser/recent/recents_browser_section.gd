@@ -17,8 +17,8 @@ var _id_to_slot_map: Dictionary = {}
 
 func _ready() -> void:
 	super()
-	await GameUI.ready
-	GameUI.login_ui.login_succeeded.connect(Net.asset_client.get_recent_assets)
+	await GameUI.instance.ready
+	GameUI.instance.login_ui.login_succeeded.connect(Net.asset_client.get_recent_assets)
 	Net.asset_client.asset_received.connect(_on_net_asset_received)
 	Net.asset_client.recent_assets_received.connect(_on_net_recent_assets_received)
 	Zone.client.disconnected.connect(_on_zone_disconnected)

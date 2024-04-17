@@ -67,11 +67,11 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 
 
 func _on_focus_entered():
-	GameUI.grab_input_lock(self)
+	GameUI.instance.grab_input_lock(self)
 
 
 func _on_focus_exited():
-	GameUI.release_input_lock(self)
+	GameUI.instance.release_input_lock(self)
 
 
 func focus():

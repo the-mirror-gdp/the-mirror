@@ -39,7 +39,7 @@ func _process(_delta: float) -> void:
 			var args: Array = url_data.args
 			if not Net.is_logged_in() and command != _JOIN_AUTHED_SPACE_CMD:
 				Notify.warning("Sign In", "You must sign in to use the link provided, once you sign in I will open the link.")
-				GameUI.login_ui.login_succeeded.connect(func(): _handle_deeplink_url(url), CONNECT_ONE_SHOT)
+				GameUI.instance.login_ui.login_succeeded.connect(func(): _handle_deeplink_url(url), CONNECT_ONE_SHOT)
 				print("Processing login...")
 			else:
 				print("Processing deeplink: ", url)

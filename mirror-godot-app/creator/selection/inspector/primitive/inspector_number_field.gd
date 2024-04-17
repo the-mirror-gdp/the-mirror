@@ -72,7 +72,7 @@ func _on_spin_box_text_changed(new_text: String) -> void:
 
 func _on_focus_entered() -> void:
 	_spin_box_node.value_changed.connect(_on_spin_box_value_changed, CONNECT_ONE_SHOT)
-	GameUI.grab_input_lock(self)
+	GameUI.instance.grab_input_lock(self)
 	await get_tree().process_frame
 	_line_edit_node.select_all()
 
@@ -80,7 +80,7 @@ func _on_focus_entered() -> void:
 func _on_focus_exited():
 	assert(not is_queued_for_deletion())
 	refresh_full()
-	GameUI.release_input_lock(self)
+	GameUI.instance.release_input_lock(self)
 
 
 func _on_reset_button_pressed() -> void:

@@ -5,14 +5,18 @@ extends Node
 
 static var popups = []
 
+func _init():
+	GameUI._root_node = get_node("/root/")
+
 func _start_client():
 	DisplayServer.window_set_title(ProjectSettings.get_setting("application/config/window_name", "The Mirror"))
 	Cursors.setup()
 	if ProjectSettings.get_setting("feature_flags/disable_login", false):
 		LoginService.setup_deeplink_login(get_tree())
 	else:
-		GameUI.login_ui.start_login_ui()
-		GameUI.login_ui.show()
+		await GameUI.ui_ready()
+		GameUI.instance.login_ui.start_login_ui()
+		GameUI.instance.login_ui.show()
 	Deeplinking.setup()
 	await Zone.wait_till_notifications_ready()
 	await Zone.wait_till_deeplink_ready()

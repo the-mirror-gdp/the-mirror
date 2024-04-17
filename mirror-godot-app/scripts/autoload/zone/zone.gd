@@ -266,7 +266,7 @@ func on_exit_space() -> void:
 	social_manager.clear_children()
 	instance_manager.clear_children()
 	change_to_empty_scene()
-	GameUI.on_exit_space()
+	GameUI.instance.on_exit_space()
 	print("exit space game ui ran")
 
 

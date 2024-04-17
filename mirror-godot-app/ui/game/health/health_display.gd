@@ -71,8 +71,8 @@ func update_visibility_by_space_var(
 func _space_var_updated(variable_name: String, variable_value: Variant) -> void:
 	if variable_name in [player_damage_is_enabled]:
 		var str_enableness = update_visibility_by_space_var(variable_value)
-		if GameUI and GameUI.chat_ui:
-			GameUI.chat_ui.add_message_clientside("Player damage is now [i]%s[/i] on this space" % str_enableness)
+		if GameUI.instance and GameUI.instance.chat_ui:
+			GameUI.instance.chat_ui.add_message_clientside("Player damage is now [i]%s[/i] on this space" % str_enableness)
 
 
 func try_hide() -> void:
@@ -87,5 +87,5 @@ func try_show() -> void:
 	if not are_variables_ready:
 		await Zone.script_network_sync.variables_ready
 	var str_enableness = self.update_visibility_by_space_var()
-	if GameUI and GameUI.chat_ui:
-		GameUI.chat_ui.add_message_clientside("Player damage is [i]%s[/i] on this space" % str_enableness)
+	if GameUI.instance and GameUI.instance.chat_ui:
+		GameUI.instance.chat_ui.add_message_clientside("Player damage is [i]%s[/i] on this space" % str_enableness)

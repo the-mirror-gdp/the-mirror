@@ -88,12 +88,12 @@ func set_enabled(in_is_enabled: bool):
 
 
 func _on_focus_entered():
-	GameUI.grab_input_lock(self)
+	GameUI.instance.grab_input_lock(self)
 
 
 func _on_focus_exited():
 	refresh()
-	GameUI.release_input_lock(self)
+	GameUI.instance.release_input_lock(self)
 
 
 func _on_reset_button_pressed() -> void:

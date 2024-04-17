@@ -114,13 +114,13 @@ func _guest_signup_succeeded(acc: Dictionary) -> void:
 static func wait_till_login(scene_tree: SceneTree):
 	# it is possible you use the code in this UI in a place where it may not be fully loaded
 	# we ensure we have all the autoloads, and instances configured
-	if not Firebase or not Firebase.Auth or not GameUI.login_ui:
+	if not Firebase or not Firebase.Auth or not GameUI.instance.login_ui:
 		await scene_tree.process_frame
 	# now we check are we fully logged into the app
 	if Net.is_fully_logged_in() and Firebase.Auth.is_logged_in():
 		return
 	# we wait until this is the case since we weren't logged in
-	await GameUI.login_ui.login_succeeded
+	await GameUI.instance.login_ui.login_succeeded
 
 
 ## hide the login ui pane

@@ -179,7 +179,7 @@ func toggle_variable_editor() -> void:
 		hide()
 	else:
 		show()
-		GameUI.grab_input_lock(self)
+		GameUI.instance.grab_input_lock(self)
 		_search.grab_focus()
 		_search.select_all()
 

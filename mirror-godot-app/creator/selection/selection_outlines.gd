@@ -22,7 +22,7 @@ func _can_draw_outlines() -> bool:
 		or _creator_ui.is_edit_mode(Enums.EDIT_MODE.Terrain)
 		or _creator_ui.is_edit_mode(Enums.EDIT_MODE.Model)
 		or PlayerData.game_mode.get_current_mode() == GameMode.Mode.NORMAL and not _creator_ui.object_creation.is_browser_expanded
-		or GameUI.creator_ui.ui_request_captured
+		or GameUI.instance.creator_ui.ui_request_captured
 	)
 
 
@@ -31,12 +31,12 @@ func _process(_delta) -> void:
 		set_process(false)
 		return
 	_draw_remote_selection_outlines()
-	if not _can_draw_outlines() or GameUI.is_cinematic_mode_enabled():
+	if not _can_draw_outlines() or GameUI.instance.is_cinematic_mode_enabled():
 		return
 	_draw_highlight_outlines()
 	_draw_selection_outlines()
 	# TODO Make hightlight only be shown when we are hovering the world instead of UI:
-#	if not GameUI.is_mouse_hovering_ui():
+#	if not GameUI.instance.is_mouse_hovering_ui():
 
 
 func _draw_selection_outlines() -> void:
@@ -49,7 +49,7 @@ func _draw_selection_outlines() -> void:
 		var color: Color = selection_color
 		if selected_node is SpaceObject and selected_node.locked:
 			color = Color.ORANGE
-		GameUI.object_outlines.draw_wireframe_box_object(selected_node, color)
+		GameUI.instance.object_outlines.draw_wireframe_box_object(selected_node, color)
 
 
 func _draw_remote_selection_outlines() -> void:
@@ -60,7 +60,7 @@ func _draw_remote_selection_outlines() -> void:
 		if not is_instance_valid(remotely_selected_node) or selected_nodes.has(remotely_selected_node) or remotely_selected_node.selected_by_peers.has(get_tree().get_multiplayer().get_unique_id()):
 			# This is a locally selected node as well; so nothing to do.
 			continue
-		GameUI.object_outlines.draw_wireframe_box_object(remotely_selected_node, remote_selection_color)
+		GameUI.instance.object_outlines.draw_wireframe_box_object(remotely_selected_node, remote_selection_color)
 
 
 func _draw_highlight_outlines() -> void:
@@ -84,6 +84,6 @@ func _draw_highlight_outlines() -> void:
 		var color: Color = highlight_color
 		if object.locked:
 			color = locked_color
-		GameUI.object_outlines.draw_wireframe_box_object(object, color)
+		GameUI.instance.object_outlines.draw_wireframe_box_object(object, color)
 	elif object is ModelPrimitive:
-		GameUI.object_outlines.draw_wireframe_box_object(object, highlight_color)
+		GameUI.instance.object_outlines.draw_wireframe_box_object(object, highlight_color)

@@ -59,4 +59,4 @@ func _slot_primary_action() -> void:
 
 func _on_asset_slot_mouse_entered() -> void:
 	super()
-	GameUI.set_hover_tooltip_text(recent_script["name"], "Space Script")
+	GameUI.instance.set_hover_tooltip_text(recent_script["name"], "Space Script")

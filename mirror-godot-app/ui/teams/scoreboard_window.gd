@@ -80,7 +80,7 @@ func _process(_delta: float) -> void:
 		visible = false
 		return
 	visible = _force_shown or (
-		not GameUI.is_keyboard_needed_for_ui()
+		not GameUI.instance.is_keyboard_needed_for_ui()
 		and Input.is_action_pressed(&"scoreboard_visible")
 		and is_scoreboard_shortcut_enabled()
 	)

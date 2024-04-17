@@ -74,7 +74,7 @@ func _on_server_joined():
 
 func _on_user_present_filter_menu_item_selected(_title, metadata):
 	if metadata is Player:
-		GameUI.creator_ui.open_context_menu(metadata)
+		GameUI.instance.creator_ui.open_context_menu(metadata)
 
 
 func _on_game_mode_changed(new_mode: GameMode.Mode, _previous_mode: GameMode.Mode) -> void:
@@ -133,7 +133,7 @@ func _on_primitive_model_builder_pressed() -> void:
 
 
 func _on_help_pressed() -> void:
-	GameUI.user_tutorial.show_tutorial_type(UserTutorial.Tutorial_Type.SPACE)
+	GameUI.instance.user_tutorial.show_tutorial_type(UserTutorial.Tutorial_Type.SPACE)
 
 
 func _on_teleport_pressed() -> void:
@@ -215,7 +215,7 @@ func _on_save_space_pressed():
 	var gltf_doc = GLTFDocument.new()
 	var gltf_state = GLTFState.new()
 	var objects = Zone.instance_manager.get_all_instances()
-	var object_filtered := objects.filter(func(object):
+	var object_filtered = objects.filter(func(object):
 		return object is SpaceObject and object.asset_type == Enums.ASSET_TYPE.MESH
 	)
 	var err = OK

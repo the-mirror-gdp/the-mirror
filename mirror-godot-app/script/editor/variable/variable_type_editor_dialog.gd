@@ -19,7 +19,7 @@ func edit_variable_type(variable_name: String, current_value: Variant, node_path
 	var index: int = _type_selection_button.get_item_index(variable_type)
 	_type_selection_button.select(index)
 	popup_centered()
-	GameUI.grab_input_lock(self)
+	GameUI.instance.grab_input_lock(self)
 
 
 func _on_confirmed() -> void:

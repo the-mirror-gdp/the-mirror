@@ -8,10 +8,14 @@ signal vr_ended
 var vr_interface: XRInterface
 var vr_is_active: bool = false
 
+# we can't have static signals so we must declare them here for the GameUI which is now static
+signal vr_decision_made
 
 func _ready() -> void:
 	vr_interface = XRServer.find_interface('OpenXR')
+	GameUI.setup_game_ui(get_parent(), vr_interface != null)
 	if not vr_interface:
+		print_verbose("VR Is not being used or active")
 		return
 	if not vr_interface.is_initialized():
 		print("OpenXR: Initializing interface")

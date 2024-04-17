@@ -88,7 +88,7 @@ func _on_reset_button_pressed() -> void:
 
 
 func _on_material_selected():
-	var selected_slot = GameUI.creator_ui.material_window.material_browser.get_selected_slot()
+	var selected_slot = GameUI.instance.creator_ui.material_window.material_browser.get_selected_slot()
 	if selected_slot:
 		var is_instance = selected_slot is MaterialInstanceSlot
 		var material_type = Enums.MATERIAL_TYPE.INSTANCE if is_instance else Enums.MATERIAL_TYPE.ASSET
@@ -97,8 +97,8 @@ func _on_material_selected():
 
 
 func _on_button_pressed():
-	GameUI.creator_ui.material_window.popup_centered()
-	GameUI.creator_ui.material_window.material_browser.selected_material_slot_changed.connect(_on_material_selected)
+	GameUI.instance.creator_ui.material_window.popup_centered()
+	GameUI.instance.creator_ui.material_window.material_browser.selected_material_slot_changed.connect(_on_material_selected)
 
 
 func _clear() -> void:

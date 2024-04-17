@@ -96,6 +96,7 @@ driver/enable_input=true
 
 [autoload]
 
+VRManager="*res://scripts/autoload/vr_manager.gd"
 Analytics="*res://scripts/autoload/analytics/analytics.gd"
 AnalyticsV2="*res://scripts/autoload/analytics/analytics_v2.gd"
 Zone="*res://prefabs/autoload/zone/zone.tscn"
@@ -108,7 +109,6 @@ AutoUpdate="*res://scripts/autoload/auto_update.gd"
 Constants="*res://scripts/autoload/constants.gd"
 Debug="*res://scripts/debug/debug.gd"
 PlayerData="*res://scripts/autoload/player_data.gd"
-GameUI="*res://ui/game/game_ui.tscn"
 Notify="*res://ui/notifications/notify.gd"
 GameplaySettings="*res://prefabs/autoload/gameplay_settings/gameplay_settings.gd"
 AnalyticsSession="*res://scripts/autoload/analytics/analytics_session.gd"
@@ -117,7 +117,6 @@ AppState="*res://scripts/autoload/analytics/app_state.gd"
 GameplayTools="*res://prefabs/autoload/gameplay_tools/gameplay_tools.tscn"
 DebugGeometry="*res://addons/debug_geometry.gd"
 MirrorScriptServer="*res://script/mirror_script_server.gd"
-VRManager="*res://scripts/autoload/vr_manager.gd"
 Util="*res://scripts/autoload/util_funcs.gd"
 
 [debug]

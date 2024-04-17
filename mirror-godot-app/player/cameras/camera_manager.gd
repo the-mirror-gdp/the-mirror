@@ -32,7 +32,7 @@ func _process(delta: float) -> void:
 
 
 func enable_for_player(player: TMCharacter3D):
-	var gizmo: Gizmo = GameUI.get_node(^"CreatorUI/ObjectSelection/Gizmo")
+	var gizmo: Gizmo = GameUI.instance.get_node(^"CreatorUI/ObjectSelection/Gizmo")
 	_player_head_camera_holder.setup(player, self, gizmo)
 	_free_camera_holder.setup(player, self, gizmo)
 	_placement_preview.setup(self)
@@ -153,8 +153,8 @@ func _unhandled_input(input_event: InputEvent) -> void:
 		var dict = get_camera_raycast_dict()
 		if not dict.has("collider") or not dict.has("position"):
 			return
-		GameUI.creator_ui.open_context_menu(dict.collider, dict.position)
-	if GameUI.is_mouse_needed_for_ui():
+		GameUI.instance.creator_ui.open_context_menu(dict.collider, dict.position)
+	if GameUI.instance.is_mouse_needed_for_ui():
 		if input_event.is_action_pressed("primary_action"):
 			# Works to release focus from all SpinBox and text boxes
 			_main_viewport.gui_release_focus()

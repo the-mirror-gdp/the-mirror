@@ -63,11 +63,11 @@ func end_match(winning_team_name: String) -> void:
 	if not _is_match_running:
 		Zone.script_network_sync.server_script_print_notify("Match Not Running", "Tried to end the match, but no match was running.", Enums.NotifyStatus.WARNING)
 		return
-	if GameUI and GameUI.scoreboard_window:
+	if GameUI.instance and GameUI.instance.scoreboard_window:
 		# This is naive but it works for now.
 		var win_plurality: String = " win!" if winning_team_name.ends_with("s") else " wins!"
-		GameUI.scoreboard_window.set_scoreboard_title_text(winning_team_name + win_plurality)
-		GameUI.scoreboard_window.set_scoreboard_shown(true, false, true)
+		GameUI.instance.scoreboard_window.set_scoreboard_title_text(winning_team_name + win_plurality)
+		GameUI.instance.scoreboard_window.set_scoreboard_shown(true, false, true)
 		var all_players: Array = Zone.social_manager.get_all_players()
 		for player in all_players:
 			player.set_player_input_allowed(false)
@@ -78,8 +78,8 @@ func end_match(winning_team_name: String) -> void:
 func terminate_match() -> void:
 	_is_match_running = false
 	_is_round_running = false
-	GameUI.scoreboard_window.set_scoreboard_title_text("Scoreboard")
-	GameUI.scoreboard_window.set_scoreboard_shown(false, false, false)
+	GameUI.instance.scoreboard_window.set_scoreboard_title_text("Scoreboard")
+	GameUI.instance.scoreboard_window.set_scoreboard_shown(false, false, false)
 	var all_players: Array = Zone.social_manager.get_all_players()
 	for player in all_players:
 		player.set_player_input_allowed(true)

@@ -15,7 +15,7 @@ func _gui_input(input_event: InputEvent) -> void:
 			return
 		tree_item.select(0)
 		selected_node_name = tree_item.get_text(0)
-		GameUI.creator_ui.open_context_menu(self)
+		GameUI.instance.creator_ui.open_context_menu(self)
 	else:
 		super(input_event)
 

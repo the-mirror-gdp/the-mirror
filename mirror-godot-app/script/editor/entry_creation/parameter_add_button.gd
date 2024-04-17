@@ -19,7 +19,7 @@ func erase_type_from_option_button(data_type: int) -> void:
 
 
 func _on_pressed() -> void:
-	GameUI.grab_input_lock(self)
+	GameUI.instance.grab_input_lock(self)
 	_parameter_creation_dialog.popup_centered()
 
 
@@ -34,8 +34,8 @@ func _on_parameter_creation_dialog_confirmed() -> void:
 
 
 func _on_focus_entered():
-	GameUI.grab_input_lock(self)
+	GameUI.instance.grab_input_lock(self)
 
 
 func _on_focus_exited():
-	GameUI.release_input_lock(self)
+	GameUI.instance.release_input_lock(self)

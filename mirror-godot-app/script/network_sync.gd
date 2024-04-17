@@ -845,8 +845,8 @@ func _handle_tmusergdscript_runtime_error_server_to_clients(target_node_path: No
 
 
 func _handle_tmusergdscript_runtime_error_on_clients(script_instance: ScriptInstance, error_message: String, line_number: int) -> void:
-	if GameUI.creator_ui:
-		if GameUI.creator_ui.show_error_in_gd_script_editor_if_open(script_instance, line_number, error_message):
+	if GameUI.instance.creator_ui:
+		if GameUI.instance.creator_ui.show_error_in_gd_script_editor_if_open(script_instance, line_number, error_message):
 			return
 	# If the script editor is not open, display a notification with a link to open.
 	var obj_name_error: String = error_message
@@ -854,7 +854,7 @@ func _handle_tmusergdscript_runtime_error_on_clients(script_instance: ScriptInst
 		obj_name_error = script_instance.target_node.get_space_object_name() + ": " + error_message
 	elif script_instance.target_node is SpaceGlobalScripts:
 		obj_name_error = "Global script: " + error_message
-	Notify.error("GDScript Error", obj_name_error, GameUI.creator_ui.show_error_in_gd_script_editor_if_open.bind(script_instance, line_number, error_message))
+	Notify.error("GDScript Error", obj_name_error, GameUI.instance.creator_ui.show_error_in_gd_script_editor_if_open.bind(script_instance, line_number, error_message))
 
 
 # Physics.

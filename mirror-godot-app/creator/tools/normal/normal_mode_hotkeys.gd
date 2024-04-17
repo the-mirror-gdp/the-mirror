@@ -17,8 +17,8 @@ func _ready() -> void:
 
 
 func set_build_mode_ui_hint_state(state: bool) -> void:
-	var scoreboard_shortcut_enabled: bool = GameUI.scoreboard_window.is_scoreboard_shortcut_enabled()
-	var team_shortcut_enabled: bool = GameUI.teams_handler.is_teams_shortcut_enabled()
+	var scoreboard_shortcut_enabled: bool = GameUI.instance.scoreboard_window.is_scoreboard_shortcut_enabled()
+	var team_shortcut_enabled: bool = GameUI.instance.teams_handler.is_teams_shortcut_enabled()
 	var build_shortcuts_enabled: bool = ProjectSettings.get_setting("feature_flags/enable_build_shortcuts", true)
 	$TeamSelection.visible = team_shortcut_enabled
 	$Scoreboard.visible = scoreboard_shortcut_enabled

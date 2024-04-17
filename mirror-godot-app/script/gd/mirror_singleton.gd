@@ -21,7 +21,7 @@ static func get_friendly_name(value: Variant) -> String:
 
 
 static func print_in_chat(attached_object: Object, message: String, range_radius: float = INF) -> void:
-	GameUI.chat_ui.send_message_from_object(attached_object, message, range_radius)
+	GameUI.instance.chat_ui.send_message_from_object(attached_object, message, range_radius)
 
 
 # Global variables.

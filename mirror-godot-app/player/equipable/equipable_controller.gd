@@ -18,7 +18,7 @@ func setup(player_owner: Player) -> void:
 	player = player_owner
 	if not Zone.is_host() and player.is_local_player():
 		player.get_equipable_view_model().setup(self)
-		GameUI.hotbar.hotbar_asset_selected.connect(set_selected_equipable_asset_id)
+		GameUI.instance.hotbar.hotbar_asset_selected.connect(set_selected_equipable_asset_id)
 	player.get_equipable_world_model().setup(self)
 	Zone.social_manager.player_connected.connect(_on_player_connected)
 
@@ -31,7 +31,7 @@ func _on_player_connected(_spawned_player: Player) -> void:
 func _process(_delta: float) -> void:
 	var is_in_free_cam_mode = (
 		Zone.is_in_edit_mode() and
-		not GameUI.creator_ui.is_game_mode(GameMode.Mode.NORMAL)
+		not GameUI.instance.creator_ui.is_game_mode(GameMode.Mode.NORMAL)
 	)
 
 	# TODO MAYBE Simplify that huge if guard,
@@ -45,7 +45,7 @@ func _process(_delta: float) -> void:
 		or is_in_free_cam_mode
 		or player.is_dead()
 		# Not in main_menu or other
-		or GameUI.is_mouse_needed_for_ui()
+		or GameUI.instance.is_mouse_needed_for_ui()
 	):
 		return
 	if Input.is_action_pressed(&"primary_action"):

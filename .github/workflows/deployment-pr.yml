@@ -13,6 +13,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  get-or-build-engine:
+    name: Building Engine
+    uses: ./.github/workflows/engine.yml
+    with:
+      environment: ""
+      self-hosted-runner: ${{ github.event.repository.name != 'the-mirror' }}
+      deploy-to-gcp: false # in the future if we can figure out how to make this secure we may re-enable this.
   build-windows-client:
     name: 🏁 Build Windows Dev PR
     uses: ./.github/workflows/client-build-tool.yml

@@ -114,7 +114,7 @@ func shoot() -> void:
 			hit_object.damage(bullet_damage, _equipable_controller.player.get_user_id())
 			if hit_object is Player:
 				create_blood_particles(hit_object, hit_position)
-				GameUI.crosshair.show_hitmarker()
+				GameUI.instance.crosshair.show_hitmarker()
 				return
 		if hit_object.has_method("server_add_impulse_at_position"):
 			if hit_object.is_dynamic():

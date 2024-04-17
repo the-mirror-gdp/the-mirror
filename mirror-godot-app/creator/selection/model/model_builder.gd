@@ -253,13 +253,13 @@ func _draw_outlines() -> void:
 	match _state:
 		State.EXTRUDE:
 			_ghost_color = Color.BLUE_VIOLET
-			GameUI.object_outlines.draw_line(_end - _plane.normal * 100, _end + _plane.normal * 100, Color.RED)
+			GameUI.instance.object_outlines.draw_line(_end - _plane.normal * 100, _end + _plane.normal * 100, Color.RED)
 		State.SLIDE:
 			_ghost_color = Color.VIOLET
-			GameUI.object_outlines.draw_line(_end - _slide_axis * 100, _end + _slide_axis * 100, Color.RED)
+			GameUI.instance.object_outlines.draw_line(_end - _slide_axis * 100, _end + _slide_axis * 100, Color.RED)
 		_:
 			_ghost_color = Color.BLUE
-	GameUI.object_outlines.draw_wireframe_box_aabb(_bounds.grow(OUTLINE_MARGIN), _ghost_color)
+	GameUI.instance.object_outlines.draw_wireframe_box_aabb(_bounds.grow(OUTLINE_MARGIN), _ghost_color)
 
 
 func _draw_text() -> void:

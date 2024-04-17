@@ -154,13 +154,13 @@ func _populate_items(items_data: Array, max_items_number: int) -> void:
 
 
 func _on_create_pressed() -> void:
-	GameUI.main_menu_ui.change_page(&"My_Spaces")
-	GameUI.main_menu_ui.change_subpage(&"SelectTemplate")
+	GameUI.instance.main_menu_ui.change_page(&"My_Spaces")
+	GameUI.instance.main_menu_ui.change_subpage(&"SelectTemplate")
 	_audio_stream_player_click.play()
 
 
 func _on_space_pressed(space: Dictionary) -> void:
-	GameUI.main_menu_ui.change_subpage(&"ViewSpace", space)
+	GameUI.instance.main_menu_ui.change_subpage(&"ViewSpace", space)
 	_audio_stream_player_click.play()
 
 var _currently_populating = false

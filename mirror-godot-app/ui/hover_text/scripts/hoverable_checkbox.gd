@@ -10,8 +10,8 @@ extends CheckBox
 func _on_hoverable_checkbox_mouse_entered() -> void:
 	if hover_tooltip_text == "":
 		return
-	GameUI.set_hover_tooltip_text(hover_tooltip_text)
+	GameUI.instance.set_hover_tooltip_text(hover_tooltip_text)
 
 
 func _on_hoverable_checkbox_mouse_exited() -> void:
-	GameUI.hide_hover_tooltip_text()
+	GameUI.instance.hide_hover_tooltip_text()

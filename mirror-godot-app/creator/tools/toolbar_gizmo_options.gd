@@ -107,8 +107,8 @@ func _on_scale_button_pressed() -> void:
 
 
 func _on_snap_amount_focus_entered():
-	GameUI.grab_input_lock(self)
+	GameUI.instance.grab_input_lock(self)
 
 
 func _on_snap_amount_focus_exited():
-	GameUI.release_input_lock(self)
+	GameUI.instance.release_input_lock(self)

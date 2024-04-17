@@ -151,7 +151,7 @@ func _join_space(build_mode = false) -> void:
 		Zone.client.start_join_zone_by_space_id(_id)
 	else:
 		Zone.client.start_join_play_space_by_space_id(_id)
-	GameUI.loading_ui.set_loading_image(_preview_image.texture)
+	GameUI.instance.loading_ui.set_loading_image(_preview_image.texture)
 
 
 ## receiver method for the button was pressed that triggers entering a space

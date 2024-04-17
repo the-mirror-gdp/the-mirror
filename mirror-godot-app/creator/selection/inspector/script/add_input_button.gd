@@ -10,7 +10,7 @@ signal create_parameter(parameter_port_array: Array)
 func _on_pressed() -> void:
 	_variable_creation_menu.clear_fields()
 	_add_input_dialog.popup_centered()
-	GameUI.grab_input_lock(self)
+	GameUI.instance.grab_input_lock(self)
 	_variable_creation_menu.focus_variable_editor_name_field()
 
 
@@ -24,8 +24,8 @@ func emit_create_parameter() -> void:
 
 
 func _on_add_input_dialog_focus_entered() -> void:
-	GameUI.grab_input_lock(self)
+	GameUI.instance.grab_input_lock(self)
 
 
 func _on_add_input_dialog_focus_exited() -> void:
-	GameUI.release_input_lock(self)
+	GameUI.instance.release_input_lock(self)

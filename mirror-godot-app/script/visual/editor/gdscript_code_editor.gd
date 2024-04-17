@@ -14,9 +14,9 @@ func _ready() -> void:
 
 func _on_visibility_changed() -> void:
 	if self.visible:
-		GameUI.add_visible_window(self)
+		GameUI.instance.add_visible_window(self)
 	else:
-		GameUI.remove_visible_window(self)
+		GameUI.instance.remove_visible_window(self)
 
 
 func _process(delta: float) -> void:
@@ -53,8 +53,8 @@ func _on_code_edit_text_changed():
 
 
 func _on_focus_entered() -> void:
-	GameUI.grab_input_lock(self)
+	GameUI.instance.grab_input_lock(self)
 
 
 func _on_focus_exited() -> void:
-	GameUI.release_input_lock(self)
+	GameUI.instance.release_input_lock(self)

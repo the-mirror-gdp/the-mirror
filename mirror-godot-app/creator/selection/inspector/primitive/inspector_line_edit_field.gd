@@ -41,11 +41,11 @@ func _on_focus_entered() -> void:
 	await get_tree().process_frame
 	# This is done declaratively by LineEdit.select_all_on_focus = true
 	# _line_edit_node.select_all()
-	GameUI.grab_input_lock(self)
+	GameUI.instance.grab_input_lock(self)
 
 
 func _on_focus_exited() -> void:
-	GameUI.release_input_lock(self)
+	GameUI.instance.release_input_lock(self)
 
 
 func _on_reset_button_pressed() -> void:

@@ -12,4 +12,4 @@ func _on_zone_mode_changed(new_zone_mode) -> void:
 
 func _on_end_preview_button_pressed() -> void:
 	Zone.client_send_mode_change(Zone.ZONE_MODE.EDIT)
-	GameUI.main_menu_ui.hide()
+	GameUI.instance.main_menu_ui.hide()

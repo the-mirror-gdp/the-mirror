@@ -60,7 +60,7 @@ func _on_restore_button_pressed() -> void:
 		_restore_button.disabled = false
 		return
 	_loading_spinner_button.visible = true
-	GameUI.creator_ui.clear_selection()
+	GameUI.instance.creator_ui.clear_selection()
 	Zone.space_restore.restore_from_space_version.rpc_id(Zone.SERVER_PEER_ID, space_version_id)
 
 
