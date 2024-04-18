@@ -111,7 +111,7 @@ on:
         value: ${{ jobs.client-build-tool.outputs.version }}
     secrets:
       gcp-secret:
-        required: false
+        required: true
       cicd-token-github:
         required: true
       ITCH_IO_CICD:

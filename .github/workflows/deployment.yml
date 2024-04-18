@@ -18,6 +18,7 @@ jobs:
       GCP_BUCKET_UPLOAD: ${{ secrets.GCP_BUCKET_UPLOAD }}
     with:
       environment: "dev"
+      self-hosted-runner: ${{ github.event.repository.name != 'the-mirror' }}
 
   build-windows-client:
     name: 🏁 Build Windows Dev PR
@@ -43,7 +44,7 @@ jobs:
       game-export-preset: Windows
       game-binary-name: The Mirror Dev.exe
       bucket-name: no-bucket
-      os: "windows-latest"
+      os: ${{ github.event.repository.name != 'the-mirror' && fromJSON('[ "self-hosted", "Windows"]') || 'windows-latest' }}
       editor-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/${{needs.get-or-build-engine.outputs.commit_hash}}/MirrorGodotEditorWindows.exe
       template-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/${{needs.get-or-build-engine.outputs.commit_hash}}/windows_release_x86_64.exe
   build-macos-client:
@@ -72,7 +73,7 @@ jobs:
       game-export-preset: MacOS-themirror-dev
       game-binary-name: The Mirror Dev.app
       bucket-name: no-bucket
-      os: "macos-latest"
+      os: ${{ github.event.repository.name != 'the-mirror' && fromJSON('[ "self-hosted", "MacOS"]') || 'macos-latest' }}
       editor-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/${{needs.get-or-build-engine.outputs.commit_hash}}/MirrorGodotEditorMac.app.zip
       template-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/${{needs.get-or-build-engine.outputs.commit_hash}}/macos_template.app.zip
   build-linux-client:
@@ -99,6 +100,6 @@ jobs:
       game-export-preset: Linux
       game-binary-name: The Mirror Dev.x86_64
       bucket-name: no-bucket
-      os: "ubuntu-20.04"
+      os: ${{ github.event.repository.name != 'the-mirror' && fromJSON('[ "self-hosted", "Linux"]') || 'ubuntu-20.04' }}
       editor-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/${{needs.get-or-build-engine.outputs.commit_hash}}/MirrorGodotEditorLinux.x86_64
       template-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/${{needs.get-or-build-engine.outputs.commit_hash}}/linux_release.x86_64
