@@ -36,7 +36,7 @@ concurrency:
 
 jobs:
   build-windows:
-    runs-on: ${{ inputs.self-hosted-runner && fromJSON('[ "self-hosted", "Windows"]') || 'windows-latest' }}
+    runs-on: ${{ inputs.self-hosted-runner && 'windows-mirror' || 'windows-latest' }}
     name: ${{ matrix.name }}
     environment: ${{ inputs.environment }}
     strategy:
@@ -137,7 +137,7 @@ jobs:
           path: ./godot-engine/bin/${{ matrix.artifact-name }}.exe
           destination: ${{ matrix.bucket-name }}/${{steps.vars.outputs.sha_short}}/
   build-macos:
-    runs-on: ${{ inputs.self-hosted-runner && fromJSON('[ "self-hosted", "MacOS"]') || 'macos-latest' }}
+    runs-on: ${{ inputs.self-hosted-runner && 'macos-mirror' || 'macos-latest' }}
     name: ${{ matrix.name }}
     environment: ${{ inputs.environment }}
     strategy:
@@ -278,7 +278,7 @@ jobs:
           path: ./godot-engine/bin/${{ matrix.artifact-name }}.zip
           destination: ${{ matrix.bucket-name }}/${{steps.vars.outputs.sha_short}}/
   build-linux:
-    runs-on: ${{ inputs.self-hosted-runner && fromJSON('[ "self-hosted", "Linux"]') || 'ubuntu-20.04' }}
+    runs-on: ${{ inputs.self-hosted-runner && 'linux-mirror' || 'ubuntu-20.04' }}
     name: ${{ matrix.name }}
     environment: ${{ inputs.environment }}
     strategy:
