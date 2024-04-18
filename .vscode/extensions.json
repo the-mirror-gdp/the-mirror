@@ -1,0 +1,13 @@
+{
+    "recommendations": [
+        "streetsidesoftware.code-spell-checker",
+        "ms-vscode.cpptools",
+        "ms-vscode.cpptools-themes",
+        "ms-vscode.cpptools-extension-pack",
+        "geequlim.godot-tools",
+        "esbenp.prettier-vscode",
+        "ms-python.python",
+        "ms-python.debugpy",
+        "ms-python.vscode-pylance"
+    ]
+}

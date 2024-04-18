@@ -5,6 +5,9 @@ on:
       environment:
         required: true
         type: string
+      self-hosted-runner:
+        required: true
+        type: boolean
     secrets:
       GCP_BUCKET_UPLOAD:
         required: true
@@ -33,7 +36,7 @@ concurrency:
 
 jobs:
   build-windows:
-    runs-on: "windows-latest"
+    runs-on: ${{ inputs.self-hosted-runner && fromJSON('[ "self-hosted", "Windows"]') || 'windows-latest' }}
     name: ${{ matrix.name }}
     environment: ${{ inputs.environment }}
     strategy:
@@ -134,7 +137,7 @@ jobs:
           path: ./godot-engine/bin/${{ matrix.artifact-name }}.exe
           destination: ${{ matrix.bucket-name }}/${{steps.vars.outputs.sha_short}}/
   build-macos:
-    runs-on: "macos-latest"
+    runs-on: ${{ inputs.self-hosted-runner && fromJSON('[ "self-hosted", "MacOS"]') || 'macos-latest' }}
     name: ${{ matrix.name }}
     environment: ${{ inputs.environment }}
     strategy:
@@ -275,7 +278,7 @@ jobs:
           path: ./godot-engine/bin/${{ matrix.artifact-name }}.zip
           destination: ${{ matrix.bucket-name }}/${{steps.vars.outputs.sha_short}}/
   build-linux:
-    runs-on: "ubuntu-20.04" # MUST run on the old version for GLIBC compatibility
+    runs-on: ${{ inputs.self-hosted-runner && fromJSON('[ "self-hosted", "Linux"]') || 'ubuntu-20.04' }}
     name: ${{ matrix.name }}
     environment: ${{ inputs.environment }}
     strategy:
