@@ -1,0 +1,385 @@
+name: Engine
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      self-hosted-runner:
+        required: true
+        type: boolean
+    secrets:
+      GCP_BUCKET_UPLOAD:
+        required: true
+    outputs:
+      commit_hash:
+        value: ${{ jobs.build-windows.outputs.commit_hash }}
+
+defaults:
+  run:
+    working-directory: ./godot-engine
+
+# Global Settings
+env:
+  # Used for the cache key. Add version suffix to force clean build.
+  GODOT_BASE_BRANCH: master
+  SCONSFLAGS: verbose=yes warnings=extra werror=no module_text_server_fb_enabled=yes fontconfig=no
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  TSAN_OPTIONS: suppressions=misc/error_suppressions/tsan.txt
+
+concurrency:
+  # workflow name - PR || fallback to unique run id, this happens when you're not building a PR
+  # this ensures all branches build properly and cancel their previous runs
+  group: engine-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-windows:
+    runs-on: ${{ inputs.self-hosted-runner && 'windows-mirror' || 'windows-latest' }}
+    name: ${{ matrix.name }}
+    environment: ${{ inputs.environment }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Windows Editor
+            cache-name: windows-editor
+            target: editor
+            strip: true
+            tests: false
+            sconsflags: arch=x86_64 debug_symbols=no windows_subsystem=console optimize=speed production=yes
+            bin: "./bin/godot.windows.editor.x86_64"
+            artifact-name: "MirrorGodotEditorWindows"
+            artifact: true
+            bucket-name: mirror_native_client_builds/Engine
+
+          - name: Windows Template
+            cache-name: windows-template
+            target: template_debug
+            strip: true
+            tests: false
+            sconsflags: arch=x86_64 debug_symbols=no optimize=speed
+            bin: "./bin/godot.windows.template_debug.x86_64"
+            artifact-name: "windows_release_x86_64"
+            artifact: true
+            bucket-name: mirror_native_client_builds/Engine
+    outputs:
+      commit_hash: ${{ steps.vars.outputs.sha_short }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Get short commit hash
+        id: vars
+        run: |
+          echo "Git hash: $(git rev-parse --short=8 HEAD)"
+          echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $Env:GITHUB_OUTPUT
+
+      - name: Ensuring git hash exists (or will fail job)
+        if: steps.vars.outputs.sha_short == ''
+        run: exit 1
+
+      - name: Setup Godot build cache
+        uses: ./godot-engine/.github/actions/godot-cache
+        with:
+          cache-name: ${{ matrix.cache-name }}
+        continue-on-error: true
+
+      - name: Setup python and scons
+        uses: ./godot-engine/.github/actions/godot-deps
+
+      #- name: Download Direct3D 12 SDK components
+      #  run: python ./misc/scripts/install_d3d12_sdk_windows.py
+
+      - name: Setup MSVC problem matcher
+        uses: ammaraskar/msvc-problem-matcher@master
+
+      - name: Compilation
+        uses: ./.github/actions/godot-build
+        with:
+          sconsflags: ${{ env.SCONSFLAGS }} ${{ matrix.sconsflags }}
+          platform: windows
+          target: ${{ matrix.target }}
+          tests: ${{ matrix.tests }}
+
+      - name: Strip binaries
+        if: ${{ matrix.strip }}
+        run: |
+          Remove-Item bin/* -Include *.exp,*.lib,*.pdb -Force
+
+      - name: Move PDB file (if not stripped)
+        if: ${{ !matrix.strip }}
+        run: |
+          dir -Path ./bin/
+          mv ${{matrix.bin}}.pdb bin/${{ matrix.artifact-name}}.pdb
+
+      - name: Prepare artifact
+        if: ${{ matrix.artifact }}
+        run: |
+          mv ${{ matrix.bin }}.exe bin/${{ matrix.artifact-name }}.exe
+
+      - name: Upload artifact
+        uses: ./.github/actions/upload-artifact
+        if: ${{ matrix.artifact }}
+        with:
+          path: ./godot-engine/bin/${{ matrix.artifact-name }}.exe
+          name: ${{ matrix.artifact-name }}.exe
+
+      - uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.GCP_BUCKET_UPLOAD }}'
+
+      - name: Upload binary
+        uses: 'google-github-actions/upload-cloud-storage@v2'
+        with:
+          path: ./godot-engine/bin/${{ matrix.artifact-name }}.exe
+          destination: ${{ matrix.bucket-name }}/${{steps.vars.outputs.sha_short}}/
+  build-macos:
+    runs-on: ${{ inputs.self-hosted-runner && 'macos-mirror' || 'macos-latest' }}
+    name: ${{ matrix.name }}
+    environment: ${{ inputs.environment }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: MacOS Editor
+            cache-name: macos-editor
+            target: editor
+            tests: false
+            strip: true
+            sconsflags: debug_symbols=no optimize=speed production=yes
+            dist-app: "macos_tools.app"
+            packaged-app: "MirrorGodotEditorMac.app"
+            bin-name: "godot.macos.editor.universal"
+            bin-name-x86_64: "godot.macos.editor.x86_64"
+            bin-name-arm64: "godot.macos.editor.arm64"
+            artifact-bin-name: "Godot"
+            artifact-name: "MirrorGodotEditorMac.app"
+            bucket-name: mirror_native_client_builds/Engine
+
+          - name: MacOS Template
+            cache-name: macos-template
+            target: template_debug
+            tests: false
+            strip: true
+            sconsflags: debug_symbols=no optimize=speed
+            dist-app: "macos_template.app"
+            packaged-app: "macos_template.app"
+            bin-name: "godot.macos.template_debug.universal"
+            bin-name-x86_64: "godot.macos.template_debug.x86_64"
+            bin-name-arm64: "godot.macos.template_debug.arm64"
+            artifact-bin-name: "godot_macos_release.universal"
+            artifact-name: "macos_template.app"
+            bucket-name: mirror_native_client_builds/Engine
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Get short commit hash
+        id: vars
+        run: |
+          echo "Git hash: $(git rev-parse --short=8 HEAD)"
+          echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Ensuring git hash exists (or will fail job)
+        if: steps.vars.outputs.sha_short == ''
+        run: exit 1
+
+      - name: Setup python and scons
+        uses: ./godot-engine/.github/actions/godot-deps
+
+      - name: Setup Vulkan SDK
+        run: |
+          # Download and install the Vulkan SDK.
+          curl -L "https://sdk.lunarg.com/sdk/download/latest/mac/vulkan-sdk.dmg" -o /tmp/vulkan-sdk.dmg
+          hdiutil attach /tmp/vulkan-sdk.dmg -mountpoint /Volumes/vulkan-sdk
+          /Volumes/vulkan-sdk/InstallVulkan.app/Contents/MacOS/InstallVulkan \
+              --accept-licenses --default-answer --confirm-command install
+
+      - name: Setup Godot build cache
+        uses: ./godot-engine/.github/actions/godot-cache
+        with:
+          cache-name: ${{ matrix.cache-name }}
+        continue-on-error: true
+
+      - name: Setup scons (python is already installed on self-hosted runners!)
+        shell: bash
+        run: |
+          python3 -c "import sys; print(sys.version)"
+          python3 -m ensurepip --upgrade
+          python3 -m pip install --user scons
+          scons --version
+
+      - name: Setup cmake
+        shell: bash
+        run: |
+          brew install cmake
+          cmake --version
+
+      - name: Remove existing binaries
+        run: |
+          rm -Rf bin/
+
+      - name: Compilation (x86_64)
+        uses: ./.github/actions/godot-build
+        with:
+          sconsflags: ${{ env.SCONSFLAGS }} arch=x86_64
+          platform: macos
+          target: ${{ matrix.target }}
+          tests: ${{ matrix.tests }}
+
+      - name: Compilation (arm64)
+        uses: ./.github/actions/godot-build
+        with:
+          sconsflags: ${{ env.SCONSFLAGS }} arch=arm64
+          platform: macos
+          target: ${{ matrix.target }}
+          tests: ${{ matrix.tests }}
+
+      - name: Strip binaries
+        if: ${{ matrix.strip }}
+        run: |
+          echo "Stripping binaries"
+          strip bin/*
+
+      - name: Prepare universal executable
+        run: |
+          lipo -create bin/${{ matrix.bin-name-x86_64 }} bin/${{ matrix.bin-name-arm64 }} -output bin/${{ matrix.bin-name }}
+          chmod -R +x bin/*
+
+      - name: Package in macOS app bundle
+        shell: sh
+        run: |
+          cp -R misc/dist/${{ matrix.dist-app }} bin/${{ matrix.packaged-app }}
+          cd bin/
+          mkdir -p ${{ matrix.packaged-app }}/Contents/MacOS
+          cp ${{ matrix.bin-name }} ${{ matrix.packaged-app }}/Contents/MacOS/${{ matrix.artifact-bin-name }}
+          chmod -R +x ${{ matrix.packaged-app }}
+          xattr -rc ${{ matrix.packaged-app }}
+          zip -q -9 -r ${{ matrix.artifact-name }}.zip ${{ matrix.packaged-app }}
+
+      - name: Upload artifact
+        uses: ./.github/actions/upload-artifact
+        with:
+          name: "${{ matrix.artifact-name }}.zip"
+          path: "./godot-engine/bin/${{ matrix.artifact-name }}.zip"
+
+      - uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.GCP_BUCKET_UPLOAD }}'
+
+      - name: Upload binary
+        uses: 'google-github-actions/upload-cloud-storage@v2'
+        with:
+          path: ./godot-engine/bin/${{ matrix.artifact-name }}.zip
+          destination: ${{ matrix.bucket-name }}/${{steps.vars.outputs.sha_short}}/
+  build-linux:
+    runs-on: ${{ inputs.self-hosted-runner && 'linux-mirror' || 'ubuntu-20.04' }}
+    name: ${{ matrix.name }}
+    environment: ${{ inputs.environment }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Linux Editor
+            cache-name: linux-editor
+            target: editor
+            sconsflags: arch=x86_64 debug_symbols=no optimize=speed production=yes
+            strip: false
+            bin: "./bin/godot.linuxbsd.editor.x86_64"
+            artifact-name: "MirrorGodotEditorLinux.x86_64"
+            artifact: true
+            tests: no
+            bucket-name: mirror_native_client_builds/Engine
+
+          - name: Linux Template
+            cache-name: linux-template
+            target: template_debug
+            strip: true
+            sconsflags: arch=x86_64 debug_symbols=no optimize=speed
+            bin: "./bin/godot.linuxbsd.template_debug.x86_64"
+            artifact-name: "linux_release.x86_64"
+            artifact: true
+            tests: no
+            bucket-name: mirror_native_client_builds/Engine
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Get short commit hash
+        id: vars
+        run: |
+          echo "Git hash: $(git rev-parse --short=8 HEAD)"
+          echo "sha_short=$(git rev-parse --short=8 HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Ensuring git hash exists (or will fail job)
+        if: steps.vars.outputs.sha_short == ''
+        run: exit 1
+
+      - name: Setup Godot build cache
+        uses: ./godot-engine/.github/actions/godot-cache
+        with:
+          cache-name: ${{ matrix.cache-name }}
+        continue-on-error: true
+
+      - name: Setup scons
+        shell: bash
+        run: |
+          python -c "import sys; print(sys.version)"
+          python -m pip install scons==4.4.0
+          scons --version
+
+      - name: Setup GCC problem matcher
+        uses: ammaraskar/gcc-problem-matcher@master
+
+      - name: Compilation
+        uses: ./.github/actions/godot-build
+        with:
+          sconsflags: ${{ env.SCONSFLAGS }} ${{ matrix.sconsflags }}
+          platform: linuxbsd
+          target: ${{ matrix.target }}
+          tests: ${{ matrix.tests }}
+
+      - name: Strip binaries
+        if: ${{ matrix.strip }}
+        run: |
+          strip bin/godot.*
+
+      # - name: Shrink debug symbols
+      #   if: ${{ !matrix.strip }}
+      #   run: |
+      #     # remove duplicate symbols from binary
+      #     dwz ${{ matrix.bin }} -L none -o Middleman.debug
+      #     # make the debug symbols compressed
+      #     objcopy --compress-debug-sections Middleman.debug FinalMan.debug
+      #     # overwrite the original file
+      #     mv FinalMan.debug ${{ matrix.bin }}
+
+      - name: Prepare artifact
+        if: ${{ matrix.artifact }}
+        run: |
+          chmod +x bin/godot.*
+          mv ${{ matrix.bin }} bin/${{ matrix.artifact-name }}
+
+      - name: Upload artifact
+        uses: ./.github/actions/upload-artifact
+        if: ${{ matrix.artifact }}
+        with:
+          path: ./godot-engine/bin/${{ matrix.artifact-name }}
+          name: ${{ matrix.artifact-name }}
+
+      - uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.GCP_BUCKET_UPLOAD }}'
+
+      - name: Upload binary
+        uses: 'google-github-actions/upload-cloud-storage@v2'
+        with:
+          path: ./godot-engine/bin/${{ matrix.artifact-name }}
+          destination: ${{ matrix.bucket-name }}/${{steps.vars.outputs.sha_short}}/

@@ -341,8 +341,8 @@ func set_avatar_with_node(new_avatar: Node) -> void:
 	if is_instance_valid(_avatar):
 		remove_child(_avatar)
 		_avatar.queue_free()
-	_avatar = new_avatar
-	add_child(new_avatar)
+	_avatar = _cleanup_avatar_node_structure(new_avatar)
+	add_child(_avatar)
 	_set_meshes()
 	_set_meshes_layer()
 	_adjust_model_height()
@@ -364,9 +364,13 @@ func set_movement_scale(movement_scale: float) -> void:
 
 
 func get_eyes_position(force_rest: bool = false) -> Vector3:
-	var center: Vector3 = _center_of_two_bones("LeftEye", "RightEye", not _sitting or force_rest)
-	if center:
-		return center
+	if _skeleton:
+		var center: Vector3 = _center_of_two_bones("LeftEye", "RightEye", not _sitting or force_rest)
+		if center:
+			return center
+		center = _get_bone_transform("Head", true).origin
+		if center:
+			return center
 	# Fallback for when the bones can't be found.
 	if _sitting:
 		return _EYES_POSITION_SITTING
@@ -487,6 +491,22 @@ func _adjust_model_height() -> void:
 	if not _player:
 		return
 	_player.refresh_player_scale()
+
+
+func _cleanup_avatar_node_structure(new_avatar: Node) -> Node:
+	if new_avatar.get_child_count() != 0:
+		# Determine if we need an extra Armature node (we need this for VRM avatars).
+		var first_child: Node = new_avatar.get_child(0)
+		if first_child is Skeleton3D:
+			var extra_root = Node3D.new()
+			extra_root.name = new_avatar.name
+			new_avatar.name = &"Armature"
+			extra_root.add_child(new_avatar)
+			return extra_root
+		# Determine if we need to rename the existing node to Armature.
+		if new_avatar.get_node(^"Armature") == null:
+			first_child.name = &"Armature"
+	return new_avatar
 
 
 func _on_equipable_changed(equipable: Node) -> void:

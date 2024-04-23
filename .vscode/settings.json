@@ -1,0 +1,17 @@
+{
+    "editor.autoIndent": "keep",
+    "cSpell.language": "en,en-US",
+    "cSpell.enableFiletypes": [
+        "bat",
+        "dockercompose",
+        "dockerfile",
+        "gdscript",
+        "gdshader",
+        "github-actions-workflow",
+        "makefile",
+        "markdown",
+        "typescript",
+        "typescriptreact",
+        "shellscript"
+    ]
+}
