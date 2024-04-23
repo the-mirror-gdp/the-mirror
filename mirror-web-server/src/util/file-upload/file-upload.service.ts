@@ -59,23 +59,28 @@ export class FileUploadService implements FileUploadInterface {
         file.mimetype
       )}`
 
+      if (process.env.ASSET_STORAGE_DRIVER === 'GCP') {
+        await this.streamFile(
+          process.env.GCS_BUCKET_PUBLIC,
+          pathWithFileType,
+          file,
+          'publicRead'
+        )
+        return {
+          publicUrl: `${process.env.GCP_BASE_PUBLIC_URL}/${pathWithFileType}`
+        }
+      }
+
       // If we're using local asset storage, we'll just save the file to the local storage
-      if (process.env.ASSET_STORAGE_DRIVER === 'LOCAL') {
+      if (
+        !process.env.ASSET_STORAGE_DRIVER ||
+        process.env.ASSET_STORAGE_DRIVER === 'LOCAL'
+      ) {
         console.log('Uploading file to local storage')
         await this.uploadFileLocal(file, pathWithFileType)
         return {
           publicUrl: process.env.ASSET_STORAGE_URL + pathWithFileType
         }
-      }
-
-      await this.streamFile(
-        process.env.GCS_BUCKET_PUBLIC,
-        pathWithFileType,
-        file,
-        'publicRead'
-      )
-      return {
-        publicUrl: `${process.env.GCP_BASE_PUBLIC_URL}/${pathWithFileType}`
       }
     } catch (error: any) {
       const message: string = error?.message
@@ -95,20 +100,25 @@ export class FileUploadService implements FileUploadInterface {
         file.mimetype
       )}`
 
-      // If we're using local asset storage, we'll just save the file to the local storage
-      if (process.env.ASSET_STORAGE_DRIVER === 'LOCAL') {
-        await this.uploadFileLocal(file, pathWithFileType)
+      if (process.env.ASSET_STORAGE_DRIVER === 'GCP') {
+        await this.streamFile(
+          process.env.GCS_BUCKET,
+          pathWithFileType,
+          file,
+          'private'
+        )
+
         return { relativePath: pathWithFileType }
       }
 
-      await this.streamFile(
-        process.env.GCS_BUCKET,
-        pathWithFileType,
-        file,
-        'private'
-      )
-
-      return { relativePath: pathWithFileType }
+      // If we're using local asset storage, we'll just save the file to the local storage
+      if (
+        !process.env.ASSET_STORAGE_DRIVER ||
+        process.env.ASSET_STORAGE_DRIVER === 'LOCAL'
+      ) {
+        await this.uploadFileLocal(file, pathWithFileType)
+        return { relativePath: pathWithFileType }
+      }
     } catch (error: any) {
       const message: string = error?.message
       throw new HttpException(`File upload error: ${message}`, 400)

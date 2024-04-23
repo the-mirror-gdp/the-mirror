@@ -87,14 +87,20 @@ export class TerrainService {
     const fromPath = `space/${fromId}/terrain/voxels.dat`
     const toPath = `space/${toId}/terrain/voxels.dat`
     try {
-      if (process.env.ASSET_STORAGE_DRIVER === 'LOCAL') {
+      if (process.env.ASSET_STORAGE_DRIVER === 'GCP') {
+        await this.fileUploadService.copyFileInBucket(
+          process.env.GCS_BUCKET_PUBLIC,
+          fromPath,
+          toPath
+        )
+      }
+
+      if (
+        !process.env.ASSET_STORAGE_DRIVER ||
+        process.env.ASSET_STORAGE_DRIVER === 'LOCAL'
+      ) {
         return await this.fileUploadService.copyFileLocal(fromPath, toPath)
       }
-      await this.fileUploadService.copyFileInBucket(
-        process.env.GCS_BUCKET_PUBLIC,
-        fromPath,
-        toPath
-      )
     } catch (error: any) {
       /** When no voxel exists, one will be created by godot */
       const message: string = error?.message || 'No error message provided'

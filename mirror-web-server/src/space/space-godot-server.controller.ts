@@ -82,23 +82,28 @@ export class SpaceGodotServerController {
     try {
       const remoteRelativePath = `space/${id}/terrain/voxels.dat`
 
-      if (process.env.ASSET_STORAGE_DRIVER === 'LOCAL') {
+      if (process.env.ASSET_STORAGE_DRIVER === 'GCP') {
+        await this.fileUploadService.streamFile(
+          process.env.GCS_BUCKET_PUBLIC,
+          remoteRelativePath,
+          file,
+          'publicRead'
+        )
+        return {
+          success: true,
+          publicUrl: `${process.env.GCP_BASE_PUBLIC_URL}/${remoteRelativePath}`
+        }
+      }
+
+      if (
+        !process.env.ASSET_STORAGE_DRIVER ||
+        process.env.ASSET_STORAGE_DRIVER === 'LOCAL'
+      ) {
         await this.fileUploadService.uploadFileLocal(file, remoteRelativePath)
         return {
           success: true,
           publicUrl: `${process.env.ASSET_STORAGE_URL}/${remoteRelativePath}`
         }
-      }
-
-      await this.fileUploadService.streamFile(
-        process.env.GCS_BUCKET_PUBLIC,
-        remoteRelativePath,
-        file,
-        'publicRead'
-      )
-      return {
-        success: true,
-        publicUrl: `${process.env.GCP_BASE_PUBLIC_URL}/${remoteRelativePath}`
       }
     } catch (e) {
       this.logger.error(e?.message, e, SpaceGodotServerController.name)
