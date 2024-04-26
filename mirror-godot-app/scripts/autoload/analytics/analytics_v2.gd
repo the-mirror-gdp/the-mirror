@@ -43,6 +43,8 @@ func _send_track_event(event: AnalyticsEvent, properties := {}) -> void:
 	var standard_properties = {
 	  "token": api_token,
 		"distinct_id": event.user_id
+		"distinct_id": event.user_id,
+		"env": "open-source"
 		}
 	if not properties.is_empty():
 		standard_properties.merge(properties)
