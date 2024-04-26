@@ -154,7 +154,6 @@ func _make_request(request_data: Dictionary) -> HTTPRequest:
 		if is_mixpanel:
 			headers = _get_mixpanel_headers(url)
 			body = _get_mixpanel_body(url, request_data["request_body"])
-		
 
 	http.set_download_file(request_data.get("download_path", ""))
 	var error = http.request_completed.connect(_request_completed.bind(request_data, http))
@@ -238,10 +237,12 @@ func _get_headers(token: String = "") -> Array:
 	]
 	return headers
 
+
 func _get_mixpanel_headers(url: String) -> Array:
 	var headers: Array = ["accept: */*", "content-type: application/x-www-form-urlencoded"]
 	return headers
-	
+
+
 func _get_mixpanel_body(url: String, request_body) -> String:
 	var body_str = JSON.stringify(request_body)
 	var body = 'data=%s&verbose=1' % body_str
