@@ -147,3 +147,4 @@ func _refresh_profile(user_profile: Dictionary) -> void:
 	# If there's an email on the profile, identify it to Analytics
 	if user_profile.get("email"):
 		Analytics.identify_user_email(user_id, user_profile.email)
+		AnalyticsV2.identify(user_id, user_profile.email)
