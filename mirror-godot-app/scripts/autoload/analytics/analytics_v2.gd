@@ -1,10 +1,5 @@
 extends MirrorHttpClient
 
-signal analytics_send_event_successful
-signal analytics_send_event_failed
-signal analytics_send_batch_successful
-signal analytics_send_batch_failed
-
 enum {
 TRACK_EVENT,
 IDENTIFY
@@ -57,6 +52,7 @@ func track_event_client(event_type: String, properties:={}) -> void:
 		return
 	track_event(event_type, properties)
 
+
 ## The primary method used to send an event from a client
 func track_event(event_type: String, properties:={}) -> void:
 	if _PRINT_ANALYTICS:
@@ -69,7 +65,43 @@ func track_event(event_type: String, properties:={}) -> void:
 	event.properties = properties
 	_send_track_event(event)
 
+
 func identify(user_id: String, email: String) -> void:
+	#var data = [
+	#{
+		#"$token": api_token,
+		#"$distinct_id": user_id,
+		#"$set": {
+			#"$email": email
+		#}
+	#}
+	#]
+	var data = [{
+		"$token": api_token,
+		"$distinct_id": user_id,
+		"$set": {
+			"$email": email
+		}
+	}]
+	
+	var promise = self.post_request_ext(IDENTIFY, _ANALYTICS_URL_IDENTIFY, data)
+	var res = await promise.wait_till_fulfilled()
+	if promise.is_error():
+		print("Error sending identify event, promise error: %s" % [res])
+	else:
+		if (res.has('json_result') and res.json_result.has('status')):
+			var status = res.json_result.status
+			# 0 is an error from Mixpanel *EVEN IF* it's 200 HTTP status
+			if (status == 0):
+				if (res.json_result.has('error')):
+					print("Error sending identify event: %s" % [res.json_result.error])
+				else:
+					print("Error sending identify event: %s" % [res])
+			#1 is success from Mixpanel
+			if (status == 1):
+				print("Success sending identify event: %s" % [res])
+	return
+	
 	# JSON shape: https://developer.mixpanel.com/reference/track-event
 	var time = Time.get_unix_time_from_system()
 	#var data = {
@@ -91,9 +123,18 @@ func identify(user_id: String, email: String) -> void:
 	print("AnalyticsV2 (Client) Identify Email: user_id: %s, email: %s" % [user_id, email])
 	# TODO: We should probably have a similar request_queue setup for the batch URL
 	# _http_identify.request(_ANALYTICS_URL_IDENTIFY,  PackedStringArray(["Accept: text/plain", "Content-Type: application/json", "Host: api.mixpanel.com"]), HTTPClient.METHOD_POST, JSON.stringify(dataIdentify))
-	# temp
-	# _http_track.request(_ANALYTICS_URL_TRACK,  PackedStringArray(["accept: */*", "content-type: application/x-www-form-urlencoded"]), HTTPClient.METHOD_POST,dataTrack)
-	track_event_client('test10promise')
+
+
+func _ready() -> void:
+	api_token = ProjectSettings.get_setting("mirror/mixpanel_api_token")
+	# _http_track = HTTPRequest.new()
+	# _http_track.use_threads = true
+	# _http_identify = HTTPRequest.new()
+	# _http_identify.accept_gzip = false
+	# add_child(_http_track)
+	# add_child(_http_identify)
+	# _http_track.request_completed.connect(_on_track_request_complete)
+	# _http_identify.request_completed.connect(_on_identify_request_complete)
 
 ## Send a single event to the Mixpanel Analytics service
 func _send_track_event(event: AnalyticsEvent) -> void:
@@ -109,9 +150,7 @@ func _send_track_event(event: AnalyticsEvent) -> void:
 	var res = await promise.wait_till_fulfilled()
 	if promise.is_error():
 		print("Error sending track event: %s" % [res])
-		analytics_send_event_failed.emit()
 	else:
-
 		if (res.has('json_result') and res.json_result.has('status')):
 			var status = res.json_result.status
 			# 0 is an error from Mixpanel *EVEN IF* it's 200 HTTP status
@@ -120,13 +159,11 @@ func _send_track_event(event: AnalyticsEvent) -> void:
 					print("Error sending track event: %s" % [res.json_result.error])
 				else:
 					print("Error sending track event: %s" % [res])
-				analytics_send_event_failed.emit()
 			#1 is success from Mixpanel
 			if (status == 1):
-				print("Success sending track event: %s" % [res])
-				analytics_send_event_successful.emit()
-	# working save
-	#	var data = 'data={"event": "testevent2", "properties":{ "token":"c5e82051367277731c1b1cf0d46d9d57P","time":1714086211243,"distinct_id":"6373dd777cc7fc7cdc82da81"}}&verbose=1'
+				# uncomment for debug help
+				#print("Success sending track event: %s" % [res])
+				return
 
 	# Commenting out old batch queue logic; can reimplement post-promises
 	# var dupe = _get_formatted_single_event(event)
@@ -137,26 +174,15 @@ func _send_track_event(event: AnalyticsEvent) -> void:
 	# else:
 	# 	request_queue_capture.push_back({EVENT_KEY: event})
 
-func _ready() -> void:
-	api_token = ProjectSettings.get_setting("mirror/mixpanel_api_token")
-	# _http_track = HTTPRequest.new()
-	# _http_track.use_threads = true
-	_http_identify = HTTPRequest.new()
-	_http_identify.accept_gzip = false
-	# add_child(_http_track)
-	add_child(_http_identify)
-	# _http_track.request_completed.connect(_on_track_request_complete)
-	_http_identify.request_completed.connect(_on_identify_request_complete)
+# func _get_formatted_single_event(event: AnalyticsEvent) -> Dictionary:
+# 	var dupe = single_event_body.duplicate(true)
+# 	dupe["event"] = event.event_name
+# 	dupe["properties"]["token"] = api_token
+# 	dupe["properties"]["time"] = event.timestamp
+# 	# if user_id is truthy, then use it, otherwise use anonymous user ID
+# 	dupe["properties"]["distinct_id"] = event.user_id if event.user_id else ""
 
-func _get_formatted_single_event(event: AnalyticsEvent) -> Dictionary:
-	var dupe = single_event_body.duplicate(true)
-	dupe["event"] = event.event_name
-	dupe["properties"]["token"] = api_token
-	dupe["properties"]["time"] = event.timestamp
-	# if user_id is truthy, then use it, otherwise use anonymous user ID
-	dupe["properties"]["distinct_id"] = event.user_id if event.user_id else ""
-
-	return dupe
+# 	return dupe
 
 # func _on_track_request_complete(_result, response_code, _headers, _body) -> void:
 # 	var test = _body.get_string_from_utf8()
@@ -171,10 +197,3 @@ func _get_formatted_single_event(event: AnalyticsEvent) -> Dictionary:
 # 		_send_track_event(event)
 # 		request_queue_capture.remove_at(0)
 
-func _on_identify_request_complete(_result, response_code, _headers, _body) -> void:
-	if response_code == HTTPClient.RESPONSE_OK:
-		analytics_send_batch_successful.emit()
-	else:
-		analytics_send_batch_failed.emit()
-
-	# TODO we should probably add a request queue here too for batch events
