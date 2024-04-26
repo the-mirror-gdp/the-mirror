@@ -1,5 +1,6 @@
 extends Timer
 
+# Note: the whole session heartbeat method can be removed with analyticsv2, so this class is deprecated. Apr 25 2024
 
 # Time interval for calling the method.
 const INTERVAL = 10.0
@@ -76,5 +77,5 @@ func _ping_session() -> void:
 			if not properties.has("spaceId"):
 				properties_try_set_key.call("spaceId", Zone.client.current_zone, "space")
 		properties.userRole = get_current_role_of_user_on_space()
-
+	# Note: the whole session heartbeat method can be removed with analyticsv2, so this class is deprecated
 	Analytics.track_event(event, properties)

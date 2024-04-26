@@ -43,6 +43,7 @@ var batch_event_body = {
 
 ## The primary method used to send an event from a client
 func track_event_client(event_type: String, properties := {}) -> void:
+
 	# Only track event if client, not server
 	if Zone.is_host():
 		print("Blocked sending analytics this is the server")
@@ -52,6 +53,9 @@ func track_event_client(event_type: String, properties := {}) -> void:
 
 ## The primary method used to send an event from a client
 func track_event(event_type: String, properties := {}) -> void:
+	# V2 Analytics call. This v1 class is deprecated
+	AnalyticsV2.track_event(event_type, properties)
+
 	if _PRINT_ANALYTICS:
 		print("Analytics Track: %s, %s" % [event_type, str(properties)])
 	# Create a new AnalyticsEvent
