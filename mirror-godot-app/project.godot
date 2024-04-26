@@ -96,6 +96,7 @@ driver/enable_input=true
 [autoload]
 
 Analytics="*res://scripts/autoload/analytics/analytics.gd"
+AnalyticsV2="*res://scripts/autoload/analytics/analytics_v2.gd"
 Zone="*res://prefabs/autoload/zone/zone.tscn"
 Firebase="*res://addons/godot-firebase/firebase/firebase.tscn"
 Net="*res://scripts/autoload/net.gd"

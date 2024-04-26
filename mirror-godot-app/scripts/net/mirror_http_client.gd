@@ -245,6 +245,4 @@ func _get_mixpanel_headers(url: String) -> Array:
 func _get_mixpanel_body(url: String, request_body) -> String:
 	var body_str = JSON.stringify(request_body)
 	var body = 'data=%s&verbose=1' % body_str
-	if _PRINT_ANALYTICS:
-		print('Sending track event %s' % body)
 	return body
