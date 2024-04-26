@@ -153,8 +153,6 @@ func _make_request(request_data: Dictionary) -> HTTPRequest:
 		# We really shouldn't be modifying resource-specific requests in this method though - Jared Apr 25 2024
 		if is_mixpanel:
 			headers = _get_mixpanel_headers(url)
-			#headers = ["accept: */*", "content-type: application/x-www-form-urlencoded"]
-			# format for application/x-www-form-urlencoded
 			body = _get_mixpanel_body(url, request_data["request_body"])
 		
 
@@ -163,8 +161,6 @@ func _make_request(request_data: Dictionary) -> HTTPRequest:
 	if raw_request:
 		error = http.request_raw(url, headers, method, body)
 	else:
-		if url.contains("https://api.mixpanel.com/engage#profile-set"):
-			print('temp')
 		error = http.request(url, headers, method, body)
 	if error:
 		push_error(str(error))
@@ -201,8 +197,6 @@ func _request_completed(result: int, code: int, _headers: PackedStringArray, bod
 		var prefix = "[server] " if Zone.is_host() else "[client] "
 		print(prefix + "Error in http request: ", request_data.get("url"), " code: ", code)
 		push_error(prefix + "Error in http request: ", request_data.get("url"), " code: ", code)
-		if "mixpanel" in request_data.get("url"):
-			print("temp")
 		if request_data["body"] is PackedByteArray:
 			request_data["response_text"] = request_data["body"].get_string_from_ascii()
 			print(prefix + "Error response: ", request_data["response_text"])
@@ -245,33 +239,12 @@ func _get_headers(token: String = "") -> Array:
 	return headers
 
 func _get_mixpanel_headers(url: String) -> Array:
-	var headers: Array = []
-	# Mixpanel oddly requires different headers depending on the route. This took hours of debugging to get right.
-	if url.contains("api.mixpanel.com/track"):
-		headers.append("accept: */*")
-		headers.append("content-type: application/x-www-form-urlencoded")
-	if url.contains("api.mixpanel.com/engage"):
-		#headers.append("Accept: text/plain")
-		#headers.append("Content-Type: application/json")
-		#headers.append("Host: api.mixpanel.com")
-		
-		# temp test
-		headers.append("accept: */*")
-		headers.append("content-type: application/x-www-form-urlencoded")
+	var headers: Array = ["accept: */*", "content-type: application/x-www-form-urlencoded"]
 	return headers
 	
-func _get_mixpanel_body(url: String, request_body):
-	if url.contains("api.mixpanel.com/track"):
-		var body_str = JSON.stringify(request_body)
-		var body = 'data=%s&verbose=1' % body_str
-		print('sending track event %s' % body)
-		return body
-	#if url.contains("api.mixpanel.com/engage"):
-		#var body_str = JSON.stringify(request_body)
-		#print('sending identify event %s' % body_str)
-		#return body_str
-	if url.contains("api.mixpanel.com/engage"):
-		var body_str = JSON.stringify(request_body)
-		var body = 'data=%s&verbose=1' % body_str
-		print('sending identify event %s' % body_str)
-		return body
+func _get_mixpanel_body(url: String, request_body) -> String:
+	var body_str = JSON.stringify(request_body)
+	var body = 'data=%s&verbose=1' % body_str
+	if _PRINT_ANALYTICS:
+		print('Sending track event %s' % body)
+	return body

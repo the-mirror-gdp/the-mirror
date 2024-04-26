@@ -8,7 +8,6 @@ IDENTIFY
 var api_token = "" # set via settings
 
 const _ANALYTICS_URL_TRACK = "https://api.mixpanel.com/track"
-const _ANALYTICS_URL_IDENTIFY = "https://api.mixpanel.com/engage#profile-set"
 
 const _PRINT_ANALYTICS = false
 
