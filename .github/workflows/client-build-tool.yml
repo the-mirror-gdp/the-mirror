@@ -110,18 +110,14 @@ on:
       version:
         value: ${{ jobs.client-build-tool.outputs.version }}
     secrets:
-      gcp-secret:
-        required: true
-      cicd-token-github:
-        required: true
-      ITCH_IO_CICD:
+      # only required when you deploy
+      GCP_DEPLOYMENT_SECRET:
         required: false
 
 # declare these so that they can be populated by the app
 env:
   app_platform:
   app_ver:
-  name: ${{ inputs.environment }}
   url: ${{ inputs.url }}
 
 
@@ -134,6 +130,7 @@ defaults:
 jobs:
   client-build-tool:
     name: Build
+    environment: ${{ inputs.environment }}
     runs-on: ${{ inputs.os }}
     timeout-minutes: 65
     outputs:
@@ -141,11 +138,14 @@ jobs:
       file-name: ${{ steps.output-file-name.outputs.file-name }}
       version: ${{ steps.output-version.outputs.version }}
     steps:
+      - name: Cleanup working directory (git version differences break the clean command otherwise)
+        run: |
+          shopt -s dotglob # includes all hidden files
+          rm -rf ./*
+
       - uses: actions/checkout@v4
         with:
-          # we'll be cloning the mirror-godot-app folder directly into the builder root so that we don't need to modify paths
-          sparse-checkout: mirror-godot-app
-          sparse-checkout-cone-mode: false
+          path: app-clone/
 
       - name: Installing coreutils (for gtimeout)
         if: ${{ inputs.should-install-timeout-macos }}
@@ -155,7 +155,7 @@ jobs:
         run: |
           ls -lah
           shopt -s dotglob # includes all hidden files
-          mv mirror-godot-app/* .
+          mv ./app-clone/mirror-godot-app/* .
           ls -lah
 
       - name: Use custom project file (required for custom splash screen)
@@ -263,7 +263,7 @@ jobs:
         if: ${{ inputs.should-deploy || inputs.should-deploy-as-server }}
         uses: 'google-github-actions/auth@v2'
         with:
-          credentials_json: '${{ secrets.gcp-secret }}'
+          credentials_json: '${{ secrets.GCP_DEPLOYMENT_SECRET }}'
 
       - name: Upload build to GCP (for auto-updater)
         if: inputs.should-deploy
