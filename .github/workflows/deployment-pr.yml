@@ -16,9 +16,6 @@ jobs:
   build-windows-client:
     name: 🏁 Build Windows Dev PR
     uses: ./.github/workflows/client-build-tool.yml
-    secrets:
-      gcp-secret: ""
-      cicd-token-github: ${{ secrets.GITHUB_TOKEN }}
     with:
       should-deploy: false
       should-run-unit-tests: true
@@ -43,9 +40,6 @@ jobs:
   build-macos-client:
     name: 🍎 Build MacOS Dev PR
     uses: ./.github/workflows/client-build-tool.yml
-    secrets:
-      gcp-secret: ""
-      cicd-token-github: ${{ secrets.GITHUB_TOKEN }}
     with:
       should-deploy: false
       should-run-unit-tests: true
@@ -72,9 +66,6 @@ jobs:
   build-linux-client:
     name: 🐧 Build Linux Dev PR
     uses: ./.github/workflows/client-build-tool.yml
-    secrets:
-      gcp-secret: ""
-      cicd-token-github: ${{ secrets.GITHUB_TOKEN }}
     with:
       should-deploy: false
       should-run-unit-tests: true
