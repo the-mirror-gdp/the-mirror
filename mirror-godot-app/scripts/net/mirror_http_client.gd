@@ -146,7 +146,7 @@ func _make_request(request_data: Dictionary) -> HTTPRequest:
 
 	if is_external:
 		headers = []
-		body = "" 	
+		body = ""
 		# Manual override modification for external Mixpanel requests
 		# the above "if is_external" code is bad because it strips the body and headers from all external requests
 		# However, I'm unsure what already uses it so I'm extending instead of modifying
