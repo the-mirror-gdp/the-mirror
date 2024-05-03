@@ -5,7 +5,7 @@ TRACK_EVENT,
 IDENTIFY
 }
 
-var api_token = "" # set via settings
+@onready var api_token = ProjectSettings.get_setting("mirror/mixpanel_api_key")
 
 const _ANALYTICS_URL_TRACK = "https://api.mixpanel.com/track"
 
@@ -34,23 +34,18 @@ func track_event(event_type: String, properties:={}) -> void:
 	_send_track_event(event, properties)
 
 
-func _ready() -> void:
-	api_token = ProjectSettings.get_setting("mirror/mixpanel_api_token")
-
-
 ## Send a single event to the Mixpanel Analytics service
 func _send_track_event(event: AnalyticsEvent, properties := {}) -> void:
 	var standard_properties = {
-	  "token": api_token,
-		"distinct_id": event.user_id
+		"token": api_token,
 		"distinct_id": event.user_id,
 		"env": "open-source"
-		}
+	}
 	if not properties.is_empty():
 		standard_properties.merge(properties)
 	var data = {
-	 "event": event.event_name,
-	 "properties": standard_properties
+		"event": event.event_name,
+		"properties": standard_properties
 	}
 
 	var promise = self.post_request_ext(TRACK_EVENT, _ANALYTICS_URL_TRACK, data)
