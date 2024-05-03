@@ -7,7 +7,7 @@ signal request_variable_creation()
 const INSPECTOR_PRIMITIVE_SCENES: Dictionary = {
 	ScriptBlock.PortType.ANY_DATA: preload("res://creator/selection/inspector/primitive/inspector_line_edit_field.tscn"),
 	ScriptBlock.PortType.BOOL: preload("res://creator/selection/inspector/primitive/inspector_bool.tscn"),
-	ScriptBlock.PortType.INT: preload("res://creator/selection/inspector/primitive/inspector_number_field.tscn"),
+	ScriptBlock.PortType.INT: preload("res://creator/selection/inspector/primitive/inspector_integer_field.tscn"),
 	ScriptBlock.PortType.FLOAT: preload("res://creator/selection/inspector/primitive/inspector_number_field.tscn"),
 	ScriptBlock.PortType.STRING: preload("res://creator/selection/inspector/primitive/inspector_line_edit_field.tscn"),
 	ScriptBlock.PortType.VECTOR2: preload("res://creator/selection/inspector/primitive/inspector_vector2.tscn"),

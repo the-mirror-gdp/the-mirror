@@ -67,7 +67,7 @@
     "class-validator": "^0.14.0",
     "date-fns": "^2.30.0",
     "dotenv": "^16.3.1",
-    "ejs": "^3.1.9",
+    "ejs": "^3.1.10",
     "firebase-admin": "^11.9.0",
     "flat": "^5.0.2",
     "gltfpack": "^0.19.1",

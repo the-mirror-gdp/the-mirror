@@ -32,9 +32,12 @@ item_width = 376
 
 [node name="MySpaceSelect" parent="Pages" instance=ExtResource("2_38vl8")]
 layout_mode = 1
+sort_order = 0
 
 [node name="SourceOptionButton" parent="Pages/MySpaceSelect/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" index="0"]
+visible = false
 theme_override_font_sizes/font_size = 16
+selected = 1
 
 [node name="Refresh" parent="Pages/MySpaceSelect/VBoxContainer/MarginContainer/VBoxContainer/HBoxContainer" index="2"]
 custom_minimum_size = Vector2(38, 32)

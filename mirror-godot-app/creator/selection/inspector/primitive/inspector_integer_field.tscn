@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dbuxetec5qt2f"]
+
+[ext_resource type="PackedScene" uid="uid://yl2tfblvbyak" path="res://creator/selection/inspector/primitive/inspector_number_field.tscn" id="1_38owa"]
+
+[node name="InspectorLabeledIntegerField" instance=ExtResource("1_38owa")]
+step = 1.0
+
+[node name="SpinBox" parent="SpinBoxHolder" index="0"]
+step = 1.0
