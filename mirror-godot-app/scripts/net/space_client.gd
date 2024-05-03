@@ -133,7 +133,7 @@ func duplicate_space(space_id: String) -> Promise:
 
 ## Gets a space with the provided space id.
 func get_space(space_id: String) -> Promise:
-	return self.get_request(GET_SPACE, "/space/%s" % space_id)
+	return self.get_request(GET_SPACE, "/space/%s?populateCreator=false" % space_id)
 
 
 ## Gets a published space version with the provided space id.
