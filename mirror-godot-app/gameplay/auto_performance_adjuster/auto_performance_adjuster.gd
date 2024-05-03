@@ -18,7 +18,9 @@ func disable():
 
 
 func _on_performance_monitor_low_performance_detected() -> void:
-	_decrease_resolution_scale()
+	# TODO: check if the game client is in the loading screen in the future
+	if GameplaySettings.auto_performance:
+		_decrease_resolution_scale()
 
 
 func _decrease_resolution_scale():
