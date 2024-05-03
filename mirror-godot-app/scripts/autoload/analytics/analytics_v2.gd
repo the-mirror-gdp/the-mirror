@@ -5,7 +5,8 @@ TRACK_EVENT,
 IDENTIFY
 }
 
-var api_token = "" # set via settings
+
+@onready var api_token = ProjectSettings.get_setting("mirror/mixpanel_api_key")
 
 const _ANALYTICS_URL_TRACK = "https://api.mixpanel.com/track"
 
@@ -32,10 +33,6 @@ func track_event(event_type: String, properties:={}) -> void:
 	properties.godotAppVersion = Util.get_version_string()
 	event.properties = properties
 	_send_track_event(event, properties)
-
-
-func _ready() -> void:
-	api_token = ProjectSettings.get_setting("mirror/mixpanel_api_token")
 
 
 ## Send a single event to the Mixpanel Analytics service
