@@ -133,7 +133,6 @@ func _promise_fulfill_successful(request: Dictionary, promise: Promise) -> void:
 	var key = request.get("key")
 	# We cache the user_profile to later compare the old_avatar to the new_avatar
 	if key in [GET_USER, UPDATE_USER_PROFILE, UPDATE_USER_AVATAR, GET_PRIVATE_PROFILE]:
-		# TODO: backend is changing analytics user to this
 		_refresh_profile(parsed_result)
 	promise.set_result(parsed_result)
 
