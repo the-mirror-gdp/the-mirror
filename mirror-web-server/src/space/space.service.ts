@@ -2084,7 +2084,7 @@ export class SpaceService implements IRoleConsumer {
   }
 
   private _subscribeToSpaceSchemaChanges(): void {
-    // check if localhost. Mongo requires a replica setfor this to work
+    // check if localhost. Mongo requires a replica set for this to work
     if (
       process.env.MONGODB_URL.includes('127.0.0.1') &&
       process.env.NODE_ENV !== 'production'
