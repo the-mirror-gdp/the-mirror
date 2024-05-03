@@ -2084,6 +2084,15 @@ export class SpaceService implements IRoleConsumer {
   }
 
   private _subscribeToSpaceSchemaChanges(): void {
+    // check if localhost. Mongo requires a replica setfor this to work
+    if (
+      process.env.MONGODB_URL.includes('127.0.0.1') &&
+      process.env.NODE_ENV !== 'production'
+    ) {
+      console.warn('Not running changestream since on localhost')
+      return
+    }
+
     const changeStream = this.spaceModel.watch()
     changeStream.on('change', (change) => {
       if (
