@@ -115,4 +115,5 @@ unique_name_in_owner = true
 visible = false
 top_level = true
 
+[connection signal="teleport_local_player_near_point" from="VBoxContainer/OptionsContainer/SpaceObjectOptions" to="." method="_on_teleport_local_player_near_point"]
 [connection signal="teleport_local_player_near_point" from="VBoxContainer/OptionsContainer/PlayerOptions" to="." method="_on_teleport_local_player_near_point"]
