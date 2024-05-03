@@ -39,6 +39,11 @@ func post_request(key: int, url: String, body: Variant, aux: Dictionary = {}) ->
 	return _queue_request(HTTPClient.METHOD_POST, key, url, body, true, aux)
 
 
+## Used to make a POST request against an external resource
+func post_request_ext(key: int, url: String, body: Variant, aux: Dictionary = {}) -> Promise:
+	return _queue_request(HTTPClient.METHOD_POST, key, url, body, false, aux)
+
+
 ## Used to make a PUT request against the Mirror RESTful API.
 func put_request(key: int, url: String, body: Variant, aux: Dictionary = {}) -> Promise:
 	return _queue_request(HTTPClient.METHOD_PUT, key, url, body, true, aux)
@@ -63,7 +68,7 @@ func get_request_ext_with_http(key: int, url: String, aux: Dictionary={}) -> HTT
 		"url": url,
 		"method": HTTPClient.METHOD_GET,
 		"request_body": {},
-		"use_base": false,
+		"use_base": false
 	}
 	if not aux.is_empty():
 		request_dict.merge(aux)
@@ -77,7 +82,7 @@ func _queue_request(method: int, key: int, url: String, body, use_base_url: bool
 		"url": url,
 		"method": method,
 		"request_body": body,
-		"use_base": use_base_url,
+		"use_base": use_base_url
 	}
 	if not aux.is_empty():
 		request_dict.merge(aux)
@@ -113,6 +118,7 @@ func _make_request(request_data: Dictionary) -> HTTPRequest:
 	var body = request_data["request_body"]
 	var method: int = request_data["method"]
 	var headers : Array = []
+	var is_mixpanel = "api.mixpanel" in url
 	# If the server is running and the url has not got a download present
 	# We should throw a warning, because this should not happen!
 	# Web socket should be used for the data.
@@ -141,6 +147,13 @@ func _make_request(request_data: Dictionary) -> HTTPRequest:
 	if is_external:
 		headers = []
 		body = ""
+		# Manual override modification for external Mixpanel requests
+		# the above "if is_external" code is bad because it strips the body and headers from all external requests
+		# However, I'm unsure what already uses it so I'm extending instead of modifying
+		# We really shouldn't be modifying resource-specific requests in this method though - Jared Apr 25 2024
+		if is_mixpanel:
+			headers = _get_mixpanel_headers(url)
+			body = _get_mixpanel_body(url, request_data["request_body"])
 
 	http.set_download_file(request_data.get("download_path", ""))
 	var error = http.request_completed.connect(_request_completed.bind(request_data, http))
@@ -223,3 +236,14 @@ func _get_headers(token: String = "") -> Array:
 		accept_header,
 	]
 	return headers
+
+
+func _get_mixpanel_headers(url: String) -> Array:
+	var headers: Array = ["accept: */*", "content-type: application/x-www-form-urlencoded"]
+	return headers
+
+
+func _get_mixpanel_body(url: String, request_body) -> String:
+	var body_str = JSON.stringify(request_body)
+	var body = 'data=%s&verbose=1' % body_str
+	return body
