@@ -21,7 +21,7 @@ enum SpaceSortOrder {
 @onready var _audio_stream_player = $AudioStreamPlayer
 
 
-var _sort_order: SpaceSortOrder = SpaceSortOrder.LAST_UPDATED
+@export var sort_order: SpaceSortOrder = SpaceSortOrder.LAST_UPDATED
 var _published_spaces: Array = []
 var _last_visibility_state = false
 var _search_title: String = ""
@@ -115,7 +115,7 @@ func _ready() -> void:
 	# defer signal, otherwise visible flag is sometimes not updated
 	visibility_changed.connect(_on_visibility_changed, CONNECT_DEFERRED)
 	if _source_option_button:
-		_sort_order = _source_option_button.get_item_id(_source_option_button.selected)
+		sort_order = _source_option_button.get_item_id(_source_option_button.selected)
 	await LoginUI.wait_till_login(get_tree())
 	_endless_scroll_flow_container.fetch_callable = _fetch_results_cb
 	_endless_scroll_flow_container.on_item_created_callable = _on_space_item_added
