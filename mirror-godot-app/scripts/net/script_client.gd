@@ -38,7 +38,7 @@ func set_script_instance_is_using_script_id(script_instance: ScriptInstance) -> 
 
 func load_script_entities_bulk(script_entities: Array) -> void:
 	for script_entity in script_entities:
-		var id: String = script_entity["id"]
+		var id: String = script_entity["id"] if "id" in script_entity else script_entity["_id"]
 		_script_id_to_entity_cache[id] = script_entity
 
 
@@ -70,7 +70,7 @@ func update_script_entity(updated_script_data: Dictionary) -> void:
 
 
 func cache_created_script_entity(script_entity: Dictionary) -> void:
-	var script_id: String = script_entity["id"]
+	var script_id: String = script_entity["id"] if "id" in script_entity else script_entity["_id"]
 	_script_id_to_entity_cache[script_id] = script_entity
 
 
@@ -79,7 +79,7 @@ func get_script_id_to_name_dict() -> Dictionary:
 	var all_script_entities: Array = _script_id_to_entity_cache.values()
 	all_script_entities.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return a["updatedAt"] > b["updatedAt"])
 	for script_entity in all_script_entities:
-		var script_id: String = script_entity["id"]
+		var script_id: String = script_entity["id"] if "id" in script_entity else script_entity["_id"]
 		ret[script_id] = script_entity.get("name", "<Error: Unnamed Script>")
 	return ret
 
@@ -199,7 +199,7 @@ func _on_net_get_or_update_script_entity(script_entity: Dictionary) -> void:
 
 @rpc("call_local", "authority", "reliable")
 func _inform_script_entity_get_or_update(script_entity: Dictionary) -> void:
-	var script_id: String = script_entity["id"]
+	var script_id: String = script_entity["id"] if "id" in script_entity else script_entity["_id"]
 	_script_id_to_entity_cache[script_id] = script_entity
 	var instances: Array = _get_and_validate_script_instances_using_id(script_id)
 	for instance in instances:
@@ -308,7 +308,7 @@ func _inform_client_script_entity_created(script_entity: Dictionary) -> void:
 
 
 func _update_pending_script_instance_with_new_script_entity(script_entity: Dictionary) -> void:
-	_pending_script_instance.script_id = script_entity["id"]
+	_pending_script_instance.script_id = script_entity["id"] if "id" in script_entity else script_entity["_id"]
 	_pending_script_instance.setup_script_entity_data(script_entity)
 	set_script_instance_is_using_script_id(_pending_script_instance)
 	_pending_script_instance.target_node.script_instances_modified()
@@ -317,7 +317,7 @@ func _update_pending_script_instance_with_new_script_entity(script_entity: Dicti
 
 func _add_new_script_instance_with_script_entity(target_node: Node, script_entity: Dictionary, script_instance_data: Dictionary = {}) -> void:
 	script_instance_data["type"] = script_entity["type"]
-	script_instance_data["script_id"] = script_entity["id"]
+	script_instance_data["script_id"] = script_entity["id"] if "id" in script_entity else script_entity["_id"]
 	var new_script_instance: ScriptInstance = ScriptInstance.create(script_instance_data)
 	new_script_instance.target_node = target_node
 	if not script_entity.is_empty():
