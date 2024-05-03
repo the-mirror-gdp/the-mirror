@@ -32,7 +32,7 @@ func _get_sort_by() -> String:
 	var id = _source_option_button.get_selected_id()
 	match id:
 		SpaceSortOrder.LAST_UPDATED:
-			return "createdAt"
+			return "updatedAt"
 		SpaceSortOrder.POPULAR:
 			return "popular"
 	return "popular"
