@@ -692,7 +692,7 @@ export class SpaceService implements IRoleConsumer {
   ): Promise<SpaceWithStandardPopulatedProperties> {
     const populateFieldsAsArray = this._getStandardPopulateFieldsAsArray()
 
-    //remove the creator populate if populateCreator is false
+    // remove the creator populate if populateCreator is false
     if (populateCreator === false) {
       const creatorIndex = populateFieldsAsArray.indexOf('creator')
       if (creatorIndex > -1) {
