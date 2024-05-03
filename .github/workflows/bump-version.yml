@@ -11,9 +11,6 @@ on:
     - mirror-web-server/**
     - .github/**
 
-permissions:
-  contents: write
-
 jobs:
   bump-version:
     name: 'Bump version on dev merge'
@@ -21,6 +18,8 @@ jobs:
     environment: dev
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_SECRET_WRITE_TOKEN }}
 
       - uses: dorny/paths-filter@v3
         id: changes
@@ -67,7 +66,7 @@ jobs:
           skip-tag: 'true'
           skip-push: 'true'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_SECRET_WRITE_TOKEN }}
           PACKAGEJSON_DIR: ./mirror-web-server
 
       - name: git status check
