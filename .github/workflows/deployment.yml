@@ -1,8 +1,11 @@
 name: Deployment
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+    - "dev"
+    paths:
+    - mirror-godot-app/**
+    - .github/**
 
 concurrency:
   # workflow name - PR || fallback to unique run id, this happens when you're not building a PR
@@ -25,8 +28,7 @@ jobs:
     uses: ./.github/workflows/client-build-tool.yml
     needs: get-or-build-engine
     secrets:
-      gcp-secret: ${{ secrets.GCP_BUCKET_UPLOAD }}
-      cicd-token-github: ${{ secrets.GITHUB_TOKEN }}
+      GCP_DEPLOYMENT_SECRET: ${{ secrets.GCP_BUCKET_UPLOAD }}
     with:
       should-deploy: false
       should-run-unit-tests: true
@@ -52,8 +54,7 @@ jobs:
     uses: ./.github/workflows/client-build-tool.yml
     needs: get-or-build-engine
     secrets:
-      gcp-secret: ""
-      cicd-token-github: ${{ secrets.GITHUB_TOKEN }}
+      GCP_DEPLOYMENT_SECRET: ${{ secrets.GITHUB_TOKEN }}
     with:
       should-deploy: false
       should-run-unit-tests: true
@@ -81,8 +82,7 @@ jobs:
     uses: ./.github/workflows/client-build-tool.yml
     needs: get-or-build-engine
     secrets:
-      gcp-secret: ""
-      cicd-token-github: ${{ secrets.GITHUB_TOKEN }}
+      GCP_DEPLOYMENT_SECRET: ${{ secrets.GITHUB_TOKEN }}
     with:
       should-deploy: false
       should-run-unit-tests: true
