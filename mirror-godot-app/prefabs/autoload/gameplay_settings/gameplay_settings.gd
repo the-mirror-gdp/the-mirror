@@ -51,7 +51,7 @@ const _SECTION_LOGIN = "login"
 const _IDX_SECTION = 0
 const _IDX_PROPERTY_NAME = 1
 
-const MAX_HTTP_REQUESTS : int = 40
+var MAX_HTTP_REQUESTS : int = max(int(OS.get_processor_count()), 1)
 const MIN_HTTP_REQUESTS : int = 1
 
 const _name_to_section_and_key_map = {
@@ -138,7 +138,7 @@ var auto_close_script_editor: bool = true:
 var show_space_object_internal_nodes: bool = false:
 	set = _apply_show_space_object_internal_nodes
 
-var concurrent_http_requests: int = 20:
+var concurrent_http_requests: int = max(int(OS.get_processor_count()/2), 1):
 	set = _apply_http_concurrent_requests
 
 var force_single_threaded_mode: bool = false:
