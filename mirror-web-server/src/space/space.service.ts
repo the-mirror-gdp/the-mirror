@@ -618,9 +618,10 @@ export class SpaceService implements IRoleConsumer {
 
   public async findOneWithOutRolesCheck(
     spaceId: SpaceId,
-    populateUserPresent = false
+    populateUserPresent = false,
+    populateCreator = true // this isn't ideal to be true by default, but it was the past behavior and we want to follow open/closed principle 2024-05-03 10:46:05
   ): Promise<SpaceDocument & IZonePopulatedUsers> {
-    const space = await this.getSpace(spaceId)
+    const space = await this.getSpace(spaceId, populateCreator)
     const populatedSpaceUsers =
       await this.zoneService.populateZoneUsersBySpaceId(
         spaceId,
@@ -686,11 +687,23 @@ export class SpaceService implements IRoleConsumer {
    * @date 2023-03-30 00:28
    */
   async getSpace(
-    spaceId: string
+    spaceId: string,
+    populateCreator = true // this isn't ideal to be true by default, but it was the past behavior and we want to follow open/closed principle 2024-05-03 10:46:05
   ): Promise<SpaceWithStandardPopulatedProperties> {
+    const populateFieldsAsArray = this._getStandardPopulateFieldsAsArray()
+
+    // remove the creator populate if populateCreator is false
+    if (populateCreator === false) {
+      const creatorIndex = populateFieldsAsArray.indexOf('creator')
+      if (creatorIndex > -1) {
+        populateFieldsAsArray.splice(creatorIndex, 1)
+      }
+    }
+
+    // find the space
     const space = await this.spaceModel
       .findById<SpaceWithStandardPopulatedProperties>(spaceId)
-      .populate(this._getStandardPopulateFieldsAsArray())
+      .populate(populateFieldsAsArray)
       .exec()
     if (!space) {
       this.logger.log(
@@ -2083,7 +2096,6 @@ export class SpaceService implements IRoleConsumer {
       ) {
         const spaceId = change.documentKey._id.toString()
         const eventData = change.updateDescription.updatedFields
-
         this._notifyAboutSpaceChanges(spaceId, eventData)
       }
     })
