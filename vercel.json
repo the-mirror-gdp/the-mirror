@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/tutorial",
+      "destination": "/tutorials",
+      "permanent": true
+    }
+  ]
+}
