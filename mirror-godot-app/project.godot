@@ -80,8 +80,9 @@ global_script_class_icons={
 [application]
 
 config/name="The Mirror"
+config/tags=PackedStringArray("open_source")
 run/main_scene="res://scenes/boot_scene.tscn"
-config/features=PackedStringArray("4.3", "4309e8e8", "mirror")
+config/features=PackedStringArray("4.3", "e33f01e3", "mirror")
 boot_splash/bg_color=Color(0.0745098, 0.0862745, 0.184314, 1)
 boot_splash/image="res://art/white_logo_slate_bg_with_text.png"
 boot_splash/fullsize=false
@@ -96,6 +97,7 @@ driver/enable_input=true
 [autoload]
 
 Analytics="*res://scripts/autoload/analytics/analytics.gd"
+AnalyticsV2="*res://scripts/autoload/analytics/analytics_v2.gd"
 Zone="*res://prefabs/autoload/zone/zone.tscn"
 Firebase="*res://addons/godot-firebase/firebase/firebase.tscn"
 Net="*res://scripts/autoload/net.gd"

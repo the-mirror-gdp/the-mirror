@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://sfmsfqm36hlk" path="res://ui/common/components/star_rating_icons/star-full.svg" id="9_h61fr"]
 [ext_resource type="FontFile" uid="uid://bpw8ywxvp8ctj" path="res://ui/common/fonts/montserrat/montserrat_regular.ttf" id="9_lrjto"]
 [ext_resource type="StyleBox" uid="uid://cfnh350gqlauw" path="res://ui/common/buttons/blue_underline/blue_underline_hover.stylebox.tres" id="10_1jblu"]
-[ext_resource type="Theme" path="res://ui/common/themes/main_menu_button_accent.theme.tres" id="10_m0lu5"]
+[ext_resource type="Theme" uid="uid://u0w47r2ijn3b" path="res://ui/common/themes/main_menu_button_accent.theme.tres" id="10_m0lu5"]
 [ext_resource type="Texture2D" uid="uid://ny5ed73oitlv" path="res://ui/art/settings_full.svg" id="11_b62cr"]
 [ext_resource type="Texture2D" uid="uid://cueecuijx36ja" path="res://ui/art/share.svg" id="11_lc6m4"]
 [ext_resource type="Texture2D" uid="uid://cuqq3ychrk642" path="res://ui/common/images/space-default.jpg" id="12_xye3w"]
@@ -392,8 +392,8 @@ custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("10_m0lu5")
-theme_override_constants/outline_size = 0
 theme_override_constants/h_separation = 6
+theme_override_constants/outline_size = 0
 text = "Build"
 expand_icon = true
 

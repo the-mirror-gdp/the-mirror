@@ -472,7 +472,8 @@ export class SpaceController {
   ) {
     return await this.spaceService.findOneWithOutRolesCheck(
       spaceId,
-      populateSpaceDto.populateUsersPresent
+      populateSpaceDto.populateUsersPresent,
+      populateSpaceDto.populateCreator
     )
   }
 
