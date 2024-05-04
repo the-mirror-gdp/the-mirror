@@ -204,7 +204,7 @@ export class SpaceService implements IRoleConsumer {
       case BUILD_PERMISSIONS.MANAGER:
         return ROLE.MANAGER
       default:
-        return ROLE.OBSERVER // default to observer
+        return ROLE.NO_ROLE // default to no role
     }
   }
 
@@ -429,6 +429,7 @@ export class SpaceService implements IRoleConsumer {
     matchFilter.$and = andFilter
 
     matchFilter.$and.push({ isTMTemplate: { $exists: false } })
+    matchFilter.$and.push({ activeSpaceVersion: { $exists: true } })
     if (userId) {
       matchFilter.$and.push({ [`role.users.${userId}`]: { $ne: ROLE.OWNER } })
     }
@@ -1691,7 +1692,7 @@ export class SpaceService implements IRoleConsumer {
     newDescription && (space.description = newDescription)
     space.maxUsers = maxUsers || 24
     space.publicBuildPermissions =
-      publicBuildPermissions || BUILD_PERMISSIONS.OBSERVER // default to observer
+      publicBuildPermissions || BUILD_PERMISSIONS.PRIVATE // default to private
 
     if (terrainId) space.terrain = terrainId as any
     space.environment = environmentId as any
