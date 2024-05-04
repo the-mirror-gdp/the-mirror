@@ -55,4 +55,4 @@ When you run the app, login using these credentials.
 
 ![Login](Login.jpg)
 
-Congratulations, you're in The Mirror. Head to the [Tutorial](/docs/tutorial) next.
+Congratulations, you're in The Mirror. Head to the [Tutorial](/docs/tutorials) next.
