@@ -342,15 +342,7 @@ const config = {
         },
       },
     }),
-  // https://github.com/cmfcmf/docusaurus-search-local#usage
-  plugins: [
-    [
-      require.resolve("@cmfcmf/docusaurus-search-local"),
-      {
-        style: undefined
-      }
-    ],
-  ],
+  plugins: [],
 };
 
 module.exports = config;
