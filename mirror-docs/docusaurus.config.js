@@ -72,7 +72,7 @@ const config = {
         { name: 'og:title', content: 'Docs | The Mirror' },
         { name: 'og:url', content: 'https://docs.themirror.space/' },
         { name: 'og:image', content: 'https://docs.themirror.space/img/DocsSite.jpg' },
-        { name: 'description', content: 'Game Development Platform: The Ultimate Sandbox' },
+        { name: 'description', content: 'Open-Source Ro' },
         { name: 'og:description', content: 'Game Development Platform: The Ultimate Sandbox' },
         { name: 'twitter:title', content: 'Docs | The Mirror' },
         { name: 'twitter:description', content: 'Game Development Platform: The Ultimate Sandbox' },
@@ -181,7 +181,7 @@ const config = {
         searchParameters: {},
 
         // Optional: path for search page that enabled by default (`false` to disable it)
-        searchPagePath: 'search',
+        searchPagePath: false, // 2024-05-07 09:23:31 Setting to false because the page was showing empty; TODO fix: see https://github.com/facebook/docusaurus/issues/6693. It requires enabling contextualSearch: true, which was making 0 results appear in the modal too. At least with this, the modal works.
 
         // Optional: whether the insights feature is enabled or not on Docsearch (`false` by default)
         insights: true,
