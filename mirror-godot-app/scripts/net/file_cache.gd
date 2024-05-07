@@ -1,8 +1,6 @@
 class_name FileCache
 extends Node
 
-signal threaded_model_loaded(cache_key: String, node: Node)
-
 const _STORAGE_CACHE_FILENAME: String = "cache.json"
 
 var _storage_cache: Dictionary = {}
@@ -20,18 +18,6 @@ func _init() -> void:
 	await Zone.wait_till_booted()
 	_load_stored_files_cache()
 	_setup_storage_directory()
-
-
-
-func _process(_delta: float) -> void:
-	_manage_queue()
-
-
-## Manages the threaded model loading queue.
-func _manage_queue() -> void:
-	if _model_load_queue.size() == 0:
-		return
-	_thread_load_model(_model_load_queue.pop_front())
 
 
 ## Returns true if the cache file exists on the disk.
@@ -96,6 +82,8 @@ func _save_stored_files_cache() -> void:
 
 ## Saves a bytes file to the cache location on disk and adds it to the cache library.
 func save_bytes_file_to_cache(cache_key: String, file_name: String, file_data: PackedByteArray) -> void:
+	if FileAccess.file_exists(file_name):
+		return
 	var saved = save_bytes_file(file_name, file_data)
 	if not saved:
 		return
@@ -129,7 +117,7 @@ func try_load_cached_file(cache_key: String) -> Variant:
 	if not FileAccess.file_exists(file_path):
 		return null
 	if Util.path_is_model(file_path):
-		return TMFileUtil.load_gltf_file_as_node(file_path, Zone.is_host())
+		return load_gltf_thread_task(file_path)
 	elif Util.path_is_image(file_path):
 		return Util.load_image(file_path)
 	elif Util.path_is_scene(file_path):
@@ -141,36 +129,46 @@ func try_load_cached_file(cache_key: String) -> Variant:
 	return null
 
 
-func load_model_threaded(cache_key: String) -> Promise:
-	for m in _model_load_queue:
-		if m.key == cache_key:
-			return m.promise
+var _cached_pairs = {}
+
+func load_gltf_thread_task(cache_key: String) -> Promise:
+	if _cached_pairs.has(cache_key):
+		print("Cache found... not loading twice")
+		return _cached_pairs[cache_key].promise
 	var pair = KeyPromisePair.new()
 	pair.key = cache_key
 	pair.promise = Promise.new()
+	_cached_pairs[pair.key] = pair
 
-	# TODO: Fix multithreaded model loading, newer engine versions
-	# complain about this not being on the main thread.
-	# queue for later when needed
-	if cached_file_exists(pair.key):
-		_model_load_queue.append(pair)
-		return pair.promise
-
-#	_model_load_thread.start(_thread_load_model.bind(pair))
-	_thread_load_model(pair)
-	return pair.promise
-
-
-func _thread_load_model(pair: KeyPromisePair) -> void:
 	if not cached_file_exists(pair.key):
 		pair.promise.set_error("File does not exists, cannot load.")
 		return
 	var file_name: String = _storage_cache.get(pair.key, "")
 	var file_path: String = get_file_path(file_name)
-	var node = TMFileUtil.load_gltf_file_as_node(file_path, Zone.is_host())
-	_model_loaded.call_deferred(pair, node)
+
+	var task_id = WorkerThreadPool.add_task(func():
+		# future: we'll pack all the assets to .tscn and dependencies
+		# it should be faster than packing / repacking things. maybe even .scn files.
+		# if ResourceLoader.exists(file_path + ".tscn"):
+			# var node = ResourceLoader.load(file_path + ".tscn").instantiate()
+			# call_thread_safe("_cached_file_is_loaded", pair, node)
+			# return
+		var node = TMFileUtil.load_gltf_file_as_node(file_path, Zone.is_host())
+		# var scene: PackedScene = PackedScene.new()
+		# scene.pack(node)
+		# ResourceSaver.save(scene, file_path + ".tscn")
+		# print("Path: ", file_path + ".tscn")
+		call_thread_safe("_cached_file_is_loaded", pair, node)
+	)
 
 
-func _model_loaded(pair: KeyPromisePair, node: Node) -> void:
-	threaded_model_loaded.emit(pair.key, node)
+	return pair.promise
+
+## THIS MUST BE ON THE MAIN THREAD
+func _cached_file_is_loaded(pair, node):
+	print("Node name: ", node.get_name())
+	if node == null:
+		push_error("Can't load GLTF")
+		pair.promise.set_error("Failed to load mesh, ignoring and skipping")
+		return
 	pair.promise.set_result(node)

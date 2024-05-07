@@ -83,7 +83,7 @@ func get_file(url: String, priority: Enums.DownloadPriority = Enums.DownloadPrio
 		promise.set_result(files.get(url))
 		return promise
 	if Util.path_is_model(url) and _file_cache.cached_file_exists(url):
-		var promise = _file_cache.load_model_threaded(url)
+		var promise = _file_cache.load_gltf_thread_task(url)
 		promise.connect_func_to_fulfill(_on_loaded_model_threaded.bind(url, promise))
 		return promise
 	var cached_file = _file_cache.try_load_cached_file(url)
@@ -119,7 +119,7 @@ func get_file(url: String, priority: Enums.DownloadPriority = Enums.DownloadPrio
 ## so the model gets uniquely generated from a GLTFDocument.
 ## TODO: Assess storing GLTFDocument in memory and generating node from that instead of entire file read.
 func get_model_instance_promise(url: String) -> Promise:
-	return _file_cache.load_model_threaded(url)
+	return _file_cache.load_gltf_thread_task(url)
 
 
 func _promise_fulfill_successful(request: Dictionary, promise: Promise) -> void:

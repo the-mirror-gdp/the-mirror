@@ -115,6 +115,8 @@ func _client_on_game_ui_space_loaded() -> void:
 
 ## connect_to_server
 func connect_to_server(server_addr: Variant, port: Variant) -> bool:
+	GameUI.loading_ui.populate_status("Opening connection to server")
+	print("Opening connection to server at ", Time.get_datetime_string_from_system())
 	if server_addr.is_empty():
 		return false
 	client_peer = ENetMultiplayerPeer.new()
@@ -162,7 +164,8 @@ func _client_on_connected_to_server() -> void:
 	print("----------------------------------------")
 	print("ClientPeer: Connected to a server... waiting for server to grant access")
 	print("----------------------------------------")
-
+	GameUI.loading_ui.populate_status("Client socket open")
+	print("Client connection opened at " + Time.get_datetime_string_from_system())
 	Analytics.track_event_client(AnalyticsEvent.TYPE.SPACE_JOIN_ATTEMPT_SUCCESS, {"spaceId": _queued_space_id})
 	Zone.change_to_space_scene()
 	# TODO: Instead of true, determine if the player has creator permissions for the space.
@@ -175,11 +178,14 @@ func _client_on_connected_to_server() -> void:
 	var jwt = Firebase.Auth.get_jwt()
 	var user_id = JWT.get_user_id_from_jwt(jwt, "test123")
 	var client_version: String = str(Util.get_version_string())
+	GameUI.loading_ui.populate_status("Requesting client spawn...")
+	print("Sending client init to server at " + Time.get_datetime_string_from_system())
 	Zone.send_data_to_server([Packet.TYPE.CLIENT_INIT, jwt, client_version])
 	PlayerData.acknowledge_local_user_id(user_id)
 
 	# note: GDScript cannot understand Zone definition unless passed via a variable in the stack.
 	var zone_autoload = Zone
+	# TODO: gordon look here this is a bit fishy. Why start syncing things before all objects exist?
 	TMSceneSync.start_sync(zone_autoload)
 
 	# wait for the space to be in a loaded enough condition to join.
@@ -187,6 +193,7 @@ func _client_on_connected_to_server() -> void:
 	# wait for the first spawn to complete too
 	while not is_space_loaded():
 		await get_tree().create_timer(0.5).timeout
+
 	join_server_complete.emit()
 
 
@@ -438,6 +445,8 @@ func start_join_localhost() -> void:
 
 
 func start_join_zone_by_space_id(space_id: String) -> void:
+	print("Join requested at ", Time.get_datetime_string_from_system())
+	GameUI.loading_ui.populate_status("Joining space")
 	_is_joining_play_space = false
 	join_server_start.emit()
 	if space_id == _LOCALHOST:
@@ -449,6 +458,7 @@ func start_join_zone_by_space_id(space_id: String) -> void:
 
 
 func start_join_play_space_by_space_id(space_id: String) -> void:
+	GameUI.loading_ui.populate_status("Joining space")
 	join_server_start.emit()
 	_disconnect_from_server_peer()
 	_is_joining_play_space = true # after disconnect so flag is not cleared
