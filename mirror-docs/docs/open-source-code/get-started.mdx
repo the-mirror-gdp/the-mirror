@@ -54,16 +54,16 @@ Try running `chmod +x auto-migrate.sh` from the `mirror-web-server` directory.
 
 ## Troubleshooting
 
-1. I messed up & I can't login
+### 1. I messed up & I can't login
 
 Probably issue with mirror-server configuration files
 Remember to run `docker compose build` after every change to the .env configs! The updates to `.env` won't apply otherwise.
 
-2. My localhost space is empty (not even a terrrain and environment)
+### 2. My localhost space is empty (not even a terrrain and environment)
 
 Something went wrong with your migration of DB. After fixes to your dump file, make sure to remove the container running mongodb (otherwise init script restoring dump will not launch)
 
-3. My database is not empty even though it should be.
+### 3. My database is not empty even though it should be.
 
 Your mongo container maybe stopped but it is not removed. Try `docker rm mongo_container_id`. If this does not help try `docker system prune`
 
