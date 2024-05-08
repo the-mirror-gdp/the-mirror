@@ -51,16 +51,16 @@ func _send_track_event(event: AnalyticsEvent, properties := {}) -> void:
 	var promise = self.post_request_ext(TRACK_EVENT, _ANALYTICS_URL_TRACK, data)
 	var res = await promise.wait_till_fulfilled()
 	if promise.is_error():
-		print("Error sending track event: %s" % [res])
+		print("Error sending track event, promise: %s" % [res])
 	else:
 		if (res.has('json_result') and res.json_result.has('status')):
 			var status = res.json_result.status
 			# 0 is an error from Mixpanel *EVEN IF* it's 200 HTTP status
 			if (status == 0):
 				if (res.json_result.has('error')):
-					print("Error sending track event: %s" % [res.json_result.error])
+					print("Error sending track event, json_result error: %s" % [res.json_result.error])
 				else:
-					print("Error sending track event: %s" % [res])
+					print("Error sending track event, other error: %s" % [res])
 			#1 is success from Mixpanel
 			if (status == 1):
 				if _PRINT_ANALYTICS:
