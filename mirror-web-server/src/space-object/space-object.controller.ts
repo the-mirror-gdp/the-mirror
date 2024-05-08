@@ -103,7 +103,10 @@ export class SpaceObjectController {
       copyDto.to
     )
   }
-
+  /**
+   * @deprecated This method is deprecated and will be removed in future versions. Use `findAllBySpaceIdWithRolesCheck` instead.
+   * @Get('space/:id')
+   */
   @Get('space/:id')
   @ApiParam({ name: 'id', type: 'string', required: true })
   public async findAllBySpaceId(@Param('id') spaceId: SpaceId) {
@@ -111,6 +114,21 @@ export class SpaceObjectController {
       throw new BadRequestException('Invalid spaceId')
     }
     return await this.spaceObjectService.findAllBySpaceIdAdmin(spaceId)
+  }
+
+  @Get('space-v2/:id')
+  @ApiParam({ name: 'id', type: 'string', required: true })
+  public async findAllBySpaceIdWithRolesCheck(
+    @Param('id') spaceId: SpaceId,
+    userId: UserId
+  ) {
+    if (!spaceId || spaceId == 'undefined') {
+      throw new BadRequestException('Invalid spaceId')
+    }
+    return await this.spaceObjectService.findAllBySpaceIdWithRolesCheck(
+      spaceId,
+      userId
+    )
   }
 
   @Get('tag')
