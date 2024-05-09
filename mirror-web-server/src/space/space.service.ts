@@ -905,7 +905,7 @@ export class SpaceService implements IRoleConsumer {
           } else {
             throw new NotFoundException()
           }
-        })
+        }) as any as Promise<SpaceDocument>
     } else {
       this.logger.log(
         `canRemoveWithRolesCheck failed for user: ${userId}`,
