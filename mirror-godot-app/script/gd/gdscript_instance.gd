@@ -62,6 +62,8 @@ static var _SCRIPT_TEXT_DENYLIST: Array[RegEx] = [
 	RegEx.create_from_string("\\bpreload\\b"),
 	RegEx.create_from_string("\\bOS\\b"),
 	RegEx.create_from_string("\\bResourceLoader\\b"),
+	RegEx.create_from_string("\\FileAccess\\b"),
+	RegEx.create_from_string("\\DirAccess\\b")
 ]
 
 var _entries: Array[GDScriptEntry] = []
