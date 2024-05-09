@@ -31,6 +31,8 @@ export class BlockService {
   }
 
   remove(id: string): Promise<BlockDocument> {
-    return this.blockModel.findOneAndDelete({ _id: id }).exec()
+    return this.blockModel
+      .findOneAndDelete({ _id: id })
+      .exec() as any as Promise<BlockDocument>
   }
 }

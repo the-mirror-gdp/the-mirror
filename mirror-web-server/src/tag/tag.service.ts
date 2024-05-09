@@ -143,6 +143,8 @@ export class TagService {
   }
 
   remove(id: string): Promise<TagDocument> {
-    return this.tagModel.findOneAndDelete({ _id: id }).exec()
+    return this.tagModel
+      .findOneAndDelete({ _id: id })
+      .exec() as any as Promise<TagDocument>
   }
 }

@@ -24,6 +24,7 @@ import {
 import { FileUploadService } from '../util/file-upload/file-upload.service'
 import {
   AssetId,
+  SpaceId,
   UserId,
   aggregationMatchId
 } from '../util/mongo-object-id-helpers'
@@ -1340,6 +1341,26 @@ export class AssetService {
     }
 
     return await this._updateAssetTagsByType(assetId, tagType, tags)
+  }
+
+  async getAllAssetsBySpaceIdWithRolesCheck(spaceId: SpaceId, userId: UserId) {
+    const pipeline = [
+      { $match: { space: new ObjectId(spaceId) } },
+      {
+        $lookup: {
+          from: 'assets',
+          localField: 'asset',
+          foreignField: '_id',
+          as: 'assetInfo'
+        }
+      },
+      { $unwind: '$assetInfo' },
+      {
+        $replaceRoot: { newRoot: '$assetInfo' }
+      },
+      ...this.roleService.getRoleCheckAggregationPipeline(userId, ROLE.OBSERVER)
+    ]
+    return await this.spaceObjectModel.aggregate(pipeline).exec()
   }
 
   private async _updateAssetTagsByType(
