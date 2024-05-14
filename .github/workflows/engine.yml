@@ -312,6 +312,12 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Check versions of the compiler
+        run: |
+          ldd --version
+          gcc --version
+          cmake --version
+
       - name: Get short commit hash
         id: vars
         run: |
