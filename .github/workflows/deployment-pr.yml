@@ -83,7 +83,7 @@ jobs:
       game-export-preset: Linux
       game-binary-name: The Mirror Dev.x86_64
       bucket-name: no-bucket
-      os: ${{ github.event.repository.name != 'the-mirror' && 'linux-mirror' || 'ubuntu-20.04' }}
+      os: ${{ github.event.repository.name != 'the-mirror' && 'linux-mirror' || 'ubuntu-22.04' }}
       # TODO: This will be dynamic in future and we can't do that immediately as we have to focus on the deployment side.
       editor-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/e33f01e3/MirrorGodotEditorLinux.x86_64
       template-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/e33f01e3/linux_release.x86_64
