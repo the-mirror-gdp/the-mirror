@@ -72,7 +72,7 @@ const config = {
         { name: 'og:title', content: 'Docs | The Mirror' },
         { name: 'og:url', content: 'https://docs.themirror.space/' },
         { name: 'og:image', content: 'https://docs.themirror.space/img/DocsSite.jpg' },
-        { name: 'description', content: 'Open-Source Ro' },
+        { name: 'description', content: 'Open-Source Roblox & UEFN Alternative' },
         { name: 'og:description', content: 'Game Development Platform: The Ultimate Sandbox' },
         { name: 'twitter:title', content: 'Docs | The Mirror' },
         { name: 'twitter:description', content: 'Game Development Platform: The Ultimate Sandbox' },
