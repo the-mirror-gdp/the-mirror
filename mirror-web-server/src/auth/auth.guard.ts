@@ -42,7 +42,10 @@ export class AuthGuardFirebase implements CanActivate {
           req['user'] = decodedJwt
         }
       } catch (error) {
-        this.logger.log(`JWT decode error ${error}`, AuthGuardFirebase.name)
+        this.logger.log(
+          `JWT decode error ${error as string}`,
+          AuthGuardFirebase.name
+        )
         // do nothing if decoding fails here
       }
       return true
