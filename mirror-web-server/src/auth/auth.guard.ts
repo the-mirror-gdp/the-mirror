@@ -42,7 +42,10 @@ export class AuthGuardFirebase implements CanActivate {
           req['user'] = decodedJwt
         }
       } catch (error) {
-        console.log(error)
+        this.logger.log(
+          `JWT decode error ${error as string}`,
+          AuthGuardFirebase.name
+        )
         // do nothing if decoding fails here
       }
       return true
@@ -88,14 +91,14 @@ export class AuthGuardFirebase implements CanActivate {
       } else {
         this.logger.error('JWT:', token)
       }
-      console.log('AuthGuardFirebase: error decoding jwt, returning false')
+      this.logger.log('AuthGuardFirebase: error decoding jwt, returning false')
       return false
     }
   }
 
   async decodeJwt(token) {
     return await this.firebaseAuthService.verifyIdToken(
-      token.replace('Bearer ', ''),
+      token ? token.replace('Bearer ', '') : '',
       true
     )
   }
