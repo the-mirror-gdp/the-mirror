@@ -191,18 +191,18 @@ export class UserService {
   }
 
   async ensureMirrorUserExists(token: string) {
-    const decodedToken = await this.firebaseAuthService.verifyIdToken(token)
-    const firebaseUID = decodedToken.uid
-
-    const _id = new mongo.ObjectId()
-
-    if (!decodedToken) {
-      throw new NotFoundException('User not found')
-    }
-
-    const user = await this.userModel.findOne({ firebaseUID }).exec()
-
     try {
+      const decodedToken = await this.firebaseAuthService.verifyIdToken(token)
+      const firebaseUID = decodedToken.uid
+
+      const _id = new mongo.ObjectId()
+
+      if (!decodedToken) {
+        throw new NotFoundException('User not found')
+      }
+
+      const user = await this.userModel.findOne({ firebaseUID }).exec()
+
       if (!user) {
         const displayName = this._generateUniqueUsername()
         const userModel = new this.userModel({
