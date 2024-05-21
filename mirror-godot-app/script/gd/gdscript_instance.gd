@@ -26,9 +26,7 @@ func _process(delta: float) -> void:
 	pass # Replace with function body.
 """
 
-const _SCRIPT_PREPROCESS_PREFIX: String = """extends Object
-
-signal tmusergdscript_runtime_error(error_str: String, frame_index: int, line_num: int, func_name: String)
+const _SCRIPT_PREPROCESS_PREFIX: String = """extends TMUserGDScriptBase
 
 
 func get_object_variable(variable_name: String) -> Variant:
@@ -40,10 +38,12 @@ func has_object_variable(variable_name: String) -> bool:
 
 
 func set_object_variable(variable_name: String, variable_value: Variant) -> void:
+	if variable_name in self:
+		set(variable_name, variable_value)
 	Mirror.set_object_variable(target_object, variable_name, variable_value)
 
 
-func tween_object_variable(variable_name: String, to_value: Variant, duration: float, trans: Tween.TransitionType, easing: Tween.EaseType) -> void:
+func tween_object_variable(variable_name: String, to_value: Variant, duration: float, trans: Tween.TransitionType = Tween.TRANS_LINEAR, easing: Tween.EaseType = Tween.EASE_IN_OUT) -> void:
 	Mirror.tween_object_variable(target_object, variable_name, to_value, duration, trans, easing)
 
 
@@ -66,7 +66,10 @@ static var _SCRIPT_TEXT_DENYLIST: Array[RegEx] = [
 	RegEx.create_from_string("\\bDirAccess\\b")
 ]
 
+static var _EXPOSE_VAR_REGEX: RegEx = RegEx.create_from_string("@export var [_a-zA-Z][_a-zA-Z0-9]{0,30}\\b")
+
 var _entries: Array[GDScriptEntry] = []
+var _exposed_var_names: PackedStringArray = []
 var _source_code: String
 var gdscript_code: TMUserGDScript = TMUserGDScript.new()
 var script_instance_object: Object
@@ -277,6 +280,10 @@ func _preprocess_and_apply_code() -> void:
 		return
 	# Instantiate the successfully loaded script.
 	script_instance_object = gdscript_code.new()
+	_sync_exposed_variables_with_spaceobj_spacevars()
+	# Connect the signals.
+	script_instance_object.load_exposed_vars.connect(_on_load_exposed_vars)
+	script_instance_object.save_exposed_vars.connect(_on_save_exposed_vars)
 	script_instance_object.tmusergdscript_runtime_error.connect(_on_tmusergdscript_runtime_error)
 	for entry in _entries:
 		entry.connect_entry_signal(script_instance_object, entry_parameters)
@@ -310,6 +317,32 @@ func _preprocess_check_blacklist() -> Dictionary:
 func _sync_gdscript_code_with_entries() -> void:
 	for entry in _entries:
 		_source_code = entry.sync_gdscript_code_with_entry(_source_code)
+
+
+func _sync_exposed_variables_with_spaceobj_spacevars() -> void:
+	_update_exposed_variable_names()
+	for var_name in _exposed_var_names:
+		if Mirror.has_object_variable(target_node, var_name):
+			script_instance_object.set(var_name, Mirror.get_object_variable(target_node, var_name))
+		else:
+			Mirror.set_object_variable(target_node, var_name, script_instance_object.get(var_name))
+
+
+func _on_load_exposed_vars() -> void:
+	for var_name in _exposed_var_names:
+		script_instance_object.set(var_name, Mirror.get_object_variable(target_node, var_name))
+
+
+func _on_save_exposed_vars() -> void:
+	for var_name in _exposed_var_names:
+		Mirror.set_object_variable(target_node, var_name, script_instance_object.get(var_name))
+
+
+func _update_exposed_variable_names() -> void:
+	_exposed_var_names.clear()
+	var matches: Array[RegExMatch] = _EXPOSE_VAR_REGEX.search_all(_source_code)
+	for mat in matches:
+		_exposed_var_names.append(mat.get_string().trim_prefix("@export var "))
 
 
 ## This method handles runtime error messages similar to VisualScriptInstance's `_on_block_message` method.
