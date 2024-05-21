@@ -227,6 +227,10 @@ func _on_request_show_entry_creation_dialog(target_node: Node) -> void:
 	_script_entry_creation_dialog.populate_and_show(target_node)
 
 
+func _on_request_show_custom_entry_creation_dialog(target_node: Node) -> void:
+	_script_entry_creation_dialog.populate_and_show_for_custom(target_node)
+
+
 func _on_script_entry_creation_dialog_create_entry_block(block_json: Dictionary) -> void:
 	if _gd_script_editor.visible:
 		if block_json["type"] == "entry":

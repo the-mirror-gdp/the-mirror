@@ -179,7 +179,12 @@ func set_source_code(source_code: String) -> void:
 
 
 func create_entry(entry_json: Dictionary) -> void:
-	var new_function_name: String = entry_json["name"].to_snake_case()
+	var new_function_name: String
+	if entry_json.has("name"):
+		new_function_name = entry_json["name"].to_snake_case()
+	else:
+		new_function_name = "on_" + entry_json["signal"]
+	entry_json["function"] = new_function_name
 	for entry in _entries:
 		if entry.function_name == new_function_name:
 			return # We already have an entry for this, no need to make a new entry.
@@ -278,7 +283,10 @@ func _preprocess_and_apply_code() -> void:
 	# Supplementary entry callbacks. Keep this in sync with GDScript CodeEdit load_entry_connection_decoration.
 	if target_node is SpaceObject:
 		if _source_code.contains("func _ready("):
-			target_node.setup_done.connect(Callable(script_instance_object, &"_ready"))
+			if target_node._is_setup:
+				script_instance_object.call(&"_ready")
+			else:
+				target_node.setup_done.connect(Callable(script_instance_object, &"_ready"))
 	if _source_code.contains("func _physics_process("):
 		Zone.physics_process_every_frame.connect(Callable(script_instance_object, &"_physics_process"))
 	if _source_code.contains("func _process("):

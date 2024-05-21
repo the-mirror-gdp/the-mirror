@@ -148,7 +148,7 @@ func _on_request_block_creation(constraint: int, data_type: int, index: int, fro
 
 func _on_request_entry_creation(where: Vector2) -> void:
 	_creation_position = where
-	request_show_entry_creation_dialog.emit(_script_instance.target_node)
+	request_show_custom_entry_creation_dialog.emit(_script_instance.target_node)
 
 
 func _on_request_input_value_edit(graph_node: ScriptBlockGraphNode, input_port: ScriptBlock.ScriptBlockInputPort) -> void:
