@@ -7,13 +7,13 @@ signal gdscript_compile_success()
 
 const _EMPTY_SCRIPT: String = """# Welcome to The Mirror-flavored GDScript!
 # This is like normal GDScript, but you must not write class\u200B_name or ext\u200Bends.
+# You can print to the notification area using `Notify.info(title, message)`.
 # You may use functions and variables just like you would in normal GDScript.
-# Use `target_object` to refer to the object (SpaceObject or global) the script
-# is attached to instead of `self`, as `self` refers to the script itself.
 # The Mirror provides support for multiple scripts per object, you can use
 # members of SpaceObject the same way you use inherited members in Godot.
-# For example, `print(position)` will print a SpaceObject's position.
-# You can print to the notification area using `Notify.info(title, message)`.
+# For example, `Notify.info("pos", str(position))` will print a SpaceObject's position.
+# Use `target_object` to refer to the object (SpaceObject or global) the script
+# is attached to instead of `self`, as `self` refers to the script itself.
 
 
 # Called when a SpaceObject finishes loading.
@@ -210,6 +210,15 @@ func _sync_entry_params_with_gdscript_code() -> void:
 		script_entries_changed.emit()
 
 
+func create_inspector_parameter_input(entry_id: String, parameter_port_array: Array) -> void:
+	for gdscript_entry in _entries:
+		if gdscript_entry.entry_id == entry_id:
+			gdscript_entry.entry_parameters.create_inspector_parameter(parameter_port_array)
+			_source_code = gdscript_entry.sync_gdscript_code_with_entry(_source_code)
+			break
+	sync_script_inst_params_with_script_data()
+
+
 ## Ensure the script instance entry inspector parameters match the
 ## signature of the script's data. Since a script may be used by
 ## multiple objects, parameters may get out of sync without this code.
@@ -222,10 +231,10 @@ func sync_script_inst_params_with_script_data() -> void:
 		entry_parameters[entry_id] = new_params
 		if entry_id in old_entry_parameters:
 			var old_params: Dictionary = old_entry_parameters[entry_id]
-			for old_key in old_params:
-				if old_key in new_params:
-					var old_param_array: Array = old_params[old_key]
-					var new_param_array: Array = new_params[old_key]
+			for param_key in old_params:
+				if param_key in new_params:
+					var old_param_array: Array = old_params[param_key]
+					var new_param_array: Array = new_params[param_key]
 					new_param_array[1] = old_param_array[1]
 	entry_parameters.sort()
 	apply_inspector_parameter_values()
@@ -265,7 +274,7 @@ func _preprocess_and_apply_code() -> void:
 	script_instance_object = gdscript_code.new()
 	script_instance_object.tmusergdscript_runtime_error.connect(_on_tmusergdscript_runtime_error)
 	for entry in _entries:
-		entry.entry_node.connect(entry.entry_signal, Callable(script_instance_object, entry.function_name))
+		entry.connect_entry_signal(script_instance_object, entry_parameters)
 	# Supplementary entry callbacks. Keep this in sync with GDScript CodeEdit load_entry_connection_decoration.
 	if target_node is SpaceObject:
 		if _source_code.contains("func _ready("):

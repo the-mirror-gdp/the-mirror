@@ -7,6 +7,9 @@
 [node name="InspectorScriptEntryInputs" instance=ExtResource("1_amxtn")]
 script = ExtResource("2_adill")
 
+[node name="ToggleButton" parent="CategoryTitle" index="0" node_paths=PackedStringArray("properties")]
+properties = NodePath("../../Properties")
+
 [node name="Text" parent="CategoryTitle/ToggleButton/Name" index="3"]
 text = ""
 

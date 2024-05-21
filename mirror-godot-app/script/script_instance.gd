@@ -87,8 +87,11 @@ func is_script_instance_setup() -> bool:
 
 func setup(node: Node, script_inst_dict: Dictionary) -> void:
 	target_node = node
-	var script_entity_data: Dictionary = await Net.script_client.get_script_entity(script_id)
-	setup_script_entity_data(script_entity_data)
+	var script_entity_data: Dictionary = Net.script_client.get_script_entity(script_id)
+	# If it's empty, we don't have the data yet. The setup_script_entity_data
+	# function will be ran later when we receive the data.
+	if not script_entity_data.is_empty():
+		setup_script_entity_data(script_entity_data)
 
 
 func setup_script_instance_data(script_inst_dict: Dictionary) -> void:
@@ -145,6 +148,17 @@ func update_script_entity_data_from_network(script_entity_data: Dictionary) -> v
 
 
 # Parameter methods.
+func create_inspector_parameter_input(entry_id: String, parameter_port_array: Array) -> void:
+	assert(false, "This method must be overridden in a derived class.")
+
+
+func set_inspector_parameter_input_value(entry_id: String, param_name: String, new_value: Variant) -> void:
+	var parameters_for_entry: Dictionary = entry_parameters[entry_id]
+	var param_data: Array = parameters_for_entry[param_name]
+	param_data[1] = new_value
+	apply_inspector_parameter_values()
+
+
 func _load_entry_parameters_from_json(entry_parameter_json: Dictionary) -> void:
 	assert(entry_parameters.is_empty(), "This method expects to only be called once. If calling multiple times is needed, add support for that.")
 	entry_parameters = entry_parameter_json.duplicate(true)

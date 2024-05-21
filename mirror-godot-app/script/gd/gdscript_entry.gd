@@ -174,6 +174,21 @@ func _value_to_gdscript_literal(value: Variant, type_enum: int) -> String:
 	return str(value)
 
 
+func connect_entry_signal(script_instance_object: Object, inst_entry_parameters: Dictionary) -> void:
+	# Trivial case: No inspector parameter inputs, no bindv needed.
+	if inst_entry_parameters.is_empty():
+		entry_node.connect(entry_signal, Callable(script_instance_object, function_name))
+		return
+	# If the user added inspector parameters via "Add Input", we need to bind them to the signal.
+	var insp_inputs: Array = []
+	if inst_entry_parameters.has(entry_id):
+		var params_for_entry: Dictionary = inst_entry_parameters[entry_id]
+		for insp_param_name in params_for_entry:
+			var insp_param_data: Array = params_for_entry[insp_param_name]
+			insp_inputs.append(insp_param_data[1])
+	entry_node.connect(entry_signal, Callable(script_instance_object, function_name).bindv(insp_inputs))
+
+
 static func create_node_for_entry_signal(entry_signal: String) -> Node:
 	if entry_signal == "timeout":
 		var timer: Timer = Timer.new()
