@@ -314,7 +314,7 @@ func _set_global_variables_network(variables: Dictionary) -> void:
 	received_variable_data_change.emit()
 
 
-func tween_global_variable(variable_name: String, to_value: Variant, duration: float, trans: Tween.TransitionType, easing: Tween.EaseType) -> void:
+func tween_global_variable(variable_name: String, to_value: Variant, duration: float, trans: Tween.TransitionType = Tween.TRANS_LINEAR, easing: Tween.EaseType = Tween.EASE_IN_OUT) -> void:
 	_net_queue_tweened_global_variables[variable_name] = [to_value, duration, trans, easing]
 
 
@@ -338,7 +338,7 @@ func _tween_global_variables_network(tweened_variables: Dictionary) -> void:
 
 
 ## Tween a user variable we store inside of a Dictionary using MethodTweener.
-func _tween_variable_in_dict(variables_dict: Dictionary, variable_name: String, from_value: Variant, to_value: Variant, duration: float, trans: Tween.TransitionType, easing: Tween.EaseType) -> void:
+func _tween_variable_in_dict(variables_dict: Dictionary, variable_name: String, from_value: Variant, to_value: Variant, duration: float, trans: Tween.TransitionType = Tween.TRANS_LINEAR, easing: Tween.EaseType = Tween.EASE_IN_OUT) -> void:
 	var split_path: PackedStringArray = TMDataUtil.split_json_path_string(variable_name)
 	var method_callable: Callable = _tween_variable_callback_method.bind(variables_dict, split_path)
 	var tween: Tween = get_tree().create_tween()
@@ -412,7 +412,7 @@ func _set_property_on_node(node: Node, property: StringName, value: Variant) -> 
 	node.set(property, value)
 
 
-func tween_property_on_node(node: Node, property: StringName, to_value: Variant, duration: float, trans: Tween.TransitionType, easing: Tween.EaseType) -> void:
+func tween_property_on_node(node: Node, property: StringName, to_value: Variant, duration: float, trans: Tween.TransitionType = Tween.TRANS_LINEAR, easing: Tween.EaseType = Tween.EASE_IN_OUT) -> void:
 	if to_value is Object:
 		Notify.error("Tween Failed", "Tweening an object is not a sensible operation. Aborting.")
 		return
@@ -446,7 +446,7 @@ func _tween_properties_on_nodes_network(nodes_tweened_properties: Dictionary) ->
 			_save_tween_results_for_later(node_path, node_tweened_properties, _set_queue_properties_on_nodes)
 
 
-func _tween_property_on_node(node: Node, property: StringName, to_value: Variant, duration: float, trans: Tween.TransitionType, easing: Tween.EaseType) -> void:
+func _tween_property_on_node(node: Node, property: StringName, to_value: Variant, duration: float, trans: Tween.TransitionType = Tween.TRANS_LINEAR, easing: Tween.EaseType = Tween.EASE_IN_OUT) -> void:
 	if not ScriptPropertyRegistration.has_registered_property(property):
 		return
 	var tween: Tween = get_tree().create_tween()
@@ -514,7 +514,7 @@ func _set_variable_on_node(node: Node, variable_name: String, variable_value: Va
 	TMDataUtil.set_variable_by_json_path_string(node_variables_in_all, variable_name, variable_value)
 
 
-func tween_variable_on_node(node: Node, variable: String, to_value: Variant, duration: float, trans: Tween.TransitionType, easing: Tween.EaseType) -> void:
+func tween_variable_on_node(node: Node, variable: String, to_value: Variant, duration: float, trans: Tween.TransitionType = Tween.TRANS_LINEAR, easing: Tween.EaseType = Tween.EASE_IN_OUT) -> void:
 	if to_value is Object:
 		Notify.error("Tween Failed", "Tweening an Object value is not a sensible operation. Aborting.")
 		return
@@ -549,7 +549,7 @@ func _tween_variables_on_nodes_network(nodes_tweened_variables: Dictionary) -> v
 	received_variable_data_change.emit()
 
 
-func _tween_variable_on_node(node: Node, variable_name: String, to_value: Variant, duration: float, trans: Tween.TransitionType, easing: Tween.EaseType) -> void:
+func _tween_variable_on_node(node: Node, variable_name: String, to_value: Variant, duration: float, trans: Tween.TransitionType = Tween.TRANS_LINEAR, easing: Tween.EaseType = Tween.EASE_IN_OUT) -> void:
 	if not node.has_meta(&"MirrorScriptObjectVariables"):
 		node.set_meta(&"MirrorScriptObjectVariables", {})
 	var object_variables: Dictionary = node.get_meta(&"MirrorScriptObjectVariables")
