@@ -508,6 +508,14 @@ func _set_variable_on_node(node: Node, variable_name: String, variable_value: Va
 		node.set_meta(&"MirrorScriptObjectVariables", {})
 	var object_variables: Dictionary = node.get_meta(&"MirrorScriptObjectVariables")
 	TMDataUtil.set_variable_by_json_path_string(object_variables, variable_name, variable_value)
+	# If this is an exposed script variable, set it in the script.
+	if node.has_method(&"get_script_instances") and Zone.is_host():
+		var script_instances: Array[ScriptInstance] = node.get_script_instances()
+		for script_inst in script_instances:
+			if script_inst is GDScriptInstance and is_instance_valid(script_inst.script_instance_object):
+				var obj = script_inst.script_instance_object
+				if variable_name in obj:
+					obj.set(variable_name, variable_value)
 	# Keep track of all node variables ever set for use with the variable editor.
 	var node_path: NodePath = node.get_path()
 	var node_variables_in_all: Dictionary = _all_set_variables_on_nodes.get_or_add(node_path, {})

@@ -15,6 +15,7 @@ const _ENVIRONMENT_CATEGORY = preload("res://creator/selection/inspector/categor
 const _LIGHT_CATEGORY = preload("res://creator/selection/inspector/categories/inspector_light.tscn")
 const _PHYSICS_CATEGORY = preload("res://creator/selection/inspector/categories/inspector_physics.tscn")
 const _VISIBILITY_CATEGORY = preload("res://creator/selection/inspector/categories/inspector_visibility.tscn")
+const _SCRIPT_OBJECT_VARS_CATEGORY = preload("res://creator/selection/inspector/script/inspector_script_object_vars.tscn")
 const _SCRIPT_INSTANCE_CATEGORY = preload("res://creator/selection/inspector/script/inspector_script_instance.tscn")
 const _MODEL_NODES_CATEGORY = preload("res://creator/selection/inspector/nodes/inspector_model_nodes.tscn")
 const _EXTRA_NODE_CATEGORY = preload("res://creator/selection/inspector/nodes/inspector_extra_node.tscn")
@@ -43,6 +44,7 @@ var _deletion_target_category: InspectorCategoryBase
 
 @onready var _categories: VBoxContainer = _tab_cont.get_node(^"Properties/MarginContainer/Categories")
 @onready var _script_main_vbox: VBoxContainer = _tab_cont.get_node(^"Scripting/MarginContainer/VBoxContainer")
+@onready var _script_obj_vars: Control = _script_main_vbox.get_node(^"ScriptObjectVars")
 @onready var _script_instances: VBoxContainer = _script_main_vbox.get_node(^"ScriptInstances")
 @onready var _script_add_button: Button = _script_main_vbox.get_node(^"AddScriptButton")
 @onready var _model_nodes_main_vbox: VBoxContainer = _tab_cont.get_node(^"Nodes/MarginContainer/VBoxContainer")
@@ -189,6 +191,7 @@ func inspect_nodes(new_nodes: Array[Node], force_rebuild: bool = false) -> void:
 	# The first step is to delete old categories if they exist.
 	_remove_old_category_children(_categories)
 	_remove_old_category_children(_script_instances)
+	_remove_old_category_children(_script_obj_vars)
 	_remove_old_category_children(_model_nodes)
 	# Update a few misc things.
 	_button_sound.refresh()
@@ -278,6 +281,7 @@ func _setup_new_categories(target_nodes: Array[Node]) -> void:
 				prim_model_cat.request_convert_to_local.connect(_on_request_convert_prim_model_to_local.bind(target_node))
 			target_node.scripts_changed.connect(_on_scripts_changed)
 			_setup_script_instances(target_node)
+			_setup_script_obj_vars(target_node)
 			_script_main_vbox.show()
 			_tab_cont.tabs_visible = true
 			_setup_extra_model_nodes(target_node)
@@ -287,6 +291,7 @@ func _setup_new_categories(target_nodes: Array[Node]) -> void:
 				_tab_cont.current_tab = 1
 				target_node.scripts_changed.connect(_on_scripts_changed)
 				_setup_script_instances(target_node)
+				_setup_script_obj_vars(target_node)
 				_script_main_vbox.show()
 			else:
 				_tab_cont.current_tab = 0
@@ -388,6 +393,28 @@ func _setup_script_instances(space_object_or_global_scripts: Node) -> void:
 		return
 	for script_instance in script_instances:
 		_setup_script_instance(script_instance)
+
+
+func _setup_script_obj_vars(space_object_or_global_scripts: Node) -> void:
+	# Set up script object variables inspector, if it has any.
+	var object_variables: Dictionary
+	if space_object_or_global_scripts.has_meta(&"MirrorScriptObjectVariables"):
+		object_variables = space_object_or_global_scripts.get_meta(&"MirrorScriptObjectVariables")
+	if object_variables.is_empty():
+		if not _is_any_script_instance_gdscript(space_object_or_global_scripts):
+			return
+	var obj_var_cat = _SCRIPT_OBJECT_VARS_CATEGORY.instantiate()
+	obj_var_cat.setup(space_object_or_global_scripts, Util.can_local_user_edit_scripts())
+	_script_obj_vars.add_child(obj_var_cat)
+	obj_var_cat.setup_object_vars(object_variables)
+
+
+func _is_any_script_instance_gdscript(space_object_or_global_scripts: Node) -> bool:
+	var script_instances: Array[ScriptInstance] = space_object_or_global_scripts.get_script_instances()
+	for script_inst in script_instances:
+		if script_inst is GDScriptInstance:
+			return true
+	return false
 
 
 func _setup_script_instance(script_instance: ScriptInstance) -> void:

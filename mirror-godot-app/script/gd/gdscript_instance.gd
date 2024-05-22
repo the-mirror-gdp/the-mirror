@@ -16,7 +16,7 @@ const _EMPTY_SCRIPT: String = """# Welcome to The Mirror-flavored GDScript!
 # is attached to instead of `self`, as `self` refers to the script itself.
 
 
-# Called when a SpaceObject finishes loading.
+# Called when a SpaceObject and script finish loading.
 func _ready() -> void:
 	pass # Replace with function body.
 
@@ -66,10 +66,12 @@ static var _SCRIPT_TEXT_DENYLIST: Array[RegEx] = [
 	RegEx.create_from_string("\\bDirAccess\\b")
 ]
 
-static var _EXPOSE_VAR_REGEX: RegEx = RegEx.create_from_string("@export var [_a-zA-Z][_a-zA-Z0-9]{0,30}\\b")
+static var _EXPOSE_VAR_REGEX: RegEx = RegEx.create_from_string("@export var ([_a-zA-Z][_a-zA-Z0-9]{0,30})\\b[^=\\n]*(= )?([^=\\n]*)")
+static var _EXPRESSION = Expression.new()
 
 var _entries: Array[GDScriptEntry] = []
 var _exposed_var_names: PackedStringArray = []
+var _exposed_var_default_values: Dictionary = {}
 var _source_code: String
 var gdscript_code: TMUserGDScript = TMUserGDScript.new()
 var script_instance_object: Object
@@ -155,6 +157,12 @@ func get_default_value_of_entry_inspector_parameter(entry_id: String, parameter_
 		if entry.entry_id == entry_id:
 			var param_data = entry.entry_parameters.inspector_parameters.get(parameter_name)
 			return param_data[1] if param_data else null
+	return null
+
+
+func get_default_value_of_exposed_variable(variable_name: String) -> Variant:
+	if _exposed_var_default_values.has(variable_name):
+		return _exposed_var_default_values[variable_name]
 	return null
 
 
@@ -273,6 +281,7 @@ func _preprocess_and_apply_code() -> void:
 			error_message_dict["line"] -= _SCRIPT_PREPROCESS_LINE_COUNT
 		gdscript_compile_error.emit(error_code, error_messages)
 		return
+	_update_exposed_variables()
 	gdscript_compile_success.emit()
 	if not can_execute():
 		# Don't even init the script if it can't execute.
@@ -320,7 +329,7 @@ func _sync_gdscript_code_with_entries() -> void:
 
 
 func _sync_exposed_variables_with_spaceobj_spacevars() -> void:
-	_update_exposed_variable_names()
+	#_update_exposed_variables()
 	for var_name in _exposed_var_names:
 		if Mirror.has_object_variable(target_node, var_name):
 			script_instance_object.set(var_name, Mirror.get_object_variable(target_node, var_name))
@@ -338,11 +347,15 @@ func _on_save_exposed_vars() -> void:
 		Mirror.set_object_variable(target_node, var_name, script_instance_object.get(var_name))
 
 
-func _update_exposed_variable_names() -> void:
+func _update_exposed_variables() -> void:
 	_exposed_var_names.clear()
 	var matches: Array[RegExMatch] = _EXPOSE_VAR_REGEX.search_all(_source_code)
 	for mat in matches:
-		_exposed_var_names.append(mat.get_string().trim_prefix("@export var "))
+		var var_name: String = mat.get_string(1)
+		_exposed_var_names.append(var_name)
+		if mat.get_group_count() >= 3:
+			_EXPRESSION.parse(mat.get_string(3))
+			_exposed_var_default_values[var_name] = _EXPRESSION.execute()
 
 
 ## This method handles runtime error messages similar to VisualScriptInstance's `_on_block_message` method.
