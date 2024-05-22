@@ -105,7 +105,7 @@ static func current_platform_is_windows() -> bool:
 	return get_current_platform_name() == WIN_NAME
 
 
-static func get_release_name(version) -> String:
+static func get_release_name() -> String:
 	return "Horizon"
 
 
