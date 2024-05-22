@@ -275,7 +275,7 @@ export class SpaceService implements IRoleConsumer {
           }
         })
         createdSpace.publicBuildPermissions =
-          createSpaceDto.publicBuildPermissions || BUILD_PERMISSIONS.OBSERVER // default to observer
+          createSpaceDto.publicBuildPermissions || BUILD_PERMISSIONS.PRIVATE // default to private
         createdSpace.role = role
 
         createdSpace.maxUsers = createSpaceDto.maxUsers || 24
