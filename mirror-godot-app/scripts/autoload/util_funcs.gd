@@ -105,6 +105,10 @@ static func current_platform_is_windows() -> bool:
 	return get_current_platform_name() == WIN_NAME
 
 
+static func get_release_name() -> String:
+	return "Horizon"
+
+
 static func get_simple_platform_name(os_name:String) -> String:
 	var lower_os_name = os_name.to_lower()
 	return PLATFORMS.get(lower_os_name, lower_os_name)

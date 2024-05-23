@@ -36,10 +36,14 @@ func track_event(event_type: String, properties:={}) -> void:
 
 ## Send a single event to the Mixpanel Analytics service
 func _send_track_event(event: AnalyticsEvent, properties := {}) -> void:
+	var version := Util.get_version_string()
+	var release := Util.get_release_name()
 	var standard_properties = {
 		"token": api_token,
 		"distinct_id": event.user_id,
-		"env": "open-source-v2"
+		"env": "open-source-v2",
+		"version": version,
+		"release": release
 	}
 	if not properties.is_empty():
 		standard_properties.merge(properties)
