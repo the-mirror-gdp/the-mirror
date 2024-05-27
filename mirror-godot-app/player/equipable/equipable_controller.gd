@@ -154,6 +154,9 @@ func _load_equipable_by_asset_id(asset_id: String) -> void:
 	if asset_id != _current_asset_id:
 		# It is possible that another call to this method changed the current equipable.
 		return
+	if file_promise.is_error():
+		push_error("Failed to download asset: ", file_promise.get_error_message())
+		equipable_changed.emit(null)
 	var file_result = file_promise.get_result()
 	if file_result is Node3D and file_result.has_meta(&"MIRROR_equipable"):
 		_setup_equipped_item(file_result)
