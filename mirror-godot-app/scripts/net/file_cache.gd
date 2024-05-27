@@ -128,10 +128,11 @@ func try_load_cached_file(cache_key: String) -> Variant:
 		return TMFileUtil.load_json_file(file_path)
 	return null
 
-
+# in memory cache
 var _cached_pairs = {}
-
+var mutex: Mutex = Mutex.new()
 func load_gltf_thread_task(cache_key: String) -> Promise:
+	mutex.lock()
 	if _cached_pairs.has(cache_key):
 		print("Cache found... not loading twice")
 		return _cached_pairs[cache_key].promise
@@ -145,30 +146,21 @@ func load_gltf_thread_task(cache_key: String) -> Promise:
 		return
 	var file_name: String = _storage_cache.get(pair.key, "")
 	var file_path: String = get_file_path(file_name)
-
 	var task_id = WorkerThreadPool.add_task(func():
-		# future: we'll pack all the assets to .tscn and dependencies
-		# it should be faster than packing / repacking things. maybe even .scn files.
-		# if ResourceLoader.exists(file_path + ".tscn"):
-			# var node = ResourceLoader.load(file_path + ".tscn").instantiate()
-			# call_thread_safe("_cached_file_is_loaded", pair, node)
-			# return
 		var node = TMFileUtil.load_gltf_file_as_node(file_path, Zone.is_host())
-		# var scene: PackedScene = PackedScene.new()
-		# scene.pack(node)
-		# ResourceSaver.save(scene, file_path + ".tscn")
-		# print("Path: ", file_path + ".tscn")
 		call_thread_safe("_cached_file_is_loaded", pair, node)
 	)
 
-
+	mutex.unlock()
 	return pair.promise
 
 ## THIS MUST BE ON THE MAIN THREAD
 func _cached_file_is_loaded(pair, node):
+	mutex.lock()
 	print("Node name: ", node.get_name())
 	if node == null:
 		push_error("Can't load GLTF")
 		pair.promise.set_error("Failed to load mesh, ignoring and skipping")
 		return
 	pair.promise.set_result(node)
+	mutex.unlock()
