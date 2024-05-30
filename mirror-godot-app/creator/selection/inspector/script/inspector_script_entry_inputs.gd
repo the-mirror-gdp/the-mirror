@@ -56,11 +56,8 @@ func _setup_parameter(parameter_name: String, parameter_data: Array) -> void:
 
 
 func _on_parameter_changed(value, which: Control) -> void:
-	var parameters_for_entry: Dictionary = _target_script_instance.entry_parameters[_entry_id]
-	var param_name = which.label_text
-	var param_data = parameters_for_entry[param_name]
-	param_data[1] = value
-	_target_script_instance.apply_inspector_parameter_values()
+	var param_name: String = which.label_text
+	_target_script_instance.set_inspector_parameter_input_value(_entry_id, param_name, value)
 	_target_script_instance.script_instance_changed()
 
 
@@ -69,12 +66,7 @@ func _on_toggle_button_inspector_category_visibility_changed(new_visibility: boo
 
 
 func _on_create_parameter(parameter_port_array: Array) -> void:
-	for entry_block in _target_script_instance.script_builder.entry_blocks:
-		if entry_block.entry_id == _entry_id:
-			entry_block.parameters.create_inspector_parameter(parameter_port_array)
-			entry_block.reset_entry_output_ports()
-			break
-	_target_script_instance.sync_script_inst_params_with_script_data()
+	_target_script_instance.create_inspector_parameter_input(_entry_id, parameter_port_array)
 	_target_script_instance.script_data_contents_changed()
 	refresh_inspected_nodes.emit()
 

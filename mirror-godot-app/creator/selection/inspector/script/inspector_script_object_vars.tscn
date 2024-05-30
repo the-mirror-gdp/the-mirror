@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://bhbojmr3nuwrc"]
+
+[ext_resource type="PackedScene" uid="uid://dkxqj3l0xm8uw" path="res://creator/selection/inspector/categories/inspector_category_base.tscn" id="1_ov2tq"]
+[ext_resource type="Script" path="res://creator/selection/inspector/script/inspector_script_object_vars.gd" id="2_abj1i"]
+
+[node name="InspectorScriptObjectVars" instance=ExtResource("1_ov2tq")]
+script = ExtResource("2_abj1i")
+
+[node name="ToggleButton" parent="CategoryTitle" index="0" node_paths=PackedStringArray("properties")]
+properties = NodePath("../../Properties")
+hover_tooltip_text = "Use @export in GDScript"
+
+[node name="Text" parent="CategoryTitle/ToggleButton/Name" index="3"]
+text = "OBJECT VARIABLES"
+
+[connection signal="mouse_entered" from="CategoryTitle/ToggleButton" to="CategoryTitle/ToggleButton" method="_on_hoverable_button_mouse_entered"]
+[connection signal="mouse_exited" from="CategoryTitle/ToggleButton" to="CategoryTitle/ToggleButton" method="_on_hoverable_button_mouse_exited"]
+[connection signal="pressed" from="CategoryTitle/ToggleButton" to="CategoryTitle/ToggleButton" method="_on_hoverable_button_pressed"]

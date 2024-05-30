@@ -21,15 +21,18 @@ func setup(signal_tree_populator: ScriptEntrySignalTreePopulator) -> void:
 	_signal_selection.setup(signal_tree_populator)
 
 
-func populate_selection_tree(target_node: Node) -> void:
+func populate_selection_tree(target_node: Node, for_custom: bool) -> void:
 	_target_node = target_node
 	_custom_signal_parameters.clear()
 	_add_input_button.show()
 	_custom_signal_name.text = ""
 	_signal_parameters_label.text = "Signal Inputs:"
-	_signal_selection.populate_selection_tree(target_node)
-	_signal_selection.show()
-	_custom_signal.hide()
+	if for_custom:
+		_show_custom_entry_menu()
+	else:
+		_signal_selection.populate_selection_tree(target_node)
+		_signal_selection.show()
+		_custom_signal.hide()
 
 
 func focus_search_bar() -> void:
@@ -43,14 +46,17 @@ func get_desired_signal_signature():
 	return _get_custom_signal_signature()
 
 
+func _show_custom_entry_menu() -> void:
+	_signal_selection.hide()
+	_custom_signal.show()
+
+
 func _get_selected_signal_signature():
 	var signal_dict = _signal_selection.get_selected_signal()
 	if signal_dict == null:
 		return null
 	if String(signal_dict["signal"]) == "custom_signal":
-		_signal_selection.hide()
-		_custom_signal.show()
-		_add_input_button.show()
+		_show_custom_entry_menu()
 		return null
 	return signal_dict
 
@@ -68,10 +74,14 @@ func _get_custom_signal_signature():
 	if not existing_signature.is_empty():
 		existing_signature = existing_signature.duplicate()
 		existing_signature["path"] = "self"
+		existing_signature["type"] = "entry"
 		return existing_signature
 	var ret = {
+		"entry_id": "self_" + signal_name + "_" + str(randi() % 1000000),
+		"name": "On " + signal_name.capitalize(),
 		"path": "self",
 		"signal": signal_name,
+		"type": "entry",
 	}
 	if not _custom_signal_parameters.is_empty():
 		ret["signalParameters"] = _custom_signal_parameters.duplicate(true)

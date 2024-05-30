@@ -6,6 +6,10 @@ signal inspector_category_visibility_changed(new_visibility: bool)
 @export var expand_speed: float = 10.0
 @export var properties: Node
 
+## The text to show as a tooltip when hovering.
+## Use this instead of Godot's tooltip_text property.
+@export var hover_tooltip_text: String = ""
+
 var _is_category_visible: bool = false
 var _properties_child: Control
 var _plus_texture: TextureRect
@@ -55,3 +59,17 @@ func set_category_visible(new_is_visible):
 
 func _on_toggle_button_pressed():
 	set_category_visible(not _is_category_visible)
+
+
+func _on_hoverable_button_mouse_entered() -> void:
+	if hover_tooltip_text == "":
+		return
+	GameUI.set_hover_tooltip_text(hover_tooltip_text)
+
+
+func _on_hoverable_button_mouse_exited() -> void:
+	GameUI.hide_hover_tooltip_text()
+
+
+func _on_hoverable_button_pressed() -> void:
+	GameUI.hide_hover_tooltip_text()
