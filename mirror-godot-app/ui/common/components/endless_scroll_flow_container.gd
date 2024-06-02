@@ -69,6 +69,8 @@ func _calculate_max_items_on_screen(forced_size = Vector2.ZERO) -> int:
 
 
 func _fetch_data(cnt_items_to_fetch: int) -> Array:
+	if not fetch_callable.is_valid():
+		return []
 	assert(fetch_callable.is_valid())
 	if _is_already_requesting_next_page:
 		return [] # Some old request is in working...
