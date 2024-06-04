@@ -154,7 +154,12 @@ func create_graph_nodes(from_script_instance: ScriptInstance, rezoom: bool = tru
 	_queue_update_network_script_frames = -1
 	script_instance = from_script_instance
 	script_builder = script_instance.script_builder
-	assert(get_children().is_empty())
+	# Regression in GraphEdit: https://github.com/godotengine/godot/issues/91857
+	# We need to manually filter out the internal _connection_layer using the node name.
+	var graph_edit_children: Array[Node] = get_children()
+	for child in graph_edit_children:
+		assert(child.name.begins_with("_"), "Expected all children to be cleaned up before `create_graph_nodes` was called (expected `cleanup_and_delete_nodes` to be called first).")
+	#assert(get_children().is_empty())
 	for comment in script_instance.comments:
 		create_comment_graph_node(comment)
 	var script_blocks: Array[ScriptBlock] = script_builder.all_blocks
@@ -603,10 +608,12 @@ func focus_script_block(script_block: ScriptBlock, error_text: String) -> void:
 func rezoom_to_show_all_graph_nodes() -> void:
 	# Keep a 500x500 area near the origin in view.
 	var rect := Rect2(-100.0, -100.0, 400.0, 400.0)
-	for graph_node in get_children():
-		var pos: Vector2 = graph_node.position_offset
+	for graph_elem in get_children():
+		if not graph_elem is GraphElement:
+			continue
+		var pos: Vector2 = graph_elem.position_offset
 		rect = rect.expand(pos)
-		rect = rect.expand(pos + graph_node.size)
+		rect = rect.expand(pos + graph_elem.size)
 	zoom = minf(size.x / rect.size.x, size.y / rect.size.y) * 0.9
 	scroll_offset = rect.get_center() * zoom - size * 0.5
 
