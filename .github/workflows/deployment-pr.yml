@@ -24,7 +24,7 @@ jobs:
       editor-binary-name: MirrorGodotEditorWindows.exe
       editor-binary-download: MirrorGodotEditorWindows.exe
       editor-binary-branch: dev
-      editor-template-directory: ~/AppData/Roaming/Godot/export_templates/4.3.dev
+      editor-template-directory: ~/AppData/Roaming/Godot/export_templates/4.3.beta
       template-binary-workflow: deployment.yml
       template-binary-name: windows_release_x86_64.exe
       template-binary-branch: themirror
@@ -35,8 +35,8 @@ jobs:
       bucket-name: no-bucket
       os: ${{ github.event.repository.name != 'the-mirror' && 'windows-mirror' || 'windows-latest' }}
       # TODO: This will be dynamic in future and we can't do that immediately as we have to focus on the deployment side.
-      editor-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/e33f01e3/MirrorGodotEditorWindows.exe
-      template-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/e33f01e3/windows_release_x86_64.exe
+      editor-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/353b6bf1/MirrorGodotEditorWindows.exe
+      template-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/353b6bf1/windows_release_x86_64.exe
   build-macos-client:
     name: 🍎 Build MacOS Dev PR
     uses: ./.github/workflows/client-build-tool.yml
@@ -50,7 +50,7 @@ jobs:
       editor-binary-download: MirrorGodotEditorMac.app.zip
       editor-binary-name: MirrorGodotEditorMac.app/Contents/MacOS/Godot
       editor-binary-branch: themirror
-      editor-template-directory: ~/Library/Application\ Support/Godot/export_templates/4.3.dev
+      editor-template-directory: ~/Library/Application\ Support/Godot/export_templates/4.3.beta
       template-binary-workflow: deployment.yml
       template-binary-name: macos_template.app.zip
       template-binary-branch: dev
@@ -61,8 +61,8 @@ jobs:
       bucket-name: no-bucket
       os: ${{ github.event.repository.name != 'the-mirror' && 'macos-mirror' || 'macos-latest' }}
       # TODO: This will be dynamic in future and we can't do that immediately as we have to focus on the deployment side.
-      editor-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/e33f01e3/MirrorGodotEditorMac.app.zip
-      template-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/e33f01e3/macos_template.app.zip
+      editor-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/353b6bf1/MirrorGodotEditorMac.app.zip
+      template-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/353b6bf1/macos_template.app.zip
   build-linux-client:
     name: 🐧 Build Linux Dev PR
     uses: ./.github/workflows/client-build-tool.yml
@@ -74,7 +74,7 @@ jobs:
       editor-binary-name: MirrorGodotEditorLinux.x86_64
       editor-binary-download: MirrorGodotEditorLinux.x86_64
       editor-binary-branch: dev
-      editor-template-directory: ~/.local/share/godot/export_templates/4.3.dev
+      editor-template-directory: ~/.local/share/godot/export_templates/4.3.beta
       template-binary-workflow: deployment.yml
       template-binary-name: linux_release.x86_64
       template-binary-branch: themirror
@@ -85,5 +85,5 @@ jobs:
       bucket-name: no-bucket
       os: ${{ github.event.repository.name != 'the-mirror' && 'linux-mirror' || 'ubuntu-22.04' }}
       # TODO: This will be dynamic in future and we can't do that immediately as we have to focus on the deployment side.
-      editor-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/e33f01e3/MirrorGodotEditorLinux.x86_64
-      template-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/e33f01e3/linux_release.x86_64
+      editor-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/353b6bf1/MirrorGodotEditorLinux.x86_64
+      template-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/353b6bf1/linux_release.x86_64
