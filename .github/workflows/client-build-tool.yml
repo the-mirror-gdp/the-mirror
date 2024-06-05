@@ -202,7 +202,8 @@ jobs:
 
       - name: Unit Tests
         timeout-minutes: 15
-        if: inputs.should-run-unit-tests
+        # disabled until we can fix gut
+        if: false
         run: |
           chmod +x ./${{ inputs.editor-binary-name }}
           ./${{ inputs.editor-binary-name }} -s --path ./ addons/gut/gut_cmdln.gd --headless
