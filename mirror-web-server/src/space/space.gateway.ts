@@ -15,7 +15,8 @@ enum ZoneSpaceWsMessage {
   UPDATE = 'zone_update_space',
   UPDATE_SPACE_VARIABLES = 'zone_update_space_variables',
   PUBLISH = 'zone_publish_space',
-  GET_SPACE_VERSION = 'zone_get_space_version'
+  GET_SPACE_VERSION = 'zone_get_space_version',
+  GET_ASSETS = 'zone_get_space_assets'
 }
 
 @WebSocketGateway()
@@ -26,6 +27,14 @@ export class SpaceGateway {
     private readonly spaceService: SpaceService,
     private readonly logger: Logger
   ) {}
+
+  @SubscribeMessage(ZoneSpaceWsMessage.GET_ASSETS)
+  public getAssetPerSpaceWithRolesCheck(
+    @MessageBody('id') id: string,
+    @MessageBody('userId') userId: string
+  ) {
+    return this.spaceService.getAssetsListPerSpaceWithRolesCheck(userId, id)
+  }
 
   @SubscribeMessage(ZoneSpaceWsMessage.GET_ONE)
   public findOne(@MessageBody('id') id: string) {
