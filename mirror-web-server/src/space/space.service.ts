@@ -91,6 +91,7 @@ import {
 import { MirrorDBService } from '../mirror-db/mirror-db.service'
 import { ScriptEntityService } from '../script-entity/script-entity.service'
 import { RemixSpaceDto } from './dto/remix-space-dto'
+import { AssetDocument } from '../asset/asset.schema'
 
 /**
  * @description This mirrors _standardPopulateFields and should be kept up to date with it. However, this "populate a lot of things" approach is deprecated
@@ -2070,6 +2071,76 @@ export class SpaceService implements IRoleConsumer {
         }
       })
       .exec()
+  }
+
+  // get all assets in a space
+  public async getAssetsListPerSpaceWithRolesCheck(
+    userId: UserId,
+    spaceId: SpaceId
+  ): Promise<AssetDocument[]> {
+    const space = await this.getSpace(spaceId)
+
+    if (!this.canFindWithRolesCheck(userId, space)) {
+      throw new NotFoundException('Not found or insufficient permissions')
+    }
+
+    const aggregate = [
+      {
+        $match: {
+          space: new ObjectId(spaceId)
+        }
+      },
+      {
+        $lookup: {
+          from: 'assets',
+          localField: 'asset',
+          foreignField: '_id',
+          as: 'asset'
+        }
+      },
+      {
+        $unwind: '$asset'
+      },
+      {
+        $replaceRoot: { newRoot: '$asset' }
+      }
+    ]
+
+    return await this.spaceObjectModel.aggregate(aggregate).exec()
+  }
+
+  public async getAssetsListPerSpaceAdmin(
+    spaceId: SpaceId
+  ): Promise<AssetDocument[]> {
+    const space = await this.getSpace(spaceId)
+
+    if (!space) {
+      throw new NotFoundException('Not found')
+    }
+
+    const aggregate = [
+      {
+        $match: {
+          space: new ObjectId(spaceId)
+        }
+      },
+      {
+        $lookup: {
+          from: 'assets',
+          localField: 'asset',
+          foreignField: '_id',
+          as: 'asset'
+        }
+      },
+      {
+        $unwind: '$asset'
+      },
+      {
+        $replaceRoot: { newRoot: '$asset' }
+      }
+    ]
+
+    return await this.spaceObjectModel.aggregate(aggregate).exec()
   }
 
   public async kickUserByAdmin(user_id: UserId, space_id: SpaceId) {
