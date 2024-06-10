@@ -29,7 +29,7 @@ export class SpaceGateway {
   ) {}
 
   @SubscribeMessage(ZoneSpaceWsMessage.GET_ASSETS)
-  public getAssetPerSpaceWithRolesCheck(
+  public getAssetsListPerSpaceWithRolesCheck(
     @MessageBody('id') id: string,
     @MessageBody('userId') userId: string
   ) {
