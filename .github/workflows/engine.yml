@@ -288,7 +288,7 @@ jobs:
           - name: Linux Editor
             cache-name: linux-editor
             target: editor
-            sconsflags: arch=x86_64 debug_symbols=no optimize=speed production=yes
+            sconsflags: arch=x86_64 debug_symbols=yes optimize=speed_trace
             strip: false
             bin: "./bin/godot.linuxbsd.editor.x86_64"
             artifact-name: "MirrorGodotEditorLinux.x86_64"
