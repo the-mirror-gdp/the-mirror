@@ -77,6 +77,22 @@ async function bootstrapMirrorWebServer() {
   })
   app.useWebSocketAdapter(new WsAdapter(app))
 
+  // asset storage driver env validation
+  if (
+    process.env.ASSET_STORAGE_DRIVER === 'GCP' &&
+    !process.env.GCS_BUCKET_PUBLIC
+  ) {
+    throw new Error('GCS_BUCKET_PUBLIC is required when using GCP storage')
+  }
+
+  if (
+    (!process.env.ASSET_STORAGE_DRIVER ||
+      process.env.ASSET_STORAGE_DRIVER === 'LOCAL') &&
+    !process.env.ASSET_STORAGE_URL
+  ) {
+    throw new Error('ASSET_STORAGE_URL is required when using LOCAL storage')
+  }
+
   // Important: This *only* sets up validation pipes for HTTP handlers, NOT Websockets. See the notice here: https://docs.nestjs.com/pipes#global-scoped-pipes
   app.useGlobalPipes(
     new ValidationPipe({

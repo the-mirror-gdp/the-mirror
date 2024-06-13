@@ -111,13 +111,17 @@ if (
   console.log('Added AnalyticsModule')
 }
 
-if (process.env.ASSET_STORAGE_DRIVER === 'LOCAL') {
+if (
+  !process.env.ASSET_STORAGE_DRIVER ||
+  process.env.ASSET_STORAGE_DRIVER === 'LOCAL'
+) {
   console.log(
     'Using local storage, path: ',
     join(__dirname, '../', 'localStorage')
   )
   imports.push(
     ServeStaticModule.forRoot({
+      serveRoot: '/assets-storage',
       rootPath: join(__dirname, '../', 'localStorage')
     })
   )

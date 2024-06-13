@@ -1045,7 +1045,24 @@ export class SpaceService implements IRoleConsumer {
     try {
       const remoteRelativePath = `space/${spaceId}/terrain/voxels.dat`
 
-      if (process.env.ASSET_STORAGE_DRIVER === 'LOCAL') {
+      if (process.env.ASSET_STORAGE_DRIVER === 'GCP') {
+        await this.fileUploadService.streamData(
+          process.env.GCS_BUCKET_PUBLIC,
+          remoteRelativePath,
+          'application/octet-stream',
+          Buffer.from(new Uint8Array()),
+          'publicRead'
+        )
+        return {
+          success: true,
+          publicUrl: `${process.env.GCP_BASE_PUBLIC_URL}/${remoteRelativePath}`
+        }
+      }
+
+      if (
+        !process.env.ASSET_STORAGE_DRIVER ||
+        process.env.ASSET_STORAGE_DRIVER === 'LOCAL'
+      ) {
         // Create a fake file object to pass to the local file upload method
         const file: Express.Multer.File = {
           fieldname: '',
@@ -1054,28 +1071,18 @@ export class SpaceService implements IRoleConsumer {
           mimetype: 'application/octet-stream',
           size: 0,
           destination: '',
-          filename: '',
+          filename: 'voxels.dat',
           path: '',
           buffer: Buffer.from(new Uint8Array()),
           stream: null // Add the 'stream' property
         }
+
         await this.fileUploadService.uploadFileLocal(file, remoteRelativePath)
+
         return {
           success: true,
           publicUrl: `${process.env.ASSET_STORAGE_URL}/${remoteRelativePath}`
         }
-      }
-
-      await this.fileUploadService.streamData(
-        process.env.GCS_BUCKET_PUBLIC,
-        remoteRelativePath,
-        'application/octet-stream',
-        Buffer.from(new Uint8Array()),
-        'publicRead'
-      )
-      return {
-        success: true,
-        publicUrl: `${process.env.GCP_BASE_PUBLIC_URL}/${remoteRelativePath}`
       }
     } catch (e) {
       this.logger.error(e?.message, e, SpaceService.name)
