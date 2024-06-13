@@ -37,7 +37,7 @@ Setup was tested with WSL2 (defualt for not Professional versions of Windows)
 
 3. Configure your `./mirror-web-server/.env` by duplicating your `.env.example` file and renaming it to `.env`. Use the defaults where needed and plug in your own env variables where necessary.
 
-4. [Create a new Firebase project](https://firebase.google.com/) and [download your service account JSON](https://firebase.google.com/docs/admin/setup) file to `/mirror-web-server/the-mirror-backend-dev-firebase-admin.json`, which will plug the `mirror-web-server` into your own Firebase instance. This is required if you're running `mirror-web-server` locally since `mirror-web-server` requires admin permissions.
+4. [Create a new Firebase project](/docs/open-source-code/firebase) and download your service account JSON file and replace the contents of file `/mirror-web-server/firebase-creds-example.json` with the contents of the downloaded file , which will plug the `mirror-web-server` into your own Firebase instance. This is required if you're running `mirror-web-server` locally since `mirror-web-server` requires admin permissions.
 
 5. From git bash or WSL, from `YOUR_PROJECT_DIR/mirror-web-server/`, run `docker compose up`
 
