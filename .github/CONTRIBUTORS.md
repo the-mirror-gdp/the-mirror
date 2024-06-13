@@ -42,6 +42,8 @@ Jason Traeder (PapaBeefolini)
 
 Raphaël Duchaîne (duchainer)
 
+Rich Schiffer (filthyrrrich)
+
 Tarun Karki
 
 Wojtek Pe (wojtekpil)

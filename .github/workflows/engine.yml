@@ -278,7 +278,7 @@ jobs:
           path: ./godot-engine/bin/${{ matrix.artifact-name }}.zip
           destination: ${{ matrix.bucket-name }}/${{steps.vars.outputs.sha_short}}/
   build-linux:
-    runs-on: ${{ inputs.self-hosted-runner && 'linux-mirror' || 'ubuntu-20.04' }}
+    runs-on: ${{ inputs.self-hosted-runner && 'linux-mirror' || 'ubuntu-22.04' }}
     name: ${{ matrix.name }}
     environment: ${{ inputs.environment }}
     strategy:
@@ -288,7 +288,7 @@ jobs:
           - name: Linux Editor
             cache-name: linux-editor
             target: editor
-            sconsflags: arch=x86_64 debug_symbols=no optimize=speed production=yes
+            sconsflags: arch=x86_64 debug_symbols=yes optimize=speed_trace
             strip: false
             bin: "./bin/godot.linuxbsd.editor.x86_64"
             artifact-name: "MirrorGodotEditorLinux.x86_64"
@@ -311,6 +311,12 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+
+      - name: Check versions of the compiler
+        run: |
+          ldd --version
+          gcc --version
+          cmake --version
 
       - name: Get short commit hash
         id: vars

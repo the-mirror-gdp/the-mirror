@@ -30,6 +30,7 @@ var _current_item_offset = 0
 var _is_already_requesting_next_page = false
 var _lowest_known_scroll_position = 0
 var _is_fully_loaded = false
+var _configured = false
 
 
 func clear() -> void:
@@ -69,6 +70,11 @@ func _calculate_max_items_on_screen(forced_size = Vector2.ZERO) -> int:
 
 
 func _fetch_data(cnt_items_to_fetch: int) -> Array:
+	if not fetch_callable.is_valid():
+		# this could be caused by the data not being initialised before this is called
+		# it happens generally if you're not logged in before populating this.
+		push_error("invalid fetch callable in endless scroll container")
+		return []
 	assert(fetch_callable.is_valid())
 	if _is_already_requesting_next_page:
 		return [] # Some old request is in working...
@@ -112,6 +118,7 @@ func setup(forced_start_size = Vector2.ZERO) -> void:
 	var items_to_fetch = (preload_pages_in_advance) * _calculate_max_items_on_screen(forced_start_size)
 	var items_data = await _fetch_data(items_to_fetch)
 	_populate_items(items_data)
+	_configured = true
 
 
 func fetch_and_populate(forced_start_size = Vector2.ZERO) -> void:
@@ -125,7 +132,7 @@ func fetch_and_populate(forced_start_size = Vector2.ZERO) -> void:
 	var offset_modulo = _current_item_offset %items_per_row
 	if offset_modulo > 0:
 		items_to_fetch += items_per_row - offset_modulo
-	var items_data = await _fetch_data(items_to_fetch)
+	var items_data = await _fetch_data(max(1,items_to_fetch))
 	_populate_items(items_data)
 
 
@@ -175,7 +182,7 @@ func _on_retry_button_pressed() -> void:
 func _on_visibility_changed() -> void:
 	if not visible:
 		return
-	if not get_v_scroll_bar().visible:
+	if not get_v_scroll_bar().visible and _configured:
 		fetch_and_populate()
 
 

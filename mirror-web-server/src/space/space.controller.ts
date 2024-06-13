@@ -705,6 +705,18 @@ export class SpaceController {
    * END Section: Owner permissions for role modification
    */
 
+  @Get('assets-list/:spaceId')
+  @FirebaseTokenAuthGuard()
+  public async getAssetsListPerSpace(
+    @UserToken('user_id') userId: UserId,
+    @Param('spaceId') spaceId: SpaceId
+  ) {
+    return await this.spaceService.getAssetsListPerSpaceWithRolesCheck(
+      userId,
+      spaceId
+    )
+  }
+
   @Post(':id/kickme')
   @FirebaseTokenAuthGuard()
   @ApiOkResponse({ type: SpacePublicData })

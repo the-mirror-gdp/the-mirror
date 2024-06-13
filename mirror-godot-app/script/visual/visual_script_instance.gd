@@ -137,6 +137,15 @@ func _create_event_node(entry_block: ScriptBlockEntryBase) -> void:
 	entry_block.entry_node = event_node
 
 
+func create_inspector_parameter_input(entry_id: String, parameter_port_array: Array) -> void:
+	for entry_block in script_builder.entry_blocks:
+		if entry_block.entry_id == entry_id:
+			entry_block.parameters.create_inspector_parameter(parameter_port_array)
+			entry_block.reset_entry_output_ports()
+			break
+	sync_script_inst_params_with_script_data()
+
+
 ## Ensure the script instance entry inspector parameters match the
 ## signature of the script's data. Since a script may be used by
 ## multiple objects, parameters may get out of sync without this code.

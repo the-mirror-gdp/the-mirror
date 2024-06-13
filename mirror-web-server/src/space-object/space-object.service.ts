@@ -282,6 +282,17 @@ export class SpaceObjectService implements IRoleConsumer {
       .exec()
   }
 
+  public async findAllBySpaceIdWithRolesCheck(
+    spaceId: SpaceId,
+    userId: UserId
+  ) {
+    const space = await this.spaceService.getSpace(spaceId)
+    if (!this.spaceService.canFindWithRolesCheck(userId, space)) {
+      throw new NotFoundException('Not found or insufficient permissions')
+    }
+    return this.findAllBySpaceIdAdmin(spaceId)
+  }
+
   public getAllBySpaceIdPaginatedAdmin(
     spaceId: SpaceId,
     pagination: PaginationInterface,

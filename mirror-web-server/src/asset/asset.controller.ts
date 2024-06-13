@@ -784,4 +784,16 @@ export class AssetController {
       purchaseOptionId
     )
   }
+
+  @Get('/space/:spaceId')
+  @FirebaseTokenAuthGuard()
+  public async getAllAssetsBySpaceIdWithRolesCheck(
+    @UserToken('user_id') userId: UserId,
+    @Param('spaceId') spaceId: string
+  ) {
+    return await this.assetService.getAllAssetsBySpaceIdWithRolesCheck(
+      spaceId,
+      userId
+    )
+  }
 }

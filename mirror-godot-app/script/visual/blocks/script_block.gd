@@ -109,6 +109,8 @@ func _setup_base(block_json: Dictionary) -> void:
 		graph_position = Serialization.array_to_vector2(block_json["position"])
 	if block_json.has("name"):
 		graph_name = block_json["name"]
+	elif block_json.has("signal"):
+		graph_name = "On " + String(block_json["signal"]).capitalize()
 	else:
 		graph_name = String(block_json["type"]).capitalize()
 

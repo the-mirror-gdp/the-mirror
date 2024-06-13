@@ -1,0 +1,37 @@
+name: Build-Check
+
+on:
+  push:
+    branches: [dev]
+    paths:
+      - "mirror-web-server/**"
+  pull_request:
+    branches: [dev]
+    paths:
+      - "mirror-web-server/**"
+
+jobs:
+  # This runs the same command as GCP build but is far faster since it doesn't deploy to Cloud Run. Can be useful for debugging
+  Build-Command:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: mirror-web-server
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "yarn"
+          cache-dependency-path: mirror-web-server/yarn.lock
+
+      - run: yarn install --frozen-lockfile
+      - run: yarn gcp-build

@@ -112,7 +112,7 @@ func _on_confirmed():
 	var desired_block_json: Dictionary = _script_block_creation_menu.get_desired_block_json()
 	if desired_block_json.is_empty():
 		return
-	if desired_block_json["type"] == "entry" and not desired_block_json.has("signal"):
+	if desired_block_json["type"] == "entry" and desired_block_json["signal"] == &"custom_signal":
 		request_show_entry_creation_dialog.emit()
 		return
 	create_block.emit(desired_block_json)

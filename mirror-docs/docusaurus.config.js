@@ -72,7 +72,7 @@ const config = {
         { name: 'og:title', content: 'Docs | The Mirror' },
         { name: 'og:url', content: 'https://docs.themirror.space/' },
         { name: 'og:image', content: 'https://docs.themirror.space/img/DocsSite.jpg' },
-        { name: 'description', content: 'Game Development Platform: The Ultimate Sandbox' },
+        { name: 'description', content: 'Open-Source Roblox & UEFN Alternative' },
         { name: 'og:description', content: 'Game Development Platform: The Ultimate Sandbox' },
         { name: 'twitter:title', content: 'Docs | The Mirror' },
         { name: 'twitter:description', content: 'Game Development Platform: The Ultimate Sandbox' },
@@ -155,6 +155,38 @@ const config = {
         backgroundColor: '#00CFFF',
         textColor: '#06011F',
         isCloseable: true,
+      },
+      algolia: {
+        // The application ID provided by Algolia
+        appId: 'WZDUGEW4O1',
+
+        // Public API key: it is safe to commit it
+        apiKey: 'cee727fb358dbae0ef4cb1c3f4b1da52',
+
+        indexName: 'themirror',
+
+        // Optional: see doc section below
+        contextualSearch: false,
+
+        // Optional: Specify domains where the navigation should occur through window.location instead on history.push. Useful when our Algolia config crawls multiple documentation sites and we want to navigate with window.location.href to them.
+        externalUrlRegex: 'themirror.space|docs.themirror.space',
+
+        // Optional: Replace parts of the item URLs from Algolia. Useful when using the same search index for multiple deployments using a different baseUrl. You can use regexp or string in the `from` param. For example: localhost:3000 vs myCompany.com/docs
+        replaceSearchResultPathname: {
+          from: '/docs/', // or as RegExp: /\/docs\//
+          to: '/',
+        },
+
+        // Optional: Algolia search parameters
+        searchParameters: {},
+
+        // Optional: path for search page that enabled by default (`false` to disable it)
+        searchPagePath: false, // 2024-05-07 09:23:31 Setting to false because the page was showing empty; TODO fix: see https://github.com/facebook/docusaurus/issues/6693. It requires enabling contextualSearch: true, which was making 0 results appear in the modal too. At least with this, the modal works.
+
+        // Optional: whether the insights feature is enabled or not on Docsearch (`false` by default)
+        insights: true,
+
+        //... other Algolia params
       },
       prism: {
         theme: lightCodeTheme,
@@ -310,15 +342,7 @@ const config = {
         },
       },
     }),
-  // https://github.com/cmfcmf/docusaurus-search-local#usage
-  plugins: [
-    [
-      require.resolve("@cmfcmf/docusaurus-search-local"),
-      {
-        style: undefined
-      }
-    ],
-  ],
+  plugins: [],
 };
 
 module.exports = config;

@@ -14,7 +14,7 @@ export enum ROLE {
   // can create/read, but not update/delete
   CONTRIBUTOR = 400,
 
-  // the user is a provider 
+  // the user is a provider
   PROVIDER = 150,
 
   // Entity, e.g. a Space, can be entered/observed

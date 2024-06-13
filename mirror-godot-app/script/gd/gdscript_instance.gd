@@ -7,16 +7,16 @@ signal gdscript_compile_success()
 
 const _EMPTY_SCRIPT: String = """# Welcome to The Mirror-flavored GDScript!
 # This is like normal GDScript, but you must not write class\u200B_name or ext\u200Bends.
+# You can print to the notification area using `Notify.info(title, message)`.
 # You may use functions and variables just like you would in normal GDScript.
-# Use `target_object` to refer to the object (SpaceObject or global) the script
-# is attached to instead of `self`, as `self` refers to the script itself.
 # The Mirror provides support for multiple scripts per object, you can use
 # members of SpaceObject the same way you use inherited members in Godot.
-# For example, `print(position)` will print a SpaceObject's position.
-# You can print to the notification area using `Notify.info(title, message)`.
+# For example, `Notify.info("pos", str(position))` will print a SpaceObject's position.
+# Use `target_object` to refer to the object (SpaceObject or global) the script
+# is attached to instead of `self`, as `self` refers to the script itself.
 
 
-# Called when a SpaceObject finishes loading.
+# Called when a SpaceObject and script finish loading.
 func _ready() -> void:
 	pass # Replace with function body.
 
@@ -26,9 +26,7 @@ func _process(delta: float) -> void:
 	pass # Replace with function body.
 """
 
-const _SCRIPT_PREPROCESS_PREFIX: String = """extends Object
-
-signal tmusergdscript_runtime_error(error_str: String, frame_index: int, line_num: int, func_name: String)
+const _SCRIPT_PREPROCESS_PREFIX: String = """extends TMUserGDScriptBase
 
 
 func get_object_variable(variable_name: String) -> Variant:
@@ -40,10 +38,12 @@ func has_object_variable(variable_name: String) -> bool:
 
 
 func set_object_variable(variable_name: String, variable_value: Variant) -> void:
+	if variable_name in self:
+		set(variable_name, variable_value)
 	Mirror.set_object_variable(target_object, variable_name, variable_value)
 
 
-func tween_object_variable(variable_name: String, to_value: Variant, duration: float, trans: Tween.TransitionType, easing: Tween.EaseType) -> void:
+func tween_object_variable(variable_name: String, to_value: Variant, duration: float, trans: Tween.TransitionType = Tween.TRANS_LINEAR, easing: Tween.EaseType = Tween.EASE_IN_OUT) -> void:
 	Mirror.tween_object_variable(target_object, variable_name, to_value, duration, trans, easing)
 
 
@@ -62,9 +62,16 @@ static var _SCRIPT_TEXT_DENYLIST: Array[RegEx] = [
 	RegEx.create_from_string("\\bpreload\\b"),
 	RegEx.create_from_string("\\bOS\\b"),
 	RegEx.create_from_string("\\bResourceLoader\\b"),
+	RegEx.create_from_string("\\bFileAccess\\b"),
+	RegEx.create_from_string("\\bDirAccess\\b")
 ]
 
+static var _EXPOSE_VAR_REGEX: RegEx = RegEx.create_from_string("@export var ([_a-zA-Z][_a-zA-Z0-9]{0,30})\\b[^=\\n]*(= )?([^=\\n]*)")
+static var _EXPRESSION = Expression.new()
+
 var _entries: Array[GDScriptEntry] = []
+var _exposed_var_names: PackedStringArray = []
+var _exposed_var_default_values: Dictionary = {}
 var _source_code: String
 var gdscript_code: TMUserGDScript = TMUserGDScript.new()
 var script_instance_object: Object
@@ -153,6 +160,12 @@ func get_default_value_of_entry_inspector_parameter(entry_id: String, parameter_
 	return null
 
 
+func get_default_value_of_exposed_variable(variable_name: String) -> Variant:
+	if _exposed_var_default_values.has(variable_name):
+		return _exposed_var_default_values[variable_name]
+	return null
+
+
 func get_entry_line_numbers() -> PackedInt32Array:
 	var ret := PackedInt32Array()
 	for entry in _entries:
@@ -177,7 +190,12 @@ func set_source_code(source_code: String) -> void:
 
 
 func create_entry(entry_json: Dictionary) -> void:
-	var new_function_name: String = entry_json["name"].to_snake_case()
+	var new_function_name: String
+	if entry_json.has("name"):
+		new_function_name = entry_json["name"].to_snake_case()
+	else:
+		new_function_name = "on_" + entry_json["signal"]
+	entry_json["function"] = new_function_name
 	for entry in _entries:
 		if entry.function_name == new_function_name:
 			return # We already have an entry for this, no need to make a new entry.
@@ -208,6 +226,15 @@ func _sync_entry_params_with_gdscript_code() -> void:
 		script_entries_changed.emit()
 
 
+func create_inspector_parameter_input(entry_id: String, parameter_port_array: Array) -> void:
+	for gdscript_entry in _entries:
+		if gdscript_entry.entry_id == entry_id:
+			gdscript_entry.entry_parameters.create_inspector_parameter(parameter_port_array)
+			_source_code = gdscript_entry.sync_gdscript_code_with_entry(_source_code)
+			break
+	sync_script_inst_params_with_script_data()
+
+
 ## Ensure the script instance entry inspector parameters match the
 ## signature of the script's data. Since a script may be used by
 ## multiple objects, parameters may get out of sync without this code.
@@ -220,10 +247,10 @@ func sync_script_inst_params_with_script_data() -> void:
 		entry_parameters[entry_id] = new_params
 		if entry_id in old_entry_parameters:
 			var old_params: Dictionary = old_entry_parameters[entry_id]
-			for old_key in old_params:
-				if old_key in new_params:
-					var old_param_array: Array = old_params[old_key]
-					var new_param_array: Array = new_params[old_key]
+			for param_key in old_params:
+				if param_key in new_params:
+					var old_param_array: Array = old_params[param_key]
+					var new_param_array: Array = new_params[param_key]
 					new_param_array[1] = old_param_array[1]
 	entry_parameters.sort()
 	apply_inspector_parameter_values()
@@ -254,6 +281,7 @@ func _preprocess_and_apply_code() -> void:
 			error_message_dict["line"] -= _SCRIPT_PREPROCESS_LINE_COUNT
 		gdscript_compile_error.emit(error_code, error_messages)
 		return
+	_update_exposed_variables()
 	gdscript_compile_success.emit()
 	if not can_execute():
 		# Don't even init the script if it can't execute.
@@ -261,13 +289,20 @@ func _preprocess_and_apply_code() -> void:
 		return
 	# Instantiate the successfully loaded script.
 	script_instance_object = gdscript_code.new()
+	_sync_exposed_variables_with_spaceobj_spacevars()
+	# Connect the signals.
+	script_instance_object.load_exposed_vars.connect(_on_load_exposed_vars)
+	script_instance_object.save_exposed_vars.connect(_on_save_exposed_vars)
 	script_instance_object.tmusergdscript_runtime_error.connect(_on_tmusergdscript_runtime_error)
 	for entry in _entries:
-		entry.entry_node.connect(entry.entry_signal, Callable(script_instance_object, entry.function_name))
+		entry.connect_entry_signal(script_instance_object, entry_parameters)
 	# Supplementary entry callbacks. Keep this in sync with GDScript CodeEdit load_entry_connection_decoration.
 	if target_node is SpaceObject:
 		if _source_code.contains("func _ready("):
-			target_node.setup_done.connect(Callable(script_instance_object, &"_ready"))
+			if target_node._is_setup:
+				script_instance_object.call(&"_ready")
+			else:
+				target_node.setup_done.connect(Callable(script_instance_object, &"_ready"))
 	if _source_code.contains("func _physics_process("):
 		Zone.physics_process_every_frame.connect(Callable(script_instance_object, &"_physics_process"))
 	if _source_code.contains("func _process("):
@@ -291,6 +326,36 @@ func _preprocess_check_blacklist() -> Dictionary:
 func _sync_gdscript_code_with_entries() -> void:
 	for entry in _entries:
 		_source_code = entry.sync_gdscript_code_with_entry(_source_code)
+
+
+func _sync_exposed_variables_with_spaceobj_spacevars() -> void:
+	#_update_exposed_variables()
+	for var_name in _exposed_var_names:
+		if Mirror.has_object_variable(target_node, var_name):
+			script_instance_object.set(var_name, Mirror.get_object_variable(target_node, var_name))
+		else:
+			Mirror.set_object_variable(target_node, var_name, script_instance_object.get(var_name))
+
+
+func _on_load_exposed_vars() -> void:
+	for var_name in _exposed_var_names:
+		script_instance_object.set(var_name, Mirror.get_object_variable(target_node, var_name))
+
+
+func _on_save_exposed_vars() -> void:
+	for var_name in _exposed_var_names:
+		Mirror.set_object_variable(target_node, var_name, script_instance_object.get(var_name))
+
+
+func _update_exposed_variables() -> void:
+	_exposed_var_names.clear()
+	var matches: Array[RegExMatch] = _EXPOSE_VAR_REGEX.search_all(_source_code)
+	for mat in matches:
+		var var_name: String = mat.get_string(1)
+		_exposed_var_names.append(var_name)
+		if mat.get_group_count() >= 3:
+			_EXPRESSION.parse(mat.get_string(3))
+			_exposed_var_default_values[var_name] = _EXPRESSION.execute()
 
 
 ## This method handles runtime error messages similar to VisualScriptInstance's `_on_block_message` method.

@@ -3,6 +3,7 @@ const Piscina = require('piscina')
 const os = require('os')
 const { ObjectId } = require('mongodb')
 
+// @ts-ignore
 const piscina = new Piscina({
   filename: path.resolve(
     __dirname,

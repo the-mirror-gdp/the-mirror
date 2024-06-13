@@ -91,6 +91,7 @@ import {
 import { MirrorDBService } from '../mirror-db/mirror-db.service'
 import { ScriptEntityService } from '../script-entity/script-entity.service'
 import { RemixSpaceDto } from './dto/remix-space-dto'
+import { AssetDocument } from '../asset/asset.schema'
 
 /**
  * @description This mirrors _standardPopulateFields and should be kept up to date with it. However, this "populate a lot of things" approach is deprecated
@@ -204,7 +205,7 @@ export class SpaceService implements IRoleConsumer {
       case BUILD_PERMISSIONS.MANAGER:
         return ROLE.MANAGER
       default:
-        return ROLE.OBSERVER // default to observer
+        return ROLE.NO_ROLE // default to no role
     }
   }
 
@@ -275,7 +276,7 @@ export class SpaceService implements IRoleConsumer {
           }
         })
         createdSpace.publicBuildPermissions =
-          createSpaceDto.publicBuildPermissions || BUILD_PERMISSIONS.OBSERVER // default to observer
+          createSpaceDto.publicBuildPermissions || BUILD_PERMISSIONS.PRIVATE // default to private
         createdSpace.role = role
 
         createdSpace.maxUsers = createSpaceDto.maxUsers || 24
@@ -429,6 +430,7 @@ export class SpaceService implements IRoleConsumer {
     matchFilter.$and = andFilter
 
     matchFilter.$and.push({ isTMTemplate: { $exists: false } })
+    matchFilter.$and.push({ activeSpaceVersion: { $exists: true } })
     if (userId) {
       matchFilter.$and.push({ [`role.users.${userId}`]: { $ne: ROLE.OWNER } })
     }
@@ -1698,7 +1700,7 @@ export class SpaceService implements IRoleConsumer {
     newDescription && (space.description = newDescription)
     space.maxUsers = maxUsers || 24
     space.publicBuildPermissions =
-      publicBuildPermissions || BUILD_PERMISSIONS.OBSERVER // default to observer
+      publicBuildPermissions || BUILD_PERMISSIONS.PRIVATE // default to private
 
     if (terrainId) space.terrain = terrainId as any
     space.environment = environmentId as any
@@ -2076,6 +2078,76 @@ export class SpaceService implements IRoleConsumer {
         }
       })
       .exec()
+  }
+
+  // get all assets in a space
+  public async getAssetsListPerSpaceWithRolesCheck(
+    userId: UserId,
+    spaceId: SpaceId
+  ): Promise<AssetDocument[]> {
+    const space = await this.getSpace(spaceId)
+
+    if (!this.canFindWithRolesCheck(userId, space)) {
+      throw new NotFoundException('Not found or insufficient permissions')
+    }
+
+    const aggregate = [
+      {
+        $match: {
+          space: new ObjectId(spaceId)
+        }
+      },
+      {
+        $lookup: {
+          from: 'assets',
+          localField: 'asset',
+          foreignField: '_id',
+          as: 'asset'
+        }
+      },
+      {
+        $unwind: '$asset'
+      },
+      {
+        $replaceRoot: { newRoot: '$asset' }
+      }
+    ]
+
+    return await this.spaceObjectModel.aggregate(aggregate).exec()
+  }
+
+  public async getAssetsListPerSpaceAdmin(
+    spaceId: SpaceId
+  ): Promise<AssetDocument[]> {
+    const space = await this.getSpace(spaceId)
+
+    if (!space) {
+      throw new NotFoundException('Not found')
+    }
+
+    const aggregate = [
+      {
+        $match: {
+          space: new ObjectId(spaceId)
+        }
+      },
+      {
+        $lookup: {
+          from: 'assets',
+          localField: 'asset',
+          foreignField: '_id',
+          as: 'asset'
+        }
+      },
+      {
+        $unwind: '$asset'
+      },
+      {
+        $replaceRoot: { newRoot: '$asset' }
+      }
+    ]
+
+    return await this.spaceObjectModel.aggregate(aggregate).exec()
   }
 
   public async kickUserByAdmin(user_id: UserId, space_id: SpaceId) {

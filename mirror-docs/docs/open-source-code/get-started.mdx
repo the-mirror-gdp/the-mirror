@@ -9,9 +9,9 @@ sidebar_position: 1
 1. Git clone the repository: `git clone https://github.com/the-mirror-gdp/the-mirror.git` (you do **not** need to clone with submodules; they are optional)
 2. Download the precompiled Mirror fork of Godot engine (required to use)
 
-- **Windows: [Download](https://storage.googleapis.com/mirror_native_client_builds/Engine/41ba769a/MirrorGodotEditorWindows.exe)**
-- **Mac: [Download](https://storage.googleapis.com/mirror_native_client_builds/Engine/41ba769a/MirrorGodotEditorMac.app.zip)** **Note: very buggy**; taking contributions for fixes :) On Mac you will see a zip file; extract it and open the editor binary with CMD + Right-Click then select the Open option.
-- **Linux: [Download](https://storage.googleapis.com/mirror_native_client_builds/Engine/41ba769a/MirrorGodotEditorLinux.x86_64)**
+- **Windows: [Download](https://storage.googleapis.com/mirror_native_client_builds/Engine/e33f01e3/MirrorGodotEditorWindows.exe)**
+- **Mac: [Download](https://storage.googleapis.com/mirror_native_client_builds/Engine/e33f01e3/MirrorGodotEditorMac.app.zip)** **Note: very buggy**; taking contributions for fixes :) On Mac you will see a zip file; extract it and open the editor binary with CMD + Right-Click then select the Open option.
+- **Linux: [Download](https://storage.googleapis.com/mirror_native_client_builds/Engine/e33f01e3/MirrorGodotEditorLinux.x86_64)**
 
 3. Open the Godot editor (The Mirror fork you downloaded in step 2), click import, and choose the `project.godot` from the `/mirror-godot-app` folder.
 4. Hit play once it loads!
@@ -54,16 +54,16 @@ Try running `chmod +x auto-migrate.sh` from the `mirror-web-server` directory.
 
 ## Troubleshooting
 
-1. I messed up & I can't login
+### 1. I messed up & I can't login
 
 Probably issue with mirror-server configuration files
-Rember to run `docker compose build` after every change to configs!
+Remember to run `docker compose build` after every change to the .env configs! The updates to `.env` won't apply otherwise.
 
-2. My localhost space is empty (not even a terrrain and environment)
+### 2. My localhost space is empty (not even a terrrain and environment)
 
-Something went wrong with your migration of DB. After fixes to your dump file make sure to rm container running mongodb (otherwise init script restoring dump will not launch)
+Something went wrong with your migration of DB. After fixes to your dump file, make sure to remove the container running mongodb (otherwise init script restoring dump will not launch)
 
-3. My database is not empty even though it should be.
+### 3. My database is not empty even though it should be.
 
 Your mongo container maybe stopped but it is not removed. Try `docker rm mongo_container_id`. If this does not help try `docker system prune`
 
