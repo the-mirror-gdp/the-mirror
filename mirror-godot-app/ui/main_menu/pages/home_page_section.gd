@@ -91,7 +91,7 @@ func _fetch_data(_cnt_items_to_fetch: int) -> Array:
 ## per row in the same time so all are visible. It takes into account spacing
 func _calculate_max_per_row(forced_size = Vector2.ZERO) -> int:
 	var window_size = DisplayServer.window_get_size()/DisplayServer.screen_get_scale()
-	window_size /= get_viewport().content_scale_factor
+	window_size /= Zone.get_viewport().content_scale_factor
 	window_size.x = max(400, window_size.x - window_margin * 2)
 	var parent_size = forced_size if forced_size != Vector2.ZERO else window_size
 	var x_sep = _items_container.get_theme_constant("h_separation")

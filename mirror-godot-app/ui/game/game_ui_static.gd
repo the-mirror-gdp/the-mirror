@@ -7,7 +7,7 @@ class_name GameUI
 ## - SubViewport -> GameUI.instance
 ## In non VR mode we require the Node Layout to be:
 ## - GameUI.instance
-## To clarify in short, this code sucks becauseit fixes an arch issue and bypasses it.
+## To clarify in short, this code sucks because it fixes an arch issue and bypasses it.
 
 ## We don't always want every bit of UI in a Sub Viewport or all the VR nodes applied to the game when VR isn't needing to be active.
 ## So this file will dynamically allow you to configure under ANY node type so this allows VR/AR implementation to be clean
@@ -16,6 +16,7 @@ class_name GameUI
 static var readonly_singleton_instance = preload("res://ui/game/game_ui.tscn")
 static var _internal_instance = null # this is the actual data
 static var _root_node = null
+static var _vr_decided = false
 static var instance:
 	get:
 		await ui_ready()
@@ -31,19 +32,24 @@ static func ui_ready() -> void:
 		return
 	while _internal_instance.get_parent() == null or _root_node == null:
 		await _root_node.get_tree().create_timer(0.1).timeout
-		print("Waiting...")
 	await _internal_instance.wait_till_ready()
 	if not _vr_decided:
 		await VRManager.vr_decision_made
 
-static var _vr_decided = false
+
 static func setup_game_ui(root_node: Node, is_vr: bool):
 	_root_node = root_node
 	if _internal_instance == null:
 		# read the node, and add it to the root of the game
 		_internal_instance = readonly_singleton_instance.instantiate()
-		_internal_instance.set_name("instance")
-		root_node.add_child.call_deferred(_internal_instance)
+		if is_vr:
+			var sub_viewport = SubViewport.new()
+			sub_viewport.disable_3d = true
+			sub_viewport.set_name("VRSubViewport")
+			sub_viewport.add_child.call_deferred(_internal_instance)
+			root_node.add_child.call_deferred(sub_viewport)
+		else:
+			root_node.add_child.call_deferred(_internal_instance)
 	while _internal_instance.get_parent() == null:
 		await root_node.get_tree().create_timer(0.1).timeout
 	VRManager.vr_decision_made.emit()

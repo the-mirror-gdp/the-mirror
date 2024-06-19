@@ -463,7 +463,7 @@ func _configure_spawn_points():
 	#print("is server: ", "yes" if Zone.is_host() else "no")
 	for target_node in spawn_points.keys():
 		var spawn_point = spawn_points[target_node]
-		if spawn_point.has("team"):
+		if spawn_point.has("team") and has_node(NodePath(target_node)):
 			var spawn_point_node = get_node(NodePath(target_node))
 			if not spawn_point_node:
 				#print("invalid path or bug with node: ", target_node)
