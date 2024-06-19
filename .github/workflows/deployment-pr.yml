@@ -42,8 +42,8 @@ jobs:
       bucket-name: no-bucket
       os: ${{ github.event.repository.name != 'the-mirror' && 'windows-mirror' || 'windows-latest' }}
       # TODO: This will be dynamic in future and we can't do that immediately as we have to focus on the deployment side.
-      editor-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/f2020817/MirrorGodotEditorWindows.exe
-      template-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/f2020817/windows_release_x86_64.exe
+      editor-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/e21e3cb6/MirrorGodotEditorWindows.exe
+      template-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/e21e3cb6/windows_release_x86_64.exe
   build-macos-client:
     name: 🍎 Build MacOS Dev PR
     uses: ./.github/workflows/client-build-tool.yml
@@ -68,8 +68,8 @@ jobs:
       bucket-name: no-bucket
       os: ${{ github.event.repository.name != 'the-mirror' && 'macos-mirror' || 'macos-latest' }}
       # TODO: This will be dynamic in future and we can't do that immediately as we have to focus on the deployment side.
-      editor-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/f2020817/MirrorGodotEditorMac.app.zip
-      template-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/f2020817/macos_template.app.zip
+      editor-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/e21e3cb6/MirrorGodotEditorMac.app.zip
+      template-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/e21e3cb6/macos_template.app.zip
   build-linux-client:
     name: 🐧 Build Linux Dev PR
     uses: ./.github/workflows/client-build-tool.yml
@@ -92,5 +92,5 @@ jobs:
       bucket-name: no-bucket
       os: ${{ github.event.repository.name != 'the-mirror' && 'linux-mirror' || 'ubuntu-22.04' }}
       # TODO: This will be dynamic in future and we can't do that immediately as we have to focus on the deployment side.
-      editor-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/f2020817/MirrorGodotEditorLinux.x86_64
-      template-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/f2020817/linux_release.x86_64
+      editor-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/e21e3cb6/MirrorGodotEditorLinux.x86_64
+      template-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/e21e3cb6/linux_release.x86_64
