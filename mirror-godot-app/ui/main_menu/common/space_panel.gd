@@ -7,8 +7,8 @@ signal space_pressed(space: Dictionary)
 @onready var _preview_image: UrlTextureRect = %Preview
 @onready var _title_label: Label = %TitleLabel
 @onready var _description_label: Label = %DescriptionLabel
-@onready var _is_ready_zone: Control = %IsReadyZone
-@onready var _present_users_in_build = %PresentUsersInBuild
+#@onready var _is_ready_zone: Control = %IsReadyZone
+#@onready var _present_users_in_build = %PresentUsersInBuild
 @onready var _present_users_in_play = %PresentUsersInPlay
 @onready var _decor_border = find_child("DecorBorder", true, true)
 @onready var _rating_label = find_child("RatingLabel", true, true)
@@ -47,8 +47,7 @@ func get_space_id() -> String:
 
 
 func set_ready_status(status: bool) -> void:
-	if _is_ready_zone:
-		_is_ready_zone.visible = status
+	return
 
 
 func _set_present_users(present_users: Array, control: Control):
@@ -59,8 +58,7 @@ func _set_present_users(present_users: Array, control: Control):
 
 
 func set_build_present_users(present_users: Array):
-	_users_in_build = present_users.size()
-	_set_present_users(present_users, _present_users_in_build)
+	return
 
 
 func set_play_present_users(present_users: Array):
