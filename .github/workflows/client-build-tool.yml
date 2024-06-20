@@ -102,6 +102,10 @@ on:
       template-download-url:
         required: true
         type: string
+      vr-dependencies:
+        required: false
+        type: boolean
+        default: false
     outputs:
       url:
         value: ${{ jobs.client-build-tool.outputs.url }}
@@ -157,6 +161,11 @@ jobs:
           shopt -s dotglob # includes all hidden files
           mv ./app-clone/mirror-godot-app/* .
           ls -lah
+
+      - name: Remove VR Requirements (if not for meta quest etc)
+        if: ${{ !inputs.vr-dependencies }}
+        run: |
+          rm -rf ./addons/mirror_internal/godotopenxrvendors/
 
       - name: Use custom project file (required for custom splash screen)
         if: ${{ inputs.custom-project-file }}
