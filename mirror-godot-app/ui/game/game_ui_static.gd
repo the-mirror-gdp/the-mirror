@@ -37,15 +37,20 @@ static func ui_ready() -> void:
 		await VRManager.vr_decision_made
 
 
+## Called when booting the app when we know if the app is VR or non-VR
 static func setup_game_ui(root_node: Node, is_vr: bool):
 	_root_node = root_node
 	if _internal_instance == null:
 		# read the node, and add it to the root of the game
 		_internal_instance = readonly_singleton_instance.instantiate()
+		## Again if you didn't read the comments further up, we need a SubViewport
+		## We don't need it in non VR Mode.
+		## If you need a 3D viewport use Zone.get_viewport() as I updated all code to do this
+		## Read here on why we're doing this: https://docs.godotengine.org/en/latest/tutorials/xr/openxr_composition_layers.html#setting-up-the-subviewport
 		if is_vr:
 			var sub_viewport = SubViewport.new()
-			sub_viewport.disable_3d = true
 			sub_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+			sub_viewport.disable_3d = true
 			sub_viewport.transparent_bg = true
 			sub_viewport.set_name("VRSubViewport")
 			sub_viewport.add_child.call_deferred(_internal_instance)
