@@ -24,7 +24,7 @@ var _left_hand_interacting: bool = false
 var _right_hand_interacting: bool = false
 
 
-func setup(player: TMCharacter3D) -> void:
+func setup() -> void:
 	VRManager.vr_started.connect(_on_vr_enter)
 	VRManager.vr_ended.connect(_on_vr_exit)
 	# If the player is already wearing VR, we just activate the VR camera.

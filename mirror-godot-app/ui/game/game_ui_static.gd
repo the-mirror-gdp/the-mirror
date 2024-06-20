@@ -17,6 +17,7 @@ static var readonly_singleton_instance = preload("res://ui/game/game_ui.tscn")
 static var _internal_instance = null # this is the actual data
 static var _root_node = null
 static var _vr_decided = false
+static var _sub_viewport: SubViewport = null
 static var instance:
 	get:
 		await ui_ready()
@@ -25,6 +26,11 @@ static var instance:
 		return _internal_instance
 	set(v):
 		push_error("You can't re-assign the Game UI singleton.")
+
+
+static func get_sub_viewport() -> SubViewport:
+	await ui_ready()
+	return _sub_viewport
 
 
 static func ui_ready() -> void:
@@ -48,13 +54,13 @@ static func setup_game_ui(root_node: Node, is_vr: bool):
 		## If you need a 3D viewport use Zone.get_viewport() as I updated all code to do this
 		## Read here on why we're doing this: https://docs.godotengine.org/en/latest/tutorials/xr/openxr_composition_layers.html#setting-up-the-subviewport
 		if is_vr:
-			var sub_viewport = SubViewport.new()
-			sub_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
-			sub_viewport.disable_3d = true
-			sub_viewport.transparent_bg = true
-			sub_viewport.set_name("VRSubViewport")
-			sub_viewport.add_child.call_deferred(_internal_instance)
-			root_node.add_child.call_deferred(sub_viewport)
+			_sub_viewport = SubViewport.new()
+			_sub_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
+			_sub_viewport.disable_3d = true
+			_sub_viewport.transparent_bg = true
+			_sub_viewport.set_name("VRSubViewport")
+			_sub_viewport.add_child.call_deferred(_internal_instance)
+			root_node.add_child.call_deferred(_sub_viewport)
 		else:
 			root_node.add_child.call_deferred(_internal_instance)
 	while _internal_instance.get_parent() == null:

@@ -1,16 +1,17 @@
-[gd_scene load_steps=7 format=3 uid="uid://dmk74a73ew62s"]
+[gd_scene load_steps=8 format=3 uid="uid://dmk74a73ew62s"]
 
 [ext_resource type="Script" path="res://player/vr/vr_controller_menu.gd" id="1_6wet2"]
 [ext_resource type="PackedScene" uid="uid://d20edduhwu64b" path="res://player/vr/hand_l.glb" id="2_ks3ua"]
 [ext_resource type="Material" uid="uid://by1x2mq3jq2nf" path="res://player/vr/hand.tres" id="3_nfms1"]
 [ext_resource type="Material" uid="uid://nv2lyirekar0" path="res://player/vr/laser.tres" id="4_a1c83"]
 [ext_resource type="PackedScene" uid="uid://bjp8bqvo22y2y" path="res://player/vr/hand_r.glb" id="5_le75e"]
+[ext_resource type="Script" path="res://player/vr/main_menu_set_layer_viewport.gd" id="6_u3erp"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_g0e3b"]
 material = ExtResource("4_a1c83")
 size = Vector3(0.005, 0.005, 2)
 
-[node name="VRController" type="Node"]
+[node name="VRControllerMenu" type="Node"]
 script = ExtResource("1_6wet2")
 
 [node name="Root" type="Node3D" parent="."]
@@ -61,6 +62,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.01, 0, 0, -0.2)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.999992)
 mesh = SubResource("BoxMesh_g0e3b")
 skeleton = NodePath("../..")
+
+[node name="OpenXRCompositionLayerQuad" type="OpenXRCompositionLayerQuad" parent="Root/XROrigin3D" node_paths=PackedStringArray("layer_viewport")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.286228, 2.00206, -3.27197)
+layer_viewport = NodePath("")
+sort_order = -1
+enable_hole_punch = true
+quad_size = Vector2(4, 3)
+script = ExtResource("6_u3erp")
 
 [connection signal="button_pressed" from="Root/XROrigin3D/LeftHand" to="." method="_on_left_hand_button_pressed"]
 [connection signal="button_released" from="Root/XROrigin3D/LeftHand" to="." method="_on_left_hand_button_released"]
