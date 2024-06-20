@@ -32,6 +32,10 @@ func setup() -> void:
 		_on_vr_enter()
 
 
+func get_vr_game_ui() -> Node:
+	return $SubViewport/GameUI
+
+
 func _process(_delta: float) -> void:
 	# TODO: ?
 	# _root.global_position = _local_player.model.global_position

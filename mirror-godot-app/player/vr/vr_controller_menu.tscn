@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dmk74a73ew62s"]
+[gd_scene load_steps=9 format=3 uid="uid://dmk74a73ew62s"]
 
 [ext_resource type="Script" path="res://player/vr/vr_controller_menu.gd" id="1_6wet2"]
 [ext_resource type="PackedScene" uid="uid://d20edduhwu64b" path="res://player/vr/hand_l.glb" id="2_ks3ua"]
@@ -6,6 +6,7 @@
 [ext_resource type="Material" uid="uid://nv2lyirekar0" path="res://player/vr/laser.tres" id="4_a1c83"]
 [ext_resource type="PackedScene" uid="uid://bjp8bqvo22y2y" path="res://player/vr/hand_r.glb" id="5_le75e"]
 [ext_resource type="Script" path="res://player/vr/main_menu_set_layer_viewport.gd" id="6_u3erp"]
+[ext_resource type="PackedScene" uid="uid://bpn5kipaabot1" path="res://ui/game/game_ui.tscn" id="7_8q1kj"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_g0e3b"]
 material = ExtResource("4_a1c83")
@@ -23,6 +24,7 @@ current = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
 cull_mask = 524287
 current = true
+fov = 80.0
 
 [node name="Neck" type="Node3D" parent="Root/XROrigin3D/XRCamera3D"]
 
@@ -63,18 +65,30 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.999992)
 mesh = SubResource("BoxMesh_g0e3b")
 skeleton = NodePath("../..")
 
-[node name="OpenXRCompositionLayerQuad" type="OpenXRCompositionLayerQuad" parent="Root/XROrigin3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.286228, 2.00206, -3.27197)
+[node name="OpenXRCompositionLayerQuad" type="OpenXRCompositionLayerQuad" parent="Root/XROrigin3D" node_paths=PackedStringArray("layer_viewport")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.715, -1.40846)
+layer_viewport = NodePath("../../../SubViewport")
 sort_order = -1
 enable_hole_punch = true
-quad_size = Vector2(4, 3)
+quad_size = Vector2(2.7, 1.5)
 script = ExtResource("6_u3erp")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+size = Vector2i(1650, 1080)
+render_target_update_mode = 4
+
+[node name="GameUI" parent="SubViewport" instance=ExtResource("7_8q1kj")]
+
+[node name="LoginUI" parent="SubViewport/GameUI" index="10"]
+visible = true
 
 [connection signal="button_pressed" from="Root/XROrigin3D/LeftHand" to="." method="_on_left_hand_button_pressed"]
 [connection signal="button_released" from="Root/XROrigin3D/LeftHand" to="." method="_on_left_hand_button_released"]
 [connection signal="input_vector2_changed" from="Root/XROrigin3D/LeftHand" to="." method="_on_left_hand_input_vector_2_changed"]
 [connection signal="button_pressed" from="Root/XROrigin3D/RightHand" to="." method="_on_right_hand_button_pressed"]
 [connection signal="input_vector2_changed" from="Root/XROrigin3D/RightHand" to="." method="_on_right_hand_input_vector_2_changed"]
+[connection signal="toggle_main_menu_open" from="SubViewport/GameUI/CreatorUI" to="SubViewport/GameUI/MainMenuUI" method="toggle_main_menu_open"]
 
 [editable path="Root/XROrigin3D/LeftHand/hand_l"]
 [editable path="Root/XROrigin3D/RightHand/hand_r"]
+[editable path="SubViewport/GameUI"]

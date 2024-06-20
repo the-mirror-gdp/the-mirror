@@ -18,7 +18,6 @@ static var _readonly_vr_menu = preload("res://player/vr/vr_controller_menu.tscn"
 static var _internal_instance = null # this is the actual data
 static var _root_node = null
 static var _vr_decided = false
-static var _sub_viewport: SubViewport = null
 static var instance:
 	get:
 		await ui_ready()
@@ -27,11 +26,6 @@ static var instance:
 		return _internal_instance
 	set(v):
 		push_error("You can't re-assign the Game UI singleton.")
-
-
-static func get_sub_viewport() -> SubViewport:
-	await ui_ready()
-	return _sub_viewport
 
 
 static func ui_ready() -> void:
@@ -55,19 +49,11 @@ static func setup_game_ui(root_node: Node, is_vr: bool):
 		## If you need a 3D viewport use Zone.get_viewport() as I updated all code to do this
 		## Read here on why we're doing this: https://docs.godotengine.org/en/latest/tutorials/xr/openxr_composition_layers.html#setting-up-the-subviewport
 		if is_vr:
-			## Add the player controller for the menu
-			var vr_player_for_menu = _readonly_vr_menu.instantiate()
+			## Add the VR Dependencies for the app start.
+			var vr_player_for_menu: VRControllerMenu = _readonly_vr_menu.instantiate()
 			root_node.add_child.call_deferred(vr_player_for_menu)
-			## Add the subviewport for the VR Headset's UI
-			_sub_viewport = SubViewport.new()
-			_sub_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
-			_sub_viewport.disable_3d = true
-			_sub_viewport.transparent_bg = true
-			# _sub_viewport.use_xr = true
+			_internal_instance = vr_player_for_menu.get_vr_game_ui()
 			Zone.get_viewport().use_xr = true
-			_sub_viewport.set_name("VRSubViewport")
-			_sub_viewport.add_child.call_deferred(_internal_instance)
-			root_node.add_child.call_deferred(_sub_viewport)
 		else:
 			root_node.add_child.call_deferred(_internal_instance)
 	while _internal_instance.get_parent() == null:
