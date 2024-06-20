@@ -13,7 +13,8 @@ class_name GameUI
 ## So this file will dynamically allow you to configure under ANY node type so this allows VR/AR implementation to be clean
 ## While also allowing us to completely turn it off in the menu should we desire this.
 
-static var readonly_singleton_instance = preload("res://ui/game/game_ui.tscn")
+static var _readonly_singleton_instance = preload("res://ui/game/game_ui.tscn")
+static var _readonly_vr_menu = preload("res://player/vr/vr_controller_menu.tscn")
 static var _internal_instance = null # this is the actual data
 static var _root_node = null
 static var _vr_decided = false
@@ -48,12 +49,16 @@ static func setup_game_ui(root_node: Node, is_vr: bool):
 	_root_node = root_node
 	if _internal_instance == null:
 		# read the node, and add it to the root of the game
-		_internal_instance = readonly_singleton_instance.instantiate()
+		_internal_instance = _readonly_singleton_instance.instantiate()
 		## Again if you didn't read the comments further up, we need a SubViewport
 		## We don't need it in non VR Mode.
 		## If you need a 3D viewport use Zone.get_viewport() as I updated all code to do this
 		## Read here on why we're doing this: https://docs.godotengine.org/en/latest/tutorials/xr/openxr_composition_layers.html#setting-up-the-subviewport
 		if is_vr:
+			## Add the player controller for the menu
+			var vr_player_for_menu = _readonly_vr_menu.instantiate()
+			root_node.add_child.call_deferred(vr_player_for_menu)
+			## Add the subviewport for the VR Headset's UI
 			_sub_viewport = SubViewport.new()
 			_sub_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 			_sub_viewport.disable_3d = true
