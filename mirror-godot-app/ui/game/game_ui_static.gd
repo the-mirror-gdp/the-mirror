@@ -63,6 +63,8 @@ static func setup_game_ui(root_node: Node, is_vr: bool):
 			_sub_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
 			_sub_viewport.disable_3d = true
 			_sub_viewport.transparent_bg = true
+			# _sub_viewport.use_xr = true
+			Zone.get_viewport().use_xr = true
 			_sub_viewport.set_name("VRSubViewport")
 			_sub_viewport.add_child.call_deferred(_internal_instance)
 			root_node.add_child.call_deferred(_sub_viewport)
