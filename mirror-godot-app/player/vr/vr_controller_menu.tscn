@@ -63,9 +63,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.999992)
 mesh = SubResource("BoxMesh_g0e3b")
 skeleton = NodePath("../..")
 
-[node name="OpenXRCompositionLayerQuad" type="OpenXRCompositionLayerQuad" parent="Root/XROrigin3D" node_paths=PackedStringArray("layer_viewport")]
+[node name="OpenXRCompositionLayerQuad" type="OpenXRCompositionLayerQuad" parent="Root/XROrigin3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.286228, 2.00206, -3.27197)
-layer_viewport = NodePath("")
 sort_order = -1
 enable_hole_punch = true
 quad_size = Vector2(4, 3)

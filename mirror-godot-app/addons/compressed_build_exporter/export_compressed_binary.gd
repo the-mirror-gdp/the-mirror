@@ -24,8 +24,9 @@ func _export_end() -> void:
 	print("finished export - making cicd specific binaries")
 	assert(not _path.is_empty())
 	assert(not _features.is_empty())
-	if _export_platform.is_empty():
+	if _export_platform.is_empty() or _export_platform == "android":
 		return
+	print("Export platform: ", _export_platform)
 	# We compress platforms we support, but not game server builds
 	# The game server builds are a special case and are uploaded in two files.
 	# They are uncompressed to gcp.
@@ -48,6 +49,8 @@ static func _get_platform_name(platform: EditorExportPlatform) -> String:
 		return "windows"
 	elif platform is EditorExportPlatformMacOS:
 		return "macos"
+	elif platform is EditorExportPlatformAndroid:
+		return "android"
 	return ""
 
 
