@@ -203,12 +203,14 @@ layout_mode = 2
 [node name="Username" type="LineEdit" parent="VBoxContainer/SignInMenu/MarginContainer/LoginContainer"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
+text = "gordon@themirror.space"
 placeholder_text = "Email"
 caret_blink = true
 
 [node name="Password" type="LineEdit" parent="VBoxContainer/SignInMenu/MarginContainer/LoginContainer"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
+text = "testtest1"
 placeholder_text = "Password"
 caret_blink = true
 secret = true

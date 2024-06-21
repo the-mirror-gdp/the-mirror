@@ -30,13 +30,9 @@ var should_display_space_listings = ProjectSettings.get_setting("feature_flags/e
 var visible_windows: Dictionary = {}
 
 var _is_configured = false
-signal ready_called
 
-func wait_till_ready():
-	if _is_configured:
-		return
-	await ready_called
-
+func get_ready():
+	return _is_configured
 
 func _ready() -> void:
 	assert(teams_handler)
@@ -45,7 +41,6 @@ func _ready() -> void:
 	hotbar.setup(creator_ui)
 	cinematic_mode.setup(self)
 	_is_configured = true
-	ready_called.emit()
 
 
 func _process(_delta) -> void:
