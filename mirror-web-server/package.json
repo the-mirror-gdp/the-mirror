@@ -90,7 +90,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^5.0.1",
     "rxjs": "^7.8.1",
-    "socket.io": "^4.7.2",
+    "socket.io": "^4.7.5",
     "socket.io-redis": "5.4.0",
     "stream-json": "^1.8.0",
     "stripe": "^12.10.0",
