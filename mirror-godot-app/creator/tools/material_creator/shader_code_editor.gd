@@ -77,11 +77,11 @@ func _ready() -> void:
 
 
 func _on_focus_entered() -> void:
-	GameUI.grab_input_lock(self)
+	GameUI.instance.grab_input_lock(self)
 
 
 func _on_focus_exited() -> void:
-	GameUI.release_input_lock(false)
+	GameUI.instance.release_input_lock(false)
 
 
 func _on_visibility_changed() -> void:

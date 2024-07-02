@@ -78,7 +78,7 @@ func update(delta):
 
 
 func process_movement(delta):
-	if GameUI.is_keyboard_needed_for_ui() or (not Input.is_action_pressed(&"build_mode_camera_orbit") and not GameUI.is_cinematic_mode_enabled()):
+	if GameUI.instance.is_keyboard_needed_for_ui() or (not Input.is_action_pressed(&"build_mode_camera_orbit") and not GameUI.instance.is_cinematic_mode_enabled()):
 		return
 	var desired_movement_speed = _free_movement_speed
 	if Input.is_action_pressed(&"player_sprint"):
@@ -123,6 +123,6 @@ func _adjust_scroll_speed(zoom_in: bool) -> void:
 
 
 func _add_stationary_zoom(value: float) -> void:
-	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED or not GameUI.drag_detector.hovering_game_view:
+	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED or not GameUI.instance.drag_detector.hovering_game_view:
 		return
 	position += transform.basis.z * value

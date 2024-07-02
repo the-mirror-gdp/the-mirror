@@ -102,6 +102,9 @@ on:
       template-download-url:
         required: true
         type: string
+      keep-openxr-binaries:
+        required: false
+        type: boolean
     outputs:
       url:
         value: ${{ jobs.client-build-tool.outputs.url }}
@@ -157,6 +160,11 @@ jobs:
           shopt -s dotglob # includes all hidden files
           mv ./app-clone/mirror-godot-app/* .
           ls -lah
+
+      - name: Remove VR contents if not required
+        if: ${{ !inputs.keep-openxr-binaries }}
+        run: |
+          rm -rf addons/godotopenxrvendors
 
       - name: Use custom project file (required for custom splash screen)
         if: ${{ inputs.custom-project-file }}

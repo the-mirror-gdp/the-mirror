@@ -91,7 +91,7 @@ func _fetch_data(_cnt_items_to_fetch: int) -> Array:
 ## per row in the same time so all are visible. It takes into account spacing
 func _calculate_max_per_row(forced_size = Vector2.ZERO) -> int:
 	var window_size = DisplayServer.window_get_size()/DisplayServer.screen_get_scale()
-	window_size /= get_viewport().content_scale_factor
+	window_size /= Zone.get_viewport().content_scale_factor
 	window_size.x = max(400, window_size.x - window_margin * 2)
 	var parent_size = forced_size if forced_size != Vector2.ZERO else window_size
 	var x_sep = _items_container.get_theme_constant("h_separation")
@@ -154,13 +154,13 @@ func _populate_items(items_data: Array, max_items_number: int) -> void:
 
 
 func _on_create_pressed() -> void:
-	GameUI.main_menu_ui.change_page(&"My_Spaces")
-	GameUI.main_menu_ui.change_subpage(&"SelectTemplate")
+	GameUI.instance.main_menu_ui.change_page(&"My_Spaces")
+	GameUI.instance.main_menu_ui.change_subpage(&"SelectTemplate")
 	_audio_stream_player_click.play()
 
 
 func _on_space_pressed(space: Dictionary) -> void:
-	GameUI.main_menu_ui.change_subpage(&"ViewSpace", space)
+	GameUI.instance.main_menu_ui.change_subpage(&"ViewSpace", space)
 	_audio_stream_player_click.play()
 
 var _currently_populating = false

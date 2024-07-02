@@ -292,7 +292,7 @@ func _on_delete_dialog_confirmed():
 		Notify.error("Asset Delete Error", promise.get_error_message())
 	else:
 		Notify.info("Asset Deleted", "Asset deleted succesfully.")
-		GameUI.creator_ui.asset_browser.on_asset_deleted(true)
+		GameUI.instance.creator_ui.asset_browser.on_asset_deleted(true)
 		hide()
 
 

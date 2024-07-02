@@ -18,8 +18,8 @@ func _ready() -> void:
 
 
 func _on_template_selected(template: Dictionary) -> void:
-	GameUI.main_menu_ui.change_page(&"My_Spaces")
-	GameUI.main_menu_ui.change_subpage(&"CreateSpace", template)
+	GameUI.instance.main_menu_ui.change_page(&"My_Spaces")
+	GameUI.instance.main_menu_ui.change_subpage(&"CreateSpace", template)
 
 
 func _on_template_cancel_pressed() -> void:
@@ -50,16 +50,16 @@ func _on_finalize_create_pressed(data: Dictionary) -> void:
 			data["template_id"],
 			{"name": data["name"]}
 		)
-	GameUI.main_menu_ui.hide()
-	GameUI.loading_ui.populate(data)
-	GameUI.loading_ui.populate_status("Creating space")
-	GameUI.loading_ui.show()
+	GameUI.instance.main_menu_ui.hide()
+	GameUI.instance.loading_ui.populate(data)
+	GameUI.instance.loading_ui.populate_status("Creating space")
+	GameUI.instance.loading_ui.show()
 	var space_data = await promise.wait_till_fulfilled()
 	if promise.is_error():
 		Notify.error(tr("Space Creation Failed"), promise.get_error_message())
-		GameUI.loading_ui.hide()
-		GameUI.main_menu_ui.show()
+		GameUI.instance.loading_ui.hide()
+		GameUI.instance.main_menu_ui.show()
 		return
 	Zone.client.quit_to_main_menu()
-	GameUI.loading_ui.populate_status("Joining space")
+	GameUI.instance.loading_ui.populate_status("Joining space")
 	Zone.client.start_join_zone_by_space_id(space_data["id"])

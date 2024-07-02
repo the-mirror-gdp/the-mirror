@@ -178,4 +178,4 @@ func _on_asset_slot_mouse_entered() -> void:
 		return
 	var hover_uri = asset_data.thirdparty_source_home_page_url
 	hover_uri = hover_uri.trim_prefix("https://").trim_prefix("http://")
-	GameUI.set_hover_tooltip_text(asset_data.asset_name, hover_uri)
+	GameUI.instance.set_hover_tooltip_text(asset_data.asset_name, hover_uri)

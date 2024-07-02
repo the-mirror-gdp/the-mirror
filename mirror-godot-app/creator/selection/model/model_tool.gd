@@ -44,7 +44,7 @@ func save_local_model() -> void:
 		return
 	var file_path_glb: String = current_model_root.save_to_gltf_file()
 	# Upload as an asset.
-	var asset_browser: AssetBrowser = GameUI.creator_ui.asset_browser
+	var asset_browser: AssetBrowser = GameUI.instance.creator_ui.asset_browser
 	var promise = await asset_browser.create_asset_from_url(file_path_glb)
 	if promise.is_error():
 		print("Failed to save a local model: %s" % promise.get_error_message())

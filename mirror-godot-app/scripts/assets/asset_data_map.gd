@@ -46,7 +46,7 @@ func _generate_mesh_preview(node: Node, path: String) -> void:
 	# duplicate node so it is not freed from memory after preview is generated.
 	_preview_node = node
 	_asset_preview = _ASSET_PREVIEW_TSCN.instantiate()
-	GameUI.add_child(_asset_preview)
+	GameUI.instance.add_child(_asset_preview)
 
 
 	# set an offset so it is not on screen.

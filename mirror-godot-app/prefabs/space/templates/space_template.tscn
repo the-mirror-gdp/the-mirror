@@ -13,11 +13,6 @@ dof_blur_amount = 0.01
 
 [node name="SpaceTemplate" type="Node3D"]
 script = ExtResource("1_q53s5")
-terrain_seed = 124
-terrain_height_start = -10
-terrain_height_range = 5
-terrain_material_name = "grass"
-terrain_generator_name = "rolling_hills_generator01"
 
 [node name="Space Environment" type="WorldEnvironment" parent="."]
 environment = ExtResource("2_e25ph")

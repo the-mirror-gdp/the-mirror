@@ -16,10 +16,10 @@ var _auto_deselect_on_drag_end: bool = false
 var _is_setup: bool = false
 var _last_upload_directory: String = ""
 
-@onready var _viewport: Viewport = get_viewport()
+@onready var _viewport: Viewport = Zone.get_viewport()
 @onready var _file_search: FileDialog:
 	get:
-		return GameUI.file_search
+		return GameUI.instance.file_search
 
 @onready var _sections := $VBoxContainer/Sections
 @onready var _recents := _sections.get_node(^"Recents")

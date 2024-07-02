@@ -13,6 +13,7 @@ func _ready() -> void:
 	var use_server_camera = ProjectSettings.get_setting("mirror/use_server_camera", false)
 	var is_active = use_server_camera and Zone.is_host() and OS.is_debug_build()
 	if not is_active:
+		visible = false
 		set_process(false)
 		set_process_input(false)
 		clear_current(false)

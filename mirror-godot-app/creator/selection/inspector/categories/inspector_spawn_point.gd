@@ -55,4 +55,4 @@ func _select_new_team(value):
 
 
 func _edit_teams_button_pressed():
-	GameUI.teams_handler.toggle_teams_editor()
+	GameUI.instance.teams_handler.toggle_teams_editor()

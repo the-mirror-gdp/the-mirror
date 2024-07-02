@@ -119,12 +119,12 @@ func _get_port_type_icon(port_type: ScriptBlock.PortType) -> Texture2D:
 
 
 func _on_left_value_mouse_entered() -> void:
-	GameUI.set_hover_tooltip_text("Click here to edit the " + _left_label.text + " input.")
+	GameUI.instance.set_hover_tooltip_text("Click here to edit the " + _left_label.text + " input.")
 
 
 func _on_left_sequence_run_icon_mouse_entered() -> void:
-	GameUI.set_hover_tooltip_text("Click here to run this block. This is useful for testing pieces of your script.")
+	GameUI.instance.set_hover_tooltip_text("Click here to run this block. This is useful for testing pieces of your script.")
 
 
 func _on_mouse_exited() -> void:
-	GameUI.hide_hover_tooltip_text()
+	GameUI.instance.hide_hover_tooltip_text()

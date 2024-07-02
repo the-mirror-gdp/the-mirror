@@ -121,7 +121,7 @@ func _set_camera_based_on_perspective() -> void:
 
 
 func _refresh_camera() -> void:
-	if not GameUI.creator_ui.is_game_mode(GameMode.Mode.NORMAL) and not Zone.is_in_play_mode():
+	if not GameUI.instance.creator_ui.is_game_mode(GameMode.Mode.NORMAL) and not Zone.is_in_play_mode():
 		return
 	if _perspective_locked:
 		_set_camera_based_on_perspective()

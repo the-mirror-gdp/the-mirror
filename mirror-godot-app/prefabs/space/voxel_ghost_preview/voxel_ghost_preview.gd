@@ -7,7 +7,7 @@ extends Area3D
 
 
 func _ready():
-	GameUI.creator_ui.terrain_tool.terrain_tool_settings_changed.connect(update_ghost_preview)
+	GameUI.instance.creator_ui.terrain_tool.terrain_tool_settings_changed.connect(update_ghost_preview)
 	update_ghost_preview()
 
 
@@ -24,7 +24,7 @@ func set_enabled(is_enabled: bool) -> void:
 
 
 func update_ghost_preview() -> void:
-	var terrain_tool = GameUI.creator_ui.terrain_tool
+	var terrain_tool = GameUI.instance.creator_ui.terrain_tool
 	var tween = create_tween()
 	tween.tween_property(self, "scale", (terrain_tool.brush_size + 0.1) * Vector3.ONE, 0.1)
 

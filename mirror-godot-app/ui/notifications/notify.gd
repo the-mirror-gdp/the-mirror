@@ -1,4 +1,4 @@
-## Notify: Autoload singleton for notifications, not dependent on GameUI.
+## Notify: Autoload singleton for notifications, not dependent on GameUI.instance.
 extends Node
 
 
@@ -6,9 +6,11 @@ var _notifications_ui: NotificationsUI = null
 
 
 func _ready() -> void:
+	## TODO: Fix this to use a signal to wait for the UI, this code is dumb
+	await GameUI.ui_ready()
 	await get_tree().process_frame
-	if Zone.is_client() and has_node(^"/root/GameUI"):
-		_notifications_ui = get_node(^"/root/GameUI").notifications_ui
+	if Zone.is_client():
+		_notifications_ui = GameUI.instance.notifications_ui
 		Zone.notifications_ready = true
 		Zone.notifications_started.emit()
 

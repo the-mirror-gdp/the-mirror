@@ -37,14 +37,14 @@ func _process(delta: float) -> void:
 
 func _notification(what: int) -> void:
 	if what == MainLoop.NOTIFICATION_APPLICATION_FOCUS_IN:
-		if GameUI.creator_ui.is_game_mode(GameMode.Mode.NORMAL) or Zone.is_in_play_mode():
+		if GameUI.instance.creator_ui.is_game_mode(GameMode.Mode.NORMAL) or Zone.is_in_play_mode():
 			does_game_mode_accept_input = true
 	elif what == MainLoop.NOTIFICATION_APPLICATION_FOCUS_OUT:
 		does_game_mode_accept_input = false
 
 
 func is_avatar_input_enabled() -> bool:
-	if GameUI.is_keyboard_needed_for_ui() or GameUI.is_mouse_needed_for_ui():
+	if GameUI.instance.is_keyboard_needed_for_ui() or GameUI.instance.is_mouse_needed_for_ui():
 		return false
 	return is_player_input_allowed and does_game_mode_accept_input
 

@@ -78,14 +78,14 @@ func _on_spin_box_text_changed(new_text: String) -> void:
 func _on_key_focus_entered() -> void:
 	if not _spin_box_node.value_changed.is_connected(_on_spin_box_value_changed):
 		_spin_box_node.value_changed.connect(_on_spin_box_value_changed, CONNECT_ONE_SHOT)
-	GameUI.grab_input_lock(self)
+	GameUI.instance.grab_input_lock(self)
 	await get_tree().process_frame
 	_line_edit_node.select_all()
 
 
 func _on_focus_exited():
 	refresh_full()
-	GameUI.release_input_lock(self)
+	GameUI.instance.release_input_lock(self)
 
 
 func _on_gui_input(event: InputEvent):
@@ -103,7 +103,7 @@ func _on_gui_input(event: InputEvent):
 		else:
 			if _grabbing_spinner_attempt:
 				if _grabbing_spinner:
-					GameUI.creator_ui.ui_request_captured = false
+					GameUI.instance.creator_ui.ui_request_captured = false
 					# This is needed to avoid process frame issues race conditions
 					# free_camera.gd will try to handle CAPTURED before input
 					# handlin of mouse_capture.gd
@@ -124,7 +124,7 @@ func _on_gui_input(event: InputEvent):
 				diff_x *= 0.1
 			_grabbing_spinner_dist_cache += diff_x
 			if not _grabbing_spinner and absf(_grabbing_spinner_dist_cache) > 4 * GameplaySettings.ui_scale:
-				GameUI.creator_ui.ui_request_captured = true
+				GameUI.instance.creator_ui.ui_request_captured = true
 				_grabbing_spinner = true
 			if _grabbing_spinner:
 				# Don't make the user scroll all the way back to 'in range' if they went off the end.

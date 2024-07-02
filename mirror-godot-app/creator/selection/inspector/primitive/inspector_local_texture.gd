@@ -122,7 +122,7 @@ func _on_file_dialog_file_selected(path):
 
 func _upload_as_texture(path: String, param: String) -> void:
 	_loading_spinner.show()
-	var promise: Promise = await GameUI.creator_ui.asset_browser.create_asset_from_url(
+	var promise: Promise = await GameUI.instance.creator_ui.asset_browser.create_asset_from_url(
 			path,
 			Enums.ASSET_TYPE.TEXTURE,
 			{"textureImagePropertyAppliesTo": param}

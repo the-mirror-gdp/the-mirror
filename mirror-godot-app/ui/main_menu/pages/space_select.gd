@@ -171,13 +171,13 @@ func _on_space_item_added(panel: Control) -> void:
 
 
 func _on_create_pressed() -> void:
-	GameUI.main_menu_ui.change_page(&"My_Spaces")
-	GameUI.main_menu_ui.change_subpage(&"SelectTemplate")
+	GameUI.instance.main_menu_ui.change_page(&"My_Spaces")
+	GameUI.instance.main_menu_ui.change_subpage(&"SelectTemplate")
 	_audio_stream_player.play()
 
 
 func _on_space_pressed(space: Dictionary) -> void:
-	GameUI.main_menu_ui.change_subpage("ViewSpace", space)
+	GameUI.instance.main_menu_ui.change_subpage("ViewSpace", space)
 	_audio_stream_player.play()
 
 

@@ -8,31 +8,29 @@ var _placement_preview_asset_id: String = ""
 
 var _current_camera_holder: CameraHolder
 
-@onready var _main_viewport: Viewport = get_viewport()
-@onready var _viewport_container: SubViewportContainer = get_node(^"SubViewportContainer")
-@onready var _viewport: SubViewport = _viewport_container.get_node(^"SubViewport")
-@onready var _player_head_camera_holder: CameraHolder = _viewport.get_node(^"PlayerHeadCamera")
-@onready var _free_camera_holder: CameraHolder = _viewport.get_node(^"FreeCamera")
-@onready var _placement_preview: Node3D = _viewport.get_node(^"PlacementPreview")
-@onready var jolt_debugger: JoltDebugGeometry3D = _viewport.get_node(^"JoltDebugGeometry3D")
-
+@onready var _viewport: Viewport = get_camera_viewport()
+@onready var _player_head_camera_holder: CameraHolder = $PlayerHeadCamera
+@onready var _free_camera_holder: CameraHolder = $FreeCamera
+@onready var _placement_preview: Node3D = $PlacementPreview
+@onready var jolt_debugger: JoltDebugGeometry3D = $JoltDebugGeometry3D
 
 func _ready():
 	set_jolt_debugger_enabled(false)
+	
 
 
 func _process(delta: float) -> void:
 	_current_camera_holder.update(delta)
-	var size := Vector2i(_viewport_container.size)
+	var size := Vector2i(_viewport.size)
 	if _viewport.size != size:
 		_viewport.size = size
-	var cam_attr = _main_viewport.world_3d.camera_attributes
+	var cam_attr = _viewport.world_3d.camera_attributes
 	if cam_attr is CameraAttributesPractical:
 		cam_attr.dof_blur_amount = size.y * _viewport.scaling_3d_scale * 0.00001
 
 
 func enable_for_player(player: TMCharacter3D):
-	var gizmo: Gizmo = GameUI.get_node(^"CreatorUI/ObjectSelection/Gizmo")
+	var gizmo: Gizmo = GameUI.instance.get_node(^"CreatorUI/ObjectSelection/Gizmo")
 	_player_head_camera_holder.setup(player, self, gizmo)
 	_free_camera_holder.setup(player, self, gizmo)
 	_placement_preview.setup(self)
@@ -46,12 +44,13 @@ func enable_for_player(player: TMCharacter3D):
 	GameplaySettings.render_profile.update_viewport(_viewport)
 
 
+# note we can cache viewport but we need to check a few VR things to ensure we can safely do this for VR.
 func _on_render_quality_changed(_render_quality: int):
 	GameplaySettings.render_profile.update_viewport(_viewport)
 
 
 func get_camera_viewport() -> SubViewport:
-	return _viewport
+	return Zone.get_viewport()
 
 
 func _on_window_size_changed() -> void:
@@ -153,14 +152,14 @@ func _unhandled_input(input_event: InputEvent) -> void:
 		var dict = get_camera_raycast_dict()
 		if not dict.has("collider") or not dict.has("position"):
 			return
-		GameUI.creator_ui.open_context_menu(dict.collider, dict.position)
-	if GameUI.is_mouse_needed_for_ui():
+		GameUI.instance.creator_ui.open_context_menu(dict.collider, dict.position)
+	if GameUI.instance.is_mouse_needed_for_ui():
 		if input_event.is_action_pressed("primary_action"):
 			# Works to release focus from all SpinBox and text boxes
-			_main_viewport.gui_release_focus()
+			_viewport.gui_release_focus()
 		return
 
-	_main_viewport.gui_release_focus()
+	_viewport.gui_release_focus()
 	_current_camera_holder.handle_input(input_event)
 
 

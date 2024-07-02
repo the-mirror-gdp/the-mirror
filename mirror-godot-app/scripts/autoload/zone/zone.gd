@@ -58,6 +58,7 @@ var space_preload_done: bool = false:
 			space_preloaded.emit()
 
 var Scene: SpaceScene
+@onready var viewport = Zone.get_viewport()
 
 func _ready() -> void:
 	PriorityInput.register_actions([&"action_deselect"], enable_asset_deselect, disable_asset_deselect)
@@ -266,7 +267,7 @@ func on_exit_space() -> void:
 	social_manager.clear_children()
 	instance_manager.clear_children()
 	change_to_empty_scene()
-	GameUI.on_exit_space()
+	GameUI.instance.on_exit_space()
 	print("exit space game ui ran")
 
 

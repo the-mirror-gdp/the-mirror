@@ -82,7 +82,7 @@ global_script_class_icons={
 config/name="The Mirror"
 config/tags=PackedStringArray("open_source")
 run/main_scene="res://scenes/boot_scene.tscn"
-config/features=PackedStringArray("4.3", "f2020817", "mirror")
+config/features=PackedStringArray("35021301", "4.3", "mirror")
 boot_splash/bg_color=Color(0.0745098, 0.0862745, 0.184314, 1)
 boot_splash/image="res://art/white_logo_slate_bg_with_text.png"
 boot_splash/fullsize=false
@@ -101,6 +101,7 @@ AnalyticsV2="*res://scripts/autoload/analytics/analytics_v2.gd"
 Zone="*res://prefabs/autoload/zone/zone.tscn"
 Firebase="*res://addons/godot-firebase/firebase/firebase.tscn"
 Net="*res://scripts/autoload/net.gd"
+VRManager="*res://scripts/autoload/vr_manager.gd"
 Deeplinking="*res://scripts/autoload/deeplinking.gd"
 DamageMaster="*res://scripts/autoload/damage_master.gd"
 PriorityInput="*res://scripts/autoload/priority_input.gd"
@@ -108,7 +109,6 @@ AutoUpdate="*res://scripts/autoload/auto_update.gd"
 Constants="*res://scripts/autoload/constants.gd"
 Debug="*res://scripts/debug/debug.gd"
 PlayerData="*res://scripts/autoload/player_data.gd"
-GameUI="*res://ui/game/game_ui.tscn"
 Notify="*res://ui/notifications/notify.gd"
 GameplaySettings="*res://prefabs/autoload/gameplay_settings/gameplay_settings.gd"
 AnalyticsSession="*res://scripts/autoload/analytics/analytics_session.gd"
@@ -117,7 +117,6 @@ AppState="*res://scripts/autoload/analytics/app_state.gd"
 GameplayTools="*res://prefabs/autoload/gameplay_tools/gameplay_tools.tscn"
 DebugGeometry="*res://addons/debug_geometry.gd"
 MirrorScriptServer="*res://script/mirror_script_server.gd"
-VRManager="*res://scripts/autoload/vr_manager.gd"
 Util="*res://scripts/autoload/util_funcs.gd"
 
 [debug]
@@ -131,6 +130,7 @@ window/size/viewport_width=2560
 window/size/viewport_height=1440
 window/size/mode=2
 window/stretch/aspect="expand"
+window/vsync/vsync_mode=0
 mouse_cursor/tooltip_position_offset=Vector2(16, 16)
 
 [editor]
@@ -142,9 +142,28 @@ export/convert_text_resources_to_binary=false
 
 enabled=PackedStringArray("res://addons/compressed_build_exporter/plugin.cfg", "res://addons/draggable_container/plugin.cfg", "res://addons/godot-firebase/plugin.cfg", "res://addons/gut/plugin.cfg", "res://addons/http-sse-client/plugin.cfg", "res://addons/mirror_gltf/plugin.cfg", "res://addons/mirror_internal/plugin.cfg", "res://addons/omi_extensions/plugin.cfg")
 
+[feature_flags]
+
+preview=true
+show_advanced_settings=true
+map_builder=true
+suicide_keybinding=true
+enable_space_listing_pages=true
+the-mirror-tutorials=true
+always_spin_up_local_server=false
+check_version_on_start=true
+
 [filesystem]
 
 import/blender/enabled=false
+
+[firebase]
+
+environment_variables/apiKey="AIzaSyBvq2t4pZUTg4t0t4yxco1cXuTB79hMT14"
+environment_variables/authDomain="the-mirror-backend-prod.firebaseapp.com"
+environment_variables/projectId="the-mirror-backend-prod"
+environment_variables/clientId="703637831969-srf6qjr180vor53n5j6sgke3ln3plrfj.apps.googleusercontent.com"
+environment_variables/cacheLocation="user://mirror.firebase_cache"
 
 [gdnative]
 
@@ -560,27 +579,24 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
-textures/vram_compression/import_s3tc_bptc=true
+occlusion_culling/jitter_projection=false
+renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
+driver/depth_prepass/disable_for_vendors=""
 camera/depth_of_field/depth_of_field_bokeh_quality=2
-scaling_3d/mode=1
 environment/volumetric_fog/volume_size=128
 environment/volumetric_fog/volume_depth=128
 environment/volumetric_fog/use_filter=0
 environment/defaults/default_clear_color=Color(0.0235294, 0.00392157, 0.121569, 1)
-anti_aliasing/quality/screen_space_aa=1
-shadows/directional_shadow/size=8192
-anti_aliasing/quality/msaa=1
-shadows/directional_shadow/soft_shadow_quality=3
-shadows/shadows/soft_shadow_quality=3
-shadows/shadow_atlas/size=8192
+anti_aliasing/quality/msaa_2d=1
+anti_aliasing/quality/msaa_3d=1
+shadows/directional_shadow/soft_shadow_quality=0
 environment/default_clear_color=Color(0.0235294, 0.00392157, 0.121569, 1)
-quality/filters/msaa=3
-quality/filters/use_fxaa=true
 environment/default_environment="res://art/default_env.tres"
 quality/godrays/sample_number=50
 quality/godrays/use_pcf5=false
 quality/godrays/dither_amount=1.0
+shadows/directional_shadow/size=256
 
 [shader_globals]
 
@@ -612,5 +628,9 @@ world_map_max_height_offset_01={
 [xr]
 
 openxr/enabled=true
+openxr/environment_blend_mode=2
+openxr/foveation_level=3
+openxr/foveation_dynamic=true
+openxr/submit_depth_buffer=true
 openxr/startup_alert=false
 shaders/enabled=true

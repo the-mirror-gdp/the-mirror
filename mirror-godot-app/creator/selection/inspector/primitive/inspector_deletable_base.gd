@@ -20,8 +20,8 @@ func cleanup_and_delete() -> void:
 func _on_hoverable_inspector_item_mouse_entered() -> void:
 	if hover_tooltip_text == "":
 		return
-	GameUI.set_hover_tooltip_text(hover_tooltip_text)
+	GameUI.instance.set_hover_tooltip_text(hover_tooltip_text)
 
 
 func _on_hoverable_inspector_item_mouse_exited() -> void:
-	GameUI.hide_hover_tooltip_text()
+	GameUI.instance.hide_hover_tooltip_text()

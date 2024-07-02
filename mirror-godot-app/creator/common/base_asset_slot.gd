@@ -86,7 +86,7 @@ func _on_asset_slot_gui_input(input_event: InputEvent) -> void:
 	elif input_event.is_action_released(&"primary_action"):
 		slot_activated.emit(self, false)
 	elif input_event.is_action_released(&"secondary_action"):
-		GameUI.creator_ui.open_context_menu(self)
+		GameUI.instance.creator_ui.open_context_menu(self)
 
 
 func _on_asset_slot_mouse_entered() -> void:
@@ -97,4 +97,4 @@ func _on_asset_slot_mouse_entered() -> void:
 func _on_asset_slot_mouse_exited() -> void:
 	if not _is_selected:
 		_hover_state.hide()
-	GameUI.hide_hover_tooltip_text()
+	GameUI.instance.hide_hover_tooltip_text()

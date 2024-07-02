@@ -14,78 +14,62 @@ size = Vector3(0.005, 0.005, 2)
 [node name="VRController" type="Node"]
 script = ExtResource("1_7jx42")
 
-[node name="SubViewportContainerVR" type="SubViewportContainer" parent="."]
-clip_children = 2
-visibility_layer = 0
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-stretch = true
+[node name="EmojiMenu" parent="." instance=ExtResource("2_b75pn")]
 
-[node name="SubViewportVR" type="SubViewport" parent="SubViewportContainerVR"]
-use_xr = true
-handle_input_locally = false
-size = Vector2i(0, 0)
-render_target_update_mode = 4
+[node name="Root" type="Node3D" parent="."]
 
-[node name="Root" type="Node3D" parent="SubViewportContainerVR/SubViewportVR"]
-
-[node name="XROrigin3D" type="XROrigin3D" parent="SubViewportContainerVR/SubViewportVR/Root"]
+[node name="XROrigin3D" type="XROrigin3D" parent="Root"]
 current = true
 
-[node name="XRCamera3D" type="XRCamera3D" parent="SubViewportContainerVR/SubViewportVR/Root/XROrigin3D"]
+[node name="XRCamera3D" type="XRCamera3D" parent="Root/XROrigin3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
 cull_mask = 524287
 current = true
 
-[node name="Neck" type="Node3D" parent="SubViewportContainerVR/SubViewportVR/Root/XROrigin3D/XRCamera3D"]
+[node name="Neck" type="Node3D" parent="Root/XROrigin3D/XRCamera3D"]
 
-[node name="LeftHand" type="XRController3D" parent="SubViewportContainerVR/SubViewportVR/Root/XROrigin3D"]
+[node name="LeftHand" type="XRController3D" parent="Root/XROrigin3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1.7, -1)
 tracker = &"left_hand"
 
-[node name="hand_l" parent="SubViewportContainerVR/SubViewportVR/Root/XROrigin3D/LeftHand" instance=ExtResource("2_bslng")]
+[node name="hand_l" parent="Root/XROrigin3D/LeftHand" instance=ExtResource("2_bslng")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0.07)
 
-[node name="mesh_Hand_L" parent="SubViewportContainerVR/SubViewportVR/Root/XROrigin3D/LeftHand/hand_l/Armature/Skeleton3D" index="0"]
+[node name="mesh_Hand_L" parent="Root/XROrigin3D/LeftHand/hand_l/Armature/Skeleton3D" index="0"]
 transform = Transform3D(1.00335, 0, 0, 0, 1.00335, 0, 0, 0, 1.00335, 0, 0, 0)
 surface_material_override/0 = ExtResource("3_jiyl6")
 
-[node name="Laser" type="Node3D" parent="SubViewportContainerVR/SubViewportVR/Root/XROrigin3D/LeftHand"]
+[node name="Laser" type="Node3D" parent="Root/XROrigin3D/LeftHand"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.01, 0, 0, -0.2)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="SubViewportContainerVR/SubViewportVR/Root/XROrigin3D/LeftHand/Laser"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Root/XROrigin3D/LeftHand/Laser"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 mesh = SubResource("BoxMesh_g0e3b")
 skeleton = NodePath("../../../RightHand")
 
-[node name="RightHand" type="XRController3D" parent="SubViewportContainerVR/SubViewportVR/Root/XROrigin3D"]
+[node name="RightHand" type="XRController3D" parent="Root/XROrigin3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.7, -1)
 tracker = &"right_hand"
 
-[node name="hand_r" parent="SubViewportContainerVR/SubViewportVR/Root/XROrigin3D/RightHand" instance=ExtResource("4_t5gnk")]
+[node name="hand_r" parent="Root/XROrigin3D/RightHand" instance=ExtResource("4_t5gnk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0.07)
 
-[node name="mesh_Hand_R" parent="SubViewportContainerVR/SubViewportVR/Root/XROrigin3D/RightHand/hand_r/Armature/Skeleton3D" index="0"]
+[node name="mesh_Hand_R" parent="Root/XROrigin3D/RightHand/hand_r/Armature/Skeleton3D" index="0"]
 surface_material_override/0 = ExtResource("3_jiyl6")
 
-[node name="Laser" type="Node3D" parent="SubViewportContainerVR/SubViewportVR/Root/XROrigin3D/RightHand"]
+[node name="Laser" type="Node3D" parent="Root/XROrigin3D/RightHand"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.01, 0, 0, -0.2)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="SubViewportContainerVR/SubViewportVR/Root/XROrigin3D/RightHand/Laser"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Root/XROrigin3D/RightHand/Laser"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.999992)
 mesh = SubResource("BoxMesh_g0e3b")
 skeleton = NodePath("../..")
 
-[node name="EmojiMenu" parent="." instance=ExtResource("2_b75pn")]
+[connection signal="button_pressed" from="Root/XROrigin3D/LeftHand" to="." method="_on_left_hand_button_pressed"]
+[connection signal="button_released" from="Root/XROrigin3D/LeftHand" to="." method="_on_left_hand_button_released"]
+[connection signal="input_vector2_changed" from="Root/XROrigin3D/LeftHand" to="." method="_on_left_hand_input_vector_2_changed"]
+[connection signal="button_pressed" from="Root/XROrigin3D/RightHand" to="." method="_on_right_hand_button_pressed"]
+[connection signal="input_vector2_changed" from="Root/XROrigin3D/RightHand" to="." method="_on_right_hand_input_vector_2_changed"]
 
-[connection signal="button_pressed" from="SubViewportContainerVR/SubViewportVR/Root/XROrigin3D/LeftHand" to="." method="_on_left_hand_button_pressed"]
-[connection signal="button_released" from="SubViewportContainerVR/SubViewportVR/Root/XROrigin3D/LeftHand" to="." method="_on_left_hand_button_released"]
-[connection signal="input_vector2_changed" from="SubViewportContainerVR/SubViewportVR/Root/XROrigin3D/LeftHand" to="." method="_on_left_hand_input_vector_2_changed"]
-[connection signal="button_pressed" from="SubViewportContainerVR/SubViewportVR/Root/XROrigin3D/RightHand" to="." method="_on_right_hand_button_pressed"]
-[connection signal="input_vector2_changed" from="SubViewportContainerVR/SubViewportVR/Root/XROrigin3D/RightHand" to="." method="_on_right_hand_input_vector_2_changed"]
-
-[editable path="SubViewportContainerVR/SubViewportVR/Root/XROrigin3D/LeftHand/hand_l"]
-[editable path="SubViewportContainerVR/SubViewportVR/Root/XROrigin3D/RightHand/hand_r"]
+[editable path="Root/XROrigin3D/LeftHand/hand_l"]
+[editable path="Root/XROrigin3D/RightHand/hand_r"]
