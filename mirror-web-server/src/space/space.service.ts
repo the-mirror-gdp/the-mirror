@@ -92,6 +92,7 @@ import { MirrorDBService } from '../mirror-db/mirror-db.service'
 import { ScriptEntityService } from '../script-entity/script-entity.service'
 import { RemixSpaceDto } from './dto/remix-space-dto'
 import { AssetDocument } from '../asset/asset.schema'
+import { MaterialInstanceService } from './material-instance/material-instance.service'
 
 /**
  * @description This mirrors _standardPopulateFields and should be kept up to date with it. However, this "populate a lot of things" approach is deprecated
@@ -170,7 +171,8 @@ export class SpaceService implements IRoleConsumer {
     private readonly userService: UserService,
     private readonly redisPubSubService: RedisPubSubService,
     private readonly mirrorDBService: MirrorDBService,
-    private readonly scriptEntityService: ScriptEntityService
+    private readonly scriptEntityService: ScriptEntityService,
+    private readonly materialInstanceService: MaterialInstanceService
   ) {
     this._subscribeToSpaceSchemaChanges()
   }
@@ -1721,6 +1723,13 @@ export class SpaceService implements IRoleConsumer {
     )
 
     space.mirrorDBRecord = newMirroDBRecord._id
+
+    space.materialInstances = space.materialInstances
+      ? this.materialInstanceService.copySpaceMaterialInstancesForSpace(
+          space.materialInstances,
+          space._id
+        )
+      : []
 
     return space.save()
   }
