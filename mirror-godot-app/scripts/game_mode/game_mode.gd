@@ -25,7 +25,7 @@ func _unhandled_input(input_event) -> void:
 		return
 	if input_event.is_pressed():
 		var should_toggle_build_tools = (
-				not GameUI.is_keyboard_needed_for_ui()
+				not GameUI.instance.is_keyboard_needed_for_ui()
 				and input_event.is_action(&"build_mode_toggle")
 		)
 		if _current_game_mode == Mode.NORMAL:

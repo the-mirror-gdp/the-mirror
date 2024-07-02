@@ -24,9 +24,6 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tm8vm"]
 shader = ExtResource("8_uraan")
-shader_parameter/blur = 3.0
-shader_parameter/color = Color(1, 1, 1, 0)
-shader_parameter/strength = 0.15
 
 [sub_resource type="Theme" id="Theme_ij11x"]
 
@@ -48,9 +45,6 @@ base_font = ExtResource("13_k150r")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_a3r7x"]
 shader = ExtResource("8_uraan")
-shader_parameter/blur = 3.0
-shader_parameter/color = Color(0, 0, 0, 1)
-shader_parameter/strength = 0.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7twde"]
 bg_color = Color(0, 0, 0, 0)
@@ -203,12 +197,14 @@ layout_mode = 2
 [node name="Username" type="LineEdit" parent="VBoxContainer/SignInMenu/MarginContainer/LoginContainer"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
+text = "quest+demo@themirror.space"
 placeholder_text = "Email"
 caret_blink = true
 
 [node name="Password" type="LineEdit" parent="VBoxContainer/SignInMenu/MarginContainer/LoginContainer"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
+text = "metaquest"
 placeholder_text = "Password"
 caret_blink = true
 secret = true

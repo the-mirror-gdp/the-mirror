@@ -76,17 +76,17 @@ func _on_quality_settings_changed(new_value: int) -> void:
 func _setup_world_environment() -> void:
 	if environment == null:
 		environment = Environment.new()
-	if environment.sky == null:
-		environment.sky = Sky.new()
-	if (
-			environment.sky.sky_material == null
-			or not (
-					environment.sky.sky_material is ProceduralSkyMaterial
-					or environment.sky.sky_material is ShaderMaterial
-			)
-	):
-		environment.sky.sky_material = ProceduralSkyMaterial.new()
-	_sky = environment.sky.sky_material
+	#if environment.sky == null:
+		#environment.sky = Sky.new()
+	#if (
+			#environment.sky.sky_material == null
+			#or not (
+					#environment.sky.sky_material is ProceduralSkyMaterial
+					#or environment.sky.sky_material is ShaderMaterial
+			#)
+	#):
+		##environment.sky.sky_material = ProceduralSkyMaterial.new()
+	##_sky = environment.sky.sky_material
 
 	camera_attributes.dof_blur_far_enabled = GameplaySettings.render_profile.dof_enabled
 	if Util.is_vr_enabled():
@@ -94,6 +94,9 @@ func _setup_world_environment() -> void:
 		environment.ssil_enabled = false
 		environment.sdfgi_enabled = false
 		environment.ssr_enabled = false
+		environment.glow_enabled = false
+		environment.fog_enabled = false
+		environment.glow_bloom = false
 		camera_attributes.dof_blur_far_enabled = false
 
 
@@ -105,36 +108,38 @@ func get_shadow_preset_index() -> int:
 
 
 func _update_shadows_settings(preset: String, suns_children: Array[Node] = []) -> void:
+	pass
 	if not _SHADOWS_SETTING_MAPPINGS.has(preset):
-		preset = "medium"
+		preset = "low"
 	var shadow = _SHADOWS_SETTING_MAPPINGS[preset]
 	if suns_children.is_empty():
 		for child in get_children():
 			if child is DirectionalLight3D:
 				suns_children.append(child)
 	for sun in suns_children:
-		sun.directional_shadow_max_distance = shadow["max_distance"]
-		sun.shadow_enabled = shadow["enabled"]
-		sun.shadow_blur = shadow["blur"]
+		if Util.is_vr_enabled():
+			sun.directional_shadow_max_distance = 1
+			sun.shadow_enabled = false
+			sun.shadow_blur = 1
 
 
 func _update_environment_settings(data: Dictionary) -> void:
-	set_sky_color(
-		_array_to_color(data["skyTopColor"]),
-		_array_to_color(data["skyHorizonColor"]),
-		_array_to_color(data["skyBottomColor"]))
-	set_fog_properties(
-		data["fogEnabled"],
-		data["fogVolumetric"],
-		data["fogDensity"],
-		_array_to_color(data["fogColor"]))
+	#set_sky_color(
+		#_array_to_color(data["skyTopColor"]),
+		#_array_to_color(data["skyHorizonColor"]),
+		#_array_to_color(data["skyBottomColor"]))
+	#set_fog_properties(
+		#data["fogEnabled"],
+		#data["fogVolumetric"],
+		#data["fogDensity"],
+		#_array_to_color(data["fogColor"]))
 	environment.sdfgi_enabled = false if Util.is_vr_enabled() else data["globalIllumination"]
 	environment.ssao_enabled = false if Util.is_vr_enabled() else data.get("ssao", true)
 	environment.glow_enabled = false if Util.is_vr_enabled() else data.get("glow", true)
 	environment.ssr_enabled = false if Util.is_vr_enabled() else data.get("ssr", false)
-	environment.glow_hdr_threshold = data.get("glowHdrThreshold", 1.0)
+	# environment.glow_hdr_threshold = data.get("glowHdrThreshold", 1.0)
 	environment.tonemap_mode = data.get("tonemap", Environment.TONE_MAPPER_FILMIC)
-	shadows_preset = data.get("shadowsPreset", "medium")
+	# shadows_preset = data.get("shadowsPreset", "medium")
 	# Apply suns. Use suns array data if available, but always use sun_count
 	# for the amount (so that the default settings of 1 sun and an empty suns
 	# array will give the default sun instead of no suns).
@@ -152,20 +157,20 @@ func _update_environment_settings(data: Dictionary) -> void:
 		sun_node.light_negative = sun_dict["brightness"] < 0.0
 		sun_node.rotation = Vector3(sun_dict["rotation"][0], sun_dict["rotation"][1], 0.0)
 		sun_node.position = Vector3(sun_dict["position"][0], sun_dict["position"][1], sun_dict["position"][2])
-	if data.has("clouds") and data["clouds"] is Dictionary:
-		var clouds = data["clouds"]
-		set_clouds_enabled(clouds.get("visible", false))
-		set_clouds_shader_value("height_offset", clouds.get("height", 200.0))
-		var time_scale =  clouds.get("timeScale", 0.02)
-		var cloud_coverage = clouds.get("coverage", 0.6)
-		var clouds_color = _array_to_color( clouds.get("albedo", [1,1,1]) )
-		set_clouds_shader_value("cloud_coverage", cloud_coverage)
-		set_clouds_shader_value("_time_scale", time_scale)
-		set_clouds_shader_value("albedo",clouds_color)
-		if _sky is ShaderMaterial:
-			_sky.set_shader_parameter("clouds_color", clouds_color)
-			_sky.set_shader_parameter("_time_scale", time_scale)
-			_sky.set_shader_parameter("cloud_coverage", cloud_coverage)
+	#if data.has("clouds") and data["clouds"] is Dictionary:
+		#var clouds = data["clouds"]
+		#set_clouds_enabled(clouds.get("visible", false))
+		#set_clouds_shader_value("height_offset", clouds.get("height", 200.0))
+		#var time_scale =  clouds.get("timeScale", 0.02)
+		#var cloud_coverage = clouds.get("coverage", 0.6)
+		#var clouds_color = _array_to_color( clouds.get("albedo", [1,1,1]) )
+		#set_clouds_shader_value("cloud_coverage", cloud_coverage)
+		#set_clouds_shader_value("_time_scale", time_scale)
+		#set_clouds_shader_value("albedo",clouds_color)
+		#if _sky is ShaderMaterial:
+			#_sky.set_shader_parameter("clouds_color", clouds_color)
+			#_sky.set_shader_parameter("_time_scale", time_scale)
+			#_sky.set_shader_parameter("cloud_coverage", cloud_coverage)
 
 
 func apply_from_dictionary(data: Dictionary) -> void:
@@ -191,9 +196,9 @@ func serialize_to_dictionary() -> Dictionary:
 			"range": 5.0, # Does not matter what value we use here.
 			"spotAngleDegrees": 45.0, # Does not matter.
 		})
-	var fog_density = environment.volumetric_fog_density
-	if environment.fog_enabled:
-		fog_density = environment.fog_density * 2.0
+	#var fog_density = environment.volumetric_fog_density
+	#if environment.fog_enabled:
+		#fog_density = environment.fog_density * 2.0
 
 	var clouds = {
 		"visible": clouds_enabled(),
@@ -212,7 +217,7 @@ func serialize_to_dictionary() -> Dictionary:
 		"clouds": clouds,
 		"fogEnabled": environment.fog_enabled or environment.volumetric_fog_enabled,
 		"fogVolumetric": environment.volumetric_fog_enabled,
-		"fogDensity": fog_density,
+		"fogDensity": 1,
 		"fogColor": _color_to_array(environment.fog_light_color),
 		"globalIllumination": environment.sdfgi_enabled,
 		"ssao": environment.ssao_enabled,
@@ -239,6 +244,7 @@ func serialize_to_dictionary() -> Dictionary:
 
 
 func set_sky_color(top: Color, horizon: Color, bottom: Color) -> void:
+	return
 	if _sky is ProceduralSkyMaterial:
 		_sky.sky_top_color = top
 		_sky.sky_horizon_color = horizon

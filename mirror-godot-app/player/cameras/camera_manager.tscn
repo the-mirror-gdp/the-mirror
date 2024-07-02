@@ -8,27 +8,13 @@
 [node name="CameraManager" type="Node"]
 script = ExtResource("1_sgi5b")
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-stretch = true
-
-[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
-handle_input_locally = false
-audio_listener_enable_3d = true
-size = Vector2i(2560, 1440)
-render_target_update_mode = 4
-
-[node name="PlayerHeadCamera" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("_camera") instance=ExtResource("2_h612i")]
+[node name="PlayerHeadCamera" parent="." node_paths=PackedStringArray("_camera") instance=ExtResource("2_h612i")]
 _camera = NodePath("CameraRecoilOffset/ThirdPersonCameraArm/ThirdPersonCamera")
 
-[node name="FreeCamera" parent="SubViewportContainer/SubViewport" node_paths=PackedStringArray("_camera") instance=ExtResource("4_35k1r")]
+[node name="FreeCamera" parent="." node_paths=PackedStringArray("_camera") instance=ExtResource("4_35k1r")]
 _camera = NodePath("Camera")
 
-[node name="PlacementPreview" type="Node3D" parent="SubViewportContainer/SubViewport"]
+[node name="PlacementPreview" type="Node3D" parent="."]
 script = ExtResource("5_h3wxg")
 
-[node name="JoltDebugGeometry3D" type="JoltDebugGeometry3D" parent="SubViewportContainer/SubViewport"]
+[node name="JoltDebugGeometry3D" type="JoltDebugGeometry3D" parent="."]

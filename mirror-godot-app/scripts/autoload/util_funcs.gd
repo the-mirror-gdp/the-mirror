@@ -724,5 +724,6 @@ static func compare_with_schema(in_dict_to_compare: Dictionary, in_schema: Dicti
 
 
 static func is_vr_enabled() -> bool:
-	var interface = XRServer.find_interface("OpenXR")
-	return interface and interface.is_initialized()
+	return true
+	#var interface = XRServer.find_interface("OpenXR")
+	#return interface and interface.is_initialized()

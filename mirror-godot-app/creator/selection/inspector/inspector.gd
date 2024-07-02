@@ -131,7 +131,7 @@ func _refresh_material_tabs(selected_nodes: Array[Node]):
 				idx = _surfaces_item_list.add_item(surface_name, _tab_materials_icon)
 				_surfaces_item_list.set_item_metadata(idx, [mi, x, space_obj])
 		space_obj_cnt += 1
-	if not is_instance_valid(GameUI.creator_ui):
+	if not is_instance_valid(GameUI.instance.creator_ui):
 		return
 	if idx > -1:
 		if previously_selected_idx != -1 and previously_selected_idx < idx:
@@ -141,7 +141,7 @@ func _refresh_material_tabs(selected_nodes: Array[Node]):
 		_surfaces_item_list.select(idx, true)
 		_surfaces_item_list.ensure_current_is_visible()
 		_on_surfaces_item_list_item_selected(idx, false)
-	var material_creator = GameUI.creator_ui.material_creator_window.material_creator
+	var material_creator = GameUI.instance.creator_ui.material_creator_window.material_creator
 	Util.safe_signal_connect(material_creator.on_surface_material_updated, _on_surface_material_updated)
 	Util.safe_signal_connect(_material_inspector.material_created, _on_material_created)
 
@@ -514,11 +514,11 @@ func _on_add_script_button_pressed() -> void:
 func _on_material_creator_button_pressed() -> void:
 	var selected_surface = _surfaces_item_list.get_selected_items()
 	if selected_surface.size() != 1:
-		#GameUI.creator_ui.material_creator_window.edit_material_for_mesh()
+		#GameUI.instance.creator_ui.material_creator_window.edit_material_for_mesh()
 		return
 	var data = _surfaces_item_list.get_item_metadata(selected_surface[0])
 	# data contains [MeshInstance, surface_id, SpaceObject]
-	GameUI.creator_ui.material_creator_window.edit_material_for_mesh(data[2], data[0], data[1])
+	GameUI.instance.creator_ui.material_creator_window.edit_material_for_mesh(data[2], data[0], data[1])
 
 
 func _on_surface_picked(data) -> void:

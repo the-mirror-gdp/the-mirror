@@ -355,8 +355,8 @@ func _get_color_of_type(port_type: int) -> Color:
 
 
 func _on_hoverable_script_block_mouse_entered() -> void:
-	GameUI.set_hover_tooltip_text(hover_tooltip_text)
+	GameUI.instance.set_hover_tooltip_text(hover_tooltip_text)
 
 
 func _on_hoverable_script_block_mouse_exited() -> void:
-	GameUI.hide_hover_tooltip_text()
+	GameUI.instance.hide_hover_tooltip_text()

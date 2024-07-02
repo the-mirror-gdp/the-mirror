@@ -83,7 +83,7 @@ func test_shift_d_duplicated_space_object():
 	return # TODO: fix engine crashes with double
 	Zone.client = double(_CLIENT).new()
 	stub(Zone.client, 'client_send_create_space_object').to_do_nothing()
-	var selection_helper = GameUI.creator_ui.selection_helper
+	var selection_helper = GameUI.instance.creator_ui.selection_helper
 	var stubbed_so = _setup_space_object(_SPACE_OBJECT_DATA)
 
 	selection_helper.select_nodes([stubbed_so])
@@ -113,7 +113,7 @@ func test_copy_space_object():
 	return # TODO: fix engine crashes with double
 	Zone.client = double(_CLIENT).new()
 	stub(Zone.client, 'client_send_create_space_object').to_do_nothing()
-	var selection_helper = GameUI.creator_ui.selection_helper
+	var selection_helper = GameUI.instance.creator_ui.selection_helper
 	var stubbed_so = _setup_space_object(_SPACE_OBJECT_DATA)
 
 	selection_helper.select_nodes([stubbed_so])

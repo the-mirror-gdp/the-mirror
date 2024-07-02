@@ -1,15 +1,67 @@
-[gd_scene load_steps=4 format=3 uid="uid://copqkhi4xmo0x"]
+[gd_scene load_steps=12 format=3 uid="uid://copqkhi4xmo0x"]
 
 [ext_resource type="Script" path="res://scenes/space_scene.gd" id="1"]
 [ext_resource type="Script" path="res://scenes/host_camera.gd" id="3"]
 [ext_resource type="PackedScene" uid="uid://ba6xtytngt5sx" path="res://gameplay/auto_performance_adjuster/auto_performance_adjuster.tscn" id="4_ax7q0"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_n01yo"]
+size = Vector2(20, 20)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bf4e6"]
+albedo_color = Color(0.148753, 0.0901, 0.53, 1)
+emission_enabled = true
+emission = Color(0.7, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uhw0c"]
+albedo_color = Color(0, 0.133333, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wab1w"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ksjvo"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_dupxs"]
+
+[sub_resource type="Sky" id="Sky_jtl13"]
+sky_material = SubResource("ProceduralSkyMaterial_dupxs")
+
+[sub_resource type="Environment" id="Environment_y4xhh"]
+background_mode = 2
+sky = SubResource("Sky_jtl13")
+ambient_light_color = Color(0.641934, 0.641934, 0.641934, 1)
+ambient_light_energy = 2.59
 
 [node name="SpaceScene" type="Node3D" groups=["SpaceScene"]]
 script = ExtResource("1")
 
 [node name="HostCamera" type="Camera3D" parent="."]
 transform = Transform3D(-0.615661, -0.557208, 0.557208, 0, 0.707107, 0.707107, -0.788011, 0.435338, -0.435338, 0, 50, -40)
+visible = false
 far = 2000.0
 script = ExtResource("3")
 
 [node name="PerformanceAdjuster" parent="." instance=ExtResource("4_ax7q0")]
+
+[node name="Node3D" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.84681, 0)
+mesh = SubResource("PlaneMesh_n01yo")
+surface_material_override/0 = SubResource("StandardMaterial3D_bf4e6")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(0.690794, 0.723052, 0, -0.723052, 0.690794, 0, 0, 0, 1, -9.11508, -0.692765, 0.0252619)
+mesh = SubResource("PlaneMesh_n01yo")
+surface_material_override/0 = SubResource("StandardMaterial3D_uhw0c")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.40801, 1.03698, 4.96256)
+mesh = SubResource("BoxMesh_wab1w")
+surface_material_override/0 = SubResource("StandardMaterial3D_ksjvo")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.289049, 0.9573, -0.00530261, 0.727406, 0.223229, 0.648883, 0.622359, 0.183702, -0.76087, 0, 5.07922, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_y4xhh")

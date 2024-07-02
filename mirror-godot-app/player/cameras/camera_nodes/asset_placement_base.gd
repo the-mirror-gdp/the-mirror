@@ -32,8 +32,8 @@ func handle_asset_placement_input(input_event: InputEvent) -> void:
 	if interact_raycast_layer(input_event, ["GIZMO"]):
 		return
 	if (
-		not GameUI.creator_ui.is_edit_mode(Enums.EDIT_MODE.Asset)
-		and not GameUI.creator_ui.is_edit_mode(Enums.EDIT_MODE.Map)
+		not GameUI.instance.creator_ui.is_edit_mode(Enums.EDIT_MODE.Asset)
+		and not GameUI.instance.creator_ui.is_edit_mode(Enums.EDIT_MODE.Map)
 	):
 		return
 	select_object()
@@ -47,18 +47,18 @@ func select_object() -> void:
 	var multi_select_pressed = Input.is_action_pressed(&"object_multi_select")
 	if not is_instance_valid(object):
 		if not multi_select_pressed:
-			GameUI.creator_ui.clear_selection()
+			GameUI.instance.creator_ui.clear_selection()
 		return
 	if object is ModelPrimitive:
-		GameUI.creator_ui.raycast_hit_object(object)
+		GameUI.instance.creator_ui.raycast_hit_object(object)
 		return
 	var space_object = Util.get_space_object(object)
 	if space_object:
 		if space_object.asset_type == Enums.ASSET_TYPE.MAP or space_object.locked:
 			if not multi_select_pressed:
-				GameUI.creator_ui.clear_selection()
+				GameUI.instance.creator_ui.clear_selection()
 			return
-		GameUI.creator_ui.raycast_hit_object(space_object)
+		GameUI.instance.creator_ui.raycast_hit_object(space_object)
 
 
 ## Places the currently selected asset in the world.
@@ -93,7 +93,7 @@ func get_placement_transform_or_null(): # -> Transform3D?
 	if abs(target.dot(back)) > 0.99:
 		# Edge case handling: Don't allow these vectors to be colinear.
 		back = global_transform.basis.y
-	if GameUI.creator_ui.is_gizmo_type(Enums.GIZMO_TYPE.GRAB):
+	if GameUI.instance.creator_ui.is_gizmo_type(Enums.GIZMO_TYPE.GRAB):
 		placement_transform.basis = _basis_looking_at_y(target, back)
 	# Calculate the position. If Gizmo snap is enabled, snap to the snap step.
 	placement_transform = placement_transform.translated_local(_camera_manager.placement_offset)

@@ -7,15 +7,14 @@ signal vr_ended
 
 const _ROTATION_SPEED: float = 4.0
 
-@onready var _sub_viewport_container: SubViewportContainer = $SubViewportContainerVR
-@onready var _root: Node3D = $SubViewportContainerVR/SubViewportVR/Root
-@onready var _origin: XROrigin3D = $SubViewportContainerVR/SubViewportVR/Root/XROrigin3D
-@onready var _camera: XRCamera3D = $SubViewportContainerVR/SubViewportVR/Root/XROrigin3D/XRCamera3D
-@onready var _camera_neck: Node3D = $SubViewportContainerVR/SubViewportVR/Root/XROrigin3D/XRCamera3D/Neck
-@onready var _left_hand: XRController3D = $SubViewportContainerVR/SubViewportVR/Root/XROrigin3D/LeftHand
-@onready var _left_hand_laser: Node3D = $SubViewportContainerVR/SubViewportVR/Root/XROrigin3D/LeftHand/Laser
-@onready var _right_hand: XRController3D = $SubViewportContainerVR/SubViewportVR/Root/XROrigin3D/RightHand
-@onready var _right_hand_laser: Node3D = $SubViewportContainerVR/SubViewportVR/Root/XROrigin3D/RightHand/Laser
+@onready var _root: Node3D = $Root
+@onready var _origin: XROrigin3D = $Root/XROrigin3D
+@onready var _camera: XRCamera3D = $Root/XROrigin3D/XRCamera3D
+@onready var _camera_neck: Node3D = $Root/XROrigin3D/XRCamera3D/Neck
+@onready var _left_hand: XRController3D = $Root/XROrigin3D/LeftHand
+@onready var _left_hand_laser: Node3D = $Root/XROrigin3D/LeftHand/Laser
+@onready var _right_hand: XRController3D = $Root/XROrigin3D/RightHand
+@onready var _right_hand_laser: Node3D = $Root/XROrigin3D/RightHand/Laser
 @onready var _emoji_menu: JBody3D = $EmojiMenu
 
 var _local_player: TMCharacter3D
@@ -45,6 +44,8 @@ func _process(_delta: float) -> void:
 	_root.global_position = _local_player.model.global_position
 	_process_hand_interaction(_left_hand, _left_hand_laser, is_left_hand_intent_to_interact())
 	_process_hand_interaction(_right_hand, _right_hand_laser, is_right_hand_intent_to_interact())
+	if _local_player.model.get_player_visible():
+		_local_player.model.hide_player()
 
 
 func _on_vr_enter() -> void:
@@ -60,7 +61,6 @@ func _on_vr_exit() -> void:
 
 
 func _set_vr_visibility(value: bool) -> void:
-	_sub_viewport_container.set_visible(value)
 	_origin.set_visible(value)
 
 
@@ -104,6 +104,7 @@ func is_intent_to_jump() -> bool:
 
 func is_left_hand_intent_to_interact() -> bool:
 	if _left_hand_interacting:
+		print("not interacting")
 		_left_hand_interacting = false
 		return true
 	return false
@@ -111,6 +112,7 @@ func is_left_hand_intent_to_interact() -> bool:
 
 func is_right_hand_intent_to_interact() -> bool:
 	if _right_hand_interacting:
+		print("not interacting right")
 		_right_hand_interacting = false
 		return true
 	return false
@@ -121,6 +123,8 @@ func origin_set_rotation_y(rotation: float) -> void:
 
 
 func _process_hand_interaction(hand: Node3D, laser: Node3D, intent_to_interact: bool) -> void:
+	if not intent_to_interact:
+		return
 	var raycast_dict: Dictionary = _get_ray_cast(hand)
 	var hit = _local_player.process_interaction(raycast_dict, intent_to_interact)
 	laser.set_visible(hit)
@@ -155,7 +159,7 @@ func _on_left_hand_button_released(action: String):
 	if action == "primary_click":
 		_running = false
 	elif action == "trigger_click" and not _left_hand_interacting:
-		_left_hand_interacting = true
+		_left_hand_interacting = false
 
 
 func _on_right_hand_button_pressed(action: String):

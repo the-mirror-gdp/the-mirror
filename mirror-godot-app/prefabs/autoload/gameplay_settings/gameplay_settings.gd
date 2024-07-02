@@ -155,6 +155,7 @@ var render_profile := RenderProfile.new()
 
 
 func _ready() -> void:
+	await GameUI.ui_ready()
 	_load_config_file()
 	get_viewport().size_changed.connect(_window_size_changed)
 	render_profile.load_viewport_settings()
@@ -304,14 +305,14 @@ func _apply_show_framerate_enabled(is_show_framerate_enabled: bool):
 	if show_framerate_enabled != is_show_framerate_enabled:
 		show_framerate_enabled = is_show_framerate_enabled
 		_save_config_file()
-	GameUI.fps_label.visible = show_framerate_enabled
+	GameUI.instance.fps_label.visible = show_framerate_enabled
 
 
 func _apply_crosshair_color(new_crosshair_color: Color) -> void:
 	if crosshair_color != new_crosshair_color:
 		crosshair_color = new_crosshair_color
 		_save_config_file()
-	GameUI.crosshair.set_color(new_crosshair_color)
+	GameUI.instance.crosshair.set_color(new_crosshair_color)
 
 
 # Controls
@@ -341,8 +342,8 @@ func _apply_menu_ambience_volume_db(new_ambience_volume: float):
 	if Zone.is_host():
 		# Server does not play any audio.
 		return
-	GameUI.menu_ambience.volume_db = menu_ambience_volume_db - 10.0
-	GameUI.menu_ambience.check_update_stream()
+	GameUI.instance.menu_ambience.volume_db = menu_ambience_volume_db - 10.0
+	GameUI.instance.menu_ambience.check_update_stream()
 
 
 func _apply_is_microphone_enabled(new_is_microphone_enabled: bool) -> void:

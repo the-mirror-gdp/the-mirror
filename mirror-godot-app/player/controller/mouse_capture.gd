@@ -31,7 +31,7 @@ func _notification(what):
 
 func _process(_delta: float) -> void:
 	var was_mouse_captured_last_frame: bool = (Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED)
-	var is_mouse_needed_by_ui: bool = GameUI.is_mouse_needed_for_ui()
+	var is_mouse_needed_by_ui: bool = GameUI.instance.is_mouse_needed_for_ui()
 	var new_mouse_mode: Input.MouseMode = Input.MOUSE_MODE_VISIBLE
 	if not is_mouse_needed_by_ui:
 		if is_app_focused:

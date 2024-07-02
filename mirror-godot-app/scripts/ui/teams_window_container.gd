@@ -24,7 +24,7 @@ func _process(_delta) -> void:
 	if not Zone.client or not Zone.client or not Zone.client.is_client_connected_to_server():
 		return
 	if Input.is_action_just_pressed(&"team_menu_toggle"):
-		if GameUI.is_any_full_screen_or_modal_ui_visible([self]):
+		if GameUI.instance.is_any_full_screen_or_modal_ui_visible([self]):
 			return
 		if get_viewport().gui_get_focus_owner() != null:
 			return

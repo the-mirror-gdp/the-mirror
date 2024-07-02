@@ -5,8 +5,8 @@ extends Label
 
 
 func _process(delta: float) -> void:
-	visible = not GameUI.is_cinematic_mode_enabled()
-	var safe_area: Rect2 = GameUI.get_safe_area()
+	visible = not GameUI.instance.is_cinematic_mode_enabled()
+	var safe_area: Rect2 = GameUI.instance.get_safe_area()
 	position = safe_area.position + Vector2(20.0, safe_area.size.y - 60.0)
 	modulate.a -= delta * 0.5
 	if modulate.a < 0.0:

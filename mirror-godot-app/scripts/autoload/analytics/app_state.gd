@@ -17,13 +17,14 @@ var _current_app_mode: Dictionary = { mode = "MENU", sub_mode = "LOGIN" }:
 
 
 func _ready() -> void:
+	await GameUI.ui_ready()
 	Zone.client.join_server_start.connect(_on_joining_server)
 	Zone.client.join_server_complete.connect(_on_server_joined)
 	Zone.mode_changed.connect(_on_zone_mode_changed)
-	if GameUI.main_menu_ui:
-		GameUI.main_menu_ui.visibility_changed.connect(_on_main_menu_ui_visibility_changed)
-		GameUI.main_menu_ui.page_changed.connect(main_menu_ui_analytics_update_current_page)
-	GameUI.login_ui.visibility_changed.connect(_on_login_ui_visibility_changed)
+	if GameUI.instance.main_menu_ui:
+		GameUI.instance.main_menu_ui.visibility_changed.connect(_on_main_menu_ui_visibility_changed)
+		GameUI.instance.main_menu_ui.page_changed.connect(main_menu_ui_analytics_update_current_page)
+	GameUI.instance.login_ui.visibility_changed.connect(_on_login_ui_visibility_changed)
 
 
 
@@ -61,7 +62,7 @@ func join_server_stop() -> void:
 	main_menu_ui_analytics_update_current_page()
 
 
-func main_menu_ui_analytics_update_current_page(page_name: String = GameUI.main_menu_ui._current_page.name) -> void:
+func main_menu_ui_analytics_update_current_page(page_name: String = GameUI.instance.main_menu_ui._current_page.name) -> void:
 	set_app_mode("MENU", page_name.to_upper())
 
 
@@ -80,16 +81,16 @@ func _on_zone_mode_changed(new_mode: ZoneClass.ZONE_MODE) -> void:
 # 1. It correctly says that we are in the main menu always,
 #      not only when we automatically change page to Home
 # 2. When we close it, it correctly puts us back in the correct SPACE_* AppMode
-# TODO MAYBE: listen on a signal on GameUI for when it switches which UI is on top/visible
-#   Something like : GameUI.main_ui_changed ====> "LOGIN", "MAIN_MENU", etc
+# TODO MAYBE: listen on a signal on GameUI.instance for when it switches which UI is on top/visible
+#   Something like : GameUI.instance.main_ui_changed ====> "LOGIN", "MAIN_MENU", etc
 func _on_main_menu_ui_visibility_changed() -> void:
-	if GameUI.main_menu_ui.visible:
+	if GameUI.instance.main_menu_ui.visible:
 		main_menu_ui_analytics_update_current_page()
 	# If in a space: TODO, find a better check than UI visibility of player label container.
-	elif GameUI.chat_ui.visible:
+	elif GameUI.instance.chat_ui.visible:
 		change_app_mode_to_space_mode(Zone.current_mode)
 
 
 func _on_login_ui_visibility_changed() -> void:
-	if GameUI.login_ui.visible:
+	if GameUI.instance.login_ui.visible:
 		set_app_mode("MENU", "LOGIN")

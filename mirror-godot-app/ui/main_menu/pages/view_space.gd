@@ -37,7 +37,7 @@ func _construct_space_url(space_id: String) -> String:
 
 
 func _on_cancel_pressed() -> void:
-	GameUI.main_menu_ui.history_go_back()
+	GameUI.instance.main_menu_ui.history_go_back()
 
 
 func _load_avg_space_rating() -> void:
@@ -100,7 +100,7 @@ func _preprocess_description(desciption: String) -> String:
 
 
 func populate(space: Dictionary) -> void:
-	_back_button.visible = GameUI.should_display_space_listings
+	_back_button.visible = GameUI.instance.should_display_space_listings
 	# cache space
 	_space = Net.space_client.spaces.get(space.get("_id"), space) # always get newest data
 	_entity_action_rating_id = ""
@@ -168,7 +168,7 @@ func _on_build_button_pressed():
 		return
 	Zone.client.quit_to_main_menu()
 	Zone.client.start_join_zone_by_space_id(space_id)
-	GameUI.loading_ui.set_loading_image(_space_image.texture)
+	GameUI.instance.loading_ui.set_loading_image(_space_image.texture)
 
 
 # do not call this excessively, we only need to call it when a user publishes
@@ -191,7 +191,7 @@ func _on_play_published_space() -> void:
 		return
 	Zone.client.quit_to_main_menu()
 	Zone.client.start_join_play_space_by_space_id(space_id)
-	GameUI.loading_ui.set_loading_image(_space_image.texture)
+	GameUI.instance.loading_ui.set_loading_image(_space_image.texture)
 
 
 func _on_copy_url_button_pressed():
@@ -204,7 +204,7 @@ func _get_space_id(space) -> String:
 
 
 func _on_space_settings_button_pressed():
-	GameUI.main_menu_ui.change_subpage("EditSpace", _space)
+	GameUI.instance.main_menu_ui.change_subpage("EditSpace", _space)
 
 
 func _on_star_rating_value_changed(value):
@@ -246,8 +246,8 @@ func _on_create_play_server_play_server_created(play_server_id):
 
 
 func _on_description_label_meta_clicked(meta):
-	GameUI.main_menu_ui.change_page(&"Build")
-	GameUI.main_menu_ui.change_subpage(&"DiscoverSpaceSelect", meta)
+	GameUI.instance.main_menu_ui.change_page(&"Build")
+	GameUI.instance.main_menu_ui.change_subpage(&"DiscoverSpaceSelect", meta)
 
 
 func _on_publish_space_window_space_version_published():

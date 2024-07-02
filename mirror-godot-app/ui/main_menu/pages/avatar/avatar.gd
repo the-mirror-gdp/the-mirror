@@ -168,7 +168,7 @@ func _on_continue_with_avatar_pressed() -> void:
 			Notify.info(tr("Can't confirm changes\n to your avatar"), tr("Your avatar might have been successfully changed. Retry to make sure."))
 		elif user_profile["avatarUrl"] != old_profile.get("avatarUrl", ""):
 			Notify.success(tr("Your avatar successfully changed"), tr("This change will be applied on your next connection to any server"))
-			if GameUI.should_display_space_listings:
+			if GameUI.instance.should_display_space_listings:
 				request_change_page.emit(&"Home")
 		else:
 			Notify.info(tr("No changes to your avatar"), tr("Your avatar was already set to that same avatar"))

@@ -105,17 +105,17 @@ func _setup_world_environment():
 	if target_node.environment == null:
 		target_node.environment = Environment.new()
 	_environment = target_node.environment
-	if _environment.sky == null:
-		_environment.sky = Sky.new()
-	if (
-			_environment.sky.sky_material == null
-			or not (
-					_environment.sky.sky_material is ProceduralSkyMaterial
-					or _environment.sky.sky_material is ShaderMaterial
-			)
-	):
-		_environment.sky.sky_material = ProceduralSkyMaterial.new()
-	_sky_material = _environment.sky.sky_material
+	#if _environment.sky == null:
+		#_environment.sky = Sky.new()
+	#if (
+			#_environment.sky.sky_material == null
+			#or not (
+					#_environment.sky.sky_material is ProceduralSkyMaterial
+					#or _environment.sky.sky_material is ShaderMaterial
+			#)
+	#):
+		#_environment.sky.sky_material = ProceduralSkyMaterial.new()
+	#_sky_material = _environment.sky.sky_material
 
 
 func _count_suns(target_node):

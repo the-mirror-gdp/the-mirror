@@ -78,4 +78,4 @@ func _on_data_type_selected(data_type_index: int) -> void:
 
 
 func _on_name_line_edit_focus_entered() -> void:
-	GameUI.grab_input_lock(self)
+	GameUI.instance.grab_input_lock(self)

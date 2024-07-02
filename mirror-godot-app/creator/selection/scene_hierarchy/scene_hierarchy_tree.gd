@@ -539,7 +539,7 @@ func _on_tree_script_instances_changed(tree_item: TreeItem) -> void:
 func _on_item_mouse_selected(_position: Vector2, mouse_button: int) -> void:
 	if mouse_button == MOUSE_BUTTON_RIGHT and not Input.is_action_pressed(&"object_multi_select"):
 		var node = _get_instance_node_from_tree_item(get_next_selected(null))
-		GameUI.creator_ui.open_context_menu(node)
+		GameUI.instance.creator_ui.open_context_menu(node)
 
 
 func _on_tree_item_selected(ui_only_tree_item: TreeItem, _selected_column: int, ui_only_is_selected: bool) -> void:

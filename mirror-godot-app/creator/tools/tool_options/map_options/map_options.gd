@@ -256,13 +256,13 @@ func _on_object_selection_changed(selected_nodes: Array[Node]) -> void:
 		Util.safe_signal_connect(map.map_loaded, _populate_panel_data)
 		_no_map_selected.visible = false
 		_tab_container.visible = true
-		if not GameUI.creator_ui.is_edit_mode(Enums.EDIT_MODE.Map):
+		if not GameUI.instance.creator_ui.is_edit_mode(Enums.EDIT_MODE.Map):
 			emit_map_mode_toggle()
 		return
 	_no_map_selected.visible = true
 	_tab_container.visible = false
 	# This will exit map edit mode
-	if GameUI.creator_ui.is_edit_mode(Enums.EDIT_MODE.Map):
+	if GameUI.instance.creator_ui.is_edit_mode(Enums.EDIT_MODE.Map):
 		emit_map_mode_toggle()
 	_enable_panels(false, false)
 

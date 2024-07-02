@@ -110,8 +110,8 @@ func _on_delete_space_confirmation_dialog_confirmed():
 	if promise.is_error():
 		Notify.error(tr("Space Deletion Failed"), promise.get_error_message())
 	else:
-		GameUI.main_menu_ui.cleanup_history()
-		GameUI.main_menu_ui.show_default_subpage()
+		GameUI.instance.main_menu_ui.cleanup_history()
+		GameUI.instance.main_menu_ui.show_default_subpage()
 		Notify.success(tr("Space Deleted"), tr("Space deleted successfully."))
 
 
@@ -184,7 +184,7 @@ func _on_space_image_updated(promise: Promise, image_index: int):
 
 
 func _on_cancel_button_pressed():
-	GameUI.main_menu_ui.history_go_back()
+	GameUI.instance.main_menu_ui.history_go_back()
 
 
 func _on_publish_button_pressed():

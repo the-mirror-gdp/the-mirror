@@ -49,8 +49,8 @@ func _on_next_page_pressed():
 
 
 func _on_focus_entered() -> void:
-	GameUI.grab_input_lock(self)
+	GameUI.instance.grab_input_lock(self)
 
 
 func _on_focus_exited() -> void:
-	GameUI.release_input_lock(self)
+	GameUI.instance.release_input_lock(self)

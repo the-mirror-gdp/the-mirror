@@ -535,7 +535,7 @@ func _respawn_player_network(spawn_point_path: NodePath, spawn_transform: Transf
 		if spawn_point_node:
 			spawn_point_node.emit_signal("player_spawned_here", self)
 	Zone.social_manager.player_spawned.emit(self)
-	GameUI.health_display.play_respawn_sound()
+	GameUI.instance.health_display.play_respawn_sound()
 
 
 func _calculate_spawn_transform(spawn_point_path: NodePath) -> Transform3D:
@@ -655,7 +655,7 @@ func add_equipable(asset_id: String) -> void:
 	if Zone.is_host():
 		add_equipable.rpc_id(_peer_id, asset_id)
 	if not Zone.is_host() and is_local_player():
-		GameUI.hotbar.add_equipable(asset_id)
+		GameUI.instance.hotbar.add_equipable(asset_id)
 
 
 @rpc("call_remote", "any_peer", "reliable")
@@ -663,7 +663,7 @@ func clear_equipables() -> void:
 	if Zone.is_host():
 		clear_equipables.rpc_id(_peer_id)
 	elif is_local_player():
-		GameUI.hotbar.clear_equipables()
+		GameUI.instance.hotbar.clear_equipables()
 
 
 @rpc("call_remote", "any_peer", "reliable")
@@ -676,7 +676,7 @@ func load_equipables() -> void:
 	if Zone.is_host():
 		load_equipables.rpc_id(_peer_id)
 	if not Zone.is_host() and is_local_player():
-		GameUI.hotbar.load_equipables()
+		GameUI.instance.hotbar.load_equipables()
 
 
 func refresh_player_scale() -> void:
@@ -1017,11 +1017,11 @@ func draw_interaction_outline(target: Node3D) -> void:
 	var transf: Transform3D = target.global_transform
 	transf = transf.translated_local(aabb.position)
 	transf.basis *= Basis.from_scale(aabb.size)
-	GameUI.object_outlines.draw_wireframe_box_transform(transf, _INTERACT_COLOR)
+	GameUI.instance.object_outlines.draw_wireframe_box_transform(transf, _INTERACT_COLOR)
 	if GameplaySettings.show_floating_control_hints:
 		var screen_pos: Vector2 = camera_unproject_position_to_screen(
 				transf * Vector3(0.5, 0.5, 0.5))
-		GameUI.floating_text.draw_text_at_screen_position("Interact (E)", screen_pos)
+		GameUI.instance.floating_text.draw_text_at_screen_position("Interact (E)", screen_pos)
 
 
 # TODO: make this network synced
@@ -1124,14 +1124,14 @@ func _on_damage_handler_health_changed(_target_object: Node, new_health: float, 
 		return
 	data_store.set_value("health", new_health)
 	if new_health < old_health:
-		GameUI.health_display.show_damage_screen()
+		GameUI.instance.health_display.show_damage_screen()
 	if Zone.has_player(event_origin):
 		var killer: Player = Zone.get_player(event_origin)
 		if killer != self:
-			GameUI.health_display.add_damage_indicator(killer.global_position)
-	GameUI.health_display.set_health(ceili(new_health))
+			GameUI.instance.health_display.add_damage_indicator(killer.global_position)
+	GameUI.instance.health_display.set_health(ceili(new_health))
 	if new_health <= 0.0:
-		GameUI.health_display.play_death_sound()
+		GameUI.instance.health_display.play_death_sound()
 
 
 # Important: this is server-side only!
@@ -1296,4 +1296,4 @@ func _on_player_model_avatar_changed() -> void:
 func create_emoji(emoji: String) -> void:
 	social_ui.create_emoji(emoji)
 	if not Zone.is_host() and is_local_player():
-		GameUI.chat_ui.send_chat_message_server.rpc_id(Zone.SERVER_PEER_ID, emoji)
+		GameUI.instance.chat_ui.send_chat_message_server.rpc_id(Zone.SERVER_PEER_ID, emoji)

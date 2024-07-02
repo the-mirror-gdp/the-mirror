@@ -4,6 +4,3 @@
 
 [resource]
 shader = ExtResource("1_5syw1")
-shader_parameter/blur = 2.417
-shader_parameter/color = Color(0.072, 0.0882, 0.18, 1)
-shader_parameter/strength = 0.7

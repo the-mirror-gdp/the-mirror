@@ -1,6 +1,38 @@
-[gd_scene load_steps=2 format=3 uid="uid://c2y7pnj0lci5b"]
+[gd_scene load_steps=7 format=3 uid="uid://c2y7pnj0lci5b"]
 
 [ext_resource type="Script" path="res://scripts/autoload/bootup.gd" id="1_r2n0q"]
 
+[sub_resource type="PlaneMesh" id="PlaneMesh_n01yo"]
+size = Vector2(20, 20)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bf4e6"]
+albedo_color = Color(0.148753, 0.0901, 0.53, 1)
+emission_enabled = true
+emission = Color(0.7, 0, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uhw0c"]
+albedo_color = Color(0, 0.133333, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wab1w"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ksjvo"]
+albedo_color = Color(1, 0, 0, 1)
+
 [node name="Bootup" type="Node"]
 script = ExtResource("1_r2n0q")
+
+[node name="Node3D" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
+mesh = SubResource("PlaneMesh_n01yo")
+surface_material_override/0 = SubResource("StandardMaterial3D_bf4e6")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(0.690794, 0.723052, 0, -0.723052, 0.690794, 0, 0, 0, 1, -9.11508, -0.692765, 0.0252619)
+mesh = SubResource("PlaneMesh_n01yo")
+surface_material_override/0 = SubResource("StandardMaterial3D_uhw0c")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.40801, 1.03698, 4.96256)
+mesh = SubResource("BoxMesh_wab1w")
+surface_material_override/0 = SubResource("StandardMaterial3D_ksjvo")

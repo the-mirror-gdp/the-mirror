@@ -1,27 +1,18 @@
-[gd_scene load_steps=7 format=3 uid="uid://c8rbsihat0s8q"]
+[gd_scene load_steps=6 format=3 uid="uid://c8rbsihat0s8q"]
 
 [ext_resource type="Script" path="res://prefabs/space/templates/space_template.gd" id="1_q53s5"]
 [ext_resource type="Environment" uid="uid://ib7u2j6apjgi" path="res://art/environments/physical_sky.tres" id="2_e25ph"]
-[ext_resource type="Material" uid="uid://drfre2fladfa4" path="res://art/sky/volumetric_clouds_material.tres" id="4_qucd1"]
 [ext_resource type="Script" path="res://prefabs/space/templates/space_environment.gd" id="5_05rgg"]
 [ext_resource type="Script" path="res://prefabs/space/templates/space_global_scripts.gd" id="5_p4kuv"]
 
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_022ca"]
-dof_blur_far_enabled = true
-dof_blur_far_distance = 150.0
-dof_blur_amount = 0.01
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_52xkg"]
 
 [node name="SpaceTemplate" type="Node3D"]
 script = ExtResource("1_q53s5")
-terrain_seed = 124
-terrain_height_start = -10
-terrain_height_range = 5
-terrain_material_name = "grass"
-terrain_generator_name = "rolling_hills_generator01"
 
 [node name="Space Environment" type="WorldEnvironment" parent="."]
 environment = ExtResource("2_e25ph")
-camera_attributes = SubResource("CameraAttributesPractical_022ca")
+camera_attributes = SubResource("CameraAttributesPractical_52xkg")
 script = ExtResource("5_05rgg")
 
 [node name="_Hidden" type="Node3D" parent="Space Environment"]
@@ -30,11 +21,10 @@ script = ExtResource("5_05rgg")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 281.253, 0)
 visible = false
 shape = 4
-material = ExtResource("4_qucd1")
 
 [node name="Sun1" type="DirectionalLight3D" parent="Space Environment"]
 transform = Transform3D(0.5, -0.433013, 0.75, 0, 0.866026, 0.5, -0.866025, -0.25, 0.433013, 0, 0, 0)
-shadow_enabled = true
+directional_shadow_mode = 0
 directional_shadow_max_distance = 250.0
 
 [node name="Space Global Scripts" type="Node" parent="."]

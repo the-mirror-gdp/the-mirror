@@ -36,8 +36,8 @@ func set_loading_image(image: Texture2D) -> void:
 
 func _on_join_server_start() -> void:
 	_progress_animation.play("Loading")
-	if GameUI.main_menu_ui:
-		GameUI.main_menu_ui.hide()
+	if GameUI.instance.main_menu_ui:
+		GameUI.instance.main_menu_ui.hide()
 	show()
 
 func _on_join_server_complete() -> void:
@@ -55,5 +55,5 @@ func _on_join_server_status_changed(text: String) -> void:
 
 func _on_cancel_button_pressed() -> void:
 	Zone.client.cancel_join_request()
-	GameUI.main_menu_ui.show()
+	GameUI.instance.main_menu_ui.show()
 	hide()

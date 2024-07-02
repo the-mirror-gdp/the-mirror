@@ -150,7 +150,7 @@ func _selection_copy_paste_input(input_event: InputEvent) -> bool:
 		elif input_event.is_action_pressed(&"action_copy"):
 			object_selection.copy_selected_nodes()
 		elif input_event.is_action_pressed(&"action_paste")\
-				and not GameUI.is_mouse_hovering_any_control():
+				and not GameUI.instance.is_mouse_hovering_any_control():
 			object_selection.paste_copied_nodes()
 		else:
 			return false
@@ -159,7 +159,7 @@ func _selection_copy_paste_input(input_event: InputEvent) -> bool:
 
 func _build_mode_camera_movement_input(input_event: InputEvent) -> bool:
 	_mouse_in_motion = input_event is InputEventMouseMotion and input_event.relative.length() > 0
-	if Input.is_action_pressed(&"build_mode_camera_movement") or GameUI.is_cinematic_mode_enabled():
+	if Input.is_action_pressed(&"build_mode_camera_movement") or GameUI.instance.is_cinematic_mode_enabled():
 		if _mouse_in_motion:
 			_mouse_used_for_build_mode_camera_movement = true
 	else:
@@ -337,7 +337,7 @@ func select_object(object: Node3D) -> void:
 
 
 func raycast_hit_object(hit: Node3D) -> void:
-	if GameUI.is_cinematic_mode_enabled() or _current_game_mode == GameMode.Mode.NORMAL:
+	if GameUI.instance.is_cinematic_mode_enabled() or _current_game_mode == GameMode.Mode.NORMAL:
 		return
 	object_selection.raycast_hit_object(hit)
 

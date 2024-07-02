@@ -36,9 +36,9 @@ var busy: bool = false
 ## Server is booted.
 func start_login_ui() -> void:
 	assert(not Zone.is_host())
-	_email_field.grab_focus()
-	_email_field.text = ""
-	_password_field.text = ""
+	#_email_field.grab_focus()
+	#_email_field.text = ""
+	#_password_field.text = ""
 	_remember_me_checkbox.button_pressed = GameplaySettings.login_remember_me
 	_populate_dev_options_button()
 	Analytics.track_event_client(AnalyticsEvent.TYPE.LOGIN_UI_READY)
@@ -112,15 +112,16 @@ func _guest_signup_succeeded(acc: Dictionary) -> void:
 ## I recommend you call it exactly like this:
 ## await LoginUI.wait_till_login(get_tree())
 static func wait_till_login(scene_tree: SceneTree):
+	await GameUI.ui_ready()
 	# it is possible you use the code in this UI in a place where it may not be fully loaded
 	# we ensure we have all the autoloads, and instances configured
-	if not Firebase or not Firebase.Auth or not GameUI.login_ui:
+	if not Firebase or not Firebase.Auth or not GameUI.instance.login_ui:
 		await scene_tree.process_frame
 	# now we check are we fully logged into the app
 	if Net.is_fully_logged_in() and Firebase.Auth.is_logged_in():
 		return
 	# we wait until this is the case since we weren't logged in
-	await GameUI.login_ui.login_succeeded
+	await GameUI.instance.login_ui.login_succeeded
 
 
 ## hide the login ui pane

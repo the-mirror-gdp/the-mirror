@@ -17,8 +17,9 @@ var _id_to_slot_map: Dictionary = {}
 
 func _ready() -> void:
 	super()
-	await GameUI.ready
-	GameUI.login_ui.login_succeeded.connect(Net.asset_client.get_recent_assets)
+	await GameUI.ui_ready()
+	await GameUI.instance.ready
+	GameUI.instance.login_ui.login_succeeded.connect(Net.asset_client.get_recent_assets)
 	Net.asset_client.asset_received.connect(_on_net_asset_received)
 	Net.asset_client.recent_assets_received.connect(_on_net_recent_assets_received)
 	Zone.client.disconnected.connect(_on_zone_disconnected)
@@ -152,7 +153,8 @@ func _generate_new_slot(recent_asset: Dictionary) -> BaseAssetSlot:
 	slot.slot_activated.connect(_asset_browser.asset_slot_activated)
 	slot.slot_special_action.connect(_asset_browser.use_slot_asset)
 	_id_to_slot_map[recent_asset["id"]] = slot
-	_slots_flow_container.add_child(slot)
+	if slot.get_parent() != _slots_flow_container:
+		_slots_flow_container.add_child(slot)
 	return slot
 
 
