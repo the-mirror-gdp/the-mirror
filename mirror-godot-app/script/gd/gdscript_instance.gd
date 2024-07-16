@@ -60,6 +60,7 @@ static var _SCRIPT_TEXT_DENYLIST: Array[RegEx] = [
 	RegEx.create_from_string("\\bget_tree\\b"),
 	RegEx.create_from_string("\\bload\\b"),
 	RegEx.create_from_string("\\bpreload\\b"),
+	RegEx.create_from_string("\\bEngine\\b"),
 	RegEx.create_from_string("\\bOS\\b"),
 	RegEx.create_from_string("\\bResourceLoader\\b"),
 	RegEx.create_from_string("\\bFileAccess\\b"),
