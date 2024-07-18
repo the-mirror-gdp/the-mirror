@@ -1,15 +1,15 @@
 require('dotenv').config()
 
-import * as os from 'os'
-import { join } from 'path'
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
+import { join } from 'path'
 import { AppController } from './app.controller'
 import { CustomDataModule } from './custom-data/custom-data.module'
 import { CustomDataService } from './custom-data/custom-data.service'
 import { SpaceObjectModule } from './space-object/space-object.module'
 import { ScheduleModule } from '@nestjs/schedule'
 import { SentryModule } from '@ntegral/nestjs-sentry'
+import * as os from 'os'
 import { AssetModule } from './asset/asset.module'
 import { AuthModule } from './auth/auth.module'
 import { BlockModule } from './block/block.module'
@@ -40,6 +40,9 @@ import { FileAnalyzingModule } from './util/file-analyzing/file-analyzing.module
 import { CronModule } from './cron/cron.module'
 import { MirrorDBModule } from './mirror-db/mirror-db.module'
 import { ServeStaticModule } from '@nestjs/serve-static'
+import { GodotModule } from './godot-server/godot.module'
+import { MixpanelModule } from './mixpanel/mixpanel.module'
+import { LoginCodeModule } from './login-code/login-code.module'
 
 const envFromFirebase = process.env.GCP_PROJECT_ID || ''
 let env = 'dev'
@@ -79,6 +82,7 @@ const imports = [
   RedisModule,
   DatabaseModule,
   AssetModule,
+  GodotModule,
   UserModule,
   ZoneModule,
   TerrainModule,
@@ -99,7 +103,9 @@ const imports = [
   MirrorServerConfigModule,
   FileAnalyzingModule,
   CronModule,
-  MirrorDBModule
+  MirrorDBModule,
+  MixpanelModule,
+  LoginCodeModule
 ]
 
 if (

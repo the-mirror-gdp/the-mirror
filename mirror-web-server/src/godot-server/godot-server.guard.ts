@@ -6,6 +6,9 @@ import {
   Logger
 } from '@nestjs/common'
 
+/**
+ * @description Only use for controllers, not websockets
+ */
 @Injectable()
 export class GodotServerGuard implements CanActivate {
   constructor(private readonly logger: Logger) {}

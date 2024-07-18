@@ -82,7 +82,7 @@ import { SPACE_EVENTS } from './events/space.events'
 import { CHANNELS } from '../redis/redis.channels'
 import { RedisPubSubService } from '../redis/redis-pub-sub.service'
 import { getUserStatsAndUsersPresentAggregationPipeline } from './aggregation-pipelines/get-user-stats-and-user-present-population.pipeline'
-import { getPopularSpacesAggregationPipeline } from './aggregation-pipelines/get-popular-spaces.pipeline'
+//import { getPopularSpacesAggregationPipeline } from './aggregation-pipelines/get-popular-spaces.pipeline'
 import { PAGINATION_STRATEGY } from '../util/pagination/pagination-strategy.enum'
 import {
   PaginationData,
@@ -91,6 +91,7 @@ import {
 import { MirrorDBService } from '../mirror-db/mirror-db.service'
 import { ScriptEntityService } from '../script-entity/script-entity.service'
 import { RemixSpaceDto } from './dto/remix-space-dto'
+import { MaterialInstanceService } from './material-instance/material-instance.service'
 import { AssetDocument } from '../asset/asset.schema'
 
 /**
@@ -170,7 +171,8 @@ export class SpaceService implements IRoleConsumer {
     private readonly userService: UserService,
     private readonly redisPubSubService: RedisPubSubService,
     private readonly mirrorDBService: MirrorDBService,
-    private readonly scriptEntityService: ScriptEntityService
+    private readonly scriptEntityService: ScriptEntityService,
+    private readonly materialInstanceService: MaterialInstanceService
   ) {
     this._subscribeToSpaceSchemaChanges()
   }
@@ -447,37 +449,36 @@ export class SpaceService implements IRoleConsumer {
       numberOfItems
     )
 
-    let paginationConfig: IPaginationPipeline<
+    // Disable populate spaces aggregation pipeline due to killing the backend completely
+    // if (searchDto.sortKey === 'popular' && searchDto.sortDirection) {
+    //   const popularSearchResult = await getPopularSpacesAggregationPipeline(
+    //     this.spaceModel,
+    //     this.roleService.getRoleCheckAggregationPipeline(userId, ROLE.OBSERVER),
+    //     { page, perPage, startItem, numberOfItems },
+    //     paginationStrategy,
+    //     false,
+    //     searchDto.sortDirection,
+    //     populate ? this._standardPopulateFields : [],
+    //     matchFilter
+    //   )
+    //   return {
+    //     data: popularSearchResult.paginatedResult,
+    //     ...popularSearchResult.paginationData
+    //   }
+    // } else {
+    const paginationConfig: IPaginationPipeline<
       PaginationData | PaginationDataByStartItem
-    >
-    if (searchDto.sortKey === 'popular' && searchDto.sortDirection) {
-      const popularSearchResult = await getPopularSpacesAggregationPipeline(
-        this.spaceModel,
-        this.roleService.getRoleCheckAggregationPipeline(userId, ROLE.OBSERVER),
-        { page, perPage, startItem, numberOfItems },
-        paginationStrategy,
-        false,
-        searchDto.sortDirection,
-        populate ? this._standardPopulateFields : [],
-        matchFilter
-      )
-      return {
-        data: popularSearchResult.paginatedResult,
-        ...popularSearchResult.paginationData
-      }
-    } else {
-      paginationConfig =
-        await this.paginationService.getPaginationPipelineWithRolesCheck(
-          userId,
-          this.spaceModel,
-          matchFilter,
-          ROLE.OBSERVER,
-          { page, perPage, startItem, numberOfItems },
-          populate ? this._standardPopulateFields : [],
-          sort,
-          paginationStrategy
-        )
-    }
+    > = await this.paginationService.getPaginationPipelineWithRolesCheck(
+      userId,
+      this.spaceModel,
+      matchFilter,
+      ROLE.OBSERVER,
+      { page, perPage, startItem, numberOfItems },
+      populate ? this._standardPopulateFields : [],
+      sort,
+      paginationStrategy
+    )
+    //} DISABLED DUE TO SLOWNESS
 
     const paginatedSpaces = await this.spaceModel
       .aggregate(paginationConfig.paginationPipeline)
@@ -521,38 +522,36 @@ export class SpaceService implements IRoleConsumer {
       numberOfItems
     )
 
-    let paginationConfig: IPaginationPipeline<
+    // Disable populate spaces aggregation pipeline due to killing the backend completely
+    // if (searchDto.sortKey === 'popular' && searchDto.sortDirection) {
+    //   const popularSearchResult = await getPopularSpacesAggregationPipeline(
+    //     this.spaceModel,
+    //     this.roleService.getRoleCheckAggregationPipeline(userId, gteRoleLevel),
+    //     { page, perPage, startItem, numberOfItems },
+    //     paginationStrategy,
+    //     false,
+    //     searchDto.sortDirection,
+    //     populate ? this._standardPopulateFields : populateFields,
+    //     matchFilter
+    //   )
+    //   return {
+    //     data: popularSearchResult.paginatedResult,
+    //     ...popularSearchResult.paginationData
+    //   }
+    // } else {
+    const paginationConfig: IPaginationPipeline<
       PaginationData | PaginationDataByStartItem
-    >
-
-    if (searchDto.sortKey === 'popular' && searchDto.sortDirection) {
-      const popularSearchResult = await getPopularSpacesAggregationPipeline(
-        this.spaceModel,
-        this.roleService.getRoleCheckAggregationPipeline(userId, gteRoleLevel),
-        { page, perPage, startItem, numberOfItems },
-        paginationStrategy,
-        false,
-        searchDto.sortDirection,
-        populate ? this._standardPopulateFields : populateFields,
-        matchFilter
-      )
-      return {
-        data: popularSearchResult.paginatedResult,
-        ...popularSearchResult.paginationData
-      }
-    } else {
-      paginationConfig =
-        await this.paginationService.getPaginationPipelineWithRolesCheck(
-          userId,
-          this.spaceModel,
-          matchFilter,
-          gteRoleLevel,
-          { page, perPage, startItem, numberOfItems },
-          populate ? this._standardPopulateFields : populateFields,
-          sort,
-          paginationStrategy
-        )
-    }
+    > = await this.paginationService.getPaginationPipelineWithRolesCheck(
+      userId,
+      this.spaceModel,
+      matchFilter,
+      gteRoleLevel,
+      { page, perPage, startItem, numberOfItems },
+      populate ? this._standardPopulateFields : populateFields,
+      sort,
+      paginationStrategy
+    )
+    // }
 
     const paginatedSpaces = await this.spaceModel
       .aggregate(paginationConfig.paginationPipeline)
@@ -854,6 +853,27 @@ export class SpaceService implements IRoleConsumer {
    * @description This is an optimized/slimmed duplicate of updateOneAdmin for spaceVariables purposes
    * @date 2023-06-13 23:01
    */
+  public async updateSpaceVariablesWithRolesCheck(
+    userId: UserId,
+    spaceId: SpaceId,
+    updateSpaceDto: UpdateSpaceDto
+  ) {
+    const space = await this.getSpace(spaceId)
+
+    // update custom data first, if it's there
+    if (this.canUpdateWithRolesCheck(userId, space)) {
+      return this.updateSpaceVariablesForOneAdmin(spaceId, updateSpaceDto)
+    } else {
+      this.logger.log(
+        `pdateSpaceVariablesWithRolesCheck failed for user: ${userId}`,
+        SpaceService.name
+      )
+      throw new NotFoundException(
+        'Not Found or you do not have permission to update this'
+      )
+    }
+  }
+
   public async updateSpaceVariablesForOneAdmin(
     spaceId: SpaceId,
     updateSpaceDto: UpdateSpaceDto
@@ -1297,7 +1317,8 @@ export class SpaceService implements IRoleConsumer {
       /** restore scripts and return array of old and new scriptIds  */
       const restoreScriptsIds =
         await this.scriptEntityService.restoreScriptEntities(
-          spaceVersion.scripts
+          spaceVersion.scripts,
+          userId
         )
 
       /** restore restore spaceObjects and change assets and scripts to restored  */
@@ -1498,6 +1519,7 @@ export class SpaceService implements IRoleConsumer {
           )
         )
       ]
+
       const copiedSpace = await this.copyFromSpace({
         space,
         terrainId:
@@ -1517,7 +1539,8 @@ export class SpaceService implements IRoleConsumer {
       const newSpaceObjectsIds =
         await this.spaceObjectService.copySpaceObjectsToSpaceAdmin(
           spaceId,
-          copiedSpace._id
+          copiedSpace._id,
+          userId
         )
       //new ids of scripts in scriptInstances and scriptIds from copiedSpace
       const childSpaceScriptIdsList = [
@@ -1529,6 +1552,7 @@ export class SpaceService implements IRoleConsumer {
           )
         )
       ]
+
       const spaceobjIds =
         newSpaceObjectsIds.length != 0
           ? Object.values(newSpaceObjectsIds[0].insertedIds)
@@ -1620,11 +1644,14 @@ export class SpaceService implements IRoleConsumer {
             }
           }
         ])
+
       // get bulkoptions for updating spaceObjects with new scriptIds
       const updatedSpaceObjects =
         await this.scriptEntityService.duplicateSpaceObjectScripts(
-          spaceObjectsWithScriptEventScriptsIds
+          spaceObjectsWithScriptEventScriptsIds,
+          userId
         )
+
       // update spaceObjects
       await this.spaceObjectModel.bulkWrite(updatedSpaceObjects)
       /** Duplicate Assets from the Space to the user. This is used when copying from templates **/
@@ -1704,16 +1731,17 @@ export class SpaceService implements IRoleConsumer {
 
     if (terrainId) space.terrain = terrainId as any
     space.environment = environmentId as any
-
     // new scriptIds and scriptInstances
     const newScripts =
       await this.scriptEntityService.duplicateScriptsAndScriptInstanceScripts(
         space.scriptIds,
-        space.scriptInstances
+        space.scriptInstances,
+        userId
       )
 
     space.scriptIds = newScripts.scriptIds
     space.scriptInstances = newScripts.scriptInstances
+
     space.spaceVariablesData = spaceVariablesDataId as any
 
     const newMirroDBRecord = await this.mirrorDBService.createNewMirrorDB(
@@ -1721,6 +1749,13 @@ export class SpaceService implements IRoleConsumer {
     )
 
     space.mirrorDBRecord = newMirroDBRecord._id
+
+    space.materialInstances = space.materialInstances
+      ? this.materialInstanceService.copySpaceMaterialInstancesForSpace(
+          space.materialInstances,
+          space._id
+        )
+      : []
 
     return space.save()
   }
@@ -1746,22 +1781,23 @@ export class SpaceService implements IRoleConsumer {
     return await remixSpace.save()
   }
 
-  public async getPopularSpaces(userId: UserId, populateCreator?: boolean) {
-    const populate: PopulateField[] = populateCreator
-      ? [{ localField: 'creator', from: 'users', unwind: true }]
-      : []
+  public getPopularSpaces(userId: UserId, populateCreator?: boolean) {
+    // const populate: PopulateField[] = populateCreator
+    //   ? [{ localField: 'creator', from: 'users', unwind: true }]
+    //   : []
 
-    const result = await getPopularSpacesAggregationPipeline(
-      this.spaceModel,
-      this.roleService.getRoleCheckAggregationPipeline(userId, ROLE.DISCOVER),
-      { startItem: 0, numberOfItems: 10 },
-      PAGINATION_STRATEGY.START_ITEM,
-      true,
-      SORT_DIRECTION.ASC,
-      populate
-    )
+    // Disable populate spaces aggregation pipeline due to killing the backend completely
+    // const result = await getPopularSpacesAggregationPipeline(
+    //   this.spaceModel,
+    //   this.roleService.getRoleCheckAggregationPipeline(userId, ROLE.DISCOVER),
+    //   { startItem: 0, numberOfItems: 10 },
+    //   PAGINATION_STRATEGY.START_ITEM,
+    //   true,
+    //   SORT_DIRECTION.ASC,
+    //   populate
+    // )
 
-    return result.paginatedResult
+    return {}
   }
 
   public async getFavoriteSpaces(userId: UserId, populateCreator?: boolean) {

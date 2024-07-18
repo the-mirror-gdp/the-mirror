@@ -9,6 +9,9 @@ import { PurchaseOptionModelStub } from '../../test/stubs/purchaseoption.stub'
 import { RoleService } from '../roles/role.service'
 import { UserService } from '../user/user.service'
 import { AssetAnalyzingService } from '../util/file-analyzing/asset-analyzing.service'
+import { StorageService } from '../storage/storage.service'
+import { Logger } from '@nestjs/common'
+import { StripeService } from '../stripe/stripe.service'
 
 describe('AssetService', () => {
   let service: AssetService
@@ -63,6 +66,18 @@ describe('AssetService', () => {
         },
         {
           provide: AssetAnalyzingService,
+          useValue: {}
+        },
+        {
+          provide: StorageService,
+          useValue: {}
+        },
+        {
+          provide: Logger,
+          useValue: {}
+        },
+        {
+          provide: StripeService,
           useValue: {}
         }
       ]

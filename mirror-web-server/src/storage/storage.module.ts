@@ -7,6 +7,7 @@ import { StorageService } from './storage.service'
 @Module({
   imports: [LoggerModule, MirrorServerConfigModule],
   providers: [StorageService],
-  controllers: [StorageController]
+  controllers: [StorageController],
+  exports: [StorageService]
 })
 export class StorageModule {}

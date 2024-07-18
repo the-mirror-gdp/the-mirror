@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { LoggerModule } from '../util/logger/logger.module'
 import { SpaceObjectGateway } from './space-object.gateway'
 import { SpaceObjectService } from './space-object.service'
+import { WsAuthHelperService } from '../godot-server/ws-auth-helper.service'
 
 describe('SpaceObjectGateway', () => {
   let gateway: SpaceObjectGateway
@@ -14,7 +15,8 @@ describe('SpaceObjectGateway', () => {
         {
           provide: SpaceObjectService,
           useValue: {}
-        }
+        },
+        { provide: WsAuthHelperService, useValue: {} }
       ]
     }).compile()
 

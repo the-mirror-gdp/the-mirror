@@ -1,4 +1,4 @@
-import { Logger, UseFilters, UseInterceptors } from '@nestjs/common'
+import { Logger, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common'
 import {
   MessageBody,
   SubscribeMessage,
@@ -10,6 +10,7 @@ import { CreateMaterialInstanceDto } from './dto/create-material-instance.dto'
 import { UpdateMaterialInstanceDto } from './dto/update-material-instance.dto'
 import { MaterialInstanceService } from './material-instance.service'
 import { MaterialInstanceId, SpaceId } from '../../util/mongo-object-id-helpers'
+import { WsAuthGuard } from '../../godot-server/ws-auth.guard'
 
 enum ZoneMaterialInstanceMessage {
   CREATE_ONE = 'zone_create_material_instance',
@@ -19,6 +20,7 @@ enum ZoneMaterialInstanceMessage {
 }
 
 @WebSocketGateway()
+@UseGuards(WsAuthGuard)
 @UseInterceptors(GodotSocketInterceptor)
 @UseFilters(GodotSocketExceptionFilter)
 export class MaterialInstanceGateway {

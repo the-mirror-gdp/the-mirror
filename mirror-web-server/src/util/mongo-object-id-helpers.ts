@@ -14,6 +14,7 @@ export type TagId = string
 export type UserFeedbackItemId = string
 export type ZoneId = string
 export type MirrorDBRecordId = string
+export type PurchaseOptionId = string
 /**
  * @description SCALER UUID
  */

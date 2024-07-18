@@ -1,5 +1,11 @@
 import { isNil } from 'lodash'
-import { Logger, Optional, UseFilters, UseInterceptors } from '@nestjs/common'
+import {
+  Logger,
+  Optional,
+  UseFilters,
+  UseGuards,
+  UseInterceptors
+} from '@nestjs/common'
 import {
   MessageBody,
   SubscribeMessage,
@@ -10,12 +16,15 @@ import { GodotSocketInterceptor } from '../godot-server/godot-socket.interceptor
 import { SpaceManagerExternalService } from './space-manager-external.service'
 import { ZoneService } from './zone.service'
 import { UserId } from '../util/mongo-object-id-helpers'
+import { AdminTokenWS } from '../godot-server/get-user-ws.decorator'
+import { WsAuthGuard } from '../godot-server/ws-auth.guard'
 
 enum ZoneMessage {
   UPDATE_STATUS = 'zone_update_status'
 }
 
 @WebSocketGateway()
+@UseGuards(WsAuthGuard)
 @UseInterceptors(GodotSocketInterceptor)
 @UseFilters(GodotSocketExceptionFilter)
 export class ZoneGateway {
@@ -29,7 +38,8 @@ export class ZoneGateway {
   private readonly minimumUuidLength = 16
 
   @SubscribeMessage(ZoneMessage.UPDATE_STATUS)
-  public updateStatus(
+  public async updateStatus(
+    @AdminTokenWS() isAdmin: boolean,
     @MessageBody('uuid') zoneUUID: string,
     @MessageBody('players') playerCount: number,
     @MessageBody('secondsEmpty') secondsEmpty: number,
@@ -38,50 +48,73 @@ export class ZoneGateway {
     @MessageBody('usersPresent')
     usersPresent?: UserId[]
   ) {
-    const updateObj = {
-      ZoneMessage: ZoneMessage.UPDATE_STATUS,
-      'uuid (zoneUUID)': zoneUUID,
-      players: playerCount,
-      secondsEmpty: secondsEmpty,
-      version: _version,
-      usersPresent
-    }
-    this.logger.log(`${JSON.stringify(updateObj, null, 2)}`, ZoneGateway.name)
+    try {
+      if (isAdmin) {
+        const updateObj = {
+          ZoneMessage: ZoneMessage.UPDATE_STATUS,
+          'uuid (zoneUUID)': zoneUUID,
+          players: playerCount,
+          secondsEmpty: secondsEmpty,
+          version: _version,
+          usersPresent
+        }
+        this.logger.log(
+          `${JSON.stringify(updateObj, null, 2)}`,
+          ZoneGateway.name
+        )
 
-    // require a certain length to determine if uuid. Return empty as no further action is required (likely it is "localhost" or empty).
-    if (zoneUUID.length < this.minimumUuidLength) {
+        // require a certain length to determine if uuid. Return empty as no further action is required (likely it is "localhost" or empty).
+        if (zoneUUID.length < this.minimumUuidLength) {
+          return {}
+        }
+
+        // if usersPresent, then update the zone document
+        if (!isNil(usersPresent) && usersPresent.length > 0) {
+          await this.zoneService.updateUsersPresentForOneByZoneUUIDAdmin(
+            zoneUUID,
+            usersPresent
+          )
+        }
+
+        // shut down the empty server after the time elapsed
+        if (
+          playerCount == 0 &&
+          secondsEmpty >= this.secondsEmptyUntilShutdown &&
+          zoneUUID.length > this.minimumUuidLength
+        ) {
+          try {
+            await this.shutDownZoneInstance(zoneUUID)
+          } catch (error) {
+            this.logger.error(error, ZoneGateway.name)
+          }
+          return { action: 'shutdown' }
+        }
+        return {}
+      }
+      return
+    } catch (error) {
+      this.logger.error(error, ZoneGateway.name)
       return {}
     }
-
-    // if usersPresent, then update the zone document
-    if (!isNil(usersPresent) && usersPresent.length > 0) {
-      this.zoneService.updateUsersPresentForOneByZoneUUIDAdmin(
-        zoneUUID,
-        usersPresent
-      )
-    }
-
-    // shut down the empty server after the time elapsed
-    if (
-      playerCount == 0 &&
-      secondsEmpty >= this.secondsEmptyUntilShutdown &&
-      zoneUUID.length > this.minimumUuidLength
-    ) {
-      this.shutDownZoneInstance(zoneUUID)
-      return { action: 'shutdown' }
-    }
-    return {}
   }
 
   private async shutDownZoneInstance(zoneUUID: string) {
     // tell the zone scaler to shut this server instance down.
-    this.vmScalerService.deleteContainer(zoneUUID)
+    try {
+      await this.vmScalerService.deleteContainer(zoneUUID)
+    } catch (error) {
+      this.logger.error('Failed to delete external container uuid: ', zoneUUID)
+    }
     // there is no coordinating zone, take no further action
     const zone = await this.zoneService.findFirstByUUIDAdmin(zoneUUID)
     if (!zone) {
       return {}
     }
     // delete the Zone document
-    await this.zoneService.removeOneAdmin(zone.id)
+    try {
+      await this.zoneService.removeOneAdmin(zone.id)
+    } catch (error) {
+      this.logger.error('Failed to remove zone ', zone.id)
+    }
   }
 }

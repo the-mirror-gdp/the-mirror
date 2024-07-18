@@ -5,9 +5,15 @@ import {
 } from '@nestjs/websockets'
 import { AssetService } from './asset.service'
 import { UpsertAssetDto } from './dto/upsert-asset.dto'
-import { Logger, UseFilters, UseInterceptors } from '@nestjs/common'
+import { Logger, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common'
 import { GodotSocketInterceptor } from '../godot-server/godot-socket.interceptor'
 import { GodotSocketExceptionFilter } from '../godot-server/godot-socket-exception.filter'
+import {
+  AdminTokenWS,
+  UserTokenWS
+} from '../godot-server/get-user-ws.decorator'
+import { UserId } from '../util/mongo-object-id-helpers'
+import { WsAuthGuard } from '../godot-server/ws-auth.guard'
 
 enum ZoneAssetWsMessage {
   GET_ONE = 'zone_get_asset',
@@ -15,6 +21,7 @@ enum ZoneAssetWsMessage {
 }
 
 @WebSocketGateway()
+@UseGuards(WsAuthGuard)
 @UseInterceptors(GodotSocketInterceptor)
 @UseFilters(GodotSocketExceptionFilter)
 export class AssetGateway {
@@ -24,7 +31,11 @@ export class AssetGateway {
   ) {}
 
   @SubscribeMessage(ZoneAssetWsMessage.GET_ONE)
-  public findOne(@MessageBody('id') id: string) {
+  public findOne(
+    @UserTokenWS('user_id') userId: UserId,
+    @AdminTokenWS() isAdmin: boolean,
+    @MessageBody('id') id: string
+  ) {
     this.logger.log(
       `${JSON.stringify(
         {
@@ -36,14 +47,32 @@ export class AssetGateway {
       )}`,
       AssetGateway.name
     )
-    return this.assetService.findOneAdmin(id)
+
+    if (userId) {
+      return this.assetService.findOneWithRolesCheck(userId, id)
+    }
+
+    if (isAdmin) {
+      return this.assetService.findOneAdmin(id)
+    }
   }
 
   @SubscribeMessage(ZoneAssetWsMessage.UPDATE)
   public update(
+    @UserTokenWS('user_id') userId: UserId,
+    @AdminTokenWS() isAdmin: boolean,
     @MessageBody('id') id: string,
     @MessageBody('dto') updateAssetDto: UpsertAssetDto
   ) {
-    return this.assetService.updateOneAdmin(id, updateAssetDto)
+    if (userId) {
+      return this.assetService.updateOneWithRolesCheck(
+        userId,
+        id,
+        updateAssetDto
+      )
+    }
+    if (isAdmin) {
+      return this.assetService.updateOneAdmin(id, updateAssetDto)
+    }
   }
 }

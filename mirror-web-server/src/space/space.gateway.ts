@@ -5,10 +5,19 @@ import {
 } from '@nestjs/websockets'
 import { SpaceService } from './space.service'
 import { UpdateSpaceDto } from './dto/update-space.dto'
-import { Logger, UseFilters, UseInterceptors } from '@nestjs/common'
+import { Logger, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common'
 import { GodotSocketInterceptor } from '../godot-server/godot-socket.interceptor'
 import { GodotSocketExceptionFilter } from '../godot-server/godot-socket-exception.filter'
-import { SpaceId, SpaceVersionId } from '../util/mongo-object-id-helpers'
+import {
+  SpaceId,
+  SpaceVersionId,
+  UserId
+} from '../util/mongo-object-id-helpers'
+import {
+  AdminTokenWS,
+  UserTokenWS
+} from '../godot-server/get-user-ws.decorator'
+import { WsAuthGuard } from '../godot-server/ws-auth.guard'
 
 enum ZoneSpaceWsMessage {
   GET_ONE = 'zone_get_space',
@@ -20,6 +29,7 @@ enum ZoneSpaceWsMessage {
 }
 
 @WebSocketGateway()
+@UseGuards(WsAuthGuard)
 @UseInterceptors(GodotSocketInterceptor)
 @UseFilters(GodotSocketExceptionFilter)
 export class SpaceGateway {
@@ -29,15 +39,26 @@ export class SpaceGateway {
   ) {}
 
   @SubscribeMessage(ZoneSpaceWsMessage.GET_ASSETS)
-  public getAssetsListPerSpaceWithRolesCheck(
-    @MessageBody('id') id: string,
-    @MessageBody('userId') userId: string
+  public getAssetPerSpaceWithRolesCheck(
+    @AdminTokenWS() isAdmin: boolean,
+    @UserTokenWS('user_id') userId: UserId,
+    @MessageBody('id') id: string
   ) {
-    return this.spaceService.getAssetsListPerSpaceWithRolesCheck(userId, id)
+    if (userId) {
+      return this.spaceService.getAssetsListPerSpaceWithRolesCheck(userId, id)
+    }
+    if (isAdmin) {
+      return this.spaceService.getAssetsListPerSpaceAdmin(id)
+    }
+    return
   }
 
   @SubscribeMessage(ZoneSpaceWsMessage.GET_ONE)
-  public findOne(@MessageBody('id') id: string) {
+  public findOne(
+    @AdminTokenWS() isAdmin: boolean,
+    @UserTokenWS('user_id') userId: UserId,
+    @MessageBody('id') id: string
+  ) {
     this.logger.log(
       `${JSON.stringify(
         {
@@ -49,37 +70,84 @@ export class SpaceGateway {
       )}`,
       SpaceGateway.name
     )
-    return this.spaceService.findOneAdmin(id)
+
+    if (userId) {
+      return this.spaceService.findOneWithRolesCheck(userId, id)
+    }
+    if (isAdmin) {
+      return this.spaceService.findOneAdmin(id)
+    }
+
+    return
   }
 
   @SubscribeMessage(ZoneSpaceWsMessage.UPDATE)
   public update(
+    @AdminTokenWS() isAdmin: boolean,
+    @UserTokenWS('user_id') userId: UserId,
     @MessageBody('id') id: string,
     @MessageBody('dto') updateSpaceDto: UpdateSpaceDto
   ) {
-    return this.spaceService.updateOneAdmin(id, updateSpaceDto)
+    if (userId) {
+      return this.spaceService.updateOneWithRolesCheck(
+        userId,
+        id,
+        updateSpaceDto
+      )
+    }
+
+    if (isAdmin) {
+      return this.spaceService.updateOneAdmin(id, updateSpaceDto)
+    }
+    return
   }
 
   @SubscribeMessage(ZoneSpaceWsMessage.UPDATE_SPACE_VARIABLES)
   public updateSpaceVariables(
+    @AdminTokenWS() isAdmin: boolean,
+    @UserTokenWS('user_id') userId: UserId,
     @MessageBody('id') spaceId: SpaceId,
     @MessageBody('dto') updateSpaceDto: UpdateSpaceDto
   ) {
-    return this.spaceService.updateSpaceVariablesForOneAdmin(
-      spaceId,
-      updateSpaceDto
-    )
+    if (userId) {
+      return this.spaceService.updateSpaceVariablesWithRolesCheck(
+        userId,
+        spaceId,
+        updateSpaceDto
+      )
+    }
+    if (isAdmin) {
+      return this.spaceService.updateSpaceVariablesForOneAdmin(
+        spaceId,
+        updateSpaceDto
+      )
+    }
+    return
   }
 
   @SubscribeMessage(ZoneSpaceWsMessage.PUBLISH)
-  public publish(@MessageBody('id') id: string) {
-    return this.spaceService.publishSpaceByIdAdmin(id, false)
+  public publish(
+    @AdminTokenWS() isAdmin: boolean,
+    @UserTokenWS('user_id') userId: UserId,
+    @MessageBody('id') id: string
+  ) {
+    if (userId) {
+      return this.spaceService.publishSpaceByIdWithRolesCheck(userId, id, false)
+    }
+    if (isAdmin) {
+      return this.spaceService.publishSpaceByIdAdmin(id, false)
+    }
+    return
   }
 
   @SubscribeMessage(ZoneSpaceWsMessage.GET_SPACE_VERSION)
   public getSpaceVersionById(
+    @AdminTokenWS() isAdmin: boolean,
     @MessageBody('spaceVersionId') spaceVersionId: SpaceVersionId
   ) {
-    return this.spaceService.findSpaceVersionsByIdAdmin(spaceVersionId)
+    if (isAdmin) {
+      return this.spaceService.findSpaceVersionsByIdAdmin(spaceVersionId)
+    }
+    return
   }
 }

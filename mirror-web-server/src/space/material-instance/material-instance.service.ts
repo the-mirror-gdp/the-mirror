@@ -89,6 +89,19 @@ export class MaterialInstanceService {
     return newDoc.materialInstances.find((mi) => mi._id == materialInstanceId) // careful: double equals here works but not triple
   }
 
+  copySpaceMaterialInstancesForSpace(
+    materialInstances: MaterialInstance[],
+    newSpaceId: SpaceId
+  ): any[] {
+    const newMaterialInstances = materialInstances.map((object) => {
+      return {
+        ...object,
+        spaceId: newSpaceId.toString()
+      }
+    })
+    return newMaterialInstances
+  }
+
   private _getMaterialInstanceUpdateFields(dto: UpdateMaterialInstanceDto) {
     const updateFields = {}
 

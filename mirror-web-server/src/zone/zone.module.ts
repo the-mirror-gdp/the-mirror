@@ -44,6 +44,8 @@ import {
 } from '../user/models/user-entity-action.schema'
 import { SpaceModule } from '../space/space.module'
 import { UserModule } from '../user/user.module'
+import { StorageModule } from '../storage/storage.module'
+import { GodotModule } from '../godot-server/godot.module'
 
 @Module({
   imports: [
@@ -95,7 +97,9 @@ import { UserModule } from '../user/user.module'
     RoleModule,
     MirrorServerConfigModule,
     forwardRef(() => SpaceModule),
-    UserModule
+    UserModule,
+    StorageModule,
+    GodotModule
   ],
   controllers: [ZoneController],
   providers: [

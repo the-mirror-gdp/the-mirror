@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { Module, forwardRef } from '@nestjs/common'
 import { MirrorDBService } from './mirror-db.service'
 import { MirrorDBController } from './mirror-db.controller'
 import { MongooseModule } from '@nestjs/mongoose'
@@ -9,14 +9,18 @@ import {
 import { LoggerModule } from '../util/logger/logger.module'
 import { MirrorDBGateway } from './mirror-db.gateway'
 import { RoleModule } from '../roles/role.module'
+import { SpaceModule } from '../space/space.module'
+import { GodotModule } from '../godot-server/godot.module'
 
 @Module({
   imports: [
     LoggerModule,
+    GodotModule,
     MongooseModule.forFeature([
       { name: MirrorDBRecord.name, schema: MirrorDBSchema }
     ]),
-    RoleModule
+    RoleModule,
+    forwardRef(() => SpaceModule)
   ],
   providers: [MirrorDBService, MirrorDBGateway],
   exports: [MirrorDBService],

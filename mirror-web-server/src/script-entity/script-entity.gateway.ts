@@ -1,4 +1,4 @@
-import { Logger, UseFilters, UseInterceptors } from '@nestjs/common'
+import { Logger, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common'
 import {
   MessageBody,
   SubscribeMessage,
@@ -10,6 +10,11 @@ import { CreateScriptEntityDto } from './dto/create-script-entity.dto'
 import { UpdateScriptEntityDto } from './dto/update-script-entity.dto'
 import { ScriptEntityService } from './script-entity.service'
 import { UserId } from '../util/mongo-object-id-helpers'
+import {
+  AdminTokenWS,
+  UserTokenWS
+} from '../godot-server/get-user-ws.decorator'
+import { WsAuthGuard } from '../godot-server/ws-auth.guard'
 
 enum ZoneScriptEntityMessage {
   CREATE_ONE = 'zone_create_script_entity',
@@ -19,6 +24,7 @@ enum ZoneScriptEntityMessage {
 }
 
 @WebSocketGateway()
+@UseGuards(WsAuthGuard)
 @UseInterceptors(GodotSocketInterceptor)
 @UseFilters(GodotSocketExceptionFilter)
 export class ScriptEntityGateway {
@@ -29,6 +35,8 @@ export class ScriptEntityGateway {
 
   @SubscribeMessage(ZoneScriptEntityMessage.CREATE_ONE)
   public createScriptEntity(
+    @AdminTokenWS() isAdmin: boolean,
+    @UserTokenWS('user_id') userIdFromToken: UserId,
     @MessageBody('dto') createScriptEntityDto: CreateScriptEntityDto,
     @MessageBody('fromUser') userId: UserId
   ) {
@@ -43,11 +51,26 @@ export class ScriptEntityGateway {
       )}`,
       ScriptEntityGateway.name
     )
-    return this.scriptEntityService.create(userId, createScriptEntityDto)
+
+    if (userIdFromToken) {
+      return this.scriptEntityService.create(
+        userIdFromToken,
+        createScriptEntityDto
+      )
+    }
+
+    if (isAdmin) {
+      return this.scriptEntityService.create(userId, createScriptEntityDto)
+    }
+    return
   }
 
   @SubscribeMessage(ZoneScriptEntityMessage.GET_ONE)
-  public findOneScriptEntity(@MessageBody('id') id: string) {
+  public findOneScriptEntity(
+    @UserTokenWS('user_id') userId: UserId,
+    @AdminTokenWS() isAdmin: boolean,
+    @MessageBody('id') id: string
+  ) {
     this.logger.log(
       `${JSON.stringify(
         {
@@ -59,15 +82,22 @@ export class ScriptEntityGateway {
       )}`,
       ScriptEntityGateway.name
     )
-    return this.scriptEntityService.findOne(id)
+    if (isAdmin) {
+      return this.scriptEntityService.findOne(id)
+    }
+    if (userId) {
+      return this.scriptEntityService.findOneWithRolesCheck(id, userId)
+    }
+    return
   }
 
   @SubscribeMessage(ZoneScriptEntityMessage.UPDATE_ONE)
   public updateOne(
+    @UserTokenWS('user_id') userId: UserId,
+    @AdminTokenWS() isAdmin: boolean,
     @MessageBody('id') id: string,
     @MessageBody('dto') updateScriptEntityDto: UpdateScriptEntityDto
   ) {
-    // 2023-07-24 15:07:57 I'm changing this log format to not use JSON.stringify and deploying that to dev. The rest should follow suit if that fixes the logs
     this.logger.log(
       {
         ZoneSpaceObjectWsMessage: ZoneScriptEntityMessage.UPDATE_ONE,
@@ -76,11 +106,26 @@ export class ScriptEntityGateway {
       },
       ScriptEntityGateway.name
     )
-    return this.scriptEntityService.update(id, updateScriptEntityDto)
+    if (isAdmin) {
+      // 2023-07-24 15:07:57 I'm changing this log format to not use JSON.stringify and deploying that to dev. The rest should follow suit if that fixes the logs
+      return this.scriptEntityService.update(id, updateScriptEntityDto)
+    }
+    if (userId) {
+      return this.scriptEntityService.updateWithRolesCheck(
+        id,
+        updateScriptEntityDto,
+        userId
+      )
+    }
+    return
   }
 
   @SubscribeMessage(ZoneScriptEntityMessage.DELETE_ONE)
-  public deleteOne(@MessageBody('id') id: string) {
+  public deleteOne(
+    @UserTokenWS('user_id') userId: UserId,
+    @AdminTokenWS() isAdmin: boolean,
+    @MessageBody('id') id: string
+  ) {
     this.logger.log(
       `${JSON.stringify(
         {
@@ -92,6 +137,12 @@ export class ScriptEntityGateway {
       )}`,
       ScriptEntityGateway.name
     )
-    return this.scriptEntityService.delete(id)
+    if (isAdmin) {
+      return this.scriptEntityService.delete(id)
+    }
+    if (userId) {
+      return this.scriptEntityService.deleteWithRolesCheck(id, userId)
+    }
+    return
   }
 }

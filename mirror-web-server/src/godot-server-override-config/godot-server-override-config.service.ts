@@ -56,7 +56,7 @@ export class GodotServerOverrideConfigService {
 
   remove(id: string): Promise<GodotServerOverrideConfigDocument> {
     return this.godotServerOverrideConfigModel
-      .findOneAndDelete({ _id: id }, { new: true })
+      .findOneAndDelete({ _id: id })
       .exec()
   }
 }

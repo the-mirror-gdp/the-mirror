@@ -30,7 +30,7 @@ export enum ENTITY_TYPE {
 
 /**
 * @description Business logic:
-// Assets: Can be rated
+// Assets: Can be liked
 // Spaces: Can be rated
 // User: Can be followed
 // should we remove save, like? Seems like that functionality could be covered by tags/folders.

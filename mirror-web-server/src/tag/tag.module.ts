@@ -22,6 +22,7 @@ import {
   SpaceGenreTag,
   SpaceGenreTagSchema
 } from './models/space-genre-tag.schema'
+import { AuthGuardFirebase } from '../auth/auth.guard'
 
 @Module({
   imports: [
@@ -60,7 +61,7 @@ import {
     ])
   ],
   controllers: [TagController],
-  providers: [TagService],
+  providers: [TagService, AuthGuardFirebase],
   exports: [TagService]
 })
 export class TagModule {}

@@ -13,6 +13,7 @@ export enum CURRENCY_FOR_PURCHASE_OPTION {
  */
 export enum PURCHASE_OPTION_TYPE {
   ONE_TIME = 'ONE_TIME',
+  ONE_TIME_OPTIONAL_DONATION = 'ONE_TIME_OPTIONAL_DONATION',
   /**
    * IMPORTANT:
    * Spotify model: Charge the players, empower the creators (i.e. we don't charge the creators). Asset creators get paid monthly based on how much their assets are used.
