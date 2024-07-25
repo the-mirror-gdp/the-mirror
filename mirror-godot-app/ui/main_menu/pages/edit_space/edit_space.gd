@@ -29,7 +29,7 @@ func populate(space: Dictionary) -> void:
 
 
 func _on_back_button_pressed():
-	GameUI.main_menu_ui.history_go_back()
+	GameUI.instance.main_menu_ui.history_go_back()
 
 
 func _on_tab_button_pressed(button: Button, switch_to_tab: Container):

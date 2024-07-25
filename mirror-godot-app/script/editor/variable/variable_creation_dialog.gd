@@ -17,7 +17,7 @@ func open_creation_dialog(node_path: NodePath = ^""):
 		title = tr("Create Variable on '%s'" % node_path)
 	_variable_node_path = ^""
 	popup_centered()
-	GameUI.grab_input_lock(self)
+	GameUI.instance.grab_input_lock(self)
 
 
 func _on_confirmed() -> void:

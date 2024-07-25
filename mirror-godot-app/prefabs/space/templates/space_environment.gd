@@ -94,6 +94,9 @@ func _setup_world_environment() -> void:
 		environment.ssil_enabled = false
 		environment.sdfgi_enabled = false
 		environment.ssr_enabled = false
+		environment.glow_enabled = false
+		environment.fog_enabled = false
+		environment.glow_bloom = false
 		camera_attributes.dof_blur_far_enabled = false
 
 
@@ -105,17 +108,19 @@ func get_shadow_preset_index() -> int:
 
 
 func _update_shadows_settings(preset: String, suns_children: Array[Node] = []) -> void:
+	pass
 	if not _SHADOWS_SETTING_MAPPINGS.has(preset):
-		preset = "medium"
+		preset = "low"
 	var shadow = _SHADOWS_SETTING_MAPPINGS[preset]
 	if suns_children.is_empty():
 		for child in get_children():
 			if child is DirectionalLight3D:
 				suns_children.append(child)
 	for sun in suns_children:
-		sun.directional_shadow_max_distance = shadow["max_distance"]
-		sun.shadow_enabled = shadow["enabled"]
-		sun.shadow_blur = shadow["blur"]
+		if Util.is_vr_enabled():
+			sun.directional_shadow_max_distance = 1
+			sun.shadow_enabled = false
+			sun.shadow_blur = 1
 
 
 func _update_environment_settings(data: Dictionary) -> void:

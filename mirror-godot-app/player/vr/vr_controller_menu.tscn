@@ -1,0 +1,89 @@
+[gd_scene load_steps=9 format=3 uid="uid://dmk74a73ew62s"]
+
+[ext_resource type="Script" path="res://player/vr/vr_controller_menu.gd" id="1_6wet2"]
+[ext_resource type="PackedScene" uid="uid://d20edduhwu64b" path="res://player/vr/hand_l.glb" id="2_ks3ua"]
+[ext_resource type="Material" uid="uid://by1x2mq3jq2nf" path="res://player/vr/hand.tres" id="3_nfms1"]
+[ext_resource type="Material" uid="uid://nv2lyirekar0" path="res://player/vr/laser.tres" id="4_a1c83"]
+[ext_resource type="PackedScene" uid="uid://bjp8bqvo22y2y" path="res://player/vr/hand_r.glb" id="5_le75e"]
+[ext_resource type="Script" path="res://player/vr/main_menu_set_layer_viewport.gd" id="6_u3erp"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_g0e3b"]
+material = ExtResource("4_a1c83")
+size = Vector3(0.005, 0.005, 2)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_j3cti"]
+radius = 0.05
+height = 0.1
+radial_segments = 16
+
+[node name="VRControllerMenu" type="Node"]
+script = ExtResource("1_6wet2")
+
+[node name="Root" type="Node3D" parent="."]
+
+[node name="XROrigin3D" type="XROrigin3D" parent="Root"]
+current = true
+
+[node name="XRCamera3D" type="XRCamera3D" parent="Root/XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+cull_mask = 524287
+current = true
+
+[node name="Neck" type="Node3D" parent="Root/XROrigin3D/XRCamera3D"]
+
+[node name="LeftHand" type="XRController3D" parent="Root/XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1.7, -1)
+tracker = &"left_hand"
+
+[node name="hand_l" parent="Root/XROrigin3D/LeftHand" instance=ExtResource("2_ks3ua")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0.07)
+
+[node name="mesh_Hand_L" parent="Root/XROrigin3D/LeftHand/hand_l/Armature/Skeleton3D" index="0"]
+transform = Transform3D(1.00335, 0, 0, 0, 1.00335, 0, 0, 0, 1.00335, 0, 0, 0)
+surface_material_override/0 = ExtResource("3_nfms1")
+
+[node name="Laser" type="Node3D" parent="Root/XROrigin3D/LeftHand"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.01, 0, 0, -0.2)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Root/XROrigin3D/LeftHand/Laser"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+mesh = SubResource("BoxMesh_g0e3b")
+skeleton = NodePath("../../../RightHand")
+
+[node name="RightHand" type="XRController3D" parent="Root/XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.7, -1)
+tracker = &"right_hand"
+
+[node name="hand_r" parent="Root/XROrigin3D/RightHand" instance=ExtResource("5_le75e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0.07)
+
+[node name="mesh_Hand_R" parent="Root/XROrigin3D/RightHand/hand_r/Armature/Skeleton3D" index="0"]
+surface_material_override/0 = ExtResource("3_nfms1")
+
+[node name="Laser" type="Node3D" parent="Root/XROrigin3D/RightHand"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.01, 0, 0, -0.2)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Root/XROrigin3D/RightHand/Laser"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.999992)
+mesh = SubResource("BoxMesh_g0e3b")
+skeleton = NodePath("../..")
+
+[node name="OpenXRCompositionLayerQuad" type="OpenXRCompositionLayerQuad" parent="Root/XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.63828, -1.3499)
+sort_order = -1
+enable_hole_punch = true
+quad_size = Vector2(2.49, 1.5)
+script = ExtResource("6_u3erp")
+
+[node name="Pointer" type="MeshInstance3D" parent="Root/XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_j3cti")
+
+[connection signal="button_pressed" from="Root/XROrigin3D/LeftHand" to="." method="_on_left_hand_button_pressed"]
+[connection signal="button_released" from="Root/XROrigin3D/LeftHand" to="." method="_on_left_hand_button_released"]
+[connection signal="input_vector2_changed" from="Root/XROrigin3D/LeftHand" to="." method="_on_left_hand_input_vector_2_changed"]
+[connection signal="button_pressed" from="Root/XROrigin3D/RightHand" to="." method="_on_right_hand_button_pressed"]
+[connection signal="input_vector2_changed" from="Root/XROrigin3D/RightHand" to="." method="_on_right_hand_input_vector_2_changed"]
+
+[editable path="Root/XROrigin3D/LeftHand/hand_l"]
+[editable path="Root/XROrigin3D/RightHand/hand_r"]

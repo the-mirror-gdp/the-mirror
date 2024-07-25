@@ -51,7 +51,7 @@ func _get_selected_space_objects(selection: Array) -> Array[SpaceObject]:
 
 func _unhandled_input(input_event: InputEvent) -> void:
 	# Prevent undoing/redoing from the main_menu and other windows
-	if GameUI.is_any_full_screen_or_modal_ui_visible():
+	if GameUI.instance.is_any_full_screen_or_modal_ui_visible():
 		return
 	if input_event.is_action_pressed(&"ui_redo"):
 		redo()

@@ -166,7 +166,7 @@ func _client_on_connected_to_server() -> void:
 	Analytics.track_event_client(AnalyticsEvent.TYPE.SPACE_JOIN_ATTEMPT_SUCCESS, {"spaceId": _queued_space_id})
 	Zone.change_to_space_scene()
 	# TODO: Instead of true, determine if the player has creator permissions for the space.
-	GameUI.on_enter_space(true)
+	GameUI.instance.on_enter_space(true)
 
 	var client = Node.new()
 	client.set_name("Client " + str(multiplayer.get_unique_id()))
@@ -231,7 +231,7 @@ func access_denied(in_reason: int) -> void:
 		return
 	_disconnect_from_server()
 	Zone.on_exit_space()
-	GameUI.loading_ui.hide()
+	GameUI.instance.loading_ui.hide()
 	quit_to_main_menu()
 	if in_reason == Zone.DENIED_REASON.CLIENT_VERSION_MISMATCH:
 		Game.critical_error(JOINER_ERRORS.ACCESS_DENIED, "Server/Client Version Mismatch. Update your game using the itch.io launcher, or reinstall the app from itch.io")
@@ -298,16 +298,16 @@ func _client_on_server_disconnected() -> void:
 func quit_to_main_menu() -> void:
 	last_connection_address = ""
 	last_connection_port = -1
-	GameUI.loading_ui.hide()
-	GameUI.main_menu_ui.show()
+	GameUI.instance.loading_ui.hide()
+	GameUI.instance.main_menu_ui.show()
 	_quit_space()
 
 
 ## call this when you need to show the loading screen and are already connecting
 func _quit_to_loading_screen() -> void:
-	GameUI.loading_ui.show()
-	if is_instance_valid(GameUI.main_menu_ui):
-		GameUI.main_menu_ui.hide()
+	GameUI.instance.loading_ui.show()
+	if is_instance_valid(GameUI.instance.main_menu_ui):
+		GameUI.instance.main_menu_ui.hide()
 	_quit_space()
 
 

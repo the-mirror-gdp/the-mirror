@@ -299,7 +299,7 @@ func create_space_object(space_object_dictionary: Dictionary, receipt: Dictionar
 		if created_by_local_user:
 			var auto_select: bool = receipt.get("auto_select", false)
 			if auto_select:
-				GameUI.creator_ui.select_object(instance)
+				GameUI.instance.creator_ui.select_object(instance)
 
 
 # This function is called by the client to load the space objects

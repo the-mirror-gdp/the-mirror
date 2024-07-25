@@ -19,7 +19,7 @@ func edit_input_value(graph_node: ScriptBlockGraphNode, input_port: ScriptBlock.
 	for value in enum_values:
 		add_filter_menu_item(value, value)
 	show_menu_at_mouse_position()
-	GameUI.grab_input_lock(self)
+	GameUI.instance.grab_input_lock(self)
 
 
 func show_menu_at_mouse_position() -> void:
@@ -48,7 +48,7 @@ func _fit_rect_in_size(child_rect: Rect2, parent_size: Vector2) -> Vector2:
 
 func _on_enum_value_selected(title: String, _metadata: Variant) -> void:
 	hide()
-	GameUI.release_input_lock(self)
+	GameUI.instance.release_input_lock(self)
 	if not is_instance_valid(_edited_input_port):
 		return
 	_edited_input_port.value = title

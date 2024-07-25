@@ -14,7 +14,7 @@ func _ready() -> void:
 func populate_and_show(target_node: Node) -> void:
 	title = "Create Script Entry"
 	_entry_creation_menu.populate_selection_tree(target_node, false)
-	GameUI.grab_input_lock(self)
+	GameUI.instance.grab_input_lock(self)
 	popup_centered()
 	_entry_creation_menu.focus_search_bar()
 
@@ -22,7 +22,7 @@ func populate_and_show(target_node: Node) -> void:
 func populate_and_show_for_custom(target_node: Node) -> void:
 	_entry_creation_menu.populate_selection_tree(target_node, true)
 	_show_custom_entry_menu()
-	GameUI.grab_input_lock(self)
+	GameUI.instance.grab_input_lock(self)
 	_entry_creation_menu.focus_search_bar()
 
 

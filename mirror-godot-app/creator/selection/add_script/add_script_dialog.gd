@@ -24,7 +24,7 @@ func popup_dialog(target_node: Node) -> void:
 		_add_script_menu.hide_add_script_filter_menu()
 	size = Vector2.ZERO
 	popup_centered()
-	GameUI.grab_input_lock(self)
+	GameUI.instance.grab_input_lock(self)
 	if GameplaySettings.script_quick_attach_existing:
 		title = "Create or Attach Script"
 		_add_script_menu.focus_add_script_filter_menu()

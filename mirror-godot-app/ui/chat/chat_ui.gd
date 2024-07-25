@@ -60,10 +60,10 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_time_since_last_opened += delta
-	var safe_area_for_gui: Rect2 = GameUI.get_safe_area()
+	var safe_area_for_gui: Rect2 = GameUI.instance.get_safe_area()
 	var new_position: Vector2 = _initial_position + safe_area_for_gui.position
 	_chat_box.position = new_position
-	if Input.is_action_just_pressed("player_open_chat", true) and not GameUI.is_any_full_screen_or_modal_ui_visible([self]) and get_viewport().gui_get_focus_owner() == null:
+	if Input.is_action_just_pressed("player_open_chat", true) and not GameUI.instance.is_any_full_screen_or_modal_ui_visible([self]) and get_viewport().gui_get_focus_owner() == null:
 		_line_edit.grab_focus()
 	if not is_typing_in_chat and _time_since_last_opened > _fade_delay:
 		var visibility_loss_speed = delta * 0.5
@@ -171,7 +171,7 @@ func _handle_player_event_client(message: String) -> void:
 func _on_line_edit_focus_entered() -> void:
 	is_typing_in_chat = true
 	_reset_chat_transparency()
-	GameUI.grab_input_lock(self)
+	GameUI.instance.grab_input_lock(self)
 
 
 func _on_line_edit_focus_exited() -> void:
@@ -179,7 +179,7 @@ func _on_line_edit_focus_exited() -> void:
 	_reset_chat_transparency()
 	_scroll_to_bottom()
 	_emoji_menu.hide()
-	GameUI.release_input_lock(self)
+	GameUI.instance.release_input_lock(self)
 
 
 func _on_line_edit_text_submitted(text: String) -> void:

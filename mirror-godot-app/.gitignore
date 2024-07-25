@@ -23,3 +23,8 @@ node_modules
 
 # Voxel terrain
 voxels.db
+
+# Fix broken files from being checked into the repo
+# caused by the openxr modules
+~*.dll
+*.tmp

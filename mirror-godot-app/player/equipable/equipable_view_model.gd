@@ -25,7 +25,7 @@ func _process(delta) -> void:
 	var target_transform := Transform3D.IDENTITY
 	var player_velocity: Vector3 = _player.get_local_movement_velocity()
 	var mouse_sway: Vector2 = _player.get_intended_camera_rotation_change()
-	if _equipable_controller.is_current_equipable_aiming() and not GameUI.is_mouse_needed_for_ui():
+	if _equipable_controller.is_current_equipable_aiming() and not GameUI.instance.is_mouse_needed_for_ui():
 		target_transform.origin = Vector3(-0.025, 0.02, 0.0)
 	target_transform.origin += Vector3(mouse_sway.y, mouse_sway.x, 0.0) * _sway_amplitude
 	target_transform.basis *= Basis.from_euler(Vector3(0.0, 0.0, (player_velocity.x * -0.3) + -mouse_sway.y))

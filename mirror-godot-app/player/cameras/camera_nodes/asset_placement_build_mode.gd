@@ -36,7 +36,7 @@ func handle_asset_placement_input(input_event: InputEvent) -> void:
 	var zoom_in = input_event.is_action_pressed(&"build_mode_camera_zoom_in")
 	if zoom_in or input_event.is_action_pressed(&"build_mode_camera_zoom_out"):
 		if input_event is InputEventMouseButton:
-			if not GameUI.creator_ui.get_safe_area().has_point(input_event.position):
+			if not GameUI.instance.creator_ui.get_safe_area().has_point(input_event.position):
 				return
 		if zoom_in:
 			target_zoom /= ZOOM_TARGET_MULTIPLIER

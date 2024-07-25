@@ -14,7 +14,7 @@ func _execute_callback(_stack_count: int) -> Error:
 	var range_radius: float = inputs[1].value
 	if range_radius <= 0.0:
 		range_radius = INF
-	GameUI.chat_ui.send_message_from_object(attached_object, message, range_radius)
+	GameUI.instance.chat_ui.send_message_from_object(attached_object, message, range_radius)
 	return OK
 
 

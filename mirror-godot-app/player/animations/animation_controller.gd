@@ -441,6 +441,10 @@ func set_visibility_state(_is_visible: bool) -> void:
 		hide_player()
 
 
+func get_player_visible() -> bool:
+	return _avatar.visible
+
+
 func hide_player() -> void:
 	_avatar.visible = false
 

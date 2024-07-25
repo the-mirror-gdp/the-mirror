@@ -1,6 +1,6 @@
 [gd_scene load_steps=28 format=3 uid="uid://bpn5kipaabot1"]
 
-[ext_resource type="Script" path="res://ui/game/game_ui.gd" id="1_2ryxh"]
+[ext_resource type="Script" path="res://ui/game/game_ui_instance.gd" id="1_2ryxh"]
 [ext_resource type="PackedScene" uid="uid://pdt3sfnghnqp" path="res://ui/login/login_ui.tscn" id="2"]
 [ext_resource type="PackedScene" uid="uid://vep713eampf5" path="res://creator/drag_input/drag_detector.tscn" id="2_455td"]
 [ext_resource type="PackedScene" uid="uid://bompdcbpjbtli" path="res://ui/chat/chat_ui.tscn" id="2_a0jw6"]

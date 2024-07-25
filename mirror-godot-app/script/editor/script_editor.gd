@@ -249,11 +249,11 @@ func _on_request_save_script_as_asset(script_instance: ScriptInstance) -> void:
 
 
 func _on_dialog_focus_entered() -> void:
-	GameUI.grab_input_lock(self)
+	GameUI.instance.grab_input_lock(self)
 
 
 func _on_dialog_focus_exited() -> void:
-	GameUI.release_input_lock(self)
+	GameUI.instance.release_input_lock(self)
 
 
 func _on_request_track_recently_used_space_script(script_instance: ScriptInstance) -> void:

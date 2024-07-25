@@ -8,10 +8,10 @@ var _selected_nodes: Array[Node]
 
 func _enter_tree():
 	# TODO: Instead of just deleting this when running the test scene,
-	# we should make GameUI only instanced when needed on clients.
+	# we should make GameUI.instance only instanced when needed on clients.
 	# TODO: Also, if this was free instead of queue_free, ToolManager
 	# would currently break, we should make it a child of CreatorUI.
-	GameUI.queue_free()
+	GameUI.instance.queue_free()
 
 
 func _ready():

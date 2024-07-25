@@ -27,7 +27,7 @@ func set_script_toolbar_editable(is_editable: bool) -> void:
 
 
 func _on_view_script_users_pressed() -> void:
-	GameUI.creator_ui.search_node_tree("script_id=" + _script_instance.script_id)
+	GameUI.instance.creator_ui.search_node_tree("script_id=" + _script_instance.script_id)
 
 
 func _on_clone_script_pressed() -> void:

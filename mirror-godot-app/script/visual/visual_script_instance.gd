@@ -179,10 +179,10 @@ func _on_block_message(script_block: ScriptBlock, title: String, message: String
 
 
 func _load_self_in_script_editor(script_block: ScriptBlock = null, error_text: String = "") -> void:
-	# It's unfortunate for ScriptEvent to depend on GameUI, but there isn't
+	# It's unfortunate for ScriptEvent to depend on GameUI.instance, but there isn't
 	# really a better way. At least we will check if it exists first.
-	if GameUI.creator_ui:
-		GameUI.creator_ui.open_visual_script_editor(self, script_block, error_text)
+	if GameUI.instance.creator_ui:
+		GameUI.instance.creator_ui.open_visual_script_editor(self, script_block, error_text)
 
 
 func serialize_script_entity_data() -> Dictionary:

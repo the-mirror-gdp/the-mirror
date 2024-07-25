@@ -60,7 +60,7 @@ func _on_locked_value_changed(new_value: bool) -> void:
 
 
 func _on_asset_asset_clicked(asset_data):
-	GameUI.creator_ui.asset_detail_window.request_info_popup(asset_data)
+	GameUI.instance.creator_ui.asset_detail_window.request_info_popup(asset_data)
 
 
 func _on_description_value_changed(new_value):

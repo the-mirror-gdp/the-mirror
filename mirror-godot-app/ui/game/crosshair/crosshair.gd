@@ -27,7 +27,7 @@ func _process(delta: float) -> void:
 	if equipable and equipable.has_method("get_bullet_spread"):
 		var crosshair_size: float = rad_to_deg(equipable.get_bullet_spread()) * _spread_multiplier
 		crosshair_size = clampf(crosshair_size, _minimum_size, _maximum_size)
-		GameUI.crosshair.custom_minimum_size = lerp(GameUI.crosshair.custom_minimum_size, Vector2.ONE * crosshair_size, delta * _lerp_speed)
+		GameUI.instance.crosshair.custom_minimum_size = lerp(GameUI.instance.crosshair.custom_minimum_size, Vector2.ONE * crosshair_size, delta * _lerp_speed)
 
 	_update_crosshair_colors()
 

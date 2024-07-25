@@ -58,7 +58,7 @@ func _draw_lines() -> void:
 		_last_knee_position,
 		_last_foot_position,
 	]
-	var mi: MeshInstance3D = GameUI.object_outlines.draw_lines(lines, Color.SADDLE_BROWN)
+	var mi: MeshInstance3D = GameUI.instance.object_outlines.draw_lines(lines, Color.SADDLE_BROWN)
 	mi.transform = global_transform
 
 

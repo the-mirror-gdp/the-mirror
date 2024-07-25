@@ -74,16 +74,25 @@ func is_scoreboard_shortcut_enabled():
 		return true
 	return scoreboard_enabled
 
-
+var last_update_time = 0
 func _process(_delta: float) -> void:
+	if not visible:
+		return
+
+	if Time.get_unix_time_from_system() + 1.0 < last_update_time:
+		return
+	last_update_time = Time.get_unix_time_from_system()
+
 	if Zone.is_host() or not Zone.client or not Zone.client.is_client_connected_to_server():
 		visible = false
 		return
 	visible = _force_shown or (
-		not GameUI.is_keyboard_needed_for_ui()
+		not GameUI.instance.is_keyboard_needed_for_ui()
 		and Input.is_action_pressed(&"scoreboard_visible")
 		and is_scoreboard_shortcut_enabled()
 	)
+
+
 	# we don't care about the actual data inside the player id's we're
 	# just using it as a mechanism to know the players are different
 	var players: Array = Zone.get_all_players()

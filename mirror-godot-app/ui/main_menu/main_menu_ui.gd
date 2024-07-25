@@ -109,7 +109,7 @@ func toggle_main_menu_open(show_space_settings: bool = false) -> void:
 			change_page(&"Discover")
 			change_subpage(&"ViewSpace", Zone.space)
 			change_subpage(&"EditSpace", Zone.space)
-		elif GameUI.should_display_space_listings:
+		elif GameUI.instance.should_display_space_listings:
 			change_page(&"Home")
 			change_subpage(&"HomeSpaceSelect")
 		show()
@@ -130,14 +130,14 @@ func _setup_pages_and_subpages() -> void:
 			for subpage in subpages.get_children():
 				subpage.hide()
 		page_names.append(page.name)
-	if not GameUI.should_display_space_listings:
+	if not GameUI.instance.should_display_space_listings:
 		whitelisted_page_names = ["Avatar", "Settings"]
 	_header_menu.populate_page_buttons(page_names, whitelisted_page_names)
 
 
 # Setups up the default pages
 func _show_default_page() -> void:
-	if GameUI.should_display_space_listings:
+	if GameUI.instance.should_display_space_listings:
 		_current_page = get_page_from_name("Home")
 	else:
 		_current_page = get_page_from_name("Avatar")
@@ -261,7 +261,7 @@ func _on_close_window_pressed() -> void:
 
 
 func _on_help_button_pressed() -> void:
-	GameUI.user_tutorial.show_tutorial_type(UserTutorial.Tutorial_Type.HOME)
+	GameUI.instance.user_tutorial.show_tutorial_type(UserTutorial.Tutorial_Type.HOME)
 
 
 func _on_back_button_pressed() -> void:

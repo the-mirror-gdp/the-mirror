@@ -10,9 +10,9 @@ func _ready() -> void:
 
 func _on_visibility_changed() -> void:
 	if self.visible:
-		GameUI.add_visible_window(self)
+		GameUI.instance.add_visible_window(self)
 	else:
-		GameUI.remove_visible_window(self)
+		GameUI.instance.remove_visible_window(self)
 
 
 func _sub_windows_visible(node: Node) -> bool:

@@ -18,7 +18,7 @@ func setup(player: Player) -> void:
 
 
 func _ready() -> void:
-	GameUI.chat_ui.chat_message_sent.connect(_on_chat_message_sent)
+	GameUI.instance.chat_ui.chat_message_sent.connect(_on_chat_message_sent)
 	_use_large_text_size = ProjectSettings.get_setting("feature_flags/large_text_size", false)
 	if _use_large_text_size:
 		name_label.label_settings.font_size = _large_text_size

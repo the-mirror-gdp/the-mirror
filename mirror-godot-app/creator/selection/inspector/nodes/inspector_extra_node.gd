@@ -131,17 +131,17 @@ func _process_physics_shape_outlines() -> void:
 	var shape_size: Vector3 = _get_shape_size_vector_from_ext()
 	var shape_transform: Transform3D = target_node.scaled_model.global_transform.scaled_local(shape_size)
 	if shape_type == "box":
-		GameUI.object_outlines.draw_wireframe_box_transform(shape_transform, _OUTLINE_COLOR)
+		GameUI.instance.object_outlines.draw_wireframe_box_transform(shape_transform, _OUTLINE_COLOR)
 	elif shape_type == "sphere":
-		GameUI.object_outlines.draw_wireframe_sphere(shape_transform, _OUTLINE_COLOR)
+		GameUI.instance.object_outlines.draw_wireframe_sphere(shape_transform, _OUTLINE_COLOR)
 	else:
 		shape_transform = shape_transform.scaled_local(Vector3(1.0, shape_size.x / shape_size.y, 1.0))
 		if shape_type == "capsule":
 			var half_mid_height: float = (shape_size.y - shape_size.x) * 0.5
-			GameUI.object_outlines.draw_wireframe_capsule(shape_transform, half_mid_height, _OUTLINE_COLOR)
+			GameUI.instance.object_outlines.draw_wireframe_capsule(shape_transform, half_mid_height, _OUTLINE_COLOR)
 		if shape_type == "cylinder":
 			var half_height: float = shape_size.y * 0.5
-			GameUI.object_outlines.draw_wireframe_cylinder(shape_transform, half_height, _OUTLINE_COLOR)
+			GameUI.instance.object_outlines.draw_wireframe_cylinder(shape_transform, half_height, _OUTLINE_COLOR)
 
 
 func _refresh_already_setup_inspectors() -> void:

@@ -40,15 +40,9 @@ load_path = "res://.godot/imported/blue_bg.jpg-9388e80f4f099bfea8a9c2c05cb56a97.
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0aacv"]
 shader = ExtResource("8_w8ibq")
-shader_parameter/blur = 1.5
-shader_parameter/color = null
-shader_parameter/strength = null
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4coir"]
 shader = ExtResource("8_w8ibq")
-shader_parameter/blur = 3.0
-shader_parameter/color = Color(1, 1, 1, 1)
-shader_parameter/strength = 0.15
 
 [sub_resource type="Theme" id="Theme_yjf73"]
 

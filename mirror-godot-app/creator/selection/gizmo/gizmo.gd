@@ -86,7 +86,7 @@ func update_gizmo_visibility() -> void:
 			target.is_selection_empty()
 			or target.is_space_object_asset_type(Enums.ASSET_TYPE.MAP)
 			or target.is_any_object_not_allowed_to_edit()
-			or not GameUI.creator_ui.is_edit_mode(Enums.EDIT_MODE.Asset)
+			or not GameUI.instance.creator_ui.is_edit_mode(Enums.EDIT_MODE.Asset)
 			or PlayerData.game_mode.get_current_mode() == PlayerData.game_mode.Mode.NORMAL
 	):
 		_hide_all_gizmos()
