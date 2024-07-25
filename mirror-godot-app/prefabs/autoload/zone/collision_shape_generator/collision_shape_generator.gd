@@ -75,6 +75,9 @@ func generate_shape_for_meshes(body: JBody3D, in_meshes: Array[MeshInstance3D], 
 			if is_concave:
 				var tms: ConcavePolygonShape3D = mesh.mesh.create_trimesh_shape()
 				shape = JMeshShape3D.new()
+				if tms == null:
+					push_error("invalid physics shape")
+					continue
 				shape.faces = tms.get_faces()
 			else:
 				var cps: ConvexPolygonShape3D = mesh.mesh.create_convex_shape(false, false)

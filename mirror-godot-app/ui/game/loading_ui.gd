@@ -41,6 +41,8 @@ func _on_join_server_start() -> void:
 	show()
 
 func _on_join_server_complete() -> void:
+	GameUI.loading_ui.populate_status("")
+	print("Loading UI has been closed at: ", Time.get_datetime_string_from_system())
 	hide()
 	_progress_animation.stop()
 

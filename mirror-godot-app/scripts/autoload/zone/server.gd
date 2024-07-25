@@ -534,6 +534,7 @@ func _all_files_downloaded() -> bool:
 
 
 func _init_player(peer_id, jwt, client_version) -> void:
+	print("Received client init on server at " + Time.get_datetime_string_from_system())
 	# TODO: This only decodes the JWT, but it needs to validated via Firebase SDK (probs via the NestJS server for ease)
 	# TODO: Kick the player if JWT validating fails
 	var user_id = JWT.get_user_id_from_jwt(jwt, "test123")

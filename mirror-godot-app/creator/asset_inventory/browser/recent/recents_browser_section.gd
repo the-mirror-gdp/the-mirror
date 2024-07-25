@@ -152,7 +152,8 @@ func _generate_new_slot(recent_asset: Dictionary) -> BaseAssetSlot:
 	slot.slot_activated.connect(_asset_browser.asset_slot_activated)
 	slot.slot_special_action.connect(_asset_browser.use_slot_asset)
 	_id_to_slot_map[recent_asset["id"]] = slot
-	_slots_flow_container.add_child(slot)
+	if slot.get_parent() == null:
+		_slots_flow_container.add_child(slot)
 	return slot
 
 

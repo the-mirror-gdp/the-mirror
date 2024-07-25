@@ -248,27 +248,6 @@ static func looks_like_json(value) -> bool:
 	return has_braces or has_brackets
 
 
-## Loads a GLTF file from the disk as a node object.
-static func load_gltf_file_as_node(path: String) -> Variant:
-	var state: GLTFState = GLTFState.new()
-	if Zone.is_host():
-		# Discard the textures when on the server
-		state.set_handle_binary_image(GLTFState.HANDLE_BINARY_DISCARD_TEXTURES)
-	var doc: GLTFDocument = GLTFDocument.new()
-	var err = doc.append_from_file(path, state, 8)
-	if err:
-		push_error(str(err))
-		return null
-	var node: Node = doc.generate_scene(state)
-	if not is_instance_valid(node):
-		print_debug("generate_scene failed from path:", path)
-		return null
-	# Disallow importing a model with an empty root node name.
-	if node.name == &"":
-		node.name = &"Model"
-	return node
-
-
 ## Converts a GLTF document (including all its external dependencies ) to a GLB byte array.
 ## See https://github.com/the-mirror-megaverse/mirror-godot-app/pull/261 for why
 static func convert_gltf_to_glb_data(path: String) -> PackedByteArray:
