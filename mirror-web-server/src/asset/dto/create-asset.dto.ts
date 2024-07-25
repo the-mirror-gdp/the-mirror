@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import {
+  ArrayMinSize,
   IsArray,
   IsBoolean,
   IsNotEmpty,
@@ -7,12 +8,15 @@ import {
   IsObject,
   IsOptional,
   IsString,
-  MaxLength
+  MaxLength,
+  ValidateIf
 } from 'class-validator'
 import { ASSET_TYPE } from '../../option-sets/asset-type'
 import { Vector4AsArray } from '../../option-sets/vectors'
 import { ROLE } from '../../roles/models/role.enum'
 import { Tags } from '../../tag/models/tags.schema'
+import { Transform } from 'class-transformer'
+import { ObjectId } from 'mongodb'
 
 export class CreateAssetDto {
   /**
@@ -188,6 +192,17 @@ export class CreateAssetDto {
   @IsOptional()
   @ApiProperty({ required: false })
   tags?: Tags
+
+  @IsOptional()
+  @ApiProperty({ required: false })
+  assetPack?: boolean
+
+  @ValidateIf((o) => o.assetPack)
+  @IsNotEmpty()
+  @Transform(({ value }) => value.map((id: string) => new ObjectId(id)))
+  @IsArray()
+  @ApiProperty({ required: false })
+  assetsInPack?: string[]
 }
 
 // See https://www.loom.com/share/7e09d2777ef94368bcd5fd8c8341b5ef for walkthrough of DTOs with discriminators

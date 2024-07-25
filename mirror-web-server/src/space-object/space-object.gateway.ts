@@ -4,13 +4,19 @@ import {
   WebSocketGateway
 } from '@nestjs/websockets'
 import { SpaceObjectService } from './space-object.service'
-import { Logger, UseFilters, UseInterceptors } from '@nestjs/common'
+import { Logger, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common'
 import { CreateSpaceObjectDto } from './dto/create-space-object.dto'
 import { UpdateSpaceObjectDto } from './dto/update-space-object.dto'
 import { UpdateBatchSpaceObjectDto } from './dto/update-batch-space-object.dto'
 import { GodotSocketInterceptor } from '../godot-server/godot-socket.interceptor'
 import { GodotSocketExceptionFilter } from '../godot-server/godot-socket-exception.filter'
 import { SpaceObjectId, UserId } from '../util/mongo-object-id-helpers'
+import {
+  AdminTokenWS,
+  UserTokenWS
+} from '../godot-server/get-user-ws.decorator'
+import { da } from 'date-fns/locale'
+import { WsAuthGuard } from '../godot-server/ws-auth.guard'
 
 enum ZoneSpaceObjectWsMessage {
   GET = 'zone_get_space_object',
@@ -25,6 +31,7 @@ enum ZoneSpaceObjectWsMessage {
 }
 
 @WebSocketGateway()
+@UseGuards(WsAuthGuard)
 @UseInterceptors(GodotSocketInterceptor)
 @UseFilters(GodotSocketExceptionFilter)
 export class SpaceObjectGateway {
@@ -35,6 +42,8 @@ export class SpaceObjectGateway {
 
   @SubscribeMessage(ZoneSpaceObjectWsMessage.CREATE)
   public create(
+    @AdminTokenWS() isAdmin: boolean,
+    @UserTokenWS('user_id') userId: UserId,
     @MessageBody('dto')
     createSpaceObjectDto: CreateSpaceObjectDto & { creatorUserId?: UserId }
   ) {
@@ -50,12 +59,24 @@ export class SpaceObjectGateway {
       )}`,
       SpaceObjectGateway.name
     )
-    // TODO: this needs to be updated to include the creator's user ID! 2023-04-21 01:01:06. Do not merge until the Godot server adds that in.
-    return this.spaceObjectService.createOneAdmin(createSpaceObjectDto)
+
+    if (userId) {
+      return this.spaceObjectService.createOneWithRolesCheck(
+        userId,
+        createSpaceObjectDto
+      )
+    }
+
+    if (isAdmin) {
+      return this.spaceObjectService.createOneAdmin(createSpaceObjectDto)
+    }
+    return
   }
 
   @SubscribeMessage(ZoneSpaceObjectWsMessage.GET_PAGE)
   public getAllBySpaceIdPaginated(
+    @AdminTokenWS() isAdmin: boolean,
+    @UserTokenWS('user_id') userId: UserId,
     @MessageBody('id') spaceId: string,
     @MessageBody('page') page: number,
     @MessageBody('perPage') perPage: number
@@ -73,14 +94,31 @@ export class SpaceObjectGateway {
       )}`,
       SpaceObjectGateway.name
     )
-    return this.spaceObjectService.getAllBySpaceIdPaginatedAdmin(spaceId, {
-      page,
-      perPage
-    })
+
+    if (isAdmin) {
+      return this.spaceObjectService.getAllBySpaceIdPaginatedAdmin(spaceId, {
+        page,
+        perPage
+      })
+    }
+
+    if (userId) {
+      return this.spaceObjectService.getAllBySpaceIdPaginatedWithRolesCheck(
+        userId,
+        spaceId,
+        {
+          page,
+          perPage
+        }
+      )
+    }
+    return
   }
 
   @SubscribeMessage(ZoneSpaceObjectWsMessage.GET_BATCH)
   public findMany(
+    @AdminTokenWS() isAdmin: boolean,
+    @UserTokenWS('user_id') userId: UserId,
     @MessageBody('batch') ids: string[],
     @MessageBody('page') page: number,
     @MessageBody('perPage') perPage: number
@@ -98,11 +136,23 @@ export class SpaceObjectGateway {
       )}`,
       SpaceObjectGateway.name
     )
-    return this.spaceObjectService.findManyAdmin(ids, { page, perPage })
+    if (isAdmin) {
+      return this.spaceObjectService.findManyAdmin(ids, { page, perPage })
+    }
+
+    if (userId) {
+      return this.spaceObjectService.findManyWithRolesCheck(userId, ids, {
+        page,
+        perPage
+      })
+    }
+    return
   }
 
   @SubscribeMessage(ZoneSpaceObjectWsMessage.GET_PRELOAD_SPACE_OBJECTS)
   public getAllPreloadSpaceObjectsBySpaceIdPaginated(
+    @AdminTokenWS() isAdmin: boolean,
+    @UserTokenWS('user_id') userId: UserId,
     @MessageBody('id') spaceId: string,
     @MessageBody('page') page: number,
     @MessageBody('perPage') perPage: number
@@ -123,14 +173,30 @@ export class SpaceObjectGateway {
       )}`,
       SpaceObjectGateway.name
     )
-    return this.spaceObjectService.getAllBySpaceIdPaginatedAdmin(
-      spaceId,
-      {
-        page,
-        perPage
-      },
-      options
-    )
+
+    if (isAdmin) {
+      return this.spaceObjectService.getAllBySpaceIdPaginatedAdmin(
+        spaceId,
+        {
+          page,
+          perPage
+        },
+        options
+      )
+    }
+
+    if (userId) {
+      return this.spaceObjectService.getAllBySpaceIdPaginatedWithRolesCheck(
+        userId,
+        spaceId,
+        {
+          page,
+          perPage
+        },
+        options
+      )
+    }
+    return
   }
 
   /**
@@ -144,11 +210,16 @@ export class SpaceObjectGateway {
    */
   @SubscribeMessage(ZoneSpaceObjectWsMessage.GET)
   public async findOneWithSingleParentSpaceObject(
+    @AdminTokenWS() isAdmin: boolean,
+    @UserTokenWS('user_id') userId: UserId,
     @MessageBody('id') spaceObjectId: SpaceObjectId,
     @MessageBody('populateParent') populateParent = false, // if true, decently fast, 1 lookup
     @MessageBody('recursiveParentPopulate') recursiveParentPopulate = false, // if true, slower with $graphLookup
     @MessageBody('recursiveChildrenPopulate') recursiveChildrenPopulate = false // if true, slowest because 2 $graphLookups
   ) {
+    if (!isAdmin && !userId) {
+      return
+    }
     this.logger.log(
       `${JSON.stringify(
         {
@@ -177,9 +248,20 @@ export class SpaceObjectGateway {
         )
     } else {
       // no recursive parent lookup nor parent lookup, so just find the spaceObject by itself
-      returnData = (
-        await this.spaceObjectService.findOneAdmin(spaceObjectId)
-      ).toJSON() // needs to be converted to JSON so it can be modified below
+      let data
+
+      if (userId) {
+        data = await this.spaceObjectService.findOneWithRolesCheck(
+          userId,
+          spaceObjectId
+        )
+      }
+
+      if (isAdmin) {
+        data = await this.spaceObjectService.findOneAdmin(spaceObjectId)
+      }
+
+      returnData = data.toJSON() // needs to be converted to JSON so it can be modified below
     }
 
     // check children populates
@@ -201,7 +283,11 @@ export class SpaceObjectGateway {
   }
 
   @SubscribeMessage(ZoneSpaceObjectWsMessage.UPDATE_BATCH)
-  public async updateMany(@MessageBody() batchDto: UpdateBatchSpaceObjectDto) {
+  public async updateMany(
+    @UserTokenWS('user_id') userId: UserId,
+    @AdminTokenWS() isAdmin: boolean,
+    @MessageBody() batchDto: UpdateBatchSpaceObjectDto
+  ) {
     this.logger.log(
       `${JSON.stringify(
         {
@@ -213,11 +299,24 @@ export class SpaceObjectGateway {
       )}`,
       SpaceObjectGateway.name
     )
-    return await this.spaceObjectService.updateManyAdmin(batchDto)
+
+    if (isAdmin) {
+      return await this.spaceObjectService.updateManyAdmin(batchDto)
+    }
+
+    if (userId) {
+      return await this.spaceObjectService.updateManyWithRolesCheck(
+        userId,
+        batchDto
+      )
+    }
+    return
   }
 
   @SubscribeMessage(ZoneSpaceObjectWsMessage.UPDATE)
   public updateOne(
+    @AdminTokenWS() isAdmin: boolean,
+    @UserTokenWS('user_id') userId: UserId,
     @MessageBody('id') id: string,
     @MessageBody('dto') updateSpaceObjectDto: UpdateSpaceObjectDto
   ) {
@@ -233,11 +332,27 @@ export class SpaceObjectGateway {
       )}`,
       SpaceObjectGateway.name
     )
-    return this.spaceObjectService.updateOneAdmin(id, updateSpaceObjectDto)
+
+    if (userId) {
+      return this.spaceObjectService.updateOneWithRolesCheck(
+        userId,
+        id,
+        updateSpaceObjectDto
+      )
+    }
+
+    if (isAdmin) {
+      return this.spaceObjectService.updateOneAdmin(id, updateSpaceObjectDto)
+    }
+    return
   }
 
   @SubscribeMessage(ZoneSpaceObjectWsMessage.REMOVE_BATCH)
-  public removeMany(@MessageBody('batch') ids: string[]) {
+  public removeMany(
+    @UserTokenWS('user_id') userId: UserId,
+    @AdminTokenWS() isAdmin: boolean,
+    @MessageBody('batch') ids: string[]
+  ) {
     this.logger.log(
       `${JSON.stringify(
         {
@@ -249,11 +364,23 @@ export class SpaceObjectGateway {
       )}`,
       SpaceObjectGateway.name
     )
-    return this.spaceObjectService.removeManyAdmin(ids)
+
+    if (isAdmin) {
+      return this.spaceObjectService.removeManyAdmin(ids)
+    }
+
+    if (userId) {
+      return this.spaceObjectService.removeManyWithRolesCheck(userId, ids)
+    }
+    return
   }
 
   @SubscribeMessage(ZoneSpaceObjectWsMessage.REMOVE)
-  public removeOne(@MessageBody('id') id: string) {
+  public removeOne(
+    @AdminTokenWS() isAdmin: boolean,
+    @UserTokenWS('user_id') userId: UserId,
+    @MessageBody('id') id: string
+  ) {
     this.logger.log(
       `${JSON.stringify(
         {
@@ -265,6 +392,14 @@ export class SpaceObjectGateway {
       )}`,
       SpaceObjectGateway.name
     )
-    return this.spaceObjectService.removeOneAdmin(id)
+
+    if (userId) {
+      return this.spaceObjectService.removeOneWithRolesCheck(userId, id)
+    }
+
+    if (isAdmin) {
+      return this.spaceObjectService.removeOneAdmin(id)
+    }
+    return
   }
 }

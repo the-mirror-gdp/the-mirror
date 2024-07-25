@@ -16,6 +16,7 @@ import {
 } from '../marketplace/license.subdocument.schema'
 import { Role, RoleSchema } from '../roles/models/role.schema'
 import { Tags, TagsSchema } from '../tag/models/tags.schema'
+import { ObjectId } from 'mongodb'
 
 export type AssetDiscriminators = 'MapAsset' | 'Material' | 'Texture'
 
@@ -101,6 +102,13 @@ export class AssetPublicData {
   softDeletedAt: string
   @ApiProperty()
   fileHash: string
+  @ApiProperty()
+  purchasedParentAssetId: string
+  // asset pack properties
+  @ApiProperty()
+  assetPack: boolean
+  @ApiProperty()
+  assetsInPack: ObjectId[]
 }
 
 export type AssetDocument = Asset & Document // Note: we also have subclasses/disciminators for materials and textures (as of 2023-02-04 20:18:08). Walkthrough: https://www.loom.com/share/7e09d2777ef94368bcd5fd8c8341b5ef
@@ -323,6 +331,22 @@ export class Asset {
   /**
    * END Section: ISchemaWithRole implementer
    */
+  // If the asset was purchased, this is the ID of that original asset since assets are copied upon purchase
+  @Prop({ type: String, required: false })
+  @ApiProperty()
+  purchasedParentAssetId: string
+
+  @Prop({ type: Boolean, required: false, default: undefined })
+  @ApiProperty()
+  assetPack: boolean
+
+  @Prop({
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Asset' }],
+    required: false,
+    default: undefined
+  })
+  @ApiProperty()
+  assetsInPack: ObjectId[]
 }
 
 export const AssetSchema = SchemaFactory.createForClass(Asset)

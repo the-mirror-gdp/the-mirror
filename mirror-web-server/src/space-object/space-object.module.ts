@@ -11,12 +11,14 @@ import { LoggerModule } from '../util/logger/logger.module'
 import { AssetModule } from '../asset/asset.module'
 import { SpaceObjectSearch } from './space-object.search'
 import { ScriptEntityModule } from '../script-entity/script-entity.module'
+import { GodotModule } from '../godot-server/godot.module'
 
 @Module({
   imports: [
     LoggerModule,
     RoleModule,
     ScriptEntityModule,
+    GodotModule,
     forwardRef(() => SpaceModule), // to fix circular dependency
     MongooseModule.forFeature([
       { name: SpaceObject.name, schema: SpaceObjectSchema }

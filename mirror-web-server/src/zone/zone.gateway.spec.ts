@@ -3,6 +3,7 @@ import { ZoneGateway } from './zone.gateway'
 import { ZoneService } from './zone.service'
 import { SpaceManagerExternalService } from './space-manager-external.service'
 import { LoggerModule } from '../util/logger/logger.module'
+import { WsAuthHelperService } from '../godot-server/ws-auth-helper.service'
 
 describe('ZoneGateway', () => {
   let gateway: ZoneGateway
@@ -13,7 +14,8 @@ describe('ZoneGateway', () => {
       providers: [
         ZoneGateway,
         { provide: ZoneService, useValue: {} },
-        { provide: SpaceManagerExternalService, useValue: {} }
+        { provide: SpaceManagerExternalService, useValue: {} },
+        { provide: WsAuthHelperService, useValue: {} }
       ]
     }).compile()
 

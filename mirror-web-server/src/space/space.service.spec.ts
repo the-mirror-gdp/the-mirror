@@ -24,6 +24,7 @@ import { UserService } from '../user/user.service'
 import { RedisPubSubService } from '../redis/redis-pub-sub.service'
 import { MirrorDBService } from '../mirror-db/mirror-db.service'
 import { ScriptEntityService } from '../script-entity/script-entity.service'
+import { MaterialInstanceService } from './material-instance/material-instance.service'
 
 describe('SpaceService', () => {
   let service: SpaceService
@@ -72,7 +73,8 @@ describe('SpaceService', () => {
         { provide: UserService, useValue: {} },
         { provide: RedisPubSubService, useValue: {} },
         { provide: MirrorDBService, useValue: {} },
-        { provide: ScriptEntityService, useValue: {} }
+        { provide: ScriptEntityService, useValue: {} },
+        { provide: MaterialInstanceService, useValue: {} }
       ]
     }).compile()
 

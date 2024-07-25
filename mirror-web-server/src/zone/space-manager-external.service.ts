@@ -2,8 +2,10 @@ import { AxiosResponse } from 'axios'
 import { lastValueFrom, map } from 'rxjs'
 import {
   BadRequestException,
+  HttpException,
+  HttpStatus,
   Injectable,
-  ServiceUnavailableException,
+  Logger,
   UnauthorizedException
 } from '@nestjs/common'
 import { HttpService } from '@nestjs/axios'
@@ -82,6 +84,7 @@ export class CreateContainerDto {
 export class SpaceManagerExternalService {
   constructor(
     private httpService: HttpService,
+    private logger: Logger,
     private readonly mirrorServerConfigService: MirrorServerConfigService
   ) {}
 
@@ -104,9 +107,19 @@ export class SpaceManagerExternalService {
         error?.response?.status === 401 ||
         error?.response?.message?.Authorization
       ) {
-        throw new UnauthorizedException(error?.response?.message)
+        return Promise.reject(
+          'Failed Auth Dependency: 401 From External Resource'
+        )
       }
-      throw new ServiceUnavailableException(error?.response?.message)
+      if (error?.response?.status === 404) {
+        return Promise.reject('Failed Dependency: 404 From External Resource')
+      }
+      // Don't throw ServiceUnavailableException here - ServiceUnavailableException implies THIS app is down (not the external service), so reject the promise
+      return Promise.reject('Failed Dependency: External Resource')
+      // Add this line in once we move to local multiplayer hosting
+      // console.warn(
+      //   'Quiet error: server scaler service is not responding. Not an issue at the moment until we add it back as a premium feature.'
+      // )
     })
   }
 
@@ -155,10 +168,22 @@ export class SpaceManagerExternalService {
         error?.response?.status === 401 ||
         error?.response?.message?.Authorization
       ) {
-        throw new UnauthorizedException(error?.response?.message)
+        return Promise.reject(
+          'Failed Auth Dependency: 401 From External Resource'
+        )
       }
-      console.error(error)
-      throw new ServiceUnavailableException(error)
+      if (error?.response?.status === 404) {
+        return Promise.reject('Failed Dependency: 404 From External Resource')
+      }
+
+      this.logger.error(error)
+      // Don't throw ServiceUnavailableException here - ServiceUnavailableException implies THIS app is down (not the external service), so reject the promise
+      return Promise.reject('Failed Dependency: External Resource')
+
+      // Add this line in once we move to local multiplayer hosting
+      // console.warn(
+      //   'Quiet error: server scaler service is not responding. Not an issue at the moment until we add it back as a premium feature.'
+      // )
     })
   }
 
@@ -184,10 +209,23 @@ export class SpaceManagerExternalService {
         error?.response?.status === 401 ||
         error?.response?.message?.Authorization
       ) {
-        throw new UnauthorizedException(error?.response?.message)
+        return Promise.reject(
+          'Failed Auth Dependency: 401 From External Resource'
+        )
       }
-      console.error(error)
-      throw new ServiceUnavailableException(error)
+      if (error?.response?.status === 404) {
+        return Promise.reject('Failed Dependency: 404 From External Resource')
+      }
+      this.logger.error('Failed to get external container status. uuid: ', uuid)
+      this.logger.error(error)
+      // Don't throw ServiceUnavailableException here - ServiceUnavailableException implies THIS app is down (not the external service), so reject the promise
+
+      return Promise.reject('Failed Dependency: External Resource')
+
+      // Add this line in once we move to local multiplayer hosting
+      // console.warn(
+      //   'Quiet error: server scaler service is not responding. Not an issue at the moment until we add it back as a premium feature.'
+      // )
     })
   }
 
@@ -208,10 +246,27 @@ export class SpaceManagerExternalService {
         error?.response?.status === 401 ||
         error?.response?.message?.Authorization
       ) {
-        throw new UnauthorizedException(error?.response?.message)
+        return Promise.reject(
+          'Failed Auth Dependency: 401 From External Resource'
+        )
       }
-      console.error(error)
-      throw new ServiceUnavailableException(error)
+      if (error?.response?.status === 404) {
+        this.logger.error('Failed to delete external container uuid: ', uuid)
+
+        return Promise.reject('Failed Dependency: 404 From External Resource')
+      }
+
+      this.logger.error('Failed to delete external container uuid: ', uuid)
+      this.logger.error(error)
+
+      // Don't throw ServiceUnavailableException here - ServiceUnavailableException implies THIS app is down (not the external service), so reject the promise
+
+      return Promise.reject('Failed Dependency: 404 From External Resource')
+
+      // Add this line in once we move to local multiplayer hosting
+      // console.warn(
+      //   'Quiet error: server scaler service is not responding. Not an issue at the moment until we add it back as a premium feature.'
+      // )
     })
   }
 

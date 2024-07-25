@@ -1,7 +1,10 @@
 import {
   BadRequestException,
+  ForbiddenException,
+  Inject,
   Injectable,
-  NotFoundException
+  NotFoundException,
+  forwardRef
 } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { MirrorDBRecord } from './models/mirror-db-record.schema'
@@ -15,15 +18,18 @@ import {
 import { UpdateMirrorDBRecordDto } from './dto/update-mirror-db-record.dto'
 import { isMongoId } from 'class-validator'
 import { RoleService } from '../roles/role.service'
-import { ObjectId } from 'bson'
 import { ROLE } from '../roles/models/role.enum'
+import { SpaceService, SpaceServiceType } from '../space/space.service'
+import { ObjectId } from 'mongodb'
 
 @Injectable()
 export class MirrorDBService {
   constructor(
     @InjectModel(MirrorDBRecord.name)
     private readonly mirrorDBModel: Model<MirrorDBRecord>,
-    private readonly roleService: RoleService
+    private readonly roleService: RoleService,
+    @Inject(forwardRef(() => SpaceService))
+    private readonly spaceService: SpaceServiceType
   ) {}
 
   public async getRecordFromMirrorDBBySpaceId(spaceId: SpaceId) {
@@ -40,6 +46,27 @@ export class MirrorDBService {
     }
 
     return mirrorDbRecord
+  }
+
+  // get record from mirror db by space id with roles check
+  public async getRecordFromMirrorDBBySpaceIdWithRolesCheck(
+    spaceId: SpaceId,
+    userId: UserId
+  ) {
+    // get the space with standard populated properties
+    // this is necessary to check if the user has access to the space
+    const space = await this.spaceService.getSpace(spaceId)
+
+    if (!space) {
+      throw new NotFoundException()
+    }
+
+    // check if the user have the role to find the record
+    if (this.spaceService.canFindWithRolesCheck(userId, space)) {
+      return await this.getRecordFromMirrorDBBySpaceId(spaceId)
+    } else {
+      throw new ForbiddenException()
+    }
   }
 
   public async getRecordFromMirrorDBBySpaceVersionId(
@@ -66,12 +93,72 @@ export class MirrorDBService {
     return mirrorDbRecord
   }
 
+  // get record from mirror db by spaceVersion id with roles check
+  public async getRecordFromMirrorDBBySpaceVersionIdWithRolesCheck(
+    spaceVersionId: SpaceVersionId,
+    userId: UserId
+  ) {
+    // get mirrorDbRecord by spaceVersionId
+    const mirrorDbRecord = await this.getRecordFromMirrorDBBySpaceVersionId(
+      spaceVersionId
+    )
+
+    // get the space with standard populated properties
+    // this is necessary to check if the user has access to the space
+    const space = await this.spaceService.getSpace(
+      mirrorDbRecord.space.toString()
+    )
+
+    if (!space) {
+      throw new NotFoundException()
+    }
+
+    // check if the user have the role to find the record
+    if (this.spaceService.canFindWithRolesCheck(userId, space)) {
+      return mirrorDbRecord
+    } else {
+      throw new ForbiddenException()
+    }
+  }
+
   public async getRecordFromMirrorDBById(id: MirrorDBRecordId) {
     if (!isMongoId(id)) {
       throw new BadRequestException(`Invalid id ${id as string}`)
     }
 
     return await this.mirrorDBModel.findById(id)
+  }
+
+  // get record from mirror db by id with roles check
+  public async getRecordFromMirrorDBByIdWithRolesCheck(
+    id: MirrorDBRecordId,
+    userId: UserId
+  ) {
+    // get the mirrorDbRecord by id
+    const mirrorDbRecord = await this.getRecordFromMirrorDBById(id)
+
+    if (!mirrorDbRecord) {
+      throw new NotFoundException(
+        `No MirrorDB record found with id ${id as string}`
+      )
+    }
+
+    // get the space with standard populated properties
+    // this is necessary to check if the user has access to the space
+    const space = await this.spaceService.getSpace(
+      mirrorDbRecord.space.toString()
+    )
+
+    if (!space) {
+      throw new NotFoundException()
+    }
+
+    // check if the user have the role to find the record
+    if (this.spaceService.canFindWithRolesCheck(userId, space)) {
+      return mirrorDbRecord
+    } else {
+      throw new ForbiddenException()
+    }
   }
 
   public createNewMirrorDB(spaceId: SpaceId) {
@@ -113,6 +200,43 @@ export class MirrorDBService {
     return id
   }
 
+  // delete record from mirror db by id with roles check
+  public async deleteRecordFromMirrorDBByIdWithRolesChecks(
+    id: MirrorDBRecordId,
+    userId: UserId
+  ) {
+    if (!isMongoId(id)) {
+      throw new BadRequestException(`Invalid id ${id as string}`)
+    }
+
+    // get the mirrorDbRecord by id
+    const mirrorDbRecord = await this.getRecordFromMirrorDBById(id)
+
+    if (!mirrorDbRecord) {
+      throw new NotFoundException(
+        `No MirrorDB record found with id ${id as string}`
+      )
+    }
+
+    // get the space with standard populated properties
+    // this is necessary to check if the user has access to the space
+    const space = await this.spaceService.getSpace(
+      mirrorDbRecord.space.toString()
+    )
+
+    if (!space) {
+      throw new NotFoundException()
+    }
+
+    // check if the user have the role to remove the record
+    if (this.spaceService.canRemoveWithRolesCheck(userId, space)) {
+      return await this.deleteRecordFromMirrorDBById(id)
+    } else {
+      throw new ForbiddenException()
+    }
+  }
+
+  // update record in mirror db by id with roles check
   public async updateRecordInMirrorDBByIdWithRoleChecks(
     id: MirrorDBRecordId,
     updateMirrorDBRecordDto: UpdateMirrorDBRecordDto,
@@ -122,6 +246,7 @@ export class MirrorDBService {
       throw new BadRequestException(`Invalid id ${id as string}`)
     }
 
+    // check if the user have the role to update the record
     const roleCheck = await this._canUserUpdateMirrorDBRecord(userId, id)
 
     if (!roleCheck) {

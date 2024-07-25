@@ -10,6 +10,7 @@ import {
   Patch,
   Post,
   Query,
+  Res,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -66,6 +67,8 @@ import { AddTagToAssetDto } from './dto/add-tag-to-asset.dto'
 import { UpdateAssetTagsDto } from './dto/update-asset-tags.dto'
 import { IncludeSoftDeletedAssetDto } from './dto/include-soft-deleted-asset.dto'
 import { DomainOrAuthUserGuard } from '../space/guards/DomainOrAuthUserGuard.guard'
+import { GetAssetsPriceDto } from './dto/assets-price.dto'
+import { Response } from 'express'
 
 /**
  * @description Swagger generation doesn't support generics, so for each paginated response, it has to extended the PaginatedResponse class and implement the PaginationInterface
@@ -470,7 +473,7 @@ export class AssetController {
    * @date 2023-07-12 23:41
    */
   @Get('mirror-assets-v2')
-  @FirebaseTokenAuthGuard()
+  @UseGuards(DomainOrAuthUserGuard)
   @ApiOkResponse({ type: AssetFullDataPaginatedResponse })
   @ApiQuery({ required: false })
   public async getPaginatedMirrorAssetsV2(
@@ -577,7 +580,7 @@ export class AssetController {
   }
 
   @Get(':id')
-  @FirebaseTokenAuthGuard()
+  @UseGuards(DomainOrAuthUserGuard)
   @ApiOkResponse({ type: AssetApiResponse })
   @ApiParam({ name: 'id', type: 'string', required: true })
   public async findOne(
@@ -785,6 +788,44 @@ export class AssetController {
     )
   }
 
+  @Get('check-if-asset-copied/:assetId')
+  @FirebaseTokenAuthGuard()
+  @ApiParam({ name: 'assetId', type: 'string', required: true })
+  public async checkIfAssetCopied(
+    @UserToken('user_id') userId: UserId,
+    @Param('assetId') assetId: AssetId
+  ) {
+    return await this.assetService.checkIfAssetCopiedByUser(assetId, userId)
+  }
+
+  @Post('copy-free-asset/:assetId')
+  @ApiParam({ name: 'assetId', type: 'string', required: true })
+  @FirebaseTokenAuthGuard()
+  public async copyFreeAsset(
+    @UserToken('user_id') userId: UserId,
+    @Param('assetId') assetId: AssetId
+  ) {
+    return await this.assetService.copyFreeAssetToNewUserWithRolesCheck(
+      userId,
+      assetId
+    )
+  }
+
+  @Get('download/:assetId')
+  @ApiParam({ name: 'assetId', type: 'string', required: true })
+  @FirebaseTokenAuthGuard()
+  public async downloadAsset(
+    @UserToken('user_id') userId: UserId,
+    @Param('assetId') assetId: AssetId,
+    @Res() res: Response
+  ) {
+    return await this.assetService.downloadAssetFileWithRoleChecks(
+      userId,
+      assetId,
+      res
+    )
+  }
+
   @Get('/space/:spaceId')
   @FirebaseTokenAuthGuard()
   public async getAllAssetsBySpaceIdWithRolesCheck(
@@ -793,6 +834,36 @@ export class AssetController {
   ) {
     return await this.assetService.getAllAssetsBySpaceIdWithRolesCheck(
       spaceId,
+      userId
+    )
+  }
+
+  @Patch('pack/add-asset/:packId/:assetId')
+  @FirebaseTokenAuthGuard()
+  @ApiParam({ name: 'assetId', type: 'string', required: true })
+  public async addAssetToPackWithRolesCheck(
+    @UserToken('user_id') userId: UserId,
+    @Param('packId') packId: string,
+    @Param('assetId') assetId: string
+  ) {
+    return await this.assetService.addAssetToPackWithRolesCheck(
+      packId,
+      assetId,
+      userId
+    )
+  }
+
+  @Delete('pack/remove-asset/:packId/:assetId')
+  @FirebaseTokenAuthGuard()
+  @ApiParam({ name: 'assetId', type: 'string', required: true })
+  public async deleteAssetFromPackWithRolesCheck(
+    @UserToken('user_id') userId: UserId,
+    @Param('packId') packId: string,
+    @Param('assetId') assetId: string
+  ) {
+    return await this.assetService.deleteAssetFromPackWithRolesCheck(
+      packId,
+      assetId,
       userId
     )
   }

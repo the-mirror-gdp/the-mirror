@@ -109,7 +109,7 @@ export class PaginationService {
     )
     const mainPipeline = [
       { $match: matchFilter },
-      ...this.roleService.getRoleCheckAggregationPipeline(userId, gteRoleLevel),
+      // ...this.roleService.getRoleCheckAggregationPipeline(userId, gteRoleLevel),
       ...populateStages
     ]
 

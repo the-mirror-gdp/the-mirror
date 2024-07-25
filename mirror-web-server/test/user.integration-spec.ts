@@ -17,6 +17,7 @@ import {
   getMockClassesForProvidersArray,
   getMockMongooseModelsForProvidersArray
 } from './mocks/service.mocks'
+import { AssetService } from '../src/asset/asset.service'
 import { AssetSearch } from '../src/asset/asset.search'
 
 describe('User Controller (Integration)', () => {

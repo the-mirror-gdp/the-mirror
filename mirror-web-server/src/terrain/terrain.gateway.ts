@@ -1,4 +1,4 @@
-import { Logger, UseFilters, UseInterceptors } from '@nestjs/common'
+import { Logger, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common'
 import {
   MessageBody,
   SubscribeMessage,
@@ -8,6 +8,12 @@ import { GodotSocketExceptionFilter } from '../godot-server/godot-socket-excepti
 import { GodotSocketInterceptor } from '../godot-server/godot-socket.interceptor'
 import { UpdateTerrainDto } from './dto/update-terrain.dto'
 import { TerrainService } from './terrain.service'
+import {
+  AdminTokenWS,
+  UserTokenWS
+} from '../godot-server/get-user-ws.decorator'
+import { UserId } from '../util/mongo-object-id-helpers'
+import { WsAuthGuard } from '../godot-server/ws-auth.guard'
 
 enum ZoneTerrainMessage {
   GET_ONE = 'zone_get_terrain',
@@ -15,6 +21,7 @@ enum ZoneTerrainMessage {
 }
 
 @WebSocketGateway()
+@UseGuards(WsAuthGuard)
 @UseInterceptors(GodotSocketInterceptor)
 @UseFilters(GodotSocketExceptionFilter)
 export class TerrainGateway {
@@ -24,7 +31,11 @@ export class TerrainGateway {
   ) {}
 
   @SubscribeMessage(ZoneTerrainMessage.GET_ONE)
-  public findOneTerrain(@MessageBody('id') id: string) {
+  public findOneTerrain(
+    @UserTokenWS('user_id') userId: UserId,
+    @AdminTokenWS() isAdmin: boolean,
+    @MessageBody('id') id: string
+  ) {
     this.logger.log(
       `${JSON.stringify(
         {
@@ -36,11 +47,21 @@ export class TerrainGateway {
       )}`,
       TerrainGateway.name
     )
-    return this.terrainService.findOne(id)
+
+    if (isAdmin) {
+      return this.terrainService.findOne(id)
+    }
+
+    if (userId) {
+      return this.terrainService.findOneWithRolesCheck(id, userId)
+    }
+    return
   }
 
   @SubscribeMessage(ZoneTerrainMessage.UPDATE_ONE)
   public updateOne(
+    @UserTokenWS('user_id') userId: UserId,
+    @AdminTokenWS() isAdmin: boolean,
     @MessageBody('id') id: string,
     @MessageBody('dto') updateTerrainDto: UpdateTerrainDto
   ) {
@@ -56,6 +77,18 @@ export class TerrainGateway {
       )}`,
       TerrainGateway.name
     )
-    return this.terrainService.update(id, updateTerrainDto)
+
+    if (isAdmin) {
+      return this.terrainService.update(id, updateTerrainDto)
+    }
+
+    if (userId) {
+      return this.terrainService.updateWithRolesCheck(
+        id,
+        updateTerrainDto,
+        userId
+      )
+    }
+    return
   }
 }

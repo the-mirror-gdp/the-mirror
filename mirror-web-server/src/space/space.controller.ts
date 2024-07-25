@@ -220,11 +220,12 @@ export class SpaceController {
   @FirebaseTokenAuthGuard()
   @ApiQuery({ required: false })
   @ApiOkResponse({ type: [SpacePublicData] })
-  public async getPopularSpaces(
+  public getPopularSpaces(
     @UserToken('user_id') userId: UserId,
     @Query() populateSpaceDto: PopulateSpaceDto
   ) {
-    return await this.spaceService.getPopularSpaces(
+    // Does nothing right now due to DB dying see comment in function
+    return this.spaceService.getPopularSpaces(
       userId,
       populateSpaceDto.populateCreator
     )
@@ -705,18 +706,6 @@ export class SpaceController {
    * END Section: Owner permissions for role modification
    */
 
-  @Get('assets-list/:spaceId')
-  @FirebaseTokenAuthGuard()
-  public async getAssetsListPerSpace(
-    @UserToken('user_id') userId: UserId,
-    @Param('spaceId') spaceId: SpaceId
-  ) {
-    return await this.spaceService.getAssetsListPerSpaceWithRolesCheck(
-      userId,
-      spaceId
-    )
-  }
-
   @Post(':id/kickme')
   @FirebaseTokenAuthGuard()
   @ApiOkResponse({ type: SpacePublicData })
@@ -726,5 +715,18 @@ export class SpaceController {
     @Param('id') spaceId: SpaceId
   ) {
     return await this.spaceService.kickUserByAdmin(userId, spaceId)
+  }
+
+  @Get('assets-list/:spaceId')
+  @FirebaseTokenAuthGuard()
+  @ApiParam({ name: 'spaceId', type: 'string', required: true })
+  public async getAssetsListPerSpace(
+    @UserToken('user_id') userId: UserId,
+    @Param('spaceId') spaceId: SpaceId
+  ) {
+    return await this.spaceService.getAssetsListPerSpaceWithRolesCheck(
+      userId,
+      spaceId
+    )
   }
 }

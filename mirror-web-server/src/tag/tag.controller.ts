@@ -7,7 +7,8 @@ import {
   Param,
   Delete,
   UsePipes,
-  ValidationPipe
+  ValidationPipe,
+  UseGuards
 } from '@nestjs/common'
 import {
   CreateTagDto,
@@ -27,19 +28,20 @@ import { Tag } from './models/tag.schema'
 import { ApiResponseProperty } from '@nestjs/swagger/dist/decorators/api-property.decorator'
 import { TAG_TYPE } from '../option-sets/tag-type'
 import { UserToken } from '../auth/get-user.decorator'
+import { DomainOrAuthUserGuard } from '../space/guards/DomainOrAuthUserGuard.guard'
 
 class CreateTagResponse extends Tag {
   @ApiResponseProperty()
   _id: string
 }
 
-@FirebaseTokenAuthGuard()
 @UsePipes(new ValidationPipe({ whitelist: false }))
 @Controller('tag')
 export class TagController {
   constructor(private readonly tagService: TagService) {}
 
   @Post()
+  @FirebaseTokenAuthGuard()
   @ApiBody({
     type: CreateTagDto // 2023-02-13 14:08:07 not sure how to do multiple DTO types at the moment, such just adding parent DTO
   })
@@ -92,16 +94,19 @@ export class TagController {
   }
 
   @Get('mirror-public-library')
+  @UseGuards(DomainOrAuthUserGuard)
   public async findAllMirrorPublicLibraryTags() {
     return await this.tagService.findAllMirrorPublicLibraryTags()
   }
 
   @Get('theme-tags')
+  @UseGuards(DomainOrAuthUserGuard)
   public async findAllThemeTags() {
     return await this.tagService.findAllThemeTags()
   }
 
   @Get('tag-types')
+  @UseGuards(DomainOrAuthUserGuard)
   @ApiOperation({
     summary: 'Get all tag types from the TAG_TYPE enum'
   })
@@ -111,12 +116,14 @@ export class TagController {
   }
 
   @Get(':id')
+  @UseGuards(DomainOrAuthUserGuard)
   @ApiParam({ name: 'id', type: 'string', required: true })
   public async findOne(@Param('id') id: string) {
     return await this.tagService.findOne(id)
   }
 
   @Patch(':id')
+  @FirebaseTokenAuthGuard()
   @ApiParam({ name: 'id', type: 'string', required: true })
   public async update(
     @Param('id') id: string,
@@ -126,6 +133,7 @@ export class TagController {
   }
 
   @Delete(':id')
+  @FirebaseTokenAuthGuard()
   @ApiParam({ name: 'id', type: 'string', required: true })
   public async remove(@Param('id') id: string) {
     return await this.tagService.remove(id)

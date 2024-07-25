@@ -1,8 +1,11 @@
 import {
   BadRequestException,
   ConflictException,
+  ForbiddenException,
   Inject,
   Injectable,
+  InternalServerErrorException,
+  Logger,
   NotFoundException,
   forwardRef
 } from '@nestjs/common'
@@ -24,6 +27,7 @@ import {
 import { FileUploadService } from '../util/file-upload/file-upload.service'
 import {
   AssetId,
+  PurchaseOptionId,
   SpaceId,
   UserId,
   aggregationMatchId
@@ -64,6 +68,9 @@ import { ThirdPartyTagEntity } from '../tag/models/tags.schema'
 import { isArray } from 'lodash'
 import { isEnum, isMongoId } from 'class-validator'
 import { AssetAnalyzingService } from '../util/file-analyzing/asset-analyzing.service'
+import { StorageFile } from '../storage/storage.file'
+import { StorageService } from '../storage/storage.service'
+import { Response } from 'express'
 
 export type FileUploadServiceType = FileUploadService
 @Injectable()
@@ -87,7 +94,9 @@ export class AssetService {
     private purchaseModel: Model<PurchaseOptionDocument>,
     @Inject(forwardRef(() => UserService))
     private readonly userService: UserService,
-    private readonly assetAnalyzingService: AssetAnalyzingService
+    private readonly assetAnalyzingService: AssetAnalyzingService,
+    private readonly storageService: StorageService,
+    private readonly logger: Logger
   ) {}
 
   public readonly standardPopulateFields: PopulateField[] = [
@@ -155,6 +164,35 @@ export class AssetService {
       creator: dto.ownerId, // default to ownerId since that owner is creating it.
       ...dto
     })
+
+    // check if assetsInPack has valid assets
+    if (dto.assetPack && dto.assetsInPack) {
+      // check if all elements is unique
+      const assetsInPackToString = dto.assetsInPack.map((id) => id.toString())
+      if (new Set(assetsInPackToString).size !== assetsInPackToString.length) {
+        throw new BadRequestException('Asset pack contains duplicate assets')
+      }
+
+      // check if all assets in the pack are owned by the creator
+      await Promise.all(
+        dto.assetsInPack.map(async (id) => {
+          const asset = await this.assetModel.findById(id)
+          if (!asset) {
+            throw new NotFoundException(`Asset with id ${id} not found`)
+          }
+
+          if (
+            dto.ownerId !== asset.owner.toString() &&
+            dto.ownerId !== asset.creator.toString()
+          ) {
+            throw new ForbiddenException(
+              `Asset for pack with id ${id} is not owned by the creator`
+            )
+          }
+        })
+      )
+    }
+
     // create role for this asset
     const role = await this.roleService.create({
       defaultRole: dto.defaultRole ?? this._defaultRoleForNewAssets,
@@ -178,6 +216,36 @@ export class AssetService {
         ...dto
       })
 
+      // check if assetsInPack has valid assets
+      if (dto.assetPack && dto.assetsInPack) {
+        // check if all elements is unique
+        const assetsInPackToString = dto.assetsInPack.map((id) => id.toString())
+        if (
+          new Set(assetsInPackToString).size !== assetsInPackToString.length
+        ) {
+          throw new BadRequestException('Asset pack contains duplicate assets')
+        }
+
+        // check if all assets in the pack are owned by the creator
+        await Promise.all(
+          dto.assetsInPack.map(async (id) => {
+            const asset = await this.assetModel.findById(id)
+            if (!asset) {
+              throw new NotFoundException(`Asset with id ${id} not found`)
+            }
+
+            if (
+              dto.ownerId !== asset.owner.toString() &&
+              dto.ownerId !== asset.creator.toString()
+            ) {
+              throw new ForbiddenException(
+                `Asset for pack with id ${id} is not owned by the creator`
+              )
+            }
+          })
+        )
+      }
+
       const { publicUrl: currentFile } =
         await this.uploadAssetFilePublicWithRolesCheck({
           assetId: created.id,
@@ -198,6 +266,95 @@ export class AssetService {
     } catch (error: any) {
       throw error
     }
+  }
+
+  public async copyFreeAssetToNewUserWithRolesCheck(
+    userId: UserId,
+    assetId: AssetId
+  ) {
+    const asset = await this.findOneWithRolesCheck(userId, assetId)
+
+    const isCopied = await this.checkIfAssetCopiedByUser(assetId, userId)
+
+    if (isCopied?.isCopied) {
+      throw new ConflictException('Asset already copied by user')
+    }
+
+    let isFree = true
+
+    if (asset.purchaseOptions && asset.purchaseOptions.length > 0) {
+      asset.purchaseOptions.forEach((option) => {
+        if (
+          option.enabled &&
+          option.price &&
+          option.type !== PURCHASE_OPTION_TYPE.ONE_TIME_OPTIONAL_DONATION
+        ) {
+          isFree = false
+        }
+      })
+    }
+
+    // if asset is free, copy it to the new user with a new role
+    if (isFree) {
+      // if asset is an asset pack, copy all assets in the pack
+      if (asset.assetPack && asset.assetsInPack) {
+        return await this.copyManyAssetsForNewUserAdmin(
+          userId,
+          asset.assetsInPack.map((id) => id.toString())
+        )
+      }
+
+      const newAsset: any = asset
+      newAsset._id = new ObjectId()
+      // change the owner to the new user, creator must be the same
+      newAsset.owner = userId
+      newAsset.role = await this.roleService.create({
+        defaultRole: this._defaultRoleForNewAssets,
+        creator: userId
+      })
+
+      if (newAsset.purchaseOptions) {
+        delete newAsset.purchaseOptions
+      }
+
+      // update the createdAt and updatedAt fields
+      newAsset.createdAt = new Date()
+      newAsset.updatedAt = new Date()
+      // copy thumbnail and currentFile with new user id and new asset id
+      if (newAsset.thumbnail) {
+        const copyThumbnail = await this._copyAssetFileToNewUser(
+          asset.thumbnail,
+          this._changeAssetUrl(
+            assetId,
+            asset.creator.toString(),
+            newAsset._id.toString(),
+            userId,
+            asset.thumbnail
+          )
+        )
+        newAsset.thumbnail = copyThumbnail
+      }
+
+      if (newAsset.currentFile) {
+        const copyCurrentFile = await this._copyAssetFileToNewUser(
+          asset.currentFile,
+          this._changeAssetUrl(
+            assetId,
+            asset.creator.toString(),
+            newAsset._id.toString(),
+            userId,
+            asset.currentFile
+          )
+        )
+        newAsset.currentFile = copyCurrentFile
+      }
+
+      newAsset.purchasedParentAssetId = assetId.toString()
+      newAsset.mirrorPublicLibrary = false
+      const copiedAsset = new this.assetModel(newAsset)
+      return copiedAsset.save()
+    }
+    throw new BadRequestException('Asset is not free')
   }
 
   public copyAssetToNewUserAdmin(
@@ -566,17 +723,40 @@ export class AssetService {
         }
       : { mirrorPublicLibrary: true, isSoftDeleted: { $exists: false } }
 
+    if (!searchDto?.includeAssetPackAssets) {
+      filter.assetPack = { $ne: true }
+    }
+
     const andFilter = AssetService.getSearchFilter(searchDto)
     if (andFilter.length > 0) {
       filter.$and = andFilter
     }
 
-    const sort =
+    let sort =
       searchDto.sortKey && searchDto.sortDirection !== undefined
         ? {
             [searchDto.sortKey]: searchDto.sortDirection
           }
         : undefined
+
+    // if mirrorAssetManagerUserSortKey is undefined, sort.mirrorAssetManagerUser default sort direction is DESC
+    if (searchDto.mirrorAssetManagerUserSortKey === undefined) {
+      if (sort === undefined) sort = {}
+      sort.mirrorAssetManagerUser = SORT_DIRECTION.DESC
+    }
+
+    // if mirrorAssetManagerUserSortKey is defined and not 0, sort.mirrorAssetManagerUser = searchDto.mirrorAssetManagerUserSortKey
+    // if mirrorAssetManagerUserSortKey is defined and 0, this means that sorting by mirrorAssetManagerUser is disabled
+    if (
+      searchDto.mirrorAssetManagerUserSortKey &&
+      searchDto.mirrorAssetManagerUserSortKey !== '0'
+    ) {
+      if (sort === undefined) sort = {}
+      sort.mirrorAssetManagerUser = Number(
+        searchDto.mirrorAssetManagerUserSortKey
+      )
+    }
+
     if (
       startItem !== null &&
       startItem !== undefined &&
@@ -587,7 +767,7 @@ export class AssetService {
         userId,
         this.assetModel,
         filter,
-        ROLE.DISCOVER,
+        ROLE.OBSERVER,
         { startItem, numberOfItems },
         populate ? this.standardPopulateFields : [],
         sort
@@ -596,9 +776,9 @@ export class AssetService {
       userId,
       this.assetModel,
       filter,
-      ROLE.DISCOVER,
+      ROLE.OBSERVER,
       { page, perPage },
-      populate,
+      populate ? this.standardPopulateFields : [],
       sort
     )
   }
@@ -613,6 +793,10 @@ export class AssetService {
     const filter: FilterQuery<any> = searchDto.includeSoftDeleted
       ? {}
       : { isSoftDeleted: { $exists: false } }
+
+    if (!searchDto?.includeAssetPackAssets) {
+      filter.assetPack = { $ne: true }
+    }
 
     const andFilter = AssetService.getSearchFilter(searchDto)
     if (andFilter.length > 0) {
@@ -668,6 +852,10 @@ export class AssetService {
           $or: [{ mirrorPublicLibrary: true }, { owner: new ObjectId(userId) }],
           isSoftDeleted: { $exists: false }
         }
+
+    if (!searchDto?.includeAssetPackAssets) {
+      filter.assetPack = { $ne: true }
+    }
 
     const andFilter = AssetService.getSearchFilter(searchDto)
     if (andFilter.length > 0) {
@@ -822,7 +1010,7 @@ export class AssetService {
     const pipeline = [
       { $match: { isSoftDeleted: { $exists: false } } },
       aggregationMatchId(assetId),
-      ...this.roleService.getRoleCheckAggregationPipeline(userId, ROLE.DISCOVER)
+      ...this.roleService.getRoleCheckAggregationPipeline(userId, ROLE.OBSERVER)
     ]
 
     const [asset]: AssetDocument[] = await this.assetModel
@@ -972,33 +1160,71 @@ export class AssetService {
 
   /** TODO add filter by public here
    * */
-  public searchAssetsPublic(
-    query: PaginatedSearchAssetDtoV2,
+  public async searchAssetsPublic(
+    searchDto: PaginatedSearchAssetDtoV2,
     populate = false
-  ): Promise<AssetDocument[]> {
-    const filter: FilterQuery<any> = query.includeSoftDeleted
-      ? {
-          $and: [{ mirrorPublicLibrary: true }]
-        }
-      : {
-          $and: [
-            { mirrorPublicLibrary: true },
-            { isSoftDeleted: { $exists: false } }
+  ): Promise<IPaginatedResponse<AssetDocument>> {
+    const { page, perPage } = searchDto
+    const matchFilter: FilterQuery<Asset> = {
+      $and: [
+        {
+          $or: [
+            { 'purchaseOptions.enabled': true },
+            { mirrorPublicLibrary: true }
           ]
-        }
+        },
+        { isSoftDeleted: { $exists: false } }
+      ]
+    }
 
-    const andFilter = AssetService.getSearchFilter(query)
+    if (!searchDto?.includeAssetPackAssets) {
+      matchFilter.$and.push({ assetPack: { $ne: true } })
+    }
+
+    const andFilter = AssetService.getSearchFilter(searchDto)
+
     if (andFilter.length > 0) {
-      filter.$and.push(...andFilter)
+      matchFilter.$and.push(...andFilter)
     }
 
-    const cursor = this.assetModel.find(filter)
+    let sort =
+      searchDto.sortKey && searchDto.sortDirection !== undefined
+        ? {
+            [searchDto.sortKey]: searchDto.sortDirection
+          }
+        : undefined
 
-    if (populate) {
-      cursor.populate(this._getStandardPopulateFieldsAsArray())
+    // if sortKey is not 'mirrorPublicLibrary' default sort direction is DESC
+    if (searchDto.sortKey !== 'mirrorPublicLibrary') {
+      if (sort === undefined) sort = {}
+      sort.mirrorPublicLibrary = SORT_DIRECTION.DESC
     }
 
-    return cursor.exec()
+    // if mirrorAssetManagerUserSortKey is undefined, sort.mirrorAssetManagerUser default sort direction is DESC
+    if (searchDto.mirrorAssetManagerUserSortKey === undefined) {
+      if (sort === undefined) sort = {}
+      sort.mirrorAssetManagerUser = SORT_DIRECTION.DESC
+    }
+
+    // if mirrorAssetManagerUserSortKey is defined and not 0, sort.mirrorAssetManagerUser = searchDto.mirrorAssetManagerUserSortKey
+    // if mirrorAssetManagerUserSortKey is defined and 0, this means that sorting by mirrorAssetManagerUser is disabled
+    if (
+      searchDto.mirrorAssetManagerUserSortKey &&
+      searchDto.mirrorAssetManagerUserSortKey !== '0'
+    ) {
+      if (sort === undefined) sort = {}
+      sort.mirrorAssetManagerUser = Number(
+        searchDto.mirrorAssetManagerUserSortKey
+      )
+    }
+
+    return await this.paginationService.getPaginatedQueryResponseAdmin(
+      this.assetModel,
+      matchFilter,
+      { page, perPage },
+      populate ? this.standardPopulateFields : [],
+      sort
+    )
   }
 
   public async uploadAssetFilePublicWithRolesCheck({
@@ -1108,6 +1334,10 @@ export class AssetService {
       ? {}
       : { isSoftDeleted: { $exists: false } }
 
+    if (!searchDto?.includeAssetPackAssets) {
+      filter.assetPack = { $ne: true }
+    }
+
     const andFilter = AssetService.getSearchFilter(searchDto)
     if (andFilter.length > 0) {
       filter.$and = andFilter
@@ -1164,6 +1394,12 @@ export class AssetService {
     )
   }
 
+  public async getAssetsByIdsAdmin(
+    assetIds: AssetId[]
+  ): Promise<AssetDocument[]> {
+    return await this.assetModel.find({ _id: { $in: assetIds } }).exec()
+  }
+
   public async deleteAssetPurchaseOption(
     userId: string,
     assetId: string,
@@ -1202,6 +1438,10 @@ export class AssetService {
 
     if (andFilter.length > 0) {
       matchFilter.$and = andFilter
+    }
+
+    if (!searchDto?.includeAssetPackAssets) {
+      matchFilter.$and.push({ assetPack: { $ne: true } })
     }
 
     const sort =
@@ -1343,6 +1583,125 @@ export class AssetService {
     return await this._updateAssetTagsByType(assetId, tagType, tags)
   }
 
+  // This method should ONLY be used when the user has purchased assets. It's an admin method, hence why there aren't role checks
+  public async copyManyAssetsForNewUserAdmin(
+    userId: UserId,
+    assetIdList: AssetId[]
+  ) {
+    const assets = await this.assetModel.find({ _id: { $in: assetIdList } })
+
+    await Promise.all(
+      assets.map(async (asset) => {
+        const newAsset: any = asset.toObject()
+        newAsset._id = new ObjectId()
+        // change the owner to the new user, creator must be the same
+        newAsset.owner = new ObjectId(userId)
+
+        // create new default role for new copied asset
+        newAsset.role = await this.roleService.create({
+          defaultRole: this._defaultRoleForNewAssets,
+          creator: userId
+        })
+
+        // update the createdAt and updatedAt fields
+        newAsset.createdAt = new Date()
+        newAsset.updatedAt = new Date()
+
+        // remove purchase options from the copied asset
+        if (newAsset.purchaseOptions) {
+          delete newAsset.purchaseOptions
+        }
+
+        // copy thumbnail and currentFile with new asset id and new user id
+        if (newAsset.thumbnail) {
+          const copyThumbnail = await this._copyAssetFileToNewUser(
+            asset.thumbnail,
+            this._changeAssetUrl(
+              asset._id.toString(),
+              asset.creator.toString(),
+              newAsset._id.toString(),
+              userId,
+              asset.thumbnail
+            )
+          )
+          newAsset.thumbnail = copyThumbnail
+        }
+
+        if (newAsset.currentFile) {
+          const copyCurrentFile = await this._copyAssetFileToNewUser(
+            asset.currentFile,
+            this._changeAssetUrl(
+              asset._id.toString(),
+              asset.creator.toString(),
+              newAsset._id.toString(),
+              userId,
+              asset.currentFile
+            )
+          )
+          newAsset.currentFile = copyCurrentFile
+        }
+
+        newAsset.purchasedParentAssetId = asset._id.toString()
+        newAsset.mirrorPublicLibrary = false
+        // create and save the new asset
+        const copiedAsset = new this.assetModel(newAsset)
+        await copiedAsset.save()
+      })
+    )
+    return
+  }
+
+  public async checkIfAssetCopiedByUser(assetId: AssetId, userId: UserId) {
+    const asset = await this.assetModel.findOne({
+      purchasedParentAssetId: assetId,
+      owner: new ObjectId(userId)
+    })
+
+    return {
+      isCopied: !!asset,
+      copiedAssetId: asset?._id
+    }
+  }
+
+  public async downloadAssetFileWithRoleChecks(
+    userId: UserId,
+    assetId: AssetId,
+    res: Response
+  ) {
+    const asset = await this.findOneWithRolesCheck(userId, assetId)
+
+    console.log('asset', asset)
+    if (!asset) {
+      throw new NotFoundException('Asset not found')
+    }
+
+    const fileLink = asset.currentFile.replace(
+      'https://storage.googleapis.com/',
+      ''
+    )
+    const bucket = fileLink.split('/')[0]
+    const filePath = fileLink.replace(`${bucket}/`, '')
+
+    let storageFile: StorageFile
+
+    try {
+      storageFile = await this.storageService.get(bucket, filePath)
+    } catch (e) {
+      console.log('Error fetching file: ', e.message)
+      if (e.message.toString().includes('No such object')) {
+        throw new NotFoundException('File not found')
+      } else {
+        throw new InternalServerErrorException(
+          'Error fetching file: ',
+          e.message
+        )
+      }
+    }
+    res.setHeader('Content-Type', storageFile.contentType)
+    res.setHeader('Cache-Control', 'max-age=60d')
+    res.end(storageFile.buffer)
+  }
+
   async getAllAssetsBySpaceIdWithRolesCheck(spaceId: SpaceId, userId: UserId) {
     const pipeline = [
       { $match: { space: new ObjectId(spaceId) } },
@@ -1361,6 +1720,63 @@ export class AssetService {
       ...this.roleService.getRoleCheckAggregationPipeline(userId, ROLE.OBSERVER)
     ]
     return await this.spaceObjectModel.aggregate(pipeline).exec()
+  }
+
+  async addAssetToPackWithRolesCheck(
+    packId: AssetId,
+    assetId: AssetId,
+    userId: UserId
+  ) {
+    const pack = await this.assetModel.findById(packId)
+
+    if (!pack || !pack?.assetPack) {
+      throw new NotFoundException('Pack not found')
+    }
+
+    const asset = await this.assetModel.findById(assetId)
+
+    if (!asset) {
+      throw new NotFoundException('Asset not found')
+    }
+
+    if (
+      asset.role.creator.toString() !== userId ||
+      pack.role.creator.toString() !== userId
+    ) {
+      throw new ForbiddenException(
+        'User does not have permission to add asset to pack'
+      )
+    }
+
+    return await this.assetModel.findByIdAndUpdate(packId, {
+      $push: { assetsInPack: new ObjectId(assetId) }
+    })
+  }
+
+  async deleteAssetFromPackWithRolesCheck(
+    packId: AssetId,
+    assetId: AssetId,
+    userId: UserId
+  ) {
+    const pack = await this.assetModel.findById(packId)
+
+    if (!pack || !pack?.assetPack) {
+      throw new NotFoundException('Pack not found')
+    }
+
+    if (pack.role.creator.toString() !== userId) {
+      throw new ForbiddenException(
+        'User does not have permission to delete asset from pack'
+      )
+    }
+
+    if (!pack.assetsInPack.includes(new ObjectId(assetId))) {
+      throw new NotFoundException('Asset not found in pack')
+    }
+
+    return await this.assetModel.findByIdAndUpdate(packId, {
+      $pull: { assetsInPack: new ObjectId(assetId) }
+    })
   }
 
   private async _updateAssetTagsByType(
@@ -1489,6 +1905,59 @@ export class AssetService {
     ])
 
     return asset.length > 0
+  }
+
+  private _changeAssetUrl(
+    parentAssetId: AssetId,
+    parentUserId: UserId,
+    assetId: AssetId,
+    userId: UserId,
+    parentUrl: string
+  ) {
+    return (parentUrl = parentUrl
+      .replace(parentAssetId, assetId)
+      .replace(parentUserId, userId))
+  }
+
+  private async _copyAssetFileToNewUser(
+    parentFileUrl: string,
+    assetUrl: string
+  ) {
+    try {
+      if (process.env.ASSET_STORAGE_DRIVER === 'GCP') {
+        await this.fileUploadService.copyFileInBucket(
+          process.env.GCS_BUCKET_PUBLIC,
+          parentFileUrl.replace(
+            `https://storage.googleapis.com/${process.env.GCS_BUCKET_PUBLIC}/`,
+            ''
+          ),
+          assetUrl.replace(
+            `https://storage.googleapis.com/${process.env.GCS_BUCKET_PUBLIC}/`,
+            ''
+          )
+        )
+        return assetUrl
+      }
+
+      if (
+        !process.env.ASSET_STORAGE_DRIVER ||
+        process.env.ASSET_STORAGE_DRIVER === 'LOCAL'
+      ) {
+        await this.fileUploadService.copyFileLocal(
+          parentFileUrl.replace(`${process.env.ASSET_STORAGE_URL}/`, ''),
+          assetUrl.replace(`${process.env.ASSET_STORAGE_URL}/`, '')
+        )
+        return assetUrl
+      }
+    } catch (error) {
+      this.logger.error(
+        `Error copying file from ${parentFileUrl} to ${assetUrl}`,
+        error
+      )
+      throw new InternalServerErrorException(
+        `Error copying file from ${parentFileUrl} to ${assetUrl}`
+      )
+    }
   }
 }
 

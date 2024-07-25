@@ -59,6 +59,9 @@ export class ZoneService {
       select: ['email', 'displayName']
     }
   ]
+  private _getStandardPopulateFieldsAsArray(): string[] {
+    return this._standardPopulateFields.map((f) => f.path)
+  }
 
   /**
    * @description This checks what zones haven't been refreshed in the past z minutes/seconds and then refreshes them with the latest VM data from the scaler.
@@ -77,6 +80,9 @@ export class ZoneService {
     const containers =
       await this.spaceManagerExternalService.getAllZoneContainers()
     // update those zones in the database
+    if (!containers) {
+      return
+    }
 
     const batchToUpdate = await Promise.all(
       containers?.map(async (container) => {
@@ -97,7 +103,7 @@ export class ZoneService {
         try {
           await validateOrReject(dto)
         } catch (errors) {
-          console.log('Skipping invalid data for Zone Container sync: ', errors)
+          // console.log('Skipping invalid data for Zone Container sync: ', errors)
           return {} // return an empty object; we'll filter it out after
         }
         // data is valid, so add it to the update array

@@ -1,4 +1,4 @@
-import { Logger, UseFilters, UseInterceptors } from '@nestjs/common'
+import { Logger, UseFilters, UseGuards, UseInterceptors } from '@nestjs/common'
 import {
   MessageBody,
   SubscribeMessage,
@@ -8,6 +8,12 @@ import { GodotSocketExceptionFilter } from '../godot-server/godot-socket-excepti
 import { GodotSocketInterceptor } from '../godot-server/godot-socket.interceptor'
 import { UpdateEnvironmentDto } from './dto/update-environment.dto'
 import { EnvironmentService } from './environment.service'
+import {
+  AdminTokenWS,
+  UserTokenWS
+} from '../godot-server/get-user-ws.decorator'
+import { UserId } from '../util/mongo-object-id-helpers'
+import { WsAuthGuard } from '../godot-server/ws-auth.guard'
 
 enum ZoneEnvironmentMessage {
   GET_ONE = 'zone_get_environment',
@@ -15,6 +21,7 @@ enum ZoneEnvironmentMessage {
 }
 
 @WebSocketGateway()
+@UseGuards(WsAuthGuard)
 @UseInterceptors(GodotSocketInterceptor)
 @UseFilters(GodotSocketExceptionFilter)
 export class EnvironmentGateway {
@@ -24,7 +31,11 @@ export class EnvironmentGateway {
   ) {}
 
   @SubscribeMessage(ZoneEnvironmentMessage.GET_ONE)
-  public findOneEnvironment(@MessageBody('id') id: string) {
+  public findOneEnvironment(
+    @UserTokenWS('user_id') userId: UserId,
+    @AdminTokenWS() isAdmin: boolean,
+    @MessageBody('id') id: string
+  ) {
     this.logger.log(
       `${JSON.stringify(
         {
@@ -36,11 +47,19 @@ export class EnvironmentGateway {
       )}`,
       EnvironmentGateway.name
     )
-    return this.environmentService.findOne(id)
+    if (isAdmin) {
+      return this.environmentService.findOne(id)
+    }
+    if (userId) {
+      return this.environmentService.findOneWithRolesCheck(id, userId)
+    }
+    return
   }
 
   @SubscribeMessage(ZoneEnvironmentMessage.UPDATE_ONE)
   public updateOne(
+    @UserTokenWS('user_id') userId: UserId,
+    @AdminTokenWS() isAdmin: boolean,
     @MessageBody('id') id: string,
     @MessageBody('dto') updateEnvironmentDto: UpdateEnvironmentDto
   ) {
@@ -56,6 +75,16 @@ export class EnvironmentGateway {
       )}`,
       EnvironmentGateway.name
     )
-    return this.environmentService.update(id, updateEnvironmentDto)
+    if (isAdmin) {
+      return this.environmentService.update(id, updateEnvironmentDto)
+    }
+    if (userId) {
+      return this.environmentService.updateWithRolesCheck(
+        id,
+        updateEnvironmentDto,
+        userId
+      )
+    }
+    return
   }
 }

@@ -1,8 +1,11 @@
 import {
   BadRequestException,
+  ForbiddenException,
+  Inject,
   Injectable,
   Logger,
-  NotFoundException
+  NotFoundException,
+  forwardRef
 } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { FilterQuery, Model, Types } from 'mongoose'
@@ -11,6 +14,9 @@ import { CreateTerrainDto } from './dto/create-terrain.dto'
 import { UpdateTerrainDto } from './dto/update-terrain.dto'
 import { FileUploadService } from '../util/file-upload/file-upload.service'
 import { ObjectId } from 'mongodb'
+import { UserId } from '../util/mongo-object-id-helpers'
+import { Space, SpaceDocument } from '../space/space.schema'
+import { SpaceService, SpaceServiceType } from '../space/space.service'
 
 @Injectable()
 export class TerrainService {
@@ -18,7 +24,10 @@ export class TerrainService {
 
   constructor(
     @InjectModel(Terrain.name) private terrainModel: Model<TerrainDocument>,
-    private readonly fileUploadService: FileUploadService
+    private readonly fileUploadService: FileUploadService,
+    @InjectModel(Space.name) private spaceModel: Model<SpaceDocument>,
+    @Inject(forwardRef(() => SpaceService))
+    private readonly spaceService: SpaceServiceType
   ) {}
 
   public create(
@@ -37,8 +46,44 @@ export class TerrainService {
       .exec()
   }
 
-  public findOne(id: string): Promise<TerrainDocument> {
-    return this.terrainModel.findById(id).exec()
+  public async findOne(id: string): Promise<TerrainDocument> {
+    return await this.terrainModel.findById(id).exec()
+  }
+
+  // get terrain with roles check
+  public async findOneWithRolesCheck(id: string, userId: UserId) {
+    const terrain = await this.findOne(id)
+
+    if (!terrain) {
+      throw new NotFoundException()
+    }
+
+    // if user is terrain owner, return terrain
+    if (terrain?.owner.toString() === userId) {
+      return terrain
+    }
+
+    // get space that uses this terrain
+    const space = await this.spaceModel.findOne({ terrain: terrain._id }).exec()
+
+    if (!space) {
+      throw new NotFoundException()
+    }
+
+    // get space with populate fields for roles check
+    const spaceWithPopuleFiels = await this.spaceService.getSpace(
+      space._id.toString()
+    )
+
+    // check if user has permission to find terrain
+    if (
+      !this.spaceService.canFindWithRolesCheck(userId, spaceWithPopuleFiels)
+    ) {
+      throw new ForbiddenException(
+        "You don't have permission to find this terrain"
+      )
+    }
+    return terrain
   }
 
   public findAllPublic(): Promise<TerrainDocument[]> {
@@ -53,6 +98,46 @@ export class TerrainService {
     return this.terrainModel
       .findByIdAndUpdate(id, updateTerrainDto, { new: true })
       .exec()
+  }
+
+  public async updateWithRolesCheck(
+    id: string,
+    updateTerrainDto: UpdateTerrainDto,
+    userId: UserId
+  ) {
+    const terrain = await this.findOne(id)
+
+    if (!terrain) {
+      throw new NotFoundException()
+    }
+
+    // if user is terrain owner, update terrain
+    if (terrain?.owner.toString() === userId) {
+      return this.update(id, updateTerrainDto)
+    }
+
+    // get space that uses this terrain
+    const space = await this.spaceModel.findOne({ terrain: terrain._id }).exec()
+
+    if (!space) {
+      throw new NotFoundException()
+    }
+
+    // get space with populate fields for roles check
+    const spaceWithPopuleFiels = await this.spaceService.getSpace(
+      space._id.toString()
+    )
+
+    // check if user has permission to update terrain
+    if (
+      !this.spaceService.canUpdateWithRolesCheck(userId, spaceWithPopuleFiels)
+    ) {
+      throw new ForbiddenException(
+        "You don't have permission to update terrain"
+      )
+    }
+
+    return this.update(id, updateTerrainDto)
   }
 
   /** Copy existing Terrain or create a new default Terrain if undefined */

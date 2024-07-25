@@ -134,7 +134,7 @@ export class Space {
   @Prop({
     required: false,
     type: [MaterialInstanceSchema],
-    select: false
+    select: true
   })
   @ApiProperty()
   materialInstances?: MaterialInstance[]

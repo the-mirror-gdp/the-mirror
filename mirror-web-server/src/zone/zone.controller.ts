@@ -4,6 +4,7 @@ import {
   Delete,
   ForbiddenException,
   Get,
+  Logger,
   NotFoundException,
   Param,
   Patch,
@@ -34,7 +35,8 @@ export class ZoneController {
   constructor(
     private readonly zoneService: ZoneService,
     private readonly spaceManagerExternalService: SpaceManagerExternalService,
-    private readonly spaceService: SpaceService
+    private readonly spaceService: SpaceService,
+    private readonly logger: Logger
   ) {}
 
   /** @description Requests a zone server with a specific space id and launches the server if needed for BUILD MODE */
@@ -199,11 +201,15 @@ export class ZoneController {
     const zoneIdsToDelete: ZoneId[] = []
     for (const zone of zones) {
       // shut down all the servers
-      this.spaceManagerExternalService.deleteContainer(zone.uuid)
-      zoneIdsToDelete.push(zone.id)
+      try {
+        await this.spaceManagerExternalService.deleteContainer(zone.uuid)
+        zoneIdsToDelete.push(zone.id)
+      } catch (error) {
+        this.logger.error(error, ZoneController.name)
+      }
     }
     // update all servers to nullified state
-    this.zoneService.removeManyAdmin(zoneIdsToDelete)
+    await this.zoneService.removeManyAdmin(zoneIdsToDelete)
     return { message: `${zoneIdsToDelete.length} Servers Shutdown` }
   }
 }

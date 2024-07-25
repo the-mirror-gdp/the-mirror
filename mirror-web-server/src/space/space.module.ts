@@ -44,11 +44,14 @@ import { RedisModule } from '../redis/redis.module'
 import { MirrorDBModule } from '../mirror-db/mirror-db.module'
 import { ScriptEntityModule } from '../script-entity/script-entity.module'
 import { AuthGuardFirebase } from '../auth/auth.guard'
+import { StorageModule } from '../storage/storage.module'
+import { GodotModule } from '../godot-server/godot.module'
 
 @Module({
   imports: [
     LoggerModule,
     ScriptEntityModule,
+    GodotModule,
     MongooseModule.forFeature([
       { name: PurchaseOption.name, schema: PurchaseOptionSchema }
     ]),
@@ -92,7 +95,8 @@ import { AuthGuardFirebase } from '../auth/auth.guard'
     UserModule,
     forwardRef(() => ZoneModule),
     RedisModule,
-    MirrorDBModule
+    MirrorDBModule,
+    StorageModule
   ],
   controllers: [
     SpaceController,

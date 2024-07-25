@@ -18,6 +18,8 @@ import { UserService } from '../src/user/user.service'
 import { UserModule } from '../src/user/user.module'
 import { AssetAnalyzingService } from '../src/util/file-analyzing/asset-analyzing.service'
 import { AuthGuardFirebase } from '../src/auth/auth.guard'
+import { StorageService } from '../src/storage/storage.service'
+import { StripeService } from '../src/stripe/stripe.service'
 
 describe('Asset Controller (Integration)', () => {
   let app: INestApplication
@@ -39,7 +41,9 @@ describe('Asset Controller (Integration)', () => {
         { provide: UserService, useValue: {} },
         ...getMockMongooseModelsForProvidersArray(),
         { provide: AssetAnalyzingService, useValue: {} },
-        { provide: AuthGuardFirebase, useValue: {} }
+        { provide: AuthGuardFirebase, useValue: {} },
+        { provide: StorageService, useValue: {} },
+        { provide: StripeService, useValue: {} }
       ]
     })
       .overrideProvider(FileUploadService)

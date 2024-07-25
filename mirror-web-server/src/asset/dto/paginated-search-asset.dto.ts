@@ -7,7 +7,8 @@ import {
   IsEnum,
   IsArray,
   ValidateIf,
-  IsNotEmpty
+  IsNotEmpty,
+  IsIn
 } from 'class-validator'
 import { ASSET_TYPE } from '../../option-sets/asset-type'
 import { PopulateField } from '../../util/pagination/pagination.service'
@@ -137,6 +138,15 @@ export class PaginatedSearchAssetDtoV2 extends PaginatedSearchAssetDto {
   @ApiProperty({ required: false })
   @Transform(({ value }) => value === 'true' || value === true)
   includeSoftDeleted?: boolean
+
+  @IsOptional()
+  @ApiProperty({ required: false })
+  @IsIn(['1', '0', '-1'])
+  mirrorAssetManagerUserSortKey?: string
+
+  @IsOptional()
+  @ApiProperty({ required: false, default: false })
+  includeAssetPackAssets = false
 }
 
 export function getPopulateFieldsFromPaginatedSearchAssetDto(searchAssetDto) {

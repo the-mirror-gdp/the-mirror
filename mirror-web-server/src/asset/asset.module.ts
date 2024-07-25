@@ -23,6 +23,9 @@ import {
 } from '../marketplace/purchase-option.subdocument.schema'
 import { UserModule } from '../user/user.module'
 import { AuthGuardFirebase } from '../auth/auth.guard'
+import { StorageModule } from '../storage/storage.module'
+import { StripeModule } from '../stripe/stripe.module'
+import { GodotModule } from '../godot-server/godot.module'
 
 @Module({
   imports: [
@@ -32,6 +35,7 @@ import { AuthGuardFirebase } from '../auth/auth.guard'
     LoggerModule,
     RoleModule,
     forwardRef(() => SpaceObjectModule), // to fix circular dependency
+    GodotModule,
     MongooseModule.forFeature([
       {
         name: Asset.name,
@@ -56,7 +60,8 @@ import { AuthGuardFirebase } from '../auth/auth.guard'
       { name: SpaceObject.name, schema: SpaceObjectSchema }
     ]),
     forwardRef(() => UserModule),
-    forwardRef(() => FileUploadModule) // to fix circular dependency
+    forwardRef(() => FileUploadModule),
+    StorageModule // to fix circular dependency
   ],
   controllers: [AssetController],
   providers: [

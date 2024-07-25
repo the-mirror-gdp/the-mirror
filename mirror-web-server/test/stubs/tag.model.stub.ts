@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ObjectId } from 'mongodb'
 import { Tag } from '../../src/tag/models/tag.schema'
 import { ThirdPartySourceTag } from '../../src/tag/models/third-party-tag.schema'

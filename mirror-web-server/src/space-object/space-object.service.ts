@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { ObjectId } from 'mongodb'
-import mongoose, { Document, FilterQuery, Model } from 'mongoose'
+import mongoose, { Document, FilterQuery, Model, PipelineStage } from 'mongoose'
 import { RedisPubSubService } from '../redis/redis-pub-sub.service'
 import { CHANNELS } from '../redis/redis.channels'
 import { ROLE } from '../roles/models/role.enum'
@@ -35,6 +35,10 @@ import { SpaceObjectSearch } from './space-object.search'
 import { isEnum, isMongoId } from 'class-validator'
 import { UpdateSpaceObjectTagsDto } from './dto/update-space-object-tags.dto'
 import { AssetDocument } from '../asset/asset.schema'
+import {
+  PaginationDataByStartItem,
+  PaginationData
+} from '../util/pagination/pagination-data'
 
 type SpaceObjectDocumentWithPopulatedSpaceRole = SpaceObjectDocument
 @Injectable()
@@ -167,7 +171,8 @@ export class SpaceObjectService implements IRoleConsumer {
    * target Space */
   public async copySpaceObjectsToSpaceAdmin(
     fromSpaceId: SpaceId,
-    toSpaceId: SpaceId
+    toSpaceId: SpaceId,
+    userId: UserId
   ): Promise<any> {
     // TODO type this return. Typescript is being weird currently with "The inferred type of 'removeMany' cannot be named without a reference to 'mongoose/node_modules/mongodb'. This is likely not portable. A type annotation is necessary" 2023-03-16 15:03:15
     const spaceObjects = await this.findAllBySpaceIdAdmin(fromSpaceId)
@@ -178,6 +183,7 @@ export class SpaceObjectService implements IRoleConsumer {
       obj._id = new ObjectId()
       obj.space = toSpaceId as any // typed any due to mongo type constraints
       obj.isNew = true
+      obj.creator = new ObjectId(userId) as any // typed any due to mongo type constraints
       return { insertOne: { document: obj } }
     })
 
@@ -207,7 +213,7 @@ export class SpaceObjectService implements IRoleConsumer {
     )
     if (check1 && check2) {
       // Just using admin copy for now. This may need to be refined later 2023-04-20 23:42:22
-      return this.copySpaceObjectsToSpaceAdmin(fromSpaceId, toSpaceId)
+      return this.copySpaceObjectsToSpaceAdmin(fromSpaceId, toSpaceId, userId)
     } else {
       this.logger.log(
         `copySpaceObjectsToSpaceWithRolesCheck failed for user: ${userId}`,
@@ -262,6 +268,79 @@ export class SpaceObjectService implements IRoleConsumer {
     )
   }
 
+  public async findManyWithRolesCheck(
+    userId: UserId,
+    ids: SpaceObjectId[],
+    pagination: PaginationInterface
+  ) {
+    const options = {
+      _id: { $in: ids.map((id) => new mongoose.Types.ObjectId(id)) }
+    }
+
+    const pipeline: PipelineStage[] = [
+      {
+        $match: options
+      },
+      {
+        $lookup: {
+          from: 'spaces',
+          localField: 'space',
+          foreignField: '_id',
+          as: 'spaceData'
+        }
+      },
+      {
+        $match: {
+          $and: [
+            {
+              $or: [
+                { [`spaceData.role.users.${userId}`]: { $gte: ROLE.OBSERVER } },
+                { 'spaceData.role.defaultRole': { $gte: ROLE.OBSERVER } }
+              ]
+            },
+            {
+              $or: [
+                { [`spaceData.role.users.${userId}`]: { $exists: false } },
+                { [`spaceData.role.users.${userId}`]: { $gte: 0 } }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        $project: {
+          spaceData: 0
+        }
+      }
+    ]
+
+    const filteredData = await this.spaceObjectModel.aggregate(pipeline).exec()
+
+    const paginationData = new PaginationData({ ...pagination })
+
+    paginationData.total = filteredData.length
+
+    const totalPage =
+      paginationData.total / (paginationData as PaginationData).perPage
+
+    paginationData.totalPage = Math.ceil(totalPage)
+
+    const firstElement =
+      ((paginationData as PaginationData).page - 1) *
+      (paginationData as PaginationData).perPage
+
+    const lastElement =
+      firstElement +
+      ((paginationData as PaginationData).perPage
+        ? (paginationData as PaginationData).perPage
+        : (paginationData as unknown as PaginationDataByStartItem)
+            .numberOfItems)
+
+    const data = filteredData.slice(firstElement, lastElement)
+
+    return { data, ...paginationData }
+  }
+
   public findAllBySpaceId(spaceId: string): Promise<SpaceObjectDocument[]> {
     return this.spaceObjectModel
       .find()
@@ -298,6 +377,25 @@ export class SpaceObjectService implements IRoleConsumer {
     pagination: PaginationInterface,
     options: { space: SpaceId; [key: string]: any } = { space: spaceId }
   ) {
+    return this.paginationService.getPaginatedQueryResponse(
+      this.spaceObjectModel,
+      options,
+      pagination
+    )
+  }
+
+  public async getAllBySpaceIdPaginatedWithRolesCheck(
+    userId: UserId,
+    spaceId: SpaceId,
+    pagination: PaginationInterface,
+    options: { space: SpaceId; [key: string]: any } = { space: spaceId }
+  ) {
+    const space = await this.spaceService.getSpace(spaceId)
+
+    if (!this.spaceService.canFindWithRolesCheck(userId, space)) {
+      throw new NotFoundException('Not found or insufficient permissions')
+    }
+
     return this.paginationService.getPaginatedQueryResponse(
       this.spaceObjectModel,
       options,
@@ -477,16 +575,29 @@ export class SpaceObjectService implements IRoleConsumer {
     return this.spaceObjectModel.bulkWrite(updates)
   }
 
+  public async updateManyWithRolesCheck(
+    userId: UserId,
+    { batch }: UpdateBatchSpaceObjectDto
+  ) {
+    for (let i = 0; i < batch.length; i++) {
+      const { id, ...updateProps } = batch[i]
+
+      await this.updateOneWithRolesCheck(userId, id, updateProps)
+    }
+
+    return batch
+  }
+
   /**
    * @description Note that this update also notifies
    * @date 2023-04-21 01:16
    */
-  public updateOne(
+  public async updateOne(
     spaceObjectId: SpaceObjectId,
     updateSpaceObjectDto: UpdateSpaceObjectDto
   ): Promise<SpaceObjectDocument> {
     if (updateSpaceObjectDto.asset) {
-      const isSoftDeletedCheck = this.assetService.isAssetSoftDeleted(
+      const isSoftDeletedCheck = await this.assetService.isAssetSoftDeleted(
         updateSpaceObjectDto.asset
       )
 
@@ -516,7 +627,7 @@ export class SpaceObjectService implements IRoleConsumer {
   ): Promise<Partial<Document<any, any, any>>> {
     const spaceObject = await this._getSpaceObject(spaceObjectId)
     if (this.canUpdateWithRolesCheck(userId, spaceObject)) {
-      return this.updateOne(spaceObjectId, updateSpaceObjectDto)
+      return await this.updateOne(spaceObjectId, updateSpaceObjectDto)
     } else {
       this.logger.log(
         `updateOneAndNotifyWithRolesCheck failed for user: ${userId}`,
@@ -571,6 +682,20 @@ export class SpaceObjectService implements IRoleConsumer {
       deleteOne: { filter: { _id: id } }
     }))
     return this.spaceObjectModel.bulkWrite(deletes)
+  }
+
+  public async removeManyWithRolesCheck(userId: UserId, batch: string[]) {
+    for (let i = 0; i < batch.length; i++) {
+      const id = batch[i]
+
+      if (!isMongoId(id)) {
+        throw new BadRequestException(`${id} is not a valid Mongo ObjectId`)
+      }
+
+      await this.removeOneWithRolesCheck(userId, id)
+    }
+
+    return batch
   }
 
   public removeOneAdmin(id: SpaceObjectId): Promise<SpaceObjectDocument> {

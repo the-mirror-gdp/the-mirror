@@ -10,6 +10,7 @@ import {
   getMockClassesForProvidersArray,
   getMockMongooseModelsForProvidersArray
 } from './mocks/service.mocks'
+import { AuthGuardFirebase } from '../src/auth/auth.guard'
 
 describe('Tag Controller (Integration)', () => {
   let app: INestApplication
@@ -22,7 +23,8 @@ describe('Tag Controller (Integration)', () => {
         ...getMockMongooseModelsForProvidersArray(),
         ...getMockClassesForProvidersArray([
           TagService,
-          FirebaseAuthenticationService
+          FirebaseAuthenticationService,
+          AuthGuardFirebase
         ])
       ]
     }).compile()
