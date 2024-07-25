@@ -16,7 +16,6 @@ var _current_camera_holder: CameraHolder
 
 func _ready():
 	set_jolt_debugger_enabled(false)
-	
 
 
 func _process(delta: float) -> void:
