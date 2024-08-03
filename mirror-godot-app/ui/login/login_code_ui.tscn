@@ -39,7 +39,6 @@ color = Color(1, 1, 1, 0.2)
 base_font = ExtResource("11_eftmn")
 
 [node name="LoginUIVR" type="Control"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -176,4 +175,5 @@ text = "Sign In"
 [node name="ButtonSound" parent="." instance=ExtResource("19_rxcc2")]
 
 [connection signal="pressed" from="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/SignUpHereContainer/SignUpHere" to="." method="_on_sign_up_here_pressed"]
+[connection signal="gui_input" from="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/LoginCode" to="." method="_gui_input_for_login_code"]
 [connection signal="pressed" from="VBoxContainer/SignInMenu/MarginContainer/LoginContainer/SignIn" to="." method="_on_sign_in_pressed"]
