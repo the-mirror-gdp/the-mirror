@@ -7,7 +7,6 @@ func _on_sign_in_pressed() -> void:
 		return
 	var session_promise = Net.mirror_auth_client.check_login_code(login_code.text)
 	var data = await session_promise.wait_till_fulfilled()
-	
 	if session_promise.is_error():
 		Notify.error("Failed to login with code", session_promise.get_error_message())
 		return
