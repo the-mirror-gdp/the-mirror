@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://bpn5kipaabot1"]
+[gd_scene load_steps=29 format=3 uid="uid://bpn5kipaabot1"]
 
 [ext_resource type="Script" path="res://ui/game/game_ui_instance.gd" id="1_2ryxh"]
 [ext_resource type="PackedScene" uid="uid://pdt3sfnghnqp" path="res://ui/login/login_ui.tscn" id="2"]
@@ -27,6 +27,7 @@
 [ext_resource type="PackedScene" uid="uid://b7v8026760qqs" path="res://creator/asset_inventory/browser/file_search.tscn" id="22_0ljsg"]
 [ext_resource type="Theme" uid="uid://d1qd6ity2mdpl" path="res://creator/creator_ui.theme.tres" id="25_7pbh6"]
 [ext_resource type="Script" path="res://ui/game/connect_by_ip_ui.gd" id="26_viw1y"]
+[ext_resource type="PackedScene" uid="uid://bb7qixdwwk0il" path="res://ui/login/login_code_ui.tscn" id="28_3eh7d"]
 
 [node name="GameUI" type="CanvasLayer"]
 script = ExtResource("1_2ryxh")
@@ -64,8 +65,6 @@ visible = false
 
 [node name="LoginUI" parent="." instance=ExtResource("2")]
 visible = false
-
-[node name="NotificationsUI" parent="." instance=ExtResource("13_gvu03")]
 
 [node name="UserTutorial" parent="." instance=ExtResource("7_sxnd1")]
 offset_top = -2.0
@@ -148,6 +147,11 @@ placeholder_text = "127.0.0.1:27015"
 [node name="Button" type="Button" parent="ConnectByIPDevOnly/MarginContainer/HBoxContainer"]
 layout_mode = 2
 text = "connect"
+
+[node name="LoginUIVR" parent="." instance=ExtResource("28_3eh7d")]
+visible = true
+
+[node name="NotificationsUI" parent="." instance=ExtResource("13_gvu03")]
 
 [connection signal="select_asset_id" from="DragDetector" to="CreatorUI" method="_on_drag_detector_select_asset_id"]
 [connection signal="toggle_main_menu_open" from="CreatorUI" to="MainMenuUI" method="toggle_main_menu_open"]

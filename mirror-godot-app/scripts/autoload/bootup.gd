@@ -11,9 +11,10 @@ func _start_client():
 	if ProjectSettings.get_setting("feature_flags/disable_login", false):
 		LoginService.setup_deeplink_login(get_tree())
 	else:
-		await GameUI.ui_ready()
-		GameUI.instance.login_ui.start_login_ui()
-		GameUI.instance.login_ui.show()
+		var login_code: bool = ProjectSettings.get_setting("feature_flags/force_enable_login_code", false)
+		if not login_code:
+			GameUI.instance.login_ui.start_login_ui()
+			GameUI.instance.login_ui.show()
 	Deeplinking.setup()
 	await Zone.wait_till_notifications_ready()
 	await Zone.wait_till_deeplink_ready()
