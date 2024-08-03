@@ -15,6 +15,8 @@ func _on_sign_in_pressed() -> void:
 	assert(data.refreshToken)
 	assert(data.spaceId)
 	assert(data.loginCode)
+	print("login code data: ", data)
+	await LoginService.login_as_user_deeplink("", data.refreshToken, data.spaceId, get_tree() )
 
 func _ready():
 	var login_code: bool = ProjectSettings.get_setting("feature_flags/force_enable_login_code", false)
