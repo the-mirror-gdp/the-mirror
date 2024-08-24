@@ -24,7 +24,7 @@ jobs:
       editor-binary-name: MirrorGodotEditorWindows.exe
       editor-binary-download: MirrorGodotEditorWindows.exe
       editor-binary-branch: dev
-      editor-template-directory: ~/AppData/Roaming/Godot/export_templates/4.3.beta
+      editor-template-directory: ~/AppData/Roaming/Godot/export_templates/4.3.stable
       template-binary-workflow: deployment.yml
       template-binary-name: windows_release_x86_64.exe
       template-binary-branch: themirror
@@ -50,7 +50,7 @@ jobs:
       editor-binary-download: MirrorGodotEditorMac.app.zip
       editor-binary-name: MirrorGodotEditorMac.app/Contents/MacOS/Godot
       editor-binary-branch: themirror
-      editor-template-directory: ~/Library/Application\ Support/Godot/export_templates/4.3.beta
+      editor-template-directory: ~/Library/Application\ Support/Godot/export_templates/4.3.stable
       template-binary-workflow: deployment.yml
       template-binary-name: macos_template.app.zip
       template-binary-branch: dev
@@ -74,7 +74,7 @@ jobs:
       editor-binary-name: MirrorGodotEditorLinux.x86_64
       editor-binary-download: MirrorGodotEditorLinux.x86_64
       editor-binary-branch: dev
-      editor-template-directory: ~/.local/share/godot/export_templates/4.3.beta
+      editor-template-directory: ~/.local/share/godot/export_templates/4.3.stable
       template-binary-workflow: deployment.yml
       template-binary-name: linux_release.x86_64
       template-binary-branch: themirror
