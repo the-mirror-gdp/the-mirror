@@ -15,7 +15,6 @@ create table user_profiles (
   constraint display_name_length check (char_length(display_name) >= 3)
 );
 -- Set up Row Level Security (RLS)
--- See https://supabase.com/docs/guides/auth/row-level-security for more details.
 alter table user_profiles
   enable row level security;
 
@@ -30,12 +29,12 @@ create policy "Users can update own profile." on user_profiles
 
 -- Set up Storage!
 insert into storage.buckets (id, name)
-  values ('avatars', 'avatars');
+  values ('user_profile_images', 'user_profile_images');
 
 -- Set up access controls for storage.
 -- See https://supabase.com/docs/guides/storage#policy-examples for more details.
-create policy "Avatar images are publicly accessible." on storage.objects
-  for select using (bucket_id = 'avatars');
+create policy "User profiles images are publicly accessible." on storage.objects
+  for select using (bucket_id = 'user_profile_images');
 
-create policy "Anyone can upload an avatar." on storage.objects
-  for insert with check (bucket_id = 'avatars');
+create policy "Authed users can upload a profile image." on storage.objects
+  for insert to authenticated with check (bucket_id = 'user_profile_images');
