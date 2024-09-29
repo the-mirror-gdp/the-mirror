@@ -7,6 +7,7 @@ import { GeistSans } from "geist/font/sans";
 import { ThemeProvider } from "next-themes";
 import Link from "next/link";
 import "./globals.css";
+import { appName, appFullName } from "@/lib/copy-service";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -14,8 +15,8 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "The Mirror: Game Development Platform",
-  description: "Next-Gen Game Development Platform",
+  title: appFullName(),
+  description: "Build, Play, & Publish Games",
 };
 
 export default function RootLayout({
@@ -37,7 +38,7 @@ export default function RootLayout({
               <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
                 <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
                   <div className="flex gap-5 items-center font-semibold">
-                    <Link href={"/"}>The Mirror</Link>
+                    <Link href={"/"}>{appName()}</Link>
                     <div className="flex items-center gap-2">
                       <DeployButton />
                     </div>
