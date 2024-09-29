@@ -1,4 +1,4 @@
-The below licenses apply to everything in this repository with the exception of the /mirror-2 folder; for the mirror-2 folder, see /mirror-2/license.txt.
+The below licenses apply to everything in this repository with the exception of the /mirror-2 folder; for the mirror-2 folder, see /mirror-2/LICENSE.txt.
 
 MIT License
 
