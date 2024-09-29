@@ -1,0 +1,21 @@
+Source Available License
+
+Copyright (c) 2024-Present The Mirror Megaverse Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, subject to the following conditions:
+
+1. Revenue Sharing Requirement
+If any revenue is generated through the use of the Software, including but not limited to sales, in-game transactions, or any other form of monetization, the user agrees to pay a fee to the owner of the Software (“Company”). The fee structure and payment requirements are detailed on the Company’s website, and users are responsible for staying updated on any changes to these terms.
+
+2. Payment in Fiat Currency
+If revenue is generated in fiat currency (e.g., USD, EUR), the user agrees to remit payments to the Company based on the fee structure listed on the Company’s website. Failure to comply with these payment terms will result in the revocation of the license.
+
+3. Payment in Cryptocurrency and Royalties for Non-Fungible Tokens
+Cryptocurrency integrations are exclusive to the Reflekt version of the Software, a separate brand of The Mirror. In contrast, The Mirror version of the Software does not support cryptocurrency usage. This structure is designed to give developers the flexibility to choose between traditional web2 approaches and blockchain-integrated games.
+•	Direct Cryptocurrency Transactions: If revenue is generated directly through the Software in the form of cryptocurrency (e.g., in-game transactions, purchases, or other forms of monetization), the user agrees to pay a 10% fee on all such transactions. Payments must be made to the Company’s wallet address as specified on its website. Users are responsible for ensuring accurate and timely payments to the listed address.
+•	Non-Fungible Token Royalties: If the Software is used to issue or mint Non-Fungible Tokens (NFTs), the user agrees to pay a 10% royalty on all subsequent sales or transfers of the NFT, regardless of the marketplace or platform where the transaction occurs. If the NFT was minted outside of the platform and a transaction takes place using the Software, the user agrees to pay the same percent fee via direct cryptocurrency transfer to the company's wallet.
+
+4.	Warranty Disclaimer
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+By using the Software, you agree to the terms outlined above. These terms are subject to change due to early versions of the Software and the team is open to feedback!
