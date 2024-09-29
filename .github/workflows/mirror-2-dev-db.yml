@@ -1,0 +1,31 @@
+name: Deploy Migrations to Dev
+
+on:
+  push:
+    branches: [dev]
+    paths:
+      - 'mirror-2/**'
+  pull_request:
+    branches: [dev]
+    paths:
+      - 'mirror-2/**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.DEV_DB_PASSWORD }}
+      SUPABASE_PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - run: supabase link --project-ref $SUPABASE_PROJECT_ID
+      - run: supabase db push
