@@ -4,16 +4,16 @@ import { atom, useAtom, useAtomValue } from "jotai";
 import { cloneElement, isValidElement, useEffect, useRef, useState } from "react";
 import useSound from "use-sound";
 
-export const uiAudioCanPlayAtom = atom(true);
+export const uiSoundsCanPlayAtom = atom(true);
 
 export function useAudioCanPlay() {
-  const [audioCanPlay, setAudioCanPlay] = useAtom(uiAudioCanPlayAtom);
+  const [uiSoundsCanPlay, setUiSoundsCanPlay] = useAtom(uiSoundsCanPlayAtom);
 
-  return { audioCanPlay, setAudioCanPlay };
+  return { uiSoundsCanPlay, setUiSoundsCanPlay };
 }
 
 export function useUiHoverSoundEffect() {
-  const audioCanPlayUserSetting = useAtomValue(uiAudioCanPlayAtom)
+  const audioCanPlayUserSetting = useAtomValue(uiSoundsCanPlayAtom)
   const [canPlayAudioFromUserGestureTrack, setCanPlayAudioFromUserGestureTrack] = useState(false);
   const [playSound] = useSound("/sounds/hover_menu.wav", {
     volume: 0.05,

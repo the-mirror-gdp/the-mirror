@@ -2,14 +2,15 @@
 
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { useUiHoverSoundEffect } from "@/components/ui/ui-audio";
+import { uiSoundsCanPlayAtom, useUiHoverSoundEffect } from "@/components/ui/ui-sounds";
 import { atom, useAtom } from "jotai";
-import { Box, Clapperboard, Code2, Database, GitBranch, Settings } from "lucide-react";
+import { Box, Clapperboard, Code2, Database, GitBranch, Settings, Volume2, VolumeOff } from "lucide-react";
 
 const sidebarCurrentViewAtom = atom("scene");
 
 export function Sidebar() {
   const [currentView, setCurrentView] = useAtom(sidebarCurrentViewAtom);
+  const [uiSoundsCanPlay, setUiSoundsCanPlay] = useAtom(uiSoundsCanPlayAtom);
   const [play] = useUiHoverSoundEffect();
 
   const handleViewChange = (view: string) => {
@@ -141,6 +142,26 @@ export function Sidebar() {
           <span className="text-xs mt-1" >Settings</span>
         </div>
       </nav>
+
+      <div className="flex flex-col cursor-pointer select-none mt-auto p-2 ml-1">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              size="icon"
+              aria-label="Toggle UI Sounds"
+              onClick={() => {
+                setUiSoundsCanPlay(!uiSoundsCanPlay);
+              }}
+              variant={"ghost"}
+            >
+              {uiSoundsCanPlay ? <Volume2 className="size-7 text-gray-400" /> : <VolumeOff className="size-7 text-gray-500" />}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="right" sideOffset={5}>
+            Toggle UI Sounds
+          </TooltipContent>
+        </Tooltip>
+      </div>
     </TooltipProvider>
   );
 }
