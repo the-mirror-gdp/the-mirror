@@ -3,8 +3,9 @@
 import { atom, useAtom, useAtomValue } from "jotai";
 import { cloneElement, isValidElement, useEffect, useRef, useState } from "react";
 import useSound from "use-sound";
+import { atomWithStorage } from 'jotai/utils'
 
-export const uiSoundsCanPlayAtom = atom(true);
+export const uiSoundsCanPlayAtom = atomWithStorage('uiSoundsCanPlay', true);
 
 export function useAudioCanPlay() {
   const [uiSoundsCanPlay, setUiSoundsCanPlay] = useAtom(uiSoundsCanPlayAtom);
