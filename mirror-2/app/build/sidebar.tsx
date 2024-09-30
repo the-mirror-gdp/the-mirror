@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useUiHoverSoundEffect } from "@/components/ui/ui-audio";
 import { atom, useAtom } from "jotai";
 import { Box, Clapperboard, Code2, Database, GitBranch, Settings } from "lucide-react";
 
@@ -9,8 +10,13 @@ const sidebarCurrentViewAtom = atom("scene");
 
 export function Sidebar() {
   const [currentView, setCurrentView] = useAtom(sidebarCurrentViewAtom);
+  const [play] = useUiHoverSoundEffect();
 
   const handleViewChange = (view: string) => {
+    // play the sound ONLY if the view has changed
+    if (currentView !== view) {
+      play()
+    }
     setCurrentView(view);
   };
 
