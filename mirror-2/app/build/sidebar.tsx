@@ -1,7 +1,8 @@
 'use client';
 
-import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip";
-import { Link, Home, ShoppingCart, Badge, Package, Users, LineChart } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Link, Home, ShoppingCart, Badge, Package, Users, LineChart, SquareTerminal, Bot, Code2, Book, Settings2 } from "lucide-react";
 import { useState } from "react";
 
 export function Sidebar() {
