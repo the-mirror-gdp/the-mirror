@@ -1,6 +1,6 @@
 import Link from "next/link"
 
-import { TopNavbar } from "@/app/space/build/top-navbar"
+import { TopNavbar } from "@/app/space/[spaceId]/build/top-navbar"
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
 import { appLogoImageSmall } from "@/lib/theme-service"
 
@@ -21,7 +21,6 @@ export default function Layout({ children, controlBar, spaceViewport }: {
                 </div>
               </Link>
             </div>
-            {/* <Sidebar /> */}
             {controlBar}
           </div>
         </div>
