@@ -2,13 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
-import { Link, Home, ShoppingCart, Badge, Package, Users, LineChart, SquareTerminal, Bot, Code2, Book, Settings2 } from "lucide-react";
+import { GitBranch, Box, Database, Badge, Package, Users, LineChart, SquareTerminal, Bot, Code2, Book, Settings } from "lucide-react";
 import { useState } from "react";
 
 export function Sidebar() {
   return (
-    <TooltipProvider>
-      <nav className="grid gap-1 p-2">
+    <TooltipProvider delayDuration={0}>
+      <nav className="grid gap-2 p-2">
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
@@ -17,26 +17,11 @@ export function Sidebar() {
               className="rounded-lg bg-muted"
               aria-label="Playground"
             >
-              <SquareTerminal className="size-5" />
+              <Box className="size-7" />
             </Button>
           </TooltipTrigger>
           <TooltipContent side="right" sideOffset={5}>
-            Playground
-          </TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-lg"
-              aria-label="Models"
-            >
-              <Bot className="size-5" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="right" sideOffset={5}>
-            Models
+            Assets
           </TooltipContent>
         </Tooltip>
         <Tooltip>
@@ -47,7 +32,7 @@ export function Sidebar() {
               className="rounded-lg"
               aria-label="API"
             >
-              <Code2 className="size-5" />
+              <Code2 className="size-7" />
             </Button>
           </TooltipTrigger>
           <TooltipContent side="right" sideOffset={5}>
@@ -60,13 +45,28 @@ export function Sidebar() {
               variant="ghost"
               size="icon"
               className="rounded-lg"
-              aria-label="Documentation"
+              aria-label="Models"
             >
-              <Book className="size-5" />
+              <Database className="size-7" />
             </Button>
           </TooltipTrigger>
           <TooltipContent side="right" sideOffset={5}>
-            Documentation
+            Database
+          </TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-lg"
+              aria-label="Documentation"
+            >
+              <GitBranch className="size-7" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="right" sideOffset={5}>
+            Versions
           </TooltipContent>
         </Tooltip>
         <Tooltip>
@@ -77,7 +77,7 @@ export function Sidebar() {
               className="rounded-lg"
               aria-label="Settings"
             >
-              <Settings2 className="size-5" />
+              <Settings className="size-7" />
             </Button>
           </TooltipTrigger>
           <TooltipContent side="right" sideOffset={5}>
