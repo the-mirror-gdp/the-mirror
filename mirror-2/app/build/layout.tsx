@@ -95,7 +95,7 @@ export default function Dashboard() {
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel>
-        <div className="flex flex-col">
+        <div className="flex flex-col h-full content-center">
           <header className="flex h-14 items-center gap-4 bg-muted/40 px-4 lg:h-[60px] lg:px-6">
             <div className="w-full flex-1">
               <form>
