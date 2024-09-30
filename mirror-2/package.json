@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev & supabase start",
     "build": "next build",
     "start": "next start"
   },
