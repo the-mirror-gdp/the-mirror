@@ -39,7 +39,7 @@ import { TopNavbar } from "@/app/build/top-navbar"
 export default function Dashboard() {
   return (
     <ResizablePanelGroup direction="horizontal" className="grid min-h-screen w-full">
-      <ResizablePanel defaultSize={15} minSize={15} maxSize={75}>
+      <ResizablePanel defaultSize={20} minSize={20} maxSize={75}>
         <div className="hidden bg-muted/40 md:block h-full">
           <div className="flex h-full max-h-screen flex-col gap-2">
             <div className="flex h-14 items-center px-4 lg:h-[60px] lg:px-6">
