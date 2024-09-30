@@ -32,7 +32,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
 import { Sidebar } from "@/app/build/sidebar"
-import { appName } from "@/lib/copy-service"
+import { appLogoImageSmall, appName } from "@/lib/theme-service"
 import { Viewport } from "@/app/build/viewport"
 import { TopNavbar } from "@/app/build/top-navbar"
 
@@ -44,13 +44,10 @@ export default function Dashboard() {
           <div className="flex h-full max-h-screen flex-col gap-2">
             <div className="flex h-14 items-center px-4 lg:h-[60px] lg:px-6">
               <Link href="/" className="flex items-center gap-2 font-semibold">
-                <Package2 className="h-6 w-6" />
-                <div className="mr-3">{appName()}</div>
+                <div className="mt-1">
+                  {appLogoImageSmall()}
+                </div>
               </Link>
-              <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
-                <Bell className="h-4 w-4" />
-                <span className="sr-only">Toggle notifications</span>
-              </Button>
             </div>
             <Sidebar />
           </div>
