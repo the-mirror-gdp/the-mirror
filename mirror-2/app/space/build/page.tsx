@@ -1,6 +1,4 @@
-import { AppViewport } from "@/app/space/build/viewport";
-
-// blank page
-export default function BuildPage() {
-  return <AppViewport />
+// blank page since we're using the parallel routes for spaceViewport, controlBar, etc.
+export default function Page() {
+  return null
 }

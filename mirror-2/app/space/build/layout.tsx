@@ -1,44 +1,13 @@
 import Link from "next/link"
-import {
-  Bell,
-  CircleUser,
-  Home,
-  LineChart,
-  Menu,
-  Package,
-  Package2,
-  Search,
-  ShoppingCart,
-  Users,
-} from "lucide-react"
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
-import { Sidebar } from "@/app/space/build/sidebar"
-import { appLogoImageSmall, appName } from "@/lib/theme-service"
-import { AppViewport } from "@/app/space/build/viewport"
 import { TopNavbar } from "@/app/space/build/top-navbar"
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
+import { appLogoImageSmall } from "@/lib/theme-service"
 
-export default function Layout({ children, controlBar }: {
+export default function Layout({ children, controlBar, spaceViewport }: {
   children: React.ReactNode,
-  controlBar: React.ReactNode
+  controlBar: React.ReactNode,
+  spaceViewport: React.ReactNode
 }) {
   return (
     <ResizablePanelGroup direction="horizontal" className="grid min-h-screen w-full">
@@ -61,6 +30,7 @@ export default function Layout({ children, controlBar }: {
       <ResizablePanel>
         <div className="flex flex-col h-full content-center">
           <TopNavbar />
+          {spaceViewport}
           {children}
         </div>
       </ResizablePanel>
