@@ -5,7 +5,7 @@ Copyright (c) 2024-Present The Mirror Megaverse Inc.
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, subject to the following conditions:
 
 1. Revenue Sharing Requirement
-If any revenue is generated through the use of the Software, including but not limited to sales, in-game transactions, or any other form of monetization, the user agrees to pay a fee to the owner of the Software (“Company”). The fee structure and payment requirements are detailed on the Company’s website, and users are responsible for staying updated on any changes to these terms.
+If any revenue is generated through the use of the Software, including but not limited to sales, in-game transactions, or any other form of monetization, the user agrees to pay a fee to the owner of the Software (“Company”). The fee structure and payment requirements are detailed on the Company’s website, and users are responsible for staying updated on any changes to these terms. The fee is 15% as of Sept 2024 and subject to change (the website is the source of truth for this fee if the amount in this license differs).
 
 2. Payment in Fiat Currency
 If revenue is generated in fiat currency (e.g., USD, EUR), the user agrees to remit payments to the Company based on the fee structure listed on the Company’s website. Failure to comply with these payment terms will result in the revocation of the license.
