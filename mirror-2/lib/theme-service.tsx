@@ -14,8 +14,8 @@ export const appLogoImageSmall = () => {
   const appName = process.env.NEXT_PUBLIC_APP_NAME;
 
   if (appName === "Reflekt") {
-    return <Image src="/reflekt_logo_with_text_sm.png" width={220} height={40} alt="Reflekt Logo" />;
+    return <Image src="/reflekt_logo_with_text_sm.png" width={159} height={40} alt="Reflekt Logo" />;
   } else {
-    return <Image src="/mirror_logo_white_sm.png" width={220} height={40} alt="Mirror Logo" />;
+    return <Image src="/mirror_logo_white_sm.png" width={159} height={40} alt="Mirror Logo" />;
   }
 };
