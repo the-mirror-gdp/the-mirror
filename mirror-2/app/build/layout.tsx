@@ -36,7 +36,7 @@ import { appLogoImageSmall, appName } from "@/lib/theme-service"
 import { Viewport } from "@/app/build/viewport"
 import { TopNavbar } from "@/app/build/top-navbar"
 
-export default function Dashboard() {
+export default function Dashboard({ children }: any) {
   return (
     <ResizablePanelGroup direction="horizontal" className="grid min-h-screen w-full">
       <ResizablePanel defaultSize={20} minSize={20} maxSize={75}>
