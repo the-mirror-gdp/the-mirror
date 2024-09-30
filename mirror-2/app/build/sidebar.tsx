@@ -2,19 +2,32 @@
 
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { atom, useAtom } from "jotai";
 import { Box, Clapperboard, Code2, Database, GitBranch, Settings } from "lucide-react";
 
+const sidebarCurrentViewAtom = atom("scene");
+
 export function Sidebar() {
+  const [currentView, setCurrentView] = useAtom(sidebarCurrentViewAtom);
+
+  const handleViewChange = (view: string) => {
+    setCurrentView(view);
+  };
+
+  const getVariant = (view: string) => {
+    return currentView === view ? "default" : "ghost";
+  };
+
   return (
     <TooltipProvider delayDuration={0}>
       <nav className="grid gap-2 p-2">
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              variant="ghost"
+              variant={getVariant("scene")}
               size="icon"
-              className="rounded-lg"
               aria-label="Scene"
+              onClick={() => handleViewChange("scene")}
             >
               <Clapperboard className="size-7" />
             </Button>
@@ -26,10 +39,10 @@ export function Sidebar() {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              variant="ghost"
+              variant={getVariant("assets")}
               size="icon"
-              className="rounded-lg bg-muted"
               aria-label="Assets"
+              onClick={() => handleViewChange("assets")}
             >
               <Box className="size-7" />
             </Button>
@@ -41,10 +54,10 @@ export function Sidebar() {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              variant="ghost"
+              variant={getVariant("code")}
               size="icon"
-              className="rounded-lg"
               aria-label="Code"
+              onClick={() => handleViewChange("code")}
             >
               <Code2 className="size-7" />
             </Button>
@@ -56,10 +69,10 @@ export function Sidebar() {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              variant="ghost"
+              variant={getVariant("database")}
               size="icon"
-              className="rounded-lg"
               aria-label="Database"
+              onClick={() => handleViewChange("database")}
             >
               <Database className="size-7" />
             </Button>
@@ -71,10 +84,10 @@ export function Sidebar() {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              variant="ghost"
+              variant={getVariant("versions")}
               size="icon"
-              className="rounded-lg"
               aria-label="Versions"
+              onClick={() => handleViewChange("versions")}
             >
               <GitBranch className="size-7" />
             </Button>
@@ -86,10 +99,10 @@ export function Sidebar() {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
-              variant="ghost"
+              variant={getVariant("settings")}
               size="icon"
-              className="rounded-lg"
               aria-label="Settings"
+              onClick={() => handleViewChange("settings")}
             >
               <Settings className="size-7" />
             </Button>
