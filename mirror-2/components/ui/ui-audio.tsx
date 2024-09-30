@@ -16,7 +16,8 @@ export function useUiHoverSoundEffect() {
   const audioCanPlayUserSetting = useAtomValue(uiAudioCanPlayAtom)
   const [canPlayAudioFromUserGestureTrack, setCanPlayAudioFromUserGestureTrack] = useState(false);
   const [playSound] = useSound("/sounds/hover_menu.wav", {
-    volume: 0.05
+    volume: 0.05,
+    interrupt: true
   });
   const play = function () {
     if (audioCanPlayUserSetting && canPlayAudioFromUserGestureTrack) {

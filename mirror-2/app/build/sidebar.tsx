@@ -27,7 +27,7 @@ export function Sidebar() {
   return (
     <TooltipProvider delayDuration={750}>
       <nav className="grid gap-4 p-2 items-start justify-start">
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("scene")} onMouseEnter={() => handleViewChange("scene")}>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -35,7 +35,6 @@ export function Sidebar() {
                 size="icon"
                 aria-label="Scene"
                 onClick={() => handleViewChange("scene")}
-                onMouseEnter={() => handleViewChange("scene")}
               >
                 <Clapperboard className="size-7" />
               </Button>
@@ -44,10 +43,9 @@ export function Sidebar() {
               Scene
             </TooltipContent>
           </Tooltip>
-          <span className="text-xs mt-1 cursor-pointer select-none" onClick={() => handleViewChange("scene")}
-            onMouseEnter={() => handleViewChange("scene")}>Scene</span>
+          <span className="text-xs mt-1" >Scene</span>
         </div>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("assets")} onMouseEnter={() => handleViewChange("assets")}>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -64,10 +62,9 @@ export function Sidebar() {
               Assets
             </TooltipContent>
           </Tooltip>
-          <span className="text-xs mt-1 cursor-pointer select-none" onClick={() => handleViewChange("assets")}
-            onMouseEnter={() => handleViewChange("assets")}>Assets</span>
+          <span className="text-xs mt-1" >Assets</span>
         </div>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("code")} onMouseEnter={() => handleViewChange("code")}>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -84,10 +81,9 @@ export function Sidebar() {
               Code
             </TooltipContent>
           </Tooltip>
-          <span className="text-xs mt-1 cursor-pointer select-none" onClick={() => handleViewChange("code")}
-            onMouseEnter={() => handleViewChange("code")}>Code</span>
+          <span className="text-xs mt-1" >Code</span>
         </div>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("database")} onMouseEnter={() => handleViewChange("database")}>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -104,10 +100,9 @@ export function Sidebar() {
               Database
             </TooltipContent>
           </Tooltip>
-          <span className="text-xs mt-1 cursor-pointer select-none" onClick={() => handleViewChange("database")}
-            onMouseEnter={() => handleViewChange("database")}>Database</span>
+          <span className="text-xs mt-1" >Database</span>
         </div>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("versions")} onMouseEnter={() => handleViewChange("versions")}>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -124,10 +119,9 @@ export function Sidebar() {
               Versions
             </TooltipContent>
           </Tooltip>
-          <span className="text-xs mt-1 cursor-pointer select-none" onClick={() => handleViewChange("versions")}
-            onMouseEnter={() => handleViewChange("versions")}>Versions</span>
+          <span className="text-xs mt-1" >Versions</span>
         </div>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("settings")} onMouseEnter={() => handleViewChange("settings")}>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -144,8 +138,7 @@ export function Sidebar() {
               Settings
             </TooltipContent>
           </Tooltip>
-          <span className="text-xs mt-1 cursor-pointer select-none" onClick={() => handleViewChange("settings")}
-            onMouseEnter={() => handleViewChange("settings")}>Settings</span>
+          <span className="text-xs mt-1" >Settings</span>
         </div>
       </nav>
     </TooltipProvider>
