@@ -31,12 +31,15 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
-import { Sidebar } from "@/app/build/sidebar"
+import { Sidebar } from "@/app/space/build/sidebar"
 import { appLogoImageSmall, appName } from "@/lib/theme-service"
-import { Viewport } from "@/app/build/viewport"
-import { TopNavbar } from "@/app/build/top-navbar"
+import { AppViewport } from "@/app/space/build/viewport"
+import { TopNavbar } from "@/app/space/build/top-navbar"
 
-export default function Dashboard({ children }: any) {
+export default function Layout({ children, controlBar }: {
+  children: React.ReactNode,
+  controlBar: React.ReactNode
+}) {
   return (
     <ResizablePanelGroup direction="horizontal" className="grid min-h-screen w-full">
       <ResizablePanel defaultSize={20} minSize={20} maxSize={75}>
@@ -49,7 +52,8 @@ export default function Dashboard({ children }: any) {
                 </div>
               </Link>
             </div>
-            <Sidebar />
+            {/* <Sidebar /> */}
+            {controlBar}
           </div>
         </div>
       </ResizablePanel>
@@ -57,7 +61,7 @@ export default function Dashboard({ children }: any) {
       <ResizablePanel>
         <div className="flex flex-col h-full content-center">
           <TopNavbar />
-          <Viewport />
+          {children}
         </div>
       </ResizablePanel>
     </ResizablePanelGroup>
