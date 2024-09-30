@@ -13,15 +13,15 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 const ThemeSwitcher = () => {
-  const [mounted, setMounted] = useState(false);
+  const [shown, setShown] = useState(false);
   const { theme, setTheme } = useTheme();
 
   // useEffect only runs on the client, so now we can safely show the UI
   useEffect(() => {
-    setMounted(true);
+    setTheme("dark");
   }, []);
 
-  if (!mounted) {
+  if (!shown) {
     return null;
   }
 

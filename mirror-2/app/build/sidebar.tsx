@@ -1,9 +1,8 @@
 'use client';
 
 import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
-import { GitBranch, Box, Database, Badge, Package, Users, LineChart, SquareTerminal, Bot, Code2, Book, Settings } from "lucide-react";
-import { useState } from "react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Box, Clapperboard, Code2, Database, GitBranch, Settings } from "lucide-react";
 
 export function Sidebar() {
   return (
@@ -14,8 +13,23 @@ export function Sidebar() {
             <Button
               variant="ghost"
               size="icon"
+              className="rounded-lg"
+              aria-label="Scene"
+            >
+              <Clapperboard className="size-7" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="right" sideOffset={5}>
+            Scene
+          </TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
               className="rounded-lg bg-muted"
-              aria-label="Playground"
+              aria-label="Assets"
             >
               <Box className="size-7" />
             </Button>
@@ -30,13 +44,13 @@ export function Sidebar() {
               variant="ghost"
               size="icon"
               className="rounded-lg"
-              aria-label="API"
+              aria-label="Code"
             >
               <Code2 className="size-7" />
             </Button>
           </TooltipTrigger>
           <TooltipContent side="right" sideOffset={5}>
-            API
+            Code
           </TooltipContent>
         </Tooltip>
         <Tooltip>
@@ -45,7 +59,7 @@ export function Sidebar() {
               variant="ghost"
               size="icon"
               className="rounded-lg"
-              aria-label="Models"
+              aria-label="Database"
             >
               <Database className="size-7" />
             </Button>
@@ -60,7 +74,7 @@ export function Sidebar() {
               variant="ghost"
               size="icon"
               className="rounded-lg"
-              aria-label="Documentation"
+              aria-label="Versions"
             >
               <GitBranch className="size-7" />
             </Button>

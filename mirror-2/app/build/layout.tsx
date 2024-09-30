@@ -56,7 +56,7 @@ export default function Dashboard() {
           </div>
         </div>
       </ResizablePanel>
-      <ResizableHandle withHandle />
+      <ResizableHandle />
       <ResizablePanel>
         <div className="flex flex-col h-full content-center">
           <TopNavbar />
