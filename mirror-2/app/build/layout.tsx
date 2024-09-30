@@ -33,6 +33,7 @@ import { Input } from "@/components/ui/input"
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
 import { Sidebar } from "@/app/build/sidebar"
 import { appName } from "@/lib/copy-service"
+import { Viewport } from "@/app/build/viewport"
 
 export default function Dashboard() {
   return (
@@ -86,18 +87,7 @@ export default function Dashboard() {
               </DropdownMenuContent>
             </DropdownMenu>
           </header>
-          <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-            <div
-              className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm"
-              x-chunk="dashboard-02-chunk-1"
-            >
-              <div className="flex flex-col items-center gap-1 text-center">
-                <h3 className="text-2xl font-bold tracking-tight">
-                  3D Viewport
-                </h3>
-              </div>
-            </div>
-          </main>
+          <Viewport />
         </div>
       </ResizablePanel>
     </ResizablePanelGroup>
