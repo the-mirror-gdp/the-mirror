@@ -16,7 +16,7 @@ export function EnvVarWarning() {
           disabled
           className="opacity-75 cursor-none pointer-events-none"
         >
-          <Link href="/sign-in">Sign in</Link>
+          <Link href="/login">Login</Link>
         </Button>
         <Button
           asChild

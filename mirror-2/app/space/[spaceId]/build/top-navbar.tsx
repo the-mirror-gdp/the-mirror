@@ -17,7 +17,7 @@ export function TopNavbar() {
         variant={"outline"}
         className="opacity-75"
       >
-        <Link href="/sign-in">Sign In</Link>
+        <Link href="/login">Login</Link>
       </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
