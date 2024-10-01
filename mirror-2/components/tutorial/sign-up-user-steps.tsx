@@ -6,7 +6,7 @@ export default function SignUpUserSteps() {
   return (
     <ol className="flex flex-col gap-6">
       {process.env.VERCEL_ENV === "preview" ||
-      process.env.VERCEL_ENV === "production" ? (
+        process.env.VERCEL_ENV === "production" ? (
         <TutorialStep title="Set up redirect urls">
           <p>It looks like this App is hosted on Vercel.</p>
           <p className="mt-4">
@@ -74,7 +74,7 @@ export default function SignUpUserSteps() {
         <p>
           Head over to the{" "}
           <Link
-            href="/sign-up"
+            href="/create-account"
             className="font-bold hover:underline text-foreground/80"
           >
             Sign up

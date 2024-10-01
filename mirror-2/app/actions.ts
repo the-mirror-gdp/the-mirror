@@ -10,11 +10,12 @@ export const createAccountAction = async (formData: FormData) => {
   const password = formData.get("password")?.toString();
   const supabase = createClient();
   const origin = headers().get("origin");
+  console.log("formData", formData);
 
   if (!email || !password) {
     return { error: "Email and password are required" };
   }
-
+console.log("email", email);
   const { error } = await supabase.auth.signUp({
     email,
     password,
@@ -22,14 +23,17 @@ export const createAccountAction = async (formData: FormData) => {
       emailRedirectTo: `${origin}/auth/callback`,
     },
   });
+  console.log("error", error);
 
   if (error) {
     console.error(error.code + " " + error.message);
-    return encodedRedirect("error", "/sign-up", error.message);
+    return encodedRedirect("error", "/create-account", error.message);
   } else {
+  console.log("success");
+
     return encodedRedirect(
       "success",
-      "/sign-up",
+      "/create-account",
       "Thanks for signing up! Please check your email for a verification link.",
     );
   }

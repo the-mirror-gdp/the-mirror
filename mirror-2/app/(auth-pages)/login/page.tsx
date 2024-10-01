@@ -19,25 +19,24 @@ export default function Login({ searchParams }: { searchParams: Message }) {
             Login
           </CardTitle>
 
+
         </CardHeader>
         <CardContent className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="m@example.com" required />
+            <Input id="email" type="email" name="email" placeholder="m@example.com" required />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" required />
+            <Input id="password" type="password" name="password" required />
           </div>
         </CardContent>
         <CardFooter className="grid grid-cols-1 gap-5">
-          <div>
-            <SubmitButton className="w-full" pendingText="Signing In..." formAction={loginAction}>Login</SubmitButton>
-          </div>
-
+          <SubmitButton className="w-full" pendingText="Signing In..." formAction={loginAction}>Login</SubmitButton>
+          <FormMessage message={searchParams} />
           <p className="text-sm text-muted-foreground">
             Don't have an account?{" "}
-            <Link className="text-foreground font-medium underline" href="/sign-up">
+            <Link className="text-foreground font-medium underline" href="/create-account">
               Create Account
             </Link>
           </p>

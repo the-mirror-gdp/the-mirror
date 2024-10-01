@@ -22,19 +22,16 @@ export default function CreateAccount({ searchParams }: { searchParams: Message 
         <CardContent className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="m@example.com" required />
+            <Input id="email" type="email" name="email" placeholder="m@example.com" required />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" required />
+            <Input id="password" type="password" name="password" required />
           </div>
         </CardContent>
-        <CardFooter className="grid grid-cols-1 gap-5">
-          <div>
-            <SubmitButton className="w-full" pendingText="Signing In..." formAction={createAccountAction}>Create Account</SubmitButton>
-          </div>
-
-
+        <CardFooter className="grid grid-cols-1 gap-3">
+          <SubmitButton className="w-full" pendingText="Creating Account..." formAction={createAccountAction}>Create Account</SubmitButton>
+          <FormMessage message={searchParams} />
           <p className="text-sm text-muted-foreground">
             Already have an account?{" "}
             <Link className="text-foreground font-medium underline" href="/login">
