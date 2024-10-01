@@ -17,10 +17,7 @@ export default async function Layout({
             <div className="mb-4 mx-auto grid">
               <AppLogoImageMedium className="place-self-center" />
             </div>
-            Login</CardTitle>
-          <CardDescription>
-            Enter your email below to login to your account.
-          </CardDescription>
+          </CardTitle>
         </CardHeader>
         <CardContent className="grid gap-4">
           <div className="grid gap-2">
@@ -33,7 +30,7 @@ export default async function Layout({
           </div>
         </CardContent>
         <CardFooter>
-          <Button className="w-full">Sign in</Button>
+          <Button className="w-full">Sign In</Button>
         </CardFooter>
       </Card>
     </div>
