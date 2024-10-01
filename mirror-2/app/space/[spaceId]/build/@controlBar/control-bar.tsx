@@ -1,27 +1,25 @@
 'use client';
 
-import { controlBarCurrentViewAtom } from "@/app/space/[spaceId]/build/@controlBar/store";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { uiSoundsCanPlayAtom, useUiHoverSoundEffect } from "@/components/ui/ui-sounds";
+import { useUiHoverSoundEffect } from "@/components/ui/ui-sounds";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
-import { selectUiSoundsCanPlay, turnOffUiSounds, turnOnUiSounds } from "@/state/local";
-import { atom, useAtom } from "jotai";
+import { ControlBarView, selectControlBarCurrentView, selectUiSoundsCanPlay, setControlBarCurrentView, turnOffUiSounds, turnOnUiSounds } from "@/state/local";
 import { Box, Clapperboard, Code2, Database, GitBranch, Settings, Volume2, VolumeOff } from "lucide-react";
 
 
 export default function ControlBar() {
-  const [currentView, setCurrentView] = useAtom(controlBarCurrentViewAtom);
-  const uiSoundsCanPlay = useAppSelector(selectUiSoundsCanPlay);
+  const currentView = useAppSelector(selectControlBarCurrentView);
   const dispatch = useAppDispatch();
+  const uiSoundsCanPlay = useAppSelector(selectUiSoundsCanPlay);
   const [play] = useUiHoverSoundEffect();
 
-  const handleViewChange = (view: string) => {
+  const handleViewChange = (view: ControlBarView) => {
     // play the sound ONLY if the view has changed
     if (currentView !== view) {
       play()
     }
-    setCurrentView(view);
+    dispatch(setControlBarCurrentView(view));
   };
 
   const getVariant = (view: string) => {

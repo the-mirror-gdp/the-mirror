@@ -1,14 +1,14 @@
 "use client"
-import Scenes from "@/app/space/[spaceId]/build/@controlBar/scenes";
 import Assets from "@/app/space/[spaceId]/build/@controlBar/assets";
-import { controlBarCurrentViewAtom } from "./store";
-import { useAtom } from "jotai";
-import { Suspense } from "react";
 import Code from "@/app/space/[spaceId]/build/@controlBar/code";
+import Scenes from "@/app/space/[spaceId]/build/@controlBar/scenes";
 import { SkeletonCard } from "@/app/space/[spaceId]/build/@controlBar/skeleton-card";
+import { useAppSelector } from "@/hooks/hooks";
+import { selectControlBarCurrentView } from "@/state/local";
+import { Suspense } from "react";
 
 export default function InnerControlBar() {
-  const [currentView] = useAtom(controlBarCurrentViewAtom);
+  const currentView = useAppSelector(selectControlBarCurrentView);
 
   return (
     <div>
