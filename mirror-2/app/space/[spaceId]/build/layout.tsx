@@ -3,7 +3,6 @@ import Link from "next/link"
 import { TopNavbar } from "@/app/space/[spaceId]/build/top-navbar"
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
 import { AppLogoImageSmall } from "@/lib/theme-service"
-import { getSingleSpaceAction } from "@/actions/space"
 
 export default async function Layout({ children, controlBar, spaceViewport, params }: {
   children: React.ReactNode,
@@ -11,7 +10,6 @@ export default async function Layout({ children, controlBar, spaceViewport, para
   spaceViewport: React.ReactNode,
   params: { spaceId: string }
 }) {
-  const { data } = await getSingleSpaceAction(params.spaceId);
 
   return (
     <ResizablePanelGroup direction="horizontal" className="grid min-h-screen w-full">

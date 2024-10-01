@@ -9,9 +9,6 @@ import Link from "next/link";
 import "./globals.css";
 import { Providers } from "@/components/jotai-providers";
 
-const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
 
 export default function RootLayout({
   children,
