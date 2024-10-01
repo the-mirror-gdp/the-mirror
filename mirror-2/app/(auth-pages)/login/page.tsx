@@ -1,4 +1,4 @@
-import { loginAction } from "@/actions/auth-actions";
+import { loginAction } from "@/actions/auth";
 import { FormMessage, Message } from "@/components/form-message";
 import { SubmitButton } from "@/components/submit-button";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
