@@ -5,10 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Search, CircleUser } from "lucide-react";
 import Link from "next/link";
 
-export function TopNavbar() {
+export async function TopNavbar() {
+
   return (
     <header className="flex h-14 items-center gap-4 bg-muted/40 px-4 lg:h-[60px] lg:px-6">
-      {/* add an input that is the title and is modifiable */}
       <div className="w-full flex-1 flex items-center gap-4">
         <Input
           type="text"
