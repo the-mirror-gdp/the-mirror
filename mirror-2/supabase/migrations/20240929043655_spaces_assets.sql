@@ -46,6 +46,7 @@ using (creator_user_id = auth.uid());
 -- assets
 create table assets (
   id uuid not null primary key,
+  creator_user_id uuid references auth.users(id) on delete cascade not null,
   name text not null,
   asset_url text not null,
   created_at timestamp with time zone not null default now(),

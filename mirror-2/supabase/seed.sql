@@ -54,14 +54,14 @@ BEGIN
       VALUES
         (user_id, format('User %s', i), format('This is the bio of user %s.', i), format('https://picsum.photos/seed/picsum/300/300', i));
 
-      -- Insert 30 assets for each user
+      -- Insert 30 assets for each user, now including creator_user_id
       FOR j IN 1..30 LOOP
         asset_url := format('https://picsum.photos/seed/picsum/800/600', i, j);  -- Use %s for numbers
 
         INSERT INTO public.assets
-          (id, name, asset_url, created_at, updated_at)
+          (id, name, asset_url, creator_user_id, created_at, updated_at)
         VALUES
-          (gen_random_uuid(), format('Asset %s', j), asset_url, now(), now());
+          (gen_random_uuid(), format('Asset %s', j), asset_url, user_id, now(), now());  -- Include creator_user_id
       END LOOP;
 
     END LOOP;
