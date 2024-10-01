@@ -8,7 +8,12 @@ import Link from "next/link";
 export function TopNavbar() {
   return (
     <header className="flex h-14 items-center gap-4 bg-muted/40 px-4 lg:h-[60px] lg:px-6">
-      <div className="w-full flex-1">
+      {/* add an input that is the title and is modifiable */}
+      <div className="w-full flex-1 flex items-center gap-4">
+        <Input
+          type="text"
+          className="w-full dark:bg-transparent border-none text-lg shadow-none md:w-2/3 lg:w-1/3"
+        />
       </div>
       <ThemeSwitcher />
       <Button
