@@ -25,7 +25,6 @@ BEGIN
   RETURN user_id;
 END;
 $$ LANGUAGE plpgsql;
-
 DO $$
 DECLARE
   i INTEGER;
@@ -35,6 +34,8 @@ DECLARE
   user_id uuid;
   profile_url TEXT;
   asset_url TEXT;
+  space_id uuid;
+  scene_name TEXT;
 BEGIN
     -- Loop to insert 15 users
     FOR i IN 1..15 LOOP
@@ -68,9 +69,22 @@ BEGIN
 
     -- Insert spaces, using user_ids from the array
     FOR i IN 1..45 LOOP
+      -- Create a new space
       INSERT INTO public.spaces
         (id, name, creator_user_id, created_at, updated_at)
       VALUES
-        (gen_random_uuid(), format('Space %s', i), user_ids[((i - 1) % 15) + 1], now(), now());
+        (gen_random_uuid(), format('Space %s', i), user_ids[((i - 1) % 15) + 1], now(), now())
+      RETURNING id INTO space_id;  -- Capture the newly created space ID
+
+      -- Insert 3 scenes for each space
+      FOR j IN 1..3 LOOP
+        scene_name := format('Scene %s-%s', i, j);  -- Create unique scene names
+
+        INSERT INTO public.scenes
+          (id, space_id, name, creator_user_id, created_at, updated_at)
+        VALUES
+          (gen_random_uuid(), space_id, scene_name, user_ids[((i - 1) % 15) + 1], now(), now());  -- Use the same creator as the space
+      END LOOP;
+
     END LOOP;
 END $$;
