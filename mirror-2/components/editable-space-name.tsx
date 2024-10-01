@@ -60,7 +60,7 @@ export function EditableSpaceName() {
                     {...field}
                   />
                 </FormControl>
-                {/* TODO message handling for this */}
+                {/* TODO add better styling for this so it doesn't shift the input field */}
                 <FormMessage />
               </FormItem>
             )}
