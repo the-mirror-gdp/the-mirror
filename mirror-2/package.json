@@ -7,6 +7,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
     "@next/bundle-analyzer": "^14.2.13",
     "@radix-ui/react-checkbox": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.1",
@@ -27,10 +28,12 @@
     "prettier": "^3.3.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.53.0",
     "react-redux": "^9.1.2",
     "react-resizable-panels": "^2.1.4",
     "server-only": "^0.0.1",
-    "use-sound": "^4.0.3"
+    "use-sound": "^4.0.3",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "20.10.6",

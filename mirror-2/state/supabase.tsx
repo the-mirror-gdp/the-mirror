@@ -26,10 +26,28 @@ export const supabaseApi = createApi({
       }
     }),
 
+    updateSpace: builder.mutation<any, { spaceId: string, name: string }>({
+      queryFn: async ({ spaceId, name }) => {
+        const supabase = createSupabaseBrowserClient();
+
+        const { data, error } = await supabase
+          .from("spaces")
+          .update({ name })
+          .eq("id", spaceId)
+          .single()
+
+        if (error) {
+          console.error('sb', error.message);
+          return { error: error.message };
+        }
+        return { data };
+      }
+    }),
+
   }),
 })
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetSingleSpaceQuery } = supabaseApi
+export const { useGetSingleSpaceQuery, useUpdateSpaceMutation } = supabaseApi
 
