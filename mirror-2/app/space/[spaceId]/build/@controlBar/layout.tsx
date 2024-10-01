@@ -4,8 +4,12 @@ import InnerControlBar from '@/app/space/[spaceId]/build/@controlBar/inner-contr
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-row ">
-      <ControlBar />
-      <InnerControlBar />
+      <div className="flex-none">
+        <ControlBar />
+      </div>
+      <div className="flex-auto">
+        <InnerControlBar />
+      </div>
     </div>
   )
 }
