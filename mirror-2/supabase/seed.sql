@@ -78,6 +78,14 @@ BEGIN
         (gen_random_uuid(), format('Space %s', i), user_ids[((i - 1) % 15) + 1], user_ids[((i - 1) % 15) + 1], now(), now())
       RETURNING id INTO space_id;  -- Capture the newly created space ID
 
+      -- Insert 3 space_versions for each space
+      FOR v IN 1..3 LOOP
+        INSERT INTO public.space_versions
+          (id, name, space_id, created_at, updated_at)
+        VALUES
+          (gen_random_uuid(), format('Version %s-%s', i, v), space_id, now(), now());
+      END LOOP;
+
       -- Insert 3 scenes for each space
       FOR j IN 1..3 LOOP
         -- Create a new scene
