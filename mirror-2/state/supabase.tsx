@@ -26,13 +26,13 @@ export const supabaseApi = createApi({
       }
     }),
 
-    updateSpace: builder.mutation<any, { spaceId: string, name: string }>({
-      queryFn: async ({ spaceId, name }) => {
+    updateSpace: builder.mutation<any, { spaceId: string, updateData: Record<string, any> }>({
+      queryFn: async ({ spaceId, updateData }) => {
         const supabase = createSupabaseBrowserClient();
 
         const { data, error } = await supabase
           .from("spaces")
-          .update({ name })
+          .update(updateData)
           .eq("id", spaceId)
           .single()
 

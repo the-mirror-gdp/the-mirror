@@ -31,7 +31,7 @@ export function EditableSpaceName() {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // update the space name
-    await updateSpace({ spaceId: space.id, name: values.name })
+    await updateSpace({ spaceId: space.id, updateData: { name: values.name } })
   }
 
   // Reset the form values when the space data is fetched
