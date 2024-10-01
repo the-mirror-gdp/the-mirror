@@ -3,7 +3,6 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetSingleSpaceQuery } from "@/state/supabase";
 import { useParams } from "next/navigation";
-import { Suspense, useEffect } from "react";
 
 export function EditableSpaceName() {
   const params = useParams<{ spaceId: string }>()
