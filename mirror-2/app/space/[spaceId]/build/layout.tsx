@@ -2,7 +2,7 @@ import Link from "next/link"
 
 import { TopNavbar } from "@/app/space/[spaceId]/build/top-navbar"
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
-import { appLogoImageSmall } from "@/lib/theme-service"
+import { AppLogoImageSmall } from "@/lib/theme-service"
 
 export default function Layout({ children, controlBar, spaceViewport }: {
   children: React.ReactNode,
@@ -17,7 +17,7 @@ export default function Layout({ children, controlBar, spaceViewport }: {
             <div className="flex h-14 items-center px-4 lg:h-[60px] lg:px-6">
               <Link href="/" className="flex items-center gap-2 font-semibold">
                 <div className="mt-1">
-                  {appLogoImageSmall()}
+                  <AppLogoImageSmall />
                 </div>
               </Link>
             </div>

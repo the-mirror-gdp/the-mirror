@@ -13,10 +13,10 @@ export const appName = () => {
 interface ImageProps {
   width?: number
   height?: number
-  className: any
+  className?: any
 }
 
-export const appLogoImageSmall = ({ width = 159, height = 49, ...props }: ImageProps) => {
+export const AppLogoImageSmall = ({ width = 159, height = 49, ...props }: ImageProps) => {
   const appName = process.env.NEXT_PUBLIC_APP_NAME;
 
   if (appName === "Reflekt") {
