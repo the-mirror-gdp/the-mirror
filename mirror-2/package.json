@@ -2,6 +2,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev & supabase start",
+    "reset": "supabase db reset",
     "build": "next build",
     "start": "next start"
   },
