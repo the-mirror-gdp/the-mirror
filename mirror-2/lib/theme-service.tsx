@@ -10,12 +10,29 @@ export const appName = () => {
   }
 };
 
-export const appLogoImageSmall = () => {
+interface ImageProps {
+  width?: number
+  height?: number
+  className: any
+}
+
+export const appLogoImageSmall = ({ width = 159, height = 49, ...props }: ImageProps) => {
   const appName = process.env.NEXT_PUBLIC_APP_NAME;
 
   if (appName === "Reflekt") {
-    return <Image src="/reflekt_logo_with_text_sm.png" width={159} height={40} alt="Reflekt Logo" />;
+    return <Image src="/reflekt_logo_with_text_sm.png" width={width} height={height} alt="Reflekt Logo" {...props} />;
   } else {
-    return <Image src="/mirror_logo_white_sm.png" width={159} height={40} alt="Mirror Logo" />;
+    return <Image src="/mirror_logo_white_sm.png" width={width} height={height} alt="Mirror Logo" {...props} />;
+  }
+};
+
+
+export const AppLogoImageMedium = ({ width = 300, height = 40, ...props }: ImageProps) => {
+  const appName = process.env.NEXT_PUBLIC_APP_NAME;
+
+  if (appName === "Reflekt") {
+    return <Image src="/reflekt_logo_with_text_md.png" width={width} height={height} alt="Reflekt Logo" {...props} />;
+  } else {
+    return <Image src="/mirror_logo_white_sm.png" width={width} height={height} alt="Mirror Logo" {...props} />;
   }
 };

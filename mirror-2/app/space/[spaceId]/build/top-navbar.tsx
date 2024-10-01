@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Search, CircleUser } from "lucide-react";
+import Link from "next/link";
 
 export function TopNavbar() {
   return (
@@ -10,6 +11,14 @@ export function TopNavbar() {
       <div className="w-full flex-1">
       </div>
       <ThemeSwitcher />
+      <Button
+        asChild
+        size="sm"
+        variant={"outline"}
+        className="opacity-75"
+      >
+        <Link href="/sign-in">Sign In</Link>
+      </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="secondary" size="icon" className="rounded-full">
