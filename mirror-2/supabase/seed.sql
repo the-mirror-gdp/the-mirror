@@ -36,7 +36,8 @@ DECLARE
   profile_url TEXT;
   asset_url TEXT;
   space_id uuid;
-  scene_name TEXT;
+  scene_id uuid;
+  entity_name TEXT;
 BEGIN
     -- Loop to insert 15 users
     FOR i IN 1..15 LOOP
@@ -79,12 +80,23 @@ BEGIN
 
       -- Insert 3 scenes for each space
       FOR j IN 1..3 LOOP
-        scene_name := format('Scene %s-%s', i, j);  -- Create unique scene names
-
+        -- Create a new scene
         INSERT INTO public.scenes
           (id, space_id, name, created_at, updated_at)
         VALUES
-          (gen_random_uuid(), space_id, scene_name, now(), now());
+          (gen_random_uuid(), space_id, format('Scene %s-%s', i, j), now(), now())
+        RETURNING id INTO scene_id;  -- Capture the newly created scene ID
+
+        -- Insert 20 entities for each scene
+        FOR k IN 1..20 LOOP
+          entity_name := format('Entity %s-%s-%s', i, j, k);  -- Create unique entity names
+
+          INSERT INTO public.entities
+            (id, name, scene_id, created_at, updated_at)
+          VALUES
+            (gen_random_uuid(), entity_name, scene_id, now(), now());
+        END LOOP;
+
       END LOOP;
 
     END LOOP;
