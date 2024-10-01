@@ -1,10 +1,11 @@
 "use client";
 import { createSupabaseBrowserClient } from "@/utils/supabase/client";
+import { cache } from "react";
 
 // we want to use client-side only because supabase tracks auth clientside
 
 
-export const getSingleSpaceAction = async (spaceId: string) => {
+export const getSingleSpaceAction = cache(async (spaceId: string) => {
   const supabase = createSupabaseBrowserClient();
 
   const { data, error } = await supabase
@@ -20,4 +21,4 @@ export const getSingleSpaceAction = async (spaceId: string) => {
   }
   console.log('sb data', data)
   return { data };
-};
+})
