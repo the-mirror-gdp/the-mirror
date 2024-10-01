@@ -39,7 +39,7 @@ BEGIN
     -- Loop to insert 15 users
     FOR i IN 1..15 LOOP
       -- Construct the email dynamically
-      email := format('user%s@a.com', i);  -- Use %s for numbers
+      email := format('user%s@example.com', i);  -- Use %s for numbers
 
       -- Call the create_user function with the constructed email and capture user_id
       user_id := public.create_user(email, password);
