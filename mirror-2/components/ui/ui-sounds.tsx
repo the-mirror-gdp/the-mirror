@@ -2,11 +2,8 @@
 "use client"
 import { useAppSelector } from "@/hooks/hooks";
 import { selectUiSoundsCanPlay } from "@/state/local";
-import { atomWithStorage } from 'jotai/utils';
 import { useEffect, useState } from "react";
 import useSound from "use-sound";
-
-export const uiSoundsCanPlayAtom = atomWithStorage('uiSoundsCanPlay', true);
 
 export function useUiHoverSoundEffect() {
   const uiSoundsCanPlay = useAppSelector(selectUiSoundsCanPlay);

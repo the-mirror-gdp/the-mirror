@@ -7,7 +7,6 @@ import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { ControlBarView, selectControlBarCurrentView, selectUiSoundsCanPlay, setControlBarCurrentView, turnOffUiSounds, turnOnUiSounds } from "@/state/local";
 import { Box, Clapperboard, Code2, Database, GitBranch, Settings, Volume2, VolumeOff } from "lucide-react";
 
-
 export default function ControlBar() {
   const currentView = useAppSelector(selectControlBarCurrentView);
   const dispatch = useAppDispatch();
