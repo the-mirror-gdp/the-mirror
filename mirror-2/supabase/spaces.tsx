@@ -11,6 +11,7 @@ export const getSingleSpaceAction = async (spaceId: string) => {
     .from("spaces")
     .select("*")
     .eq("id", spaceId)
+    .single()
 
   if (error) {
     console.error('sb', error.message);

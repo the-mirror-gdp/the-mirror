@@ -14,7 +14,7 @@ export function EditableSpaceName() {
       console.log("data", data);
       console.log("error", error);
       // @ts-ignore
-      setName(data[0]?.name);
+      setName(data?.name);
     }
     run()
   }, [])
