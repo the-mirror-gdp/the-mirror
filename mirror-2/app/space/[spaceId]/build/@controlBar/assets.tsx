@@ -1,12 +1,14 @@
 'use client';
-import ControlBar from "@/app/space/[spaceId]/build/@controlBar/control-bar";
 import { asyncTimeoutAtom } from "@/app/space/[spaceId]/build/@controlBar/store";
+import { useGetPokemonByNameQuery } from "@/state/pokemon";
 import { useAtom } from "jotai";
 import { Suspense } from "react";
 
 export default function Assets() {
+  const { data, error, isLoading } = useGetPokemonByNameQuery('bulbasaur')
+
   const [test] = useAtom(asyncTimeoutAtom);
   return (
-    <div>Assets: {test}</div>
+    <div>Assets: {JSON.stringify(data)}</div>
   );
 }

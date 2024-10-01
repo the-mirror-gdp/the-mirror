@@ -4,13 +4,16 @@ import { controlBarCurrentViewAtom } from "@/app/space/[spaceId]/build/@controlB
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { uiSoundsCanPlayAtom, useUiHoverSoundEffect } from "@/components/ui/ui-sounds";
+import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
+import { selectUiSoundsCanPlay, turnOffUiSounds, turnOnUiSounds } from "@/state/local";
 import { atom, useAtom } from "jotai";
 import { Box, Clapperboard, Code2, Database, GitBranch, Settings, Volume2, VolumeOff } from "lucide-react";
 
 
 export default function ControlBar() {
   const [currentView, setCurrentView] = useAtom(controlBarCurrentViewAtom);
-  const [uiSoundsCanPlay, setUiSoundsCanPlay] = useAtom(uiSoundsCanPlayAtom);
+  const uiSoundsCanPlay = useAppSelector(selectUiSoundsCanPlay);
+  const dispatch = useAppDispatch();
   const [play] = useUiHoverSoundEffect();
 
   const handleViewChange = (view: string) => {
@@ -149,7 +152,7 @@ export default function ControlBar() {
                 size="icon"
                 aria-label="Toggle UI Sounds"
                 onClick={() => {
-                  setUiSoundsCanPlay(!uiSoundsCanPlay);
+                  dispatch(uiSoundsCanPlay ? turnOffUiSounds() : turnOnUiSounds());
                 }}
                 variant={"ghost"}
               >
