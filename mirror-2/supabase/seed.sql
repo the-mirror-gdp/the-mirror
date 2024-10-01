@@ -25,6 +25,7 @@ BEGIN
   RETURN user_id;
 END;
 $$ LANGUAGE plpgsql;
+
 DO $$
 DECLARE
   i INTEGER;
@@ -55,25 +56,25 @@ BEGIN
       VALUES
         (user_id, format('User %s', i), format('This is the bio of user %s.', i), format('https://picsum.photos/seed/picsum/300/300', i));
 
-      -- Insert 30 assets for each user, now including creator_user_id
+      -- Insert 30 assets for each user, now including creator_user_id and owner_user_id
       FOR j IN 1..30 LOOP
         asset_url := format('https://picsum.photos/seed/picsum/800/600', i, j);  -- Use %s for numbers
 
         INSERT INTO public.assets
-          (id, name, asset_url, creator_user_id, created_at, updated_at)
+          (id, name, asset_url, creator_user_id, owner_user_id, created_at, updated_at)
         VALUES
-          (gen_random_uuid(), format('Asset %s', j), asset_url, user_id, now(), now());  -- Include creator_user_id
+          (gen_random_uuid(), format('Asset %s', j), asset_url, user_id, user_id, now(), now());  -- Initially, owner_user_id is the same as creator_user_id
       END LOOP;
 
     END LOOP;
 
-    -- Insert spaces, using user_ids from the array
+    -- Insert spaces, using user_ids from the array and setting both owner_user_id and creator_user_id
     FOR i IN 1..45 LOOP
       -- Create a new space
       INSERT INTO public.spaces
-        (id, name, creator_user_id, created_at, updated_at)
+        (id, name, creator_user_id, owner_user_id, created_at, updated_at)
       VALUES
-        (gen_random_uuid(), format('Space %s', i), user_ids[((i - 1) % 15) + 1], now(), now())
+        (gen_random_uuid(), format('Space %s', i), user_ids[((i - 1) % 15) + 1], user_ids[((i - 1) % 15) + 1], now(), now())
       RETURNING id INTO space_id;  -- Capture the newly created space ID
 
       -- Insert 3 scenes for each space
@@ -81,9 +82,9 @@ BEGIN
         scene_name := format('Scene %s-%s', i, j);  -- Create unique scene names
 
         INSERT INTO public.scenes
-          (id, space_id, name, creator_user_id, created_at, updated_at)
+          (id, space_id, name, created_at, updated_at)
         VALUES
-          (gen_random_uuid(), space_id, scene_name, user_ids[((i - 1) % 15) + 1], now(), now());  -- Use the same creator as the space
+          (gen_random_uuid(), space_id, scene_name, now(), now());
       END LOOP;
 
     END LOOP;
