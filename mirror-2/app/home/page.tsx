@@ -58,9 +58,8 @@ export default function MusicPage() {
                         </TabsTrigger>
                       </TabsList> */}
                       <div className="ml-auto mr-4">
-                        <Button>
-                          <PlusCircleIcon className="mr-2 h-4 w-4" />
-                          <Link href="/space/new">Create a Space</Link>
+                        <Button asChild>
+                          <Link href="/space/new"><PlusCircleIcon className="mr-2 h-4 w-4" />Create a Space</Link>
                         </Button>
                       </div>
                     </div>
