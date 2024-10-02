@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import Link from "next/link"
 
 export const metadata: Metadata = {
   title: "Music App",
@@ -39,15 +40,15 @@ export default function MusicPage() {
       </div>
       <div className="hidden md:block">
         <Menu />
-        <div className="border-t">
+        <div className="border-none">
           <div className="bg-background">
             <div className="grid lg:grid-cols-5">
               <Sidebar playlists={playlists} className="hidden lg:block" />
-              <div className="col-span-3 lg:col-span-4 lg:border-l">
+              <div className="col-span-3 lg:col-span-4">
                 <div className="h-full px-4 py-6 lg:px-8">
                   <Tabs defaultValue="music" className="h-full space-y-6">
                     <div className="space-between flex items-center">
-                      <TabsList>
+                      {/* <TabsList>
                         <TabsTrigger value="music" className="relative">
                           Music
                         </TabsTrigger>
@@ -55,11 +56,11 @@ export default function MusicPage() {
                         <TabsTrigger value="live" disabled>
                           Live
                         </TabsTrigger>
-                      </TabsList>
+                      </TabsList> */}
                       <div className="ml-auto mr-4">
                         <Button>
                           <PlusCircleIcon className="mr-2 h-4 w-4" />
-                          Add music
+                          <Link href="/space/new">Create a Space</Link>
                         </Button>
                       </div>
                     </div>
@@ -70,10 +71,10 @@ export default function MusicPage() {
                       <div className="flex items-center justify-between">
                         <div className="space-y-1">
                           <h2 className="text-2xl font-semibold tracking-tight">
-                            Listen Now
+                            Popular
                           </h2>
                           <p className="text-sm text-muted-foreground">
-                            Top picks for you. Updated daily.
+                            Top picks for you.
                           </p>
                         </div>
                       </div>
