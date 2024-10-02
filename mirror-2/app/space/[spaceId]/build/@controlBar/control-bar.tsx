@@ -44,7 +44,7 @@ export default function ControlBar() {
               Scenes
             </TooltipContent>
           </Tooltip>
-          <span className="text-xs mt-1" >Scenes</span>
+          <span className="text-md mt-1" >Scenes</span>
         </div>
         <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("assets")} onMouseEnter={() => handleViewChange("hierarchy")}>
           <Tooltip>
@@ -63,7 +63,7 @@ export default function ControlBar() {
               Hierarchy
             </TooltipContent>
           </Tooltip>
-          <span className="text-xs mt-1" >Hierarchy</span>
+          <span className="text-md mt-1" >Hierarchy</span>
         </div>
         <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("assets")} onMouseEnter={() => handleViewChange("assets")}>
           <Tooltip>
@@ -82,7 +82,7 @@ export default function ControlBar() {
               Assets
             </TooltipContent>
           </Tooltip>
-          <span className="text-xs mt-1" >Assets</span>
+          <span className="text-md mt-1" >Assets</span>
         </div>
         <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("code")} onMouseEnter={() => handleViewChange("code")}>
           <Tooltip>
@@ -101,7 +101,7 @@ export default function ControlBar() {
               Code
             </TooltipContent>
           </Tooltip>
-          <span className="text-xs mt-1" >Code</span>
+          <span className="text-md mt-1" >Code</span>
         </div>
         <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("database")} onMouseEnter={() => handleViewChange("database")}>
           <Tooltip>
@@ -120,7 +120,7 @@ export default function ControlBar() {
               Database
             </TooltipContent>
           </Tooltip>
-          <span className="text-xs mt-1" >Database</span>
+          <span className="text-md mt-1" >Database</span>
         </div>
         <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("versions")} onMouseEnter={() => handleViewChange("versions")}>
           <Tooltip>
@@ -139,7 +139,7 @@ export default function ControlBar() {
               Versions
             </TooltipContent>
           </Tooltip>
-          <span className="text-xs mt-1" >Versions</span>
+          <span className="text-md mt-1" >Versions</span>
         </div>
         <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("settings")} onMouseEnter={() => handleViewChange("settings")}>
           <Tooltip>
@@ -158,10 +158,10 @@ export default function ControlBar() {
               Settings
             </TooltipContent>
           </Tooltip>
-          <span className="text-xs mt-1" >Settings</span>
+          <span className="text-md mt-1" >Settings</span>
         </div>
 
-        <div className="flex flex-col cursor-pointer select-none ml-2">
+        <div className="flex flex-col cursor-pointer select-none mx-auto mt-auto">
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
