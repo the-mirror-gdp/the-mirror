@@ -16,19 +16,18 @@ export const signOutAction = async () => {
 export function useSetupAuthEvents() {
   const supabase = createSupabaseBrowserClient();
   const dispatch = useAppDispatch();
+  const router = useRouter()
 
   // if no user, clear local state
-  useEffect(() => {
-    async function clearStateIfNoUser() {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) {
-        dispatch(clearLocalUserState())
-      }
-    }
-    clearStateIfNoUser()
-  }, [])
+  // useEffect(() => {
+  //   async function clearStateIfNoUser() {
+  //     const user = await supabase.auth.getSession()
+  //     if (!user) {
+  //       dispatch(clearLocalUserState())
+  //     }
+  //   }
+  //   clearStateIfNoUser()
+  // }, [dispatch, supabase])
 
   const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
     function handleLogin() {
@@ -41,16 +40,25 @@ export function useSetupAuthEvents() {
         console.log('auth: did not fire')
       }
     }
+
+    function handleLogout() {
+      dispatch(clearLocalUserState())
+      router.push("/login")
+    }
     console.log("auth", event, session)
     if (event === 'INITIAL_SESSION') {
       // handle initial session
-      handleLogin()
+      if (session?.user) {
+        handleLogin()
+      } else {
+        handleLogout()
+      }
     } else if (event === 'SIGNED_IN') {
       // handle sign in event
       handleLogin()
     } else if (event === 'SIGNED_OUT') {
       // handle sign out event
-      dispatch(clearLocalUserState())
+      handleLogout()
     } else if (event === 'PASSWORD_RECOVERY') {
       // handle password recovery event
     } else if (event === 'TOKEN_REFRESHED') {

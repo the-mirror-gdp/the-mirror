@@ -1,11 +1,11 @@
 
 import { BlankRedirect } from "@/app/protected/blank-redirect";
-import { createClient } from "@/utils/supabase/server";
+import { createServerClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
 export default async function ProtectedPage() {
 
-  const supabase = createClient();
+  const supabase = createServerClient();
 
   const {
     data: { user },

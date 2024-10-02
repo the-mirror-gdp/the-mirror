@@ -46,6 +46,7 @@ export const localSlice = createSlice({
       state.user = action.payload
     },
     clearLocalUserState: (state) => {
+      console.log('auth clearLocalUserState')
       state.user = undefined
     }
   },
