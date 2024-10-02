@@ -1,4 +1,3 @@
-import { Metadata } from "next"
 import Image from "next/image"
 
 import { AlbumArtwork } from "./components/album-artwork"
@@ -13,11 +12,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import Link from "next/link"
+import { appDescription, appName } from "@/lib/theme-service"
+import { Metadata } from "next"
 
-export const metadata: Metadata = {
-  title: "Music App",
-  description: "Example music app using the components.",
-}
 
 export default function MusicPage() {
   return (
@@ -58,8 +55,8 @@ export default function MusicPage() {
                         </TabsTrigger>
                       </TabsList> */}
                       <div className="ml-auto mr-4">
-                        <Button asChild>
-                          <Link href="/space/new"><PlusCircleIcon className="mr-2 h-4 w-4" />Create a Space</Link>
+                        <Button className="w-full" asChild>
+                          <Link href="/space/new" className="w-full p-3"><PlusCircleIcon className="mr-2" />Create a Space</Link>
                         </Button>
                       </div>
                     </div>
