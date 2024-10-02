@@ -1,5 +1,5 @@
-import ControlBar from "@/app/space/[spaceId]/build/@controlBar/control-bar";
-import controlBar from "@/app/space/[spaceId]/build/@controlBar/control-bar";
+import ControlBar from "@/app/space/[spaceId]/build/(controlBar)/control-bar";
+import controlBar from "@/app/space/[spaceId]/build/(controlBar)/control-bar";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 
 export function Sidebar() {

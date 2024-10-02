@@ -5,6 +5,7 @@ import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/componen
 import { AppLogoImageSmall } from "@/lib/theme-service"
 import { Sidebar } from "@/app/space/[spaceId]/build/sidebar"
 import SpaceViewport from "@/app/space/[spaceId]/build/space-viewport"
+import InnerControlBar from "@/app/space/[spaceId]/build/(controlBar)/inner-control-bar"
 
 export default async function Layout({ children, params }: {
   children: React.ReactNode,
@@ -19,6 +20,9 @@ export default async function Layout({ children, params }: {
       </div>
       <div className="absolute pt-16 w-32 h-full">
         <Sidebar />
+      </div>
+      <div className="absolute left-32 top-16 min-w-96 h-full">
+        <InnerControlBar />
       </div>
       <div className="pl-32 pt-16 min-h-screen">
         <SpaceViewport />
