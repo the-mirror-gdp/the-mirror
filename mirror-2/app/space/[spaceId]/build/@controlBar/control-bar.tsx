@@ -5,7 +5,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { useUiHoverSoundEffect } from "@/components/ui/ui-sounds";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { ControlBarView, selectControlBarCurrentView, selectUiSoundsCanPlay, setControlBarCurrentView, turnOffUiSounds, turnOnUiSounds } from "@/state/local";
-import { Box, Clapperboard, Code2, Database, GitBranch, Settings, Volume2, VolumeOff } from "lucide-react";
+import { Box, Clapperboard, Code2, Database, GitBranch, ListTree, Settings, Volume2, VolumeOff } from "lucide-react";
 
 export default function ControlBar() {
   const currentView = useAppSelector(selectControlBarCurrentView);
@@ -45,6 +45,25 @@ export default function ControlBar() {
             </TooltipContent>
           </Tooltip>
           <span className="text-xs mt-1" >Scenes</span>
+        </div>
+        <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("assets")} onMouseEnter={() => handleViewChange("hierarchy")}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant={getVariant("hierarchy")}
+                size="icon"
+                aria-label="Hierarchy"
+                onClick={() => handleViewChange("hierarchy")}
+                onMouseEnter={() => handleViewChange("hierarchy")}
+              >
+                <ListTree className="size-7" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="right" sideOffset={5}>
+              Hierarchy
+            </TooltipContent>
+          </Tooltip>
+          <span className="text-xs mt-1" >Hierarchy</span>
         </div>
         <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("assets")} onMouseEnter={() => handleViewChange("assets")}>
           <Tooltip>

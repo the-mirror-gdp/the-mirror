@@ -1,9 +1,8 @@
 import { RootState } from '@/state/store'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
-import { createSupabaseBrowserClient } from "@/utils/supabase/client";
 
-export type ControlBarView = "assets" | "scenes" | "code" | "database" | "versions" | "settings"
+export type ControlBarView = "assets" | "hierarchy" | "scenes" | "code" | "database" | "versions" | "settings"
 
 interface LocalUserState {
   id: string,

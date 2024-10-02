@@ -8,3 +8,4 @@ export default function Code() {
     <div>Code</div>
   );
 }
+
