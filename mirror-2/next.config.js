@@ -12,6 +12,9 @@ const nextConfig = {
       permanent: true,
     }
   ],
+  images: {
+    domains: ['images.unsplash.com'],
+  },
 };
 
 module.exports = nextConfig;
