@@ -1,4 +1,3 @@
-import { Metadata } from 'next';
 import Image from 'next/image'
 
 // function that returns the app name by checking the environment variable
