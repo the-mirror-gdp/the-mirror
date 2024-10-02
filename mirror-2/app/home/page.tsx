@@ -36,7 +36,7 @@ export default function MusicPage() {
         />
       </div>
       <div className="hidden md:block">
-        <Menu />
+        {/* <Menu /> */}
         <div className="border-none">
           <div className="bg-background">
             <div className="grid lg:grid-cols-5">
@@ -45,16 +45,6 @@ export default function MusicPage() {
                 <div className="h-full px-4 py-6 lg:px-8">
                   <Tabs defaultValue="music" className="h-full space-y-6">
                     <div className="space-between flex items-center">
-                      {/* <TabsList>
-                        <TabsTrigger value="music" className="relative">
-                          Music
-                        </TabsTrigger>
-                        <TabsTrigger value="podcasts">Podcasts</TabsTrigger>
-                        <TabsTrigger value="live" disabled>
-                          Live
-                        </TabsTrigger>
-                      </TabsList> */}
-
                     </div>
                     <TabsContent
                       value="music"
@@ -95,10 +85,10 @@ export default function MusicPage() {
                       </div>
                       <div className="mt-6 space-y-1">
                         <h2 className="text-2xl font-semibold tracking-tight">
-                          Made for You
+                          Play
                         </h2>
                         <p className="text-sm text-muted-foreground">
-                          Your personal playlists. Updated daily.
+                          Join published Spaces that other builders have created.
                         </p>
                       </div>
                       <Separator className="my-4" />
