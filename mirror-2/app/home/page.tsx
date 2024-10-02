@@ -88,7 +88,7 @@ export default function MusicPage() {
                           Play
                         </h2>
                         <p className="text-sm text-muted-foreground">
-                          Join published Spaces that other builders have created.
+                          Published Spaces from other builders.
                         </p>
                       </div>
                       <Separator className="my-4" />

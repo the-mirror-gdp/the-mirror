@@ -20,6 +20,14 @@ export const appDescription = () => {
   }
 };
 
+export const faviconPath = () => {
+  const appName = process.env.NEXT_PUBLIC_APP_NAME;
+  if (appName === "Reflekt") {
+    return "/favicon-reflekt.ico"
+  } else {
+    return "/favicon.ico"
+  }
+}
 
 
 interface ImageProps {
