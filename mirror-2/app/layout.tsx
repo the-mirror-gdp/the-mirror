@@ -1,6 +1,5 @@
-
 import ClientLayout from "@/app/layout.client";
-import { GeistSans } from "geist/font/sans";
+import { Montserrat } from 'next/font/google'
 import "./globals.css";
 import { Metadata } from "next";
 import { appName, appDescription } from "@/lib/theme-service";
@@ -8,11 +7,15 @@ export const metadata: Metadata = {
   title: appName(),
   description: appDescription(),
 }
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  display: 'swap',
+})
 export default function RootLayout({
   children,
 }) {
   return (
-    <html lang="en" className={GeistSans.className} suppressHydrationWarning>
+    <html lang="en" className={montserrat.className} suppressHydrationWarning>
       <body className="bg-background text-foreground">
         <ClientLayout>
           {children}

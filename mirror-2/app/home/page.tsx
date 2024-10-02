@@ -54,11 +54,7 @@ export default function MusicPage() {
                           Live
                         </TabsTrigger>
                       </TabsList> */}
-                      <div className="ml-auto mr-4">
-                        <Button className="w-full" asChild>
-                          <Link href="/space/new" className="w-full p-3"><PlusCircleIcon className="mr-2" />Create a Space</Link>
-                        </Button>
-                      </div>
+
                     </div>
                     <TabsContent
                       value="music"
@@ -67,11 +63,16 @@ export default function MusicPage() {
                       <div className="flex items-center justify-between">
                         <div className="space-y-1">
                           <h2 className="text-2xl font-semibold tracking-tight">
-                            Popular
+                            The Next Era of The Mirror
                           </h2>
                           <p className="text-sm text-muted-foreground">
-                            Top picks for you.
+                            Weclome, let's build.
                           </p>
+                        </div>
+                        <div className="ml-auto mr-4">
+                          <Button className="w-full" asChild>
+                            <Link href="/space/new" className="w-full p-3"><PlusCircleIcon className="mr-2" />Create a Space</Link>
+                          </Button>
                         </div>
                       </div>
                       <Separator className="my-4" />
