@@ -18,7 +18,7 @@ export default function NewSpacePage() {
         return
       }
       // navigate to the space
-      router.push(`/space/${data.id}/build`)
+      router.replace(`/space/${data.id}/build`)
     }
     create()
   }, [router])
