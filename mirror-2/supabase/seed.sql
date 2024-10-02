@@ -38,6 +38,8 @@ DECLARE
   space_id uuid;
   scene_id uuid;
   entity_name TEXT;
+  entity_id uuid;
+  component_name TEXT;
 BEGIN
     -- Loop to insert 15 users
     FOR i IN 1..15 LOOP
@@ -99,10 +101,23 @@ BEGIN
         FOR k IN 1..20 LOOP
           entity_name := format('Entity %s-%s-%s', i, j, k);  -- Create unique entity names
 
+          -- Insert entity
           INSERT INTO public.entities
             (id, name, scene_id, created_at, updated_at)
           VALUES
-            (gen_random_uuid(), entity_name, scene_id, now(), now());
+            (gen_random_uuid(), entity_name, scene_id, now(), now())
+          RETURNING id INTO entity_id;  -- Capture the newly created entity ID
+
+          -- Insert 3 components for each entity
+          FOR c IN 1..3 LOOP
+            component_name := format('Component %s-%s-%s-%s', i, j, k, c);  -- Create unique component names
+
+            INSERT INTO public.components
+              (id, name, entity_id, created_at, updated_at)
+            VALUES
+              (gen_random_uuid(), component_name, entity_id, now(), now());
+          END LOOP;
+
         END LOOP;
 
       END LOOP;
