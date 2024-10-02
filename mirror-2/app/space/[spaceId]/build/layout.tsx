@@ -3,38 +3,26 @@ import Link from "next/link"
 import { TopNavbar } from "@/app/space/[spaceId]/build/top-navbar"
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
 import { AppLogoImageSmall } from "@/lib/theme-service"
+import { Sidebar } from "@/app/space/[spaceId]/build/sidebar"
+import SpaceViewport from "@/app/space/[spaceId]/build/space-viewport"
 
-export default async function Layout({ children, controlBar, spaceViewport, params }: {
+export default async function Layout({ children, params }: {
   children: React.ReactNode,
-  controlBar: React.ReactNode,
   spaceViewport: React.ReactNode,
   params: { spaceId: string }
 }) {
 
   return (
-    <ResizablePanelGroup direction="horizontal" className="grid min-h-screen w-full">
-      <ResizablePanel defaultSize={20} minSize={20} maxSize={75}>
-        <div className="hidden bg-muted/40 md:block h-full">
-          {/* <div className="flex h-full max-h-screen flex-col gap-2"> */}
-          <div className="flex h-14 items-center px-4 lg:h-[60px] lg:px-6">
-            <Link href="/" className="flex items-center gap-2 font-semibold">
-              <div className="mt-1">
-                <AppLogoImageSmall />
-              </div>
-            </Link>
-          </div>
-          {controlBar}
-          {/* </div> */}
-        </div>
-      </ResizablePanel>
-      <ResizableHandle />
-      <ResizablePanel>
-        <div className="flex flex-col h-full content-center">
-          <TopNavbar />
-          {spaceViewport}
-          {children}
-        </div>
-      </ResizablePanel>
-    </ResizablePanelGroup>
+    <div>
+      <div className="absolute h-16 w-full">
+        <TopNavbar />
+      </div>
+      <div className="absolute pt-16 w-32 h-full">
+        <Sidebar />
+      </div>
+      <div className="pl-32 pt-16 min-h-screen">
+        <SpaceViewport />
+      </div>
+    </div>
   )
 }

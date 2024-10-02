@@ -23,8 +23,8 @@ export default function ClientLayout({ children }) {
 export function AuthLayout({ children }) {
   useSetupAuthEvents()
   return (
-    <main className="min-h-screen flex flex-col items-center">
-      <div className="flex-1 w-full">
+    <main className="items-center min-h-screen">
+      <div className="">
         {children}
       </div>
     </main>

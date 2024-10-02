@@ -19,7 +19,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href={faviconPath()} sizes="any" />
       </head>
-      <body className="bg-background text-foreground">
+      <body className="bg-background text-foreground ">
         <ClientLayout>
           {children}
         </ClientLayout>

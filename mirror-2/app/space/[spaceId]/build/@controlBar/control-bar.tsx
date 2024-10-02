@@ -27,7 +27,7 @@ export default function ControlBar() {
 
   return (
     <TooltipProvider delayDuration={750}>
-      <nav className="flex flex-col gap-4 p-2 h-full">
+      <nav className="flex flex-col gap-4 p-2">
         <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("scenes")} onMouseEnter={() => handleViewChange("scenes")}>
           <Tooltip>
             <TooltipTrigger asChild>

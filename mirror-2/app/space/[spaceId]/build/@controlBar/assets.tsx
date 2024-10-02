@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
 
 const imagesData = [
   // Mock data for images and text (30 items for 10 rows and 3 columns)

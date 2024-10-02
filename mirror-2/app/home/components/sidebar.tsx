@@ -3,7 +3,6 @@ import { cn } from "@/lib/utils"
 
 import { Playlist } from "../data/playlists"
 import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import Link from "next/link"
 import { Axis3D, Gamepad2, PlusCircleIcon } from "lucide-react"
 
