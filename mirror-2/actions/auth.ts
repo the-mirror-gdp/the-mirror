@@ -1,7 +1,7 @@
 "use server";
 
-import { encodedRedirect } from "@/utils/utils";
 import { createClient } from "@/utils/supabase/server";
+import { encodedRedirect } from "@/utils/utils";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -122,10 +122,4 @@ export const resetPasswordAction = async (formData: FormData) => {
   }
 
   encodedRedirect("success", "/protected/reset-password", "Password updated");
-};
-
-export const signOutAction = async () => {
-  const supabase = createClient();
-  await supabase.auth.signOut();
-  return redirect("/login");
 };

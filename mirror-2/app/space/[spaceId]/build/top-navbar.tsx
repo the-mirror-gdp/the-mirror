@@ -1,27 +1,30 @@
+"use client"
 import { EditableSpaceName } from "@/components/editable-space-name";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Search, CircleUser } from "lucide-react";
+import { signOutAction } from "@/hooks/auth";
+import { useAppSelector } from "@/hooks/hooks";
+import { selectLocalUserState } from "@/state/local";
+import { CircleUser } from "lucide-react";
 import Link from "next/link";
 
-export async function TopNavbar() {
-
+export function TopNavbar() {
+  const localUserState = useAppSelector(selectLocalUserState)
   return (
     <header className="flex h-14 items-center gap-4 bg-muted/40 px-4 lg:h-[60px] lg:px-6">
       <div className="w-full flex-1 flex items-center gap-4">
         <EditableSpaceName />
       </div>
       <ThemeSwitcher />
-      <Button
+      {!localUserState?.id && <Button
         asChild
         size="sm"
         variant={"outline"}
         className="opacity-75"
       >
-        <Link href="/login">Login</Link>
-      </Button>
+        <Link href="/create-account">Create Account</Link>
+      </Button>}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="secondary" size="icon" className="rounded-full">
@@ -30,11 +33,13 @@ export async function TopNavbar() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuLabel>{localUserState?.email || "Welcome"}</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Discord</DropdownMenuItem>
+          {process.env.NEXT_PUBLIC_DISCORD_INVITE_URL && <DropdownMenuItem className="cursor-pointer"><Link href={process.env.NEXT_PUBLIC_DISCORD_INVITE_URL} target="_blank" >Chat on Discord</Link></DropdownMenuItem>}
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Logout</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => signOutAction()} className="cursor-pointer">
+            Logout
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>

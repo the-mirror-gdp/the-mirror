@@ -19,7 +19,13 @@ interface LocalState {
 // Define the initial state using that type
 const initialState: LocalState = {
   uiSoundsCanPlay: true,
-  controlBarCurrentView: "assets"
+  controlBarCurrentView: "assets",
+  user: {
+    // this dummy state will be removed by the logic in auth.tsx, but we need initial data for SSR purposes
+    email: "",
+    id: "",
+    is_anonymous: false
+  }
 }
 
 export const localSlice = createSlice({
@@ -41,7 +47,7 @@ export const localSlice = createSlice({
     },
     clearLocalUserState: (state) => {
       state.user = undefined
-    },
+    }
   },
 })
 
@@ -51,6 +57,7 @@ export const { turnOffUiSounds, turnOnUiSounds, setControlBarCurrentView, update
 // Other code such as selectors can use the imported `RootState` type
 export const selectUiSoundsCanPlay = (state: RootState) => state.local.uiSoundsCanPlay
 export const selectControlBarCurrentView = (state: RootState) => state.local.controlBarCurrentView
+export const selectLocalUserState = (state: RootState) => state.local.user
 
 export default localSlice.reducer
 
