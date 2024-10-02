@@ -39,6 +39,7 @@
     "react-redux": "^9.1.2",
     "react-resizable-panels": "^2.1.4",
     "server-only": "^0.0.1",
+    "unique-names-generator": "^4.7.1",
     "use-sound": "^4.0.3",
     "zod": "^3.23.8"
   },

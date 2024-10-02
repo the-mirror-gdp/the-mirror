@@ -1,4 +1,5 @@
 "use client"; // we want to use client-side only because supabase tracks auth clientside
+import { generateSpaceName } from "@/actions/name-generator";
 import { createSupabaseBrowserClient } from "@/utils/supabase/client";
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 
@@ -17,10 +18,12 @@ export const supabaseApi = createApi({
         const { data, error } = await supabase
           .from("spaces")
           .insert([{
-            name: "New Space",
+            name: await generateSpaceName(),
             creator_user_id: user?.id,
             owner_user_id: user.id
           }])
+          .select('*')
+          .single()
 
         if (error) {
           return { error: error.message };
