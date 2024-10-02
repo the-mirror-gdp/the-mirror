@@ -1,5 +1,5 @@
 create table space_versions (
-  id uuid not null primary key,
+  id uuid not null primary key default uuid_generate_v4(),
   name text not null,
   space_id uuid references spaces on delete cascade not null, -- delete the version if space is deleted
   created_at timestamp with time zone not null default now(),

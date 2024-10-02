@@ -1,5 +1,5 @@
 create table scenes (
-  id uuid not null primary key,
+  id uuid not null primary key default uuid_generate_v4(),
   space_id uuid references spaces on delete cascade not null, -- delete the scene if space is deleted
   name text not null,
   created_at timestamp with time zone not null default now(),

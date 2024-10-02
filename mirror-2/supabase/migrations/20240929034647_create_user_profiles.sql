@@ -5,7 +5,7 @@ create type avatar_type as enum (
 
 -- Create a table for public user_profiles
 create table user_profiles (
-  id uuid references auth.users on delete cascade not null primary key,
+  id uuid references auth.users on delete cascade not null primary key default uuid_generate_v4(),
   display_name text unique not null,
   public_bio text,
   ready_player_me_url_glb text,
@@ -21,7 +21,7 @@ alter table user_profiles
 create policy "Public user_profiles are viewable by everyone." on user_profiles
   for select using (true);
 
-create policy "Users can insert their own profile." on user_profiles
+create policy "Users can create their own profile." on user_profiles
   for insert with check ((select auth.uid()) = id);
 
 create policy "Users can update own profile." on user_profiles

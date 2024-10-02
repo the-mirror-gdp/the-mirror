@@ -1,5 +1,5 @@
 create table components (
-  id uuid not null primary key,
+  id uuid not null primary key default uuid_generate_v4(),
   name text not null,
   entity_id uuid references entities on delete cascade not null, -- delete the component if entity is deleted
   created_at timestamp with time zone not null default now(),

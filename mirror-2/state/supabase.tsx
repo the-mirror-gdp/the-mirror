@@ -2,11 +2,32 @@
 import { createSupabaseBrowserClient } from "@/utils/supabase/client";
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 
-
 export const supabaseApi = createApi({
   reducerPath: 'supabaseApi',
   baseQuery: fakeBaseQuery(),
   endpoints: (builder) => ({
+
+    createSpace: builder.mutation<any, any>({
+      queryFn: async () => {
+        const supabase = createSupabaseBrowserClient();
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) {
+          throw new Error('User not found')
+        }
+        const { data, error } = await supabase
+          .from("spaces")
+          .insert([{
+            name: "New Space",
+            creator_user_id: user?.id,
+            owner_user_id: user.id
+          }])
+
+        if (error) {
+          return { error: error.message };
+        }
+        return { data };
+      }
+    }),
 
     getSingleSpace: builder.query<any, string>({
       queryFn: async (spaceId) => {
@@ -19,7 +40,6 @@ export const supabaseApi = createApi({
           .single()
 
         if (error) {
-          console.error('sb', error.message);
           return { error: error.message };
         }
         return { data };
@@ -37,7 +57,6 @@ export const supabaseApi = createApi({
           .single()
 
         if (error) {
-          console.error('sb', error.message);
           return { error: error.message };
         }
         return { data };
@@ -49,5 +68,5 @@ export const supabaseApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetSingleSpaceQuery, useUpdateSpaceMutation } = supabaseApi
+export const { useGetSingleSpaceQuery, useUpdateSpaceMutation, useCreateSpaceMutation } = supabaseApi
 

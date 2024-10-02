@@ -1,8 +1,27 @@
 
+"use client";
 import { ProgressIndeterminate } from "@/components/ui/progress-indeterminate";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useAppDispatch } from "@/hooks/hooks";
+import { useCreateSpaceMutation } from "@/state/supabase";
+import { useEffect } from "react";
+import { useRouter } from 'next/navigation'
 
 export default function NewSpacePage() {
+  const [createSpace] = useCreateSpaceMutation()
+  const router = useRouter()
+  useEffect(() => {
+    async function create() {
+      const { data, error } = await createSpace({})
+      if (error) {
+        console.error(error)
+        return
+      }
+      // navigate to the space
+      router.push(`/space/${data.id}/build`)
+    }
+    create()
+  }, [router])
   return (
     <div className="min-h-screen flex flex-col">
       {/* Top Menu Bar */}

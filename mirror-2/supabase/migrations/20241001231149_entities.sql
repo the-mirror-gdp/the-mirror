@@ -1,5 +1,5 @@
 create table entities (
-  id uuid not null primary key,
+  id uuid not null primary key default uuid_generate_v4(),
   name text not null,
   scene_id uuid references scenes on delete cascade not null, -- delete the entity if scene is deleted
   created_at timestamp with time zone not null default now(),

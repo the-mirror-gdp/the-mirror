@@ -1,5 +1,5 @@
 create table spaces (
-  id uuid not null primary key,
+  id uuid not null primary key default uuid_generate_v4(),
   name text not null,
   owner_user_id uuid references auth.users(id) not null,  -- owner is different from creator. Spaces can be transferred and we want to retain the creator
   creator_user_id uuid references auth.users(id) not null,
@@ -22,7 +22,10 @@ using (owner_user_id = auth.uid());
 create policy "Users can create their own spaces" 
 on spaces
 for insert 
-with check (owner_user_id = auth.uid());
+with check (
+  owner_user_id = auth.uid() 
+  and creator_user_id = auth.uid()
+);
 
 -- Policy for selecting spaces
 create policy "Users can view their own spaces" 
@@ -46,7 +49,7 @@ using (owner_user_id = auth.uid());
 
 -- assets
 create table assets (
-  id uuid not null primary key,
+  id uuid not null primary key default uuid_generate_v4(),
   owner_user_id uuid references auth.users(id) not null, -- owner is different from creator. Assets can be transferred and we want to retain the creator
   creator_user_id uuid references auth.users(id) not null,
   name text not null,

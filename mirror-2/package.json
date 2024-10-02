@@ -2,7 +2,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev & supabase start",
-    "reset": "supabase db reset",
+    "types": "npx supabase gen types --lang=typescript --local > ./utils/database.types.ts",
+    "reset": "supabase db reset && yarn types",
     "build": "next build",
     "start": "next start"
   },
