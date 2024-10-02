@@ -3,7 +3,7 @@ import { EditableSpaceName } from "@/components/editable-space-name";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { signOutAction } from "@/hooks/auth";
+import { signOut } from "@/hooks/auth";
 import { useAppSelector } from "@/hooks/hooks";
 import { selectLocalUserState } from "@/state/local";
 import { CircleUser } from "lucide-react";
@@ -44,7 +44,7 @@ export function TopNavbar() {
           <DropdownMenuSeparator />
           {process.env.NEXT_PUBLIC_DISCORD_INVITE_URL && <DropdownMenuItem className="cursor-pointer"><Link href={process.env.NEXT_PUBLIC_DISCORD_INVITE_URL} target="_blank" >Chat on Discord</Link></DropdownMenuItem>}
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => signOutAction()} className="cursor-pointer">
+          <DropdownMenuItem onClick={() => signOut()} className="cursor-pointer">
             Logout
           </DropdownMenuItem>
         </DropdownMenuContent>

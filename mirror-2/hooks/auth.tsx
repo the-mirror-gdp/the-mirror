@@ -5,7 +5,7 @@ import { createSupabaseBrowserClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-export const signOutAction = async () => {
+export const signOut = async () => {
   const supabase = createSupabaseBrowserClient();
   await supabase.auth.signOut();
   store.dispatch(clearLocalUserState())
