@@ -17,7 +17,7 @@ Direct Cryptocurrency Transactions: If revenue is generated directly through the
 
 Non-Fungible Token Royalties: If the Software is used to issue or mint Non-Fungible Tokens (NFTs), the user agrees to pay a 10% royalty on all subsequent sales or transfers of the NFT, regardless of the marketplace or platform where the transaction occurs. If the NFT was minted outside of the platform and a transaction takes place using the Software, the user agrees to pay the same percent fee via direct cryptocurrency transfer to the company's wallet.
 
-4.	Warranty Disclaimer
+4. Warranty Disclaimer
 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 By using the Software, you agree to the terms outlined above. These terms are subject to change due to early versions of the Software and the team is open to feedback!
