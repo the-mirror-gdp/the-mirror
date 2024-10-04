@@ -1,9 +1,9 @@
+"use client"
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { updateLocalUserState, clearLocalUserState } from "@/state/local";
 import { store } from "@/state/store";
 import { createSupabaseBrowserClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 export const signOut = async () => {
   const supabase = createSupabaseBrowserClient();

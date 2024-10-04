@@ -21,10 +21,10 @@ export default async function Layout({ children, params }: {
       <div className="absolute pt-16 w-32 h-full">
         <Sidebar />
       </div>
-      <div className="absolute left-32 top-16 min-w-96 h-full">
+      <div className="absolute left-32 top-16 min-w-96 w-96 h-full">
         <InnerControlBar />
       </div>
-      <div className="pl-32 pt-16 min-h-screen">
+      <div className="pl-32 pt-16 min-h-screen h-dvh">
         <SpaceViewport />
       </div>
     </div>

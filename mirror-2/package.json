@@ -22,6 +22,7 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.1",
     "@radix-ui/react-tooltip": "^1.1.2",
+    "@react-hook/throttle": "^2.2.0",
     "@reduxjs/toolkit": "^2.2.7",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",

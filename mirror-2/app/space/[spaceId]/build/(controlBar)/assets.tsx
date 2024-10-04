@@ -1,84 +1,96 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { XIcon } from 'lucide-react';
+import { z } from "zod";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Form, FormField, FormItem, FormControl, FormMessage } from '@/components/ui/form';
+import { useLazySearchAssetsQuery } from '@/state/supabase';
+import { useThrottleCallback } from '@react-hook/throttle'
 
-const imagesData = [
-  // Mock data for images and text (30 items for 10 rows and 3 columns)
-  { src: 'https://via.placeholder.com/150', text: 'Image 1' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 2' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 3' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 4' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 5' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 6' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 7' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 8' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 9' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 10' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 11' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 12' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 13' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 14' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 15' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 16' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 17' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 18' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 19' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 20' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 21' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 22' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 23' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 24' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 25' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 26' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 27' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 28' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 29' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 30' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 11' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 12' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 13' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 14' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 15' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 16' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 17' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 18' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 19' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 20' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 21' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 22' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 23' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 24' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 25' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 26' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 27' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 28' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 29' },
-  { src: 'https://via.placeholder.com/150', text: 'Image 30' }
-
-];
+const formSchema = z.object({
+  text: z.string().min(3)
+})
 
 export default function Assets() {
-  const [searchTerm, setSearchTerm] = useState('');
+  // define the form
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    mode: "onChange",
+    defaultValues: {
+      text: "",
+    },
+    // errors: error TODO add error handling here
+  })
+  const [triggerSearch, { data: assets, isLoading, isSuccess, error }] = useLazySearchAssetsQuery()
 
-  const filteredImages = imagesData.filter((image) =>
-    image.text.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const throttledSubmit = useThrottleCallback(() => {
+    triggerSearch({ text: form.getValues("text") })
+  }, 3, true) // the 4 if 4 FPS 
+  // 2. Define a submit handler.
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    throttledSubmit()
+  }
+
+  // Reset the form values when the space data is fetched
+  useEffect(() => {
+    if (assets && isSuccess) {
+      form.reset({
+        text: "", // Set the form value once space.name is available
+      });
+    }
+  }, [isSuccess, form]); // Only run this effect when space or isLoading changes
 
   return (
     <div className="flex flex-col h-screen">
       {/* Search bar */}
-      <Input
-        type="text"
-        placeholder="Search"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="mb-4 w-full"
-      />
+      {/* <NoSsr> */}
+      <Form {...form} >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full" onChange={form.handleSubmit(onSubmit)}>
+          <FormField
+            control={form.control}
+            name="text"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+
+                  <div className="relative">
+                    <Input
+                      type="text"
+                      placeholder="Search"
+                      className="mb-4 w-full"
+                      {...field}
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      className="absolute right-1 top-1/4 -translate-y-1/4 h-7 w-7 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+                      onClick={() => {
+                        form.reset()
+                      }}
+                    >
+                      <XIcon className="h-4 w-4" />
+                      <span className="sr-only">Clear</span>
+                    </Button>
+                  </div>
+                </FormControl>
+                {/* TODO add better styling for this so it doesn't shift the input field */}
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </form>
+      </Form >
+      {/* </NoSsr> */}
+
 
       {/* Scrollable area that takes up remaining space */}
       <div className="flex-1 overflow-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 pb-16">
-          {filteredImages.map((image, index) => (
+          {assets?.map((image, index) => (
             <div key={index} className="text-center ">
               <img
                 src={image.src}
