@@ -1,4 +1,4 @@
-Source Available License
+RevShare/ChainShare: A Source Available License
 
 Copyright (c) 2024-Present The Mirror Megaverse Inc.
 
