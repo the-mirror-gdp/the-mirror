@@ -17,13 +17,13 @@ export default function InnerControlBar() {
   return (
     <div className="p-2 m-2">
       <Suspense fallback={SkeletonCard()}>
-        <span className={`${currentView === "scenes" ? "flex" : "hidden"}`}><Scenes /></span>
-        <span className={`${currentView === "hierarchy" ? "flex" : "hidden"}`}><Hierarchy /></span>
-        <span className={`${currentView === "assets" ? "flex" : "hidden"}`}><Assets /></span>
-        <span className={`${currentView === "code" ? "flex" : "hidden"}`}><Code /></span>
-        <span className={`${currentView === "database" ? "flex" : "hidden"}`}><Database /></span>
-        <span className={`${currentView === "versions" ? "flex" : "hidden"}`}><Versions /></span>
-        <span className={`${currentView === "settings" ? "flex" : "hidden"}`}><Settings /></span>
+        <span className={`${currentView === "scenes" ? "" : "hidden"}`}><Scenes /></span>
+        <span className={`${currentView === "hierarchy" ? "" : "hidden"}`}><Hierarchy /></span>
+        <span className={`${currentView === "assets" ? "" : "hidden"}`}><Assets /></span>
+        <span className={`${currentView === "code" ? "" : "hidden"}`}><Code /></span>
+        <span className={`${currentView === "database" ? "" : "hidden"}`}><Database /></span>
+        <span className={`${currentView === "versions" ? "" : "hidden"}`}><Versions /></span>
+        <span className={`${currentView === "settings" ? "" : "hidden"}`}><Settings /></span>
       </Suspense>
 
     </div >
