@@ -44,7 +44,7 @@ export default function Assets() {
   }, [isSuccess, form]); // Only run this effect when space or isLoading changes
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col">
       {/* Search bar */}
       {/* <NoSsr> */}
       <Form {...form} >

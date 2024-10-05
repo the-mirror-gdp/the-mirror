@@ -23,7 +23,7 @@ export default function NewSpacePage() {
     create()
   }, [router])
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex flex-col">
       {/* Top Menu Bar */}
       <div className="w-full h-16 bg-gray-200 dark:bg-gray-800">
         <Skeleton className="w-full h-full" />

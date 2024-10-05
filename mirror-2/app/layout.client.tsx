@@ -23,7 +23,7 @@ export default function ClientLayout({ children }) {
 export function AuthLayout({ children }) {
   useSetupAuthEvents()
   return (
-    <main className="items-center min-h-screen">
+    <main className="items-center">
       <div className="">
         {children}
       </div>
