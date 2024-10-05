@@ -13,7 +13,7 @@ export interface CreateAssetMutation {
 export const supabaseApi = createApi({
   reducerPath: 'supabaseApi',
   baseQuery: fakeBaseQuery(),
-  tagTypes: ['Assets', 'Spaces', 'Scenes', 'Users'],
+  tagTypes: ['Assets', 'Spaces', 'Scenes', 'Entities', 'Users'],
   endpoints: (builder) => ({
 
     /**
@@ -373,6 +373,110 @@ export const supabaseApi = createApi({
       invalidatesTags: ['Scenes']
     }),
 
+    /**
+     * Entities
+     */
+    createEntity: builder.mutation<any, { name: string, scene_id: string }>({
+      queryFn: async ({ name, scene_id }) => {
+        const supabase = createSupabaseBrowserClient();
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+        if (!user) {
+          return { error: 'User not found' };
+        }
+
+        const { data, error } = await supabase
+          .from("entities")
+          .insert([{
+            name,
+            scene_id,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+          }])
+          .select('*')
+          .single();
+
+        if (error) {
+          return { error: error.message };
+        }
+        return { data };
+      },
+      invalidatesTags: (result, error, { scene_id }) => [{ type: 'Entities', id: scene_id }], // Invalidate the tag for the specific scene_id
+    }),
+
+    getAllEntities: builder.query<any, string>({
+      queryFn: async (sceneId) => {
+        const supabase = createSupabaseBrowserClient();
+
+        const { data, error } = await supabase
+          .from("entities")
+          .select("*")
+          .eq("scene_id", sceneId);
+
+        if (error) {
+          return { error: error.message };
+        }
+        return { data };
+      },
+      providesTags: (result, error, sceneId) =>
+        result ? [{ type: 'Entities', id: sceneId }] : [], // Provide tag for sceneId
+    }),
+
+    getSingleEntity: builder.query<any, string>({
+      queryFn: async (entityId) => {
+        const supabase = createSupabaseBrowserClient();
+
+        const { data, error } = await supabase
+          .from("entities")
+          .select("*")
+          .eq("id", entityId)
+          .single();
+
+        if (error) {
+          return { error: error.message };
+        }
+        return { data };
+      },
+      providesTags: (result, error, entityId) => [{ type: 'Entities', id: entityId }], // Provide the entity tag based on entityId
+    }),
+
+    updateEntity: builder.mutation<any, { entityId: string, updateData: Record<string, any> }>({
+      queryFn: async ({ entityId, updateData }) => {
+        const supabase = createSupabaseBrowserClient();
+
+        const { data, error } = await supabase
+          .from("entities")
+          .update(updateData)
+          .eq("id", entityId)
+          .single();
+
+        if (error) {
+          return { error: error.message };
+        }
+        return { data };
+      },
+      invalidatesTags: (result, error, { entityId }) => [{ type: 'Entities', id: entityId }], // Invalidate tag for entityId
+    }),
+
+    deleteEntity: builder.mutation<any, string>({
+      queryFn: async (entityId) => {
+        const supabase = createSupabaseBrowserClient();
+
+        const { data, error } = await supabase
+          .from("entities")
+          .delete()
+          .eq("id", entityId)
+          .single();
+
+        if (error) {
+          return { error: error.message };
+        }
+        return { data };
+      },
+      invalidatesTags: ['Entities']
+    }),
+
+
   }),
 })
 
@@ -393,6 +497,11 @@ export const {
   /**
    * Scenes
    */
-  useCreateSceneMutation, useGetAllScenesQuery, useUpdateSceneMutation, useGetSingleSceneQuery, useLazyGetSingleSceneQuery, useDeleteSceneMutation
+  useCreateSceneMutation, useGetAllScenesQuery, useUpdateSceneMutation, useGetSingleSceneQuery, useLazyGetSingleSceneQuery, useDeleteSceneMutation,
+
+  /**
+   * Entities
+   */
+  useCreateEntityMutation, useGetAllEntitiesQuery, useUpdateEntityMutation, useGetSingleEntityQuery, useLazyGetAllEntitiesQuery, useDeleteEntityMutation
 } = supabaseApi
 
