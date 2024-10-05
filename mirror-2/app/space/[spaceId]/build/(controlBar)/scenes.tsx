@@ -1,6 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { useCreateSceneMutation, useGetAllScenesQuery, useLazyGetUserMostRecentlyUpdatedAssetsQuery } from '@/state/supabase';
+import { useCreateSceneMutation, useDeleteSceneMutation, useGetAllScenesQuery, useLazyGetUserMostRecentlyUpdatedAssetsQuery } from '@/state/supabase';
 import { ScrollArea } from '@radix-ui/react-scroll-area';
 import { PlusCircleIcon, MoreHorizontal } from 'lucide-react'; // Import MoreHorizontal for ellipsis icon
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu'; // shadcn dropdown menu
@@ -11,6 +11,7 @@ export default function Scenes() {
 
   const { data: scenes } = useGetAllScenesQuery(params.spaceId);
   const [createScene, { data: createdScene }] = useCreateSceneMutation();
+  const [deleteScene] = useDeleteSceneMutation();
 
   return (
     <div className="flex flex-col p-4">
@@ -47,7 +48,7 @@ export default function Scenes() {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => alert(`Deleting scene: ${scene.name}`)}>
+                        <DropdownMenuItem className="cursor-pointer" onClick={() => deleteScene(scene.id)}>
                           Delete
                         </DropdownMenuItem>
                       </DropdownMenuContent>

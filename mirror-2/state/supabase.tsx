@@ -370,7 +370,7 @@ export const supabaseApi = createApi({
         }
         return { data };
       },
-      invalidatesTags: (result, error, sceneId) => [{ type: 'Scenes', id: sceneId }], // Invalidate tag for deleted sceneId
+      invalidatesTags: ['Scenes']
     }),
 
   }),
