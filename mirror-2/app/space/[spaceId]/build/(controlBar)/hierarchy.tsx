@@ -72,6 +72,7 @@ export default function ControlledDemo() {
   const [nodes, setNodes] = useState<any>([]);
   const [expandedKeys, setExpandedKeys] = useState<any>({ '0': true, '0-0': true });
   const [selectedKeys, setSelectedKeys] = useState<any>(null);
+  const [hoveredNodeKey, setHoveredNodeKey] = useState<string | null>(null); // State for hovered node during drag
 
   // Function to expand all nodes
   const expandAll = () => {
@@ -120,25 +121,54 @@ export default function ControlledDemo() {
 
   const togglerTemplate = (node: TreeNode, options: TreeTogglerTemplateOptions) => {
     if (!node) {
-      return;
+      return null;
     }
-    const hasParent = options.props && options.props['parent']
-    const isNodeLeaf = options.props['isNodeLeaf']
+
+    // Determine if the node is a leaf node
+    const isNodeLeafFn = options.props['isNodeLeaf'];
+    const isNodeLeaf = isNodeLeafFn(node);
+
+    // Calculate depth based on the number of dashes (-) in the path
+    let depth = 0;
+    if (!isNodeLeaf) {
+      depth = (options.props['path'].match(/-/g) || []).length;
+    }
+
+    // Calculate the margin in rem based on the depth
+    // const marginLeft = `${depth * 2}rem`;
+    const marginLeft = `${depth}rem`;
+
     const expanded = options.expanded;
-    const className = cn({
-      'ml-[1rem]': hasParent,
-    },
-      'hover:bg-primary rounded-lg transition-all duration-100');
-    console.log('toggler', node, options)
-    const hasChildren = node?.children && node.children.length > 0
+    const hasChildren = node?.children && node.children.length > 0;
+
+    // Use Tailwind for styling, and apply dynamic margin with inline styles
+    const className = cn(
+      'hover:bg-primary rounded-lg transition-all duration-100'
+    );
     return (
-      hasChildren && <button type="button" className={className} tabIndex={-1} onClick={options.onClick}>
-        {expanded ? <ChevronDown /> : <ChevronRight />}
-      </button>
+      hasChildren && (
+        <button
+          type="button"
+          className={className}
+          style={{ 'marginLeft': marginLeft }}
+          tabIndex={-1}
+          onClick={options.onClick}
+        >
+          {expanded ? <ChevronDown /> : <ChevronRight />}
+        </button>
+      )
     );
   };
 
+  const handleDragOver = (e, nodeKey) => {
+    e.preventDefault(); // Necessary to allow the drop
+    setHoveredNodeKey(nodeKey); // Set the hovered node
+  };
 
+  // Function to handle drag leave event and remove highlight
+  const handleDragLeave = () => {
+    setHoveredNodeKey(null); // Clear the hovered node
+  };
   // TreeProps & { label: string } is hacky here but the types don't seem to be importing correctly
   const nodeTemplate = (node: TreeNode, options) => {
     const expanded = options.expanded;
@@ -151,7 +181,6 @@ export default function ControlledDemo() {
     let depth = 0;
     if (isNodeLeaf) {
       depth = (options.props.path.match(/-/g) || []).length;
-      // depth -= 1
     }
 
     // Calculate the margin in rem based on the depth
@@ -159,12 +188,16 @@ export default function ControlledDemo() {
 
     // Use Tailwind for styling, but apply dynamic margin with inline styles
     const className = cn(
-      'cursor-pointer items-center rounded-lg transition-all'
+      'cursor-pointer items-center rounded-lg transition-all',
+      hoveredNodeKey === node.key && 'bg-primary text-white' // Highlight on hover during drag
     );
 
     return (
-      <div className={className} style={{ marginLeft }}>
-        {node.label} Depth: {depth}
+      <div className={className} style={{ marginLeft }}
+        onDragOver={(e) => handleDragOver(e, node.key)} // Highlight on drag over
+        onDragLeave={handleDragLeave} // Remove highlight on drag leave
+      >
+        {node.label}
       </div>
     );
   };
@@ -192,7 +225,9 @@ export default function ControlledDemo() {
           className="w-full md:w-96"
           nodeTemplate={nodeTemplate}
           togglerTemplate={togglerTemplate}
-          dragdropScope="hierarchy" onDragDrop={(e) => setNodes(e.value)}
+          dragdropScope="hierarchy"
+          onDragDrop={(e) => setNodes(e.value)} // Handle the drop event
+
         />
       </div>
     </PrimeReactProvider>
