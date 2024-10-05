@@ -91,16 +91,18 @@ export default function Assets() {
                       className="mb-4 w-full"
                       {...field}
                     />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      className="absolute right-1 top-1/4 -translate-y-1/4 h-7 w-7 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
-                      onClick={() => form.reset()}
-                    >
-                      <XIcon className="h-4 w-4" />
-                      <span className="sr-only">Clear</span>
-                    </Button>
+                    {
+                      form.formState.isDirty && <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="absolute right-1 top-1/4 -translate-y-1/4 h-7 w-7 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
+                        onClick={() => form.reset()}
+                      >
+                        <XIcon className="h-4 w-4" />
+                        <span className="sr-only">Clear</span>
+                      </Button>
+                    }
                   </div>
                 </FormControl>
                 <FormMessage />
