@@ -20,7 +20,7 @@ interface TwoWayInputProps<T> {
   ];
   className?: string; // Optional className prop
 }
-
+//  TODO fix and ensure deduping works correctly to not fire a ton of network requests
 export function TwoWayInput<T>({
   entityId,
   fieldName,
