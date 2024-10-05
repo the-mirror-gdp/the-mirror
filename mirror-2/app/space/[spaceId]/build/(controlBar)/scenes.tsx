@@ -35,7 +35,10 @@ export default function Scenes() {
         <ScrollArea className="h-screen">
           <div className="grid grid-cols-1 gap-4 pb-40">
             {scenes?.map((scene) => (
-              <div key={scene.id} className="relative flex flex-col items-center shadow-md rounded-lg p-4 gap-4">
+              <div
+                key={scene.id}
+                className="relative flex flex-col items-center shadow-md rounded-lg p-4 gap-4 border border-transparent hover:border-primary transition-all duration-100 cursor-pointer"
+              >
                 <img
                   src={scene.image_url || "/dev/150.jpg"} // Fallback to a placeholder image if no image_url is present
                   alt={scene.name}
