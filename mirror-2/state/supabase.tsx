@@ -13,6 +13,7 @@ export interface CreateAssetMutation {
 export const supabaseApi = createApi({
   reducerPath: 'supabaseApi',
   baseQuery: fakeBaseQuery(),
+  tagTypes: ['Assets', 'Spaces', 'Users'],
   endpoints: (builder) => ({
 
     /**
@@ -159,7 +160,8 @@ export const supabaseApi = createApi({
         }
 
         return { data: insertedAsset };
-      }
+      },
+      invalidatesTags: ['Assets']
     }),
 
     getSingleAsset: builder.query<any, string>({
@@ -176,7 +178,8 @@ export const supabaseApi = createApi({
           return { error: error.message };
         }
         return { data };
-      }
+      },
+      providesTags: (result, error, assetId) => [{ type: 'Assets', id: assetId }],
     }),
 
 
@@ -197,8 +200,10 @@ export const supabaseApi = createApi({
           return { error: error.message };
         }
         return { data };
-      }
-    }),
+      },
+      providesTags: (result) =>
+        result ? result.map(({ id }) => ({ type: 'Assets', id })) : [],
+    },),
 
 
     searchAssets: builder.query<any, { text: string }>({
@@ -231,7 +236,8 @@ export const supabaseApi = createApi({
           return { error: error.message };
         }
         return { data };
-      }
+      },
+      invalidatesTags: (result, error, { assetId }) => [{ type: 'Assets', id: assetId }],
     }),
 
   }),
