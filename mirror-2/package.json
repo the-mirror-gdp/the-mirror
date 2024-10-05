@@ -37,6 +37,7 @@
     "next-themes": "^0.3.0",
     "playcanvas": "^2.0.0",
     "prettier": "^3.3.3",
+    "primereact": "^10.8.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.9",
