@@ -126,9 +126,7 @@ export const supabaseApi = createApi({
         const supabase = createSupabaseBrowserClient();
 
         const { data, error } = await supabase
-          .from("assets")
-          .select("*")
-          .textSearch("name_description", text)
+          .rpc("search_assets_by_name_prefix", { 'prefix': text })
 
         if (error) {
           return { error: error.message };

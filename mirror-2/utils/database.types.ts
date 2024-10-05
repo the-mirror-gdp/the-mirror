@@ -44,7 +44,6 @@ export type Database = {
           name: string
           owner_user_id: string
           updated_at: string
-          name_description: string | null
         }
         Insert: {
           asset_url: string
@@ -251,7 +250,7 @@ export type Database = {
         Row: {
           created_at: string
           creator_user_id: string
-          description: string
+          description: string | null
           id: string
           name: string
           owner_user_id: string
@@ -260,7 +259,7 @@ export type Database = {
         Insert: {
           created_at?: string
           creator_user_id: string
-          description: string
+          description?: string | null
           id?: string
           name: string
           owner_user_id: string
@@ -269,7 +268,7 @@ export type Database = {
         Update: {
           created_at?: string
           creator_user_id?: string
-          description?: string
+          description?: string | null
           id?: string
           name?: string
           owner_user_id?: string
@@ -342,11 +341,34 @@ export type Database = {
         }
         Returns: string
       }
-      name_description: {
+      search_assets_by_name_prefix: {
         Args: {
-          "": unknown
+          prefix: string
         }
-        Returns: string
+        Returns: {
+          asset_url: string
+          created_at: string
+          creator_user_id: string
+          description: string
+          id: string
+          name: string
+          owner_user_id: string
+          updated_at: string
+        }[]
+      }
+      search_spaces_by_name_prefix: {
+        Args: {
+          prefix: string
+        }
+        Returns: {
+          created_at: string
+          creator_user_id: string
+          description: string | null
+          id: string
+          name: string
+          owner_user_id: string
+          updated_at: string
+        }[]
       }
     }
     Enums: {

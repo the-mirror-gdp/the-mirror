@@ -1,7 +1,7 @@
 create table spaces (
   id uuid not null primary key default uuid_generate_v4(),
   name text not null,
-  description text not null,
+  description text,
   owner_user_id uuid references auth.users(id) not null,  -- owner is different from creator. Spaces can be transferred and we want to retain the creator
   creator_user_id uuid references auth.users(id) not null,
   created_at timestamp with time zone not null default now(),
