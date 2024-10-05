@@ -27,7 +27,7 @@ export default function Assets() {
   const [triggerSearch, { data: assets, isLoading, isSuccess, error }] = useLazySearchAssetsQuery()
 
   const throttledSubmit = useThrottleCallback(() => {
-    triggerSearch({ text: form.getValues("text") })
+    triggerSearch({ text: form.getValues("text")?.trim() })
   }, 3, true) // the 4 if 4 FPS 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -90,14 +90,14 @@ export default function Assets() {
       {/* Scrollable area that takes up remaining space */}
       <div className="flex-1 overflow-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 pb-16">
-          {assets?.map((image, index) => (
+          {assets?.map((asset, index) => (
             <div key={index} className="text-center ">
-              <img
-                src={image.src}
-                alt={image.text}
+              {/* <img
+                src={name.src}
+                alt={name.text}
                 className="w-full h-auto rounded-lg mb-2"
-              />
-              <p>{image.text}</p>
+              /> */}
+              <p>{asset.name}</p>
             </div>
           ))}
         </div>

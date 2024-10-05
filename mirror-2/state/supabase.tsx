@@ -125,8 +125,10 @@ export const supabaseApi = createApi({
       queryFn: async ({ text }) => {
         const supabase = createSupabaseBrowserClient();
 
+        // replace spaces with +
+        const friendlyText = text?.trim().replaceAll(" ", "&")
         const { data, error } = await supabase
-          .rpc("search_assets_by_name_prefix", { 'prefix': text })
+          .rpc("search_assets_by_name_prefix", { 'prefix': friendlyText })
 
         if (error) {
           return { error: error.message };
