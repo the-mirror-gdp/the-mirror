@@ -126,11 +126,10 @@ export default function ControlledDemo() {
     const isNodeLeaf = options.props['isNodeLeaf']
     const expanded = options.expanded;
     const className = cn({
-      'ml-10': hasParent,
-      // ' ': expanded,
-      // ' ': !expanded,
+      'ml-[1rem]': hasParent,
     },
       'hover:bg-primary rounded-lg transition-all duration-100');
+    console.log('toggler', node, options)
     const hasChildren = node?.children && node.children.length > 0
     return (
       hasChildren && <button type="button" className={className} tabIndex={-1} onClick={options.onClick}>
@@ -144,23 +143,31 @@ export default function ControlledDemo() {
   const nodeTemplate = (node: TreeNode, options) => {
     const expanded = options.expanded;
 
-    const hasParent = options.props && options.props['parent']
-    const isNodeLeafFn = options.props['isNodeLeaf']
-    const isNodeLeaf = isNodeLeafFn(node)
-    let depth = 1
+    // Determine if the node is a leaf node
+    const isNodeLeafFn = options.props['isNodeLeaf'];
+    const isNodeLeaf = isNodeLeafFn(node);
+
+    // Calculate depth based on the number of dashes (-) in the path
+    let depth = 0;
     if (isNodeLeaf) {
       depth = (options.props.path.match(/-/g) || []).length;
+      // depth -= 1
     }
 
-    const marginMult = String(depth * 2)
-    const marginKey = 'ml-[' + marginMult + 'rem]'
-    const className = cn(isNodeLeaf && marginKey,
-      'cursor-pointer items-center rounded-lg transition-all  ')
-    return (<div className={className} >
-      {node.label} {options.props.path}
-    </div >)
-  }
+    // Calculate the margin in rem based on the depth
+    const marginLeft = `${depth * 1.5}rem`;
 
+    // Use Tailwind for styling, but apply dynamic margin with inline styles
+    const className = cn(
+      'cursor-pointer items-center rounded-lg transition-all'
+    );
+
+    return (
+      <div className={className} style={{ marginLeft }}>
+        {node.label} Depth: {depth}
+      </div>
+    );
+  };
 
   return (
     <PrimeReactProvider value={{ unstyled: true, pt: Tailwind }}>
@@ -185,6 +192,7 @@ export default function ControlledDemo() {
           className="w-full md:w-96"
           nodeTemplate={nodeTemplate}
           togglerTemplate={togglerTemplate}
+          dragdropScope="hierarchy" onDragDrop={(e) => setNodes(e.value)}
         />
       </div>
     </PrimeReactProvider>
