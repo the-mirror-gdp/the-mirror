@@ -18,7 +18,7 @@ interface LocalState {
 // Define the initial state using that type
 const initialState: LocalState = {
   uiSoundsCanPlay: true,
-  controlBarCurrentView: "assets",
+  controlBarCurrentView: "hierarchy",
   user: {
     // this dummy state will be removed by the logic in auth.tsx, but we need initial data for SSR purposes
     email: "",
