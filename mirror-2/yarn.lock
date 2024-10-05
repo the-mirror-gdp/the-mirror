@@ -752,12 +752,22 @@
   resolved "https://registry.yarnpkg.com/@types/use-sync-external-store/-/use-sync-external-store-0.0.3.tgz#b6725d5f4af24ace33b36fafd295136e75509f43"
   integrity sha512-EwmlvuaxPNej9+T4v5AuBPJa2x2UOJVdjCtDHgcDqitUeOtjnJKJ+apYjVcAoBEMjKW1VVFGZLUb5+qqa09XFA==
 
+"@types/webxr@^0.5.16":
+  version "0.5.20"
+  resolved "https://registry.yarnpkg.com/@types/webxr/-/webxr-0.5.20.tgz#b16b681af314ec011b2e8221b0a072d691c04953"
+  integrity sha512-JGpU6qiIJQKUuVSKx1GtQnHJGxRjtfGIhzO2ilq43VZZS//f1h1Sgexbdk+Lq+7569a6EYhOWrUpIruR/1Enmg==
+
 "@types/ws@^8.5.10":
   version "8.5.12"
   resolved "https://registry.yarnpkg.com/@types/ws/-/ws-8.5.12.tgz#619475fe98f35ccca2a2f6c137702d85ec247b7e"
   integrity sha512-3tPRkv1EtkDpzlgyKyI8pGsGZAGPEaXeu0DOj5DI25Ja91bdAYddYHbADRYVrZMRbfW+1l5YwXVDKohDJNQxkQ==
   dependencies:
     "@types/node" "*"
+
+"@webgpu/types@^0.1.40":
+  version "0.1.48"
+  resolved "https://registry.yarnpkg.com/@webgpu/types/-/types-0.1.48.tgz#8ab741852283118bd633345c20e218faa7211e9c"
+  integrity sha512-e3zmDEPih4Rle+JrP5cT8nCCtDizoUpEaN72OuD1clbhXGERtn0wwuMdxOrBymu3kMLWKDd8hd+ERhSheLuLTg==
 
 acorn-walk@^8.0.0:
   version "8.3.4"
@@ -1385,6 +1395,14 @@ pirates@^4.0.1:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/pirates/-/pirates-4.0.6.tgz#3018ae32ecfcff6c29ba2267cbf21166ac1f36b9"
   integrity sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==
+
+playcanvas@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/playcanvas/-/playcanvas-2.0.0.tgz#ef298a2609c0e1c551709ed4e00d64c13932bd2b"
+  integrity sha512-hEbIgL3ZkB8GyawN3gHpxYl+ZDO+lE3vEFs2TKe8jnT6b9CcF6yzITLorTkRbkd7dyMz1J0+633qH4HeD7EZpQ==
+  dependencies:
+    "@types/webxr" "^0.5.16"
+    "@webgpu/types" "^0.1.40"
 
 postcss-import@^15.1.0:
   version "15.1.0"
