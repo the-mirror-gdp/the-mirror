@@ -240,6 +240,23 @@ export const supabaseApi = createApi({
       invalidatesTags: (result, error, { assetId }) => [{ type: 'Assets', id: assetId }],
     }),
 
+
+    downloadAsset: builder.query<any, { assetId: string }>({
+      queryFn: async ({ assetId }) => {
+        const supabase = createSupabaseBrowserClient();
+
+        // Return the public URL for the file to allow download
+        const { data, error } = await supabase.storage
+          .from('assets')  // Use your actual bucket name
+          .download(`users/${assetId}`);
+
+        if (error) {
+          return { error: error.message };
+        }
+        return { data };
+      }
+    }),
+
   }),
 })
 
@@ -255,6 +272,6 @@ export const {
   /**
    * Assets
    */
-  useCreateAssetMutation, useSearchAssetsQuery, useLazySearchAssetsQuery, useGetSingleAssetQuery, useLazyGetUserMostRecentlyUpdatedAssetsQuery, useUpdateAssetMutation
+  useCreateAssetMutation, useSearchAssetsQuery, useLazySearchAssetsQuery, useGetSingleAssetQuery, useLazyGetUserMostRecentlyUpdatedAssetsQuery, useUpdateAssetMutation, useLazyDownloadAssetQuery
 } = supabaseApi
 
