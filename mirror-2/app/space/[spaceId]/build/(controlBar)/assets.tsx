@@ -46,7 +46,6 @@ export default function Assets() {
   return (
     <div className="flex flex-col">
       {/* Search bar */}
-      {/* <NoSsr> */}
       <Form {...form} >
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full" onChange={form.handleSubmit(onSubmit)}>
           <FormField
@@ -84,7 +83,6 @@ export default function Assets() {
           />
         </form>
       </Form >
-      {/* </NoSsr> */}
 
 
       {/* Scrollable area that takes up remaining space */}

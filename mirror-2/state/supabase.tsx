@@ -129,7 +129,6 @@ export const supabaseApi = createApi({
           .from("assets")
           .select("*")
           .eq("name", text)
-          .single()
 
         if (error) {
           return { error: error.message };
