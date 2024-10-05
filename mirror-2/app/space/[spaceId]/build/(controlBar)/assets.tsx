@@ -11,6 +11,7 @@ import { useLazyGetUserMostRecentlyUpdatedAssetsQuery, useLazySearchAssetsQuery 
 import { useThrottleCallback } from '@react-hook/throttle'
 import { Tables } from '@/utils/database.types';
 import AssetThumbnail from '@/components/ui/asset-thumbnail';
+import { ScrollArea } from '@radix-ui/react-scroll-area';
 
 const formSchema = z.object({
   text: z.string().min(3)
@@ -96,13 +97,15 @@ export default function Assets() {
 
       {/* Scrollable area that takes up remaining space */}
       <div className="flex-1 overflow-auto">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 pb-16">
-          {form.formState.isSubmitted ? assets?.map((asset, index) => (
-            <AssetThumbnail name={asset.name} imageUrl={""} />
-          )) : recentAssets?.map((asset) => (
-            <AssetThumbnail name={asset.name} imageUrl={""} />
-          ))}
-        </div>
+        <ScrollArea className="h-screen">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(80px,1fr))] gap-4 p-4 pb-40">
+            {form.formState.isSubmitted ? assets?.map((asset, index) => (
+              <AssetThumbnail name={asset.name} imageUrl={""} />
+            )) : recentAssets?.map((asset) => (
+              <AssetThumbnail name={asset.name} imageUrl={""} />
+            ))}
+          </div>
+        </ScrollArea>
       </div>
     </div>
   );
