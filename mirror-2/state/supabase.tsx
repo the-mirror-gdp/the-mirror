@@ -79,41 +79,9 @@ export const supabaseApi = createApi({
     /**
      * Assets
      */
-    // createAsset: builder.mutation<any, any>({
-    //   queryFn: async () => {
-    //     const supabase = createSupabaseBrowserClient();
-    //     const { data: { user } } = await supabase.auth.getUser()
-    //     if (!user) {
-    //       throw new Error('User not found')
-    //     }
-    //     /**
-    //      * Upload the file
-    //      */
-
-
-    //     /**
-    //      * Add to DB
-    //      */
-    //     const { data, error } = await supabase
-    //       .from("assets")
-    //       .insert([{
-    //         name: await generateSpaceName(),
-    //         creator_user_id: user?.id,
-    //         owner_user_id: user.id
-    //       }])
-    //       .select('*')
-    //       .single()
-
-    //     if (error) {
-    //       return { error: error.message };
-    //     }
-    //     return { data };
-    //   }
-    // }),
     createAsset: builder.mutation<any, { assetData: CreateAssetMutation, file?: File }>({
       queryFn: async ({ assetData, file }) => {
         const supabase = createSupabaseBrowserClient();
-
 
         // Get the authenticated user
         const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -121,6 +89,28 @@ export const supabaseApi = createApi({
           return { error: 'User not found' };
         }
 
+        // Prepare the data to insert, without file_url and thumbnail_url yet
+        const assetInsertData: Database['public']['Tables']['assets']['Insert'] = {
+          ...assetData,
+          creator_user_id: user.id,
+          owner_user_id: user.id,
+          file_url: '', // Placeholder, will update after file upload
+          thumbnail_url: '', // Placeholder, will update after file upload
+        };
+
+        // Insert the asset (without file URL and thumbnail URL for now)
+        const { data: insertedAsset, error: insertError }: {
+          data: Database['public']['Tables']['assets']['Row'] | null,
+          error: any
+        } = await supabase
+          .from("assets")
+          .insert([assetInsertData])
+          .select('*')
+          .single();
+
+        if (insertError || !insertedAsset) {
+          return { error: insertError.message };
+        }
 
         // Variable to store the file path (if file exists)
         let filePath = '';
@@ -128,7 +118,7 @@ export const supabaseApi = createApi({
         // Check if a file is passed for upload
         if (file) {
           // Generate a unique file name for Supabase Storage
-          filePath = `${ASSETS_BUCKET_USERS_FOLDER}/${file.name}`;
+          filePath = `${ASSETS_BUCKET_USERS_FOLDER}/${insertedAsset.id}`;
 
           // Upload the file to Supabase Storage
           const { error: uploadError } = await supabase.storage
@@ -139,37 +129,36 @@ export const supabaseApi = createApi({
           if (uploadError) {
             return { error: uploadError.message };
           }
-        }
 
-        // Create a thumbnail URL using Supabase transform
-        const { data: thumbnailUrl } = supabase.storage.from('assets').getPublicUrl(filePath, {
-          transform: {
-            width: 150,
-            height: 150
+          // Get the public URL of the uploaded file
+          const { data: fileUrlData } = supabase.storage.from('assets').getPublicUrl(filePath);
+          const fileUrl = fileUrlData?.publicUrl;
+
+          // Create a thumbnail URL using Supabase transform (resize)
+          const { data: thumbnailUrlData } = supabase.storage.from('assets').getPublicUrl(filePath, {
+            transform: {
+              width: 150,
+              height: 150,
+            }
+          });
+          const thumbnailUrl = thumbnailUrlData?.publicUrl;
+
+          // Update the asset with the file URL and thumbnail URL
+          const { error: updateError } = await supabase
+            .from("assets")
+            .update({
+              file_url: fileUrl,
+              thumbnail_url: thumbnailUrl,
+            })
+            .eq('id', insertedAsset.id) // Use the inserted asset's ID for the update
+            .single();
+
+          if (updateError) {
+            return { error: updateError.message };
           }
-        });
-
-
-        // Add the creator and owner user_id inline
-        const assetUploadData: Database['public']['Tables']['assets']['Insert'] = {
-          ...assetData,
-          creator_user_id: user.id,
-          owner_user_id: user.id,
-          file_url: `${supabase.storage.from('assets').getPublicUrl(filePath).data.publicUrl}`,
-          thumbnail_url: thumbnailUrl.publicUrl
         }
 
-        // Insert the asset in the "assets" table
-        const { data, error } = await supabase
-          .from("assets")
-          .insert([assetUploadData]) // Insert a new row with updateData
-          .single(); // Ensure only a single record is returned
-
-        if (error) {
-          return { error: error.message };
-        }
-
-        return { data };
+        return { data: insertedAsset };
       }
     }),
 
