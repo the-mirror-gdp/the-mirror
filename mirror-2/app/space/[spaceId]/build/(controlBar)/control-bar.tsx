@@ -29,7 +29,7 @@ export default function ControlBar() {
   return (
     <TooltipProvider delayDuration={750} >
       <nav className={`flex flex-col gap-4 p-2 `} >
-        <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("scenes")} onMouseEnter={() => handleViewChange("scenes")}>
+        <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("scenes")} >
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -47,7 +47,7 @@ export default function ControlBar() {
           </Tooltip>
           <span className="text-md mt-1" >Scenes</span>
         </div>
-        <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("assets")} onMouseEnter={() => handleViewChange("hierarchy")}>
+        <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("hierarchy")}>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -55,7 +55,6 @@ export default function ControlBar() {
                 size="icon"
                 aria-label="Hierarchy"
                 onClick={() => handleViewChange("hierarchy")}
-                onMouseEnter={() => handleViewChange("hierarchy")}
               >
                 <ListTree className="size-7" />
               </Button>
@@ -66,7 +65,7 @@ export default function ControlBar() {
           </Tooltip>
           <span className="text-md mt-1" >Hierarchy</span>
         </div>
-        <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("assets")} onMouseEnter={() => handleViewChange("assets")}>
+        <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("assets")} >
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -74,7 +73,6 @@ export default function ControlBar() {
                 size="icon"
                 aria-label="Assets"
                 onClick={() => handleViewChange("assets")}
-                onMouseEnter={() => handleViewChange("assets")}
               >
                 <Box className="size-7" />
               </Button>
@@ -85,7 +83,7 @@ export default function ControlBar() {
           </Tooltip>
           <span className="text-md mt-1" >Assets</span>
         </div>
-        <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("code")} onMouseEnter={() => handleViewChange("code")}>
+        <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("code")}>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -93,7 +91,6 @@ export default function ControlBar() {
                 size="icon"
                 aria-label="Code"
                 onClick={() => handleViewChange("code")}
-                onMouseEnter={() => handleViewChange("code")}
               >
                 <Code2 className="size-7" />
               </Button>
@@ -104,7 +101,7 @@ export default function ControlBar() {
           </Tooltip>
           <span className="text-md mt-1" >Code</span>
         </div>
-        <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("database")} onMouseEnter={() => handleViewChange("database")}>
+        <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("database")} >
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -112,7 +109,7 @@ export default function ControlBar() {
                 size="icon"
                 aria-label="Database"
                 onClick={() => handleViewChange("database")}
-                onMouseEnter={() => handleViewChange("database")}
+
               >
                 <Database className="size-7" />
               </Button>
@@ -123,7 +120,7 @@ export default function ControlBar() {
           </Tooltip>
           <span className="text-md mt-1" >Database</span>
         </div>
-        <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("versions")} onMouseEnter={() => handleViewChange("versions")}>
+        <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("versions")} >
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -131,7 +128,7 @@ export default function ControlBar() {
                 size="icon"
                 aria-label="Versions"
                 onClick={() => handleViewChange("versions")}
-                onMouseEnter={() => handleViewChange("versions")}
+
               >
                 <GitBranch className="size-7" />
               </Button>
@@ -142,7 +139,7 @@ export default function ControlBar() {
           </Tooltip>
           <span className="text-md mt-1" >Versions</span>
         </div>
-        <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("settings")} onMouseEnter={() => handleViewChange("settings")}>
+        <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("settings")} >
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -150,7 +147,7 @@ export default function ControlBar() {
                 size="icon"
                 aria-label="Settings"
                 onClick={() => handleViewChange("settings")}
-                onMouseEnter={() => handleViewChange("settings")}
+
               >
                 <Settings className="size-7" />
               </Button>
