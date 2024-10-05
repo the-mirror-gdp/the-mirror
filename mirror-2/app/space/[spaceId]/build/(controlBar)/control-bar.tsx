@@ -3,9 +3,11 @@
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useUiHoverSoundEffect } from "@/components/ui/ui-sounds";
+import { useGetFileUpload } from "@/hooks/file-upload";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { ControlBarView, selectControlBarCurrentView, selectUiSoundsCanPlay, setControlBarCurrentView, turnOffUiSounds, turnOnUiSounds } from "@/state/local";
 import { Box, Clapperboard, Code2, Database, GitBranch, ListTree, Settings, Volume2, VolumeOff } from "lucide-react";
+import { useDropzone } from "react-dropzone";
 
 export default function ControlBar() {
   const currentView = useAppSelector(selectControlBarCurrentView);
@@ -25,8 +27,18 @@ export default function ControlBar() {
     return currentView === view ? "default" : "ghost";
   };
 
+  // file dropzone
+  const onDrop = useGetFileUpload()
+
+  const { getRootProps, getInputProps, open, acceptedFiles } = useDropzone({
+    // Disable click and keydown behavior
+    noClick: true,
+    noKeyboard: true,
+    onDrop
+  });
+
   return (
-    <TooltipProvider delayDuration={750}>
+    <TooltipProvider delayDuration={750} {...getRootProps()}>
       <nav className="flex flex-col gap-4 p-2">
         <div className="flex flex-col items-center cursor-pointer select-none" onClick={() => handleViewChange("scenes")} onMouseEnter={() => handleViewChange("scenes")}>
           <Tooltip>

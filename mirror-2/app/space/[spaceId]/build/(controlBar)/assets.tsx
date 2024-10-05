@@ -1,20 +1,17 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Box, FileUp, PlusCircleIcon, XIcon } from 'lucide-react';
-import { z } from "zod";
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, FormField, FormItem, FormControl, FormMessage, FormSuccessMessage } from '@/components/ui/form';
-import { useLazyGetUserMostRecentlyUpdatedAssetsQuery, useLazySearchAssetsQuery } from '@/state/supabase';
-import { useThrottleCallback } from '@react-hook/throttle'
-import { Tables } from '@/utils/database.types';
 import AssetThumbnail from '@/components/ui/asset-thumbnail';
-import { ScrollArea } from '@radix-ui/react-scroll-area';
-import { useDropzone } from 'react-dropzone';
+import { Button } from '@/components/ui/button';
 import AssetUploadButton from '@/components/ui/custom-buttons/asset-upload.button';
-import { useGetFileUpload } from '@/hooks/file-upload';
+import { Form, FormControl, FormField, FormItem, FormMessage, FormSuccessMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { useLazyGetUserMostRecentlyUpdatedAssetsQuery, useLazySearchAssetsQuery } from '@/state/supabase';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ScrollArea } from '@radix-ui/react-scroll-area';
+import { useThrottleCallback } from '@react-hook/throttle';
+import { XIcon } from 'lucide-react';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from "zod";
 
 const formSchema = z.object({
   text: z.string().min(3)
@@ -41,15 +38,7 @@ export default function Assets() {
     throttledSubmit()
   }
 
-  // file dropzone
-  const onDrop = useGetFileUpload()
 
-  const { getRootProps, getInputProps, open, acceptedFiles } = useDropzone({
-    // Disable click and keydown behavior
-    noClick: true,
-    noKeyboard: true,
-    onDrop
-  });
 
   // Watch the text input value
   useEffect(() => {
@@ -66,7 +55,7 @@ export default function Assets() {
   }, [triggerGetUserMostRecentlyUpdatedAssets])
 
   return (
-    <div className="flex flex-col p-4" {...getRootProps()}>
+    <div className="flex flex-col p-4" >
       {/* Search bar */}
       <Form {...form} >
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
