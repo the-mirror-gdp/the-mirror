@@ -105,9 +105,9 @@ export default function Assets() {
         <ScrollArea className="h-screen">
           <div className="grid grid-cols-[repeat(auto-fill,minmax(80px,1fr))] gap-4 pb-40">
             {form.formState.isSubmitted ? assets?.map((asset, index) => (
-              <AssetThumbnail name={asset.name} imageUrl={asset.thumbnail_url} />
+              <AssetThumbnail key={asset.id} name={asset.name} imageUrl={asset.thumbnail_url} />
             )) : recentAssets?.map((asset) => (
-              <AssetThumbnail name={asset.name} imageUrl={asset.thumbnail_url} />
+              <AssetThumbnail key={asset.id} name={asset.name} imageUrl={asset.thumbnail_url} />
             ))}
           </div>
         </ScrollArea>
