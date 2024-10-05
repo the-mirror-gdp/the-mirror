@@ -36,33 +36,36 @@ export type Database = {
     Tables: {
       assets: {
         Row: {
-          asset_url: string
           created_at: string
           creator_user_id: string
-          description: string
+          description: string | null
+          file_url: string
           id: string
           name: string
           owner_user_id: string
+          thumbnail_url: string
           updated_at: string
         }
         Insert: {
-          asset_url: string
           created_at?: string
           creator_user_id: string
-          description: string
+          description?: string | null
+          file_url: string
           id?: string
           name: string
           owner_user_id: string
+          thumbnail_url: string
           updated_at?: string
         }
         Update: {
-          asset_url?: string
           created_at?: string
           creator_user_id?: string
-          description?: string
+          description?: string | null
+          file_url?: string
           id?: string
           name?: string
           owner_user_id?: string
+          thumbnail_url?: string
           updated_at?: string
         }
         Relationships: [
@@ -254,6 +257,7 @@ export type Database = {
           id: string
           name: string
           owner_user_id: string
+          public_page_image_urls: string[] | null
           updated_at: string
         }
         Insert: {
@@ -263,6 +267,7 @@ export type Database = {
           id?: string
           name: string
           owner_user_id: string
+          public_page_image_urls?: string[] | null
           updated_at?: string
         }
         Update: {
@@ -272,6 +277,7 @@ export type Database = {
           id?: string
           name?: string
           owner_user_id?: string
+          public_page_image_urls?: string[] | null
           updated_at?: string
         }
         Relationships: [
@@ -346,13 +352,14 @@ export type Database = {
           prefix: string
         }
         Returns: {
-          asset_url: string
           created_at: string
           creator_user_id: string
-          description: string
+          description: string | null
+          file_url: string
           id: string
           name: string
           owner_user_id: string
+          thumbnail_url: string
           updated_at: string
         }[]
       }
@@ -367,6 +374,7 @@ export type Database = {
           id: string
           name: string
           owner_user_id: string
+          public_page_image_urls: string[] | null
           updated_at: string
         }[]
       }

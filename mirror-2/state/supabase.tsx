@@ -1,7 +1,14 @@
 "use client"; // we want to use client-side only because supabase tracks auth clientside
 import { generateSpaceName } from "@/actions/name-generator";
+import { Database } from "@/utils/database.types";
 import { createSupabaseBrowserClient } from "@/utils/supabase/client";
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
+
+export const ASSETS_BUCKET_USERS_FOLDER = 'users' // used for the assets bucket
+export const ASSETS_BUCKET_VERSIONED_ASSETS_FOLDER = 'versioned' // generally immutable, used for space_versions (published Spaces/games)
+export interface CreateAssetMutation {
+  name: string
+}
 
 export const supabaseApi = createApi({
   reducerPath: 'supabaseApi',
@@ -103,6 +110,68 @@ export const supabaseApi = createApi({
     //     return { data };
     //   }
     // }),
+    createAsset: builder.mutation<any, { assetData: CreateAssetMutation, file?: File }>({
+      queryFn: async ({ assetData, file }) => {
+        const supabase = createSupabaseBrowserClient();
+
+
+        // Get the authenticated user
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        if (!user) {
+          return { error: 'User not found' };
+        }
+
+
+        // Variable to store the file path (if file exists)
+        let filePath = '';
+
+        // Check if a file is passed for upload
+        if (file) {
+          // Generate a unique file name for Supabase Storage
+          filePath = `${ASSETS_BUCKET_USERS_FOLDER}/${file.name}`;
+
+          // Upload the file to Supabase Storage
+          const { error: uploadError } = await supabase.storage
+            .from('assets') // Replace with your bucket name
+            .upload(filePath, file);
+
+          // Handle file upload error
+          if (uploadError) {
+            return { error: uploadError.message };
+          }
+        }
+
+        // Create a thumbnail URL using Supabase transform
+        const { data: thumbnailUrl } = supabase.storage.from('assets').getPublicUrl(filePath, {
+          transform: {
+            width: 150,
+            height: 150
+          }
+        });
+
+
+        // Add the creator and owner user_id inline
+        const assetUploadData: Database['public']['Tables']['assets']['Insert'] = {
+          ...assetData,
+          creator_user_id: user.id,
+          owner_user_id: user.id,
+          file_url: `${supabase.storage.from('assets').getPublicUrl(filePath).data.publicUrl}`,
+          thumbnail_url: thumbnailUrl.publicUrl
+        }
+
+        // Insert the asset in the "assets" table
+        const { data, error } = await supabase
+          .from("assets")
+          .insert([assetUploadData]) // Insert a new row with updateData
+          .single(); // Ensure only a single record is returned
+
+        if (error) {
+          return { error: error.message };
+        }
+
+        return { data };
+      }
+    }),
 
     getSingleAsset: builder.query<any, string>({
       queryFn: async (assetId) => {
@@ -191,6 +260,6 @@ export const {
   /**
    * Assets
    */
-  useSearchAssetsQuery, useLazySearchAssetsQuery, useGetSingleAssetQuery, useLazyGetUserMostRecentlyUpdatedAssetsQuery, useUpdateAssetMutation
+  useCreateAssetMutation, useSearchAssetsQuery, useLazySearchAssetsQuery, useGetSingleAssetQuery, useLazyGetUserMostRecentlyUpdatedAssetsQuery, useUpdateAssetMutation
 } = supabaseApi
 

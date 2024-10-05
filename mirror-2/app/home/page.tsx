@@ -14,9 +14,11 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import Link from "next/link"
 import { appDescription, appName } from "@/lib/theme-service"
 import { Metadata } from "next"
+import AccountDropdownMenu from "@/components/ui/account-dropdown-menu"
 
 
 export default function MusicPage() {
+
   return (
     <>
       <div className="md:hidden">
@@ -63,7 +65,9 @@ export default function MusicPage() {
                           <Button className="w-full" asChild>
                             <Link href="/space/new" className="w-full p-3"><PlusCircleIcon className="mr-2" />Create a Space</Link>
                           </Button>
+
                         </div>
+                        <AccountDropdownMenu />
                       </div>
                       <Separator className="my-4" />
                       <div className="relative">

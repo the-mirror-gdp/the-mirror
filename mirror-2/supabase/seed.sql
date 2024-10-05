@@ -34,12 +34,14 @@ DECLARE
   user_ids uuid[] := ARRAY[]::uuid[];  -- Array to store user IDs
   user_id uuid;
   profile_url TEXT;
-  asset_url TEXT;
+  file_url TEXT;
+  thumbnail_url TEXT;
   space_id uuid;
   scene_id uuid;
   entity_name TEXT;
   entity_id uuid;
   component_name TEXT;
+  public_page_image_urls text[];
 BEGIN
     -- Loop to insert 15 users
     FOR i IN 1..15 LOOP
@@ -59,25 +61,33 @@ BEGIN
       VALUES
         (user_id, format('User %s', i), format('This is the bio of user %s.', i), format('https://picsum.photos/seed/picsum/300/300', i));
 
-      -- Insert 30 assets for each user, now including creator_user_id and owner_user_id
+      -- Insert 30 assets for each user, now including creator_user_id, owner_user_id, and thumbnail_url
       FOR j IN 1..30 LOOP
-        asset_url := format('https://picsum.photos/seed/picsum/800/600', i, j);  -- Use %s for numbers
+        file_url := format('https://picsum.photos/seed/picsum/800/600', i, j);  -- Use %s for numbers
+        thumbnail_url := format('https://picsum.photos/seed/picsum/200/150', i, j);  -- Use %s for thumbnails
 
         INSERT INTO public.assets
-          (id, name, description, asset_url, creator_user_id, owner_user_id, created_at, updated_at)
+          (id, name, description, file_url, thumbnail_url, creator_user_id, owner_user_id, created_at, updated_at)
         VALUES
-          (gen_random_uuid(), format('Asset %s', j), 'This is a placeholder description for the asset.', asset_url, user_id, user_id, now(), now());  -- Added placeholder description
+          (gen_random_uuid(), format('Asset %s', j), 'This is a placeholder description for the asset.', file_url, thumbnail_url, user_id, user_id, now(), now());  -- Added thumbnail_url and description
       END LOOP;
 
     END LOOP;
 
     -- Insert spaces, using user_ids from the array and setting both owner_user_id and creator_user_id
     FOR i IN 1..45 LOOP
+      -- Create an array of image URLs for the space's public_page_image_urls
+      public_page_image_urls := ARRAY[
+        format('https://picsum.photos/seed/picsum/%s/800', i),
+        format('https://picsum.photos/seed/picsum/%s/801', i),
+        format('https://picsum.photos/seed/picsum/%s/802', i)
+      ];
+
       -- Create a new space
       INSERT INTO public.spaces
-        (id, name, description, creator_user_id, owner_user_id, created_at, updated_at)
+        (id, name, description, public_page_image_urls, creator_user_id, owner_user_id, created_at, updated_at)
       VALUES
-        (gen_random_uuid(), format('Space %s', i), 'This is a placeholder description for the space.', user_ids[((i - 1) % 15) + 1], user_ids[((i - 1) % 15) + 1], now(), now())  -- Added placeholder description
+        (gen_random_uuid(), format('Space %s', i), 'This is a placeholder description for the space.', public_page_image_urls, user_ids[((i - 1) % 15) + 1], user_ids[((i - 1) % 15) + 1], now(), now())  -- Added public_page_image_urls and description
       RETURNING id INTO space_id;  -- Capture the newly created space ID
 
       -- Insert 3 space_versions for each space

@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { XIcon } from 'lucide-react';
+import { Box, FileUp, PlusCircleIcon, XIcon } from 'lucide-react';
 import { z } from "zod";
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,6 +12,9 @@ import { useThrottleCallback } from '@react-hook/throttle'
 import { Tables } from '@/utils/database.types';
 import AssetThumbnail from '@/components/ui/asset-thumbnail';
 import { ScrollArea } from '@radix-ui/react-scroll-area';
+import { useDropzone } from 'react-dropzone';
+import AssetUploadButton from '@/components/ui/custom-buttons/asset-upload.button';
+import { useGetFileUpload } from '@/hooks/file-upload';
 
 const formSchema = z.object({
   text: z.string().min(3)
@@ -38,6 +41,16 @@ export default function Assets() {
     throttledSubmit()
   }
 
+  // file dropzone
+  const onDrop = useGetFileUpload()
+
+  const { getRootProps, getInputProps, open, acceptedFiles } = useDropzone({
+    // Disable click and keydown behavior
+    noClick: true,
+    noKeyboard: true,
+    onDrop
+  });
+
   // Watch the text input value
   useEffect(() => {
     const subscription = form.watch(({ text }, { name, type }) => {
@@ -53,7 +66,7 @@ export default function Assets() {
   }, [triggerGetUserMostRecentlyUpdatedAssets])
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col p-4" {...getRootProps()}>
       {/* Search bar */}
       <Form {...form} >
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
@@ -94,15 +107,18 @@ export default function Assets() {
         </form>
       </Form >
 
+      {/* Asset Upload Button */}
+      <AssetUploadButton />
+
 
       {/* Scrollable area that takes up remaining space */}
       <div className="flex-1 overflow-auto">
         <ScrollArea className="h-screen">
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(80px,1fr))] gap-4 p-4 pb-40">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(80px,1fr))] gap-4 pb-40">
             {form.formState.isSubmitted ? assets?.map((asset, index) => (
-              <AssetThumbnail name={asset.name} imageUrl={""} />
+              <AssetThumbnail name={asset.name} imageUrl={asset.thumbnail_url} />
             )) : recentAssets?.map((asset) => (
-              <AssetThumbnail name={asset.name} imageUrl={""} />
+              <AssetThumbnail name={asset.name} imageUrl={asset.thumbnail_url} />
             ))}
           </div>
         </ScrollArea>

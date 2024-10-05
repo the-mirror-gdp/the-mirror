@@ -1,6 +1,7 @@
 "use client"
 import { EditableSpaceName } from "@/components/editable-space-name";
 import { ThemeSwitcher } from "@/components/theme-switcher";
+import AccountDropdownMenu from "@/components/ui/account-dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { signOut } from "@/hooks/auth";
@@ -38,23 +39,7 @@ export function TopNavbar() {
       >
         <Link href="/create-account">Create Account</Link>
       </Button>}
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="secondary" size="icon" className="rounded-full">
-            <CircleUser className="h-5 w-5" />
-            <span className="sr-only">Toggle user menu</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>{localUserState?.email || "Welcome"}</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          {process.env.NEXT_PUBLIC_DISCORD_INVITE_URL && <DropdownMenuItem className="cursor-pointer"><Link href={process.env.NEXT_PUBLIC_DISCORD_INVITE_URL} target="_blank" >Chat on Discord</Link></DropdownMenuItem>}
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => signOut()} className="cursor-pointer">
-            Logout
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <AccountDropdownMenu />
     </header>
   );
 }
