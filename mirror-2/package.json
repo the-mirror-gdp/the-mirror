@@ -5,6 +5,7 @@
     "types": "npx supabase gen types --lang=typescript --local > ./utils/database.types.ts",
     "reset": "supabase db reset && yarn types",
     "build": "next build",
+    "m": "supabase migration new",
     "start": "next start"
   },
   "dependencies": {

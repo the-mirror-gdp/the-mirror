@@ -64,9 +64,9 @@ BEGIN
         asset_url := format('https://picsum.photos/seed/picsum/800/600', i, j);  -- Use %s for numbers
 
         INSERT INTO public.assets
-          (id, name, asset_url, creator_user_id, owner_user_id, created_at, updated_at)
+          (id, name, description, asset_url, creator_user_id, owner_user_id, created_at, updated_at)
         VALUES
-          (gen_random_uuid(), format('Asset %s', j), asset_url, user_id, user_id, now(), now());  -- Initially, owner_user_id is the same as creator_user_id
+          (gen_random_uuid(), format('Asset %s', j), 'This is a placeholder description for the asset.', asset_url, user_id, user_id, now(), now());  -- Added placeholder description
       END LOOP;
 
     END LOOP;
@@ -75,9 +75,9 @@ BEGIN
     FOR i IN 1..45 LOOP
       -- Create a new space
       INSERT INTO public.spaces
-        (id, name, creator_user_id, owner_user_id, created_at, updated_at)
+        (id, name, description, creator_user_id, owner_user_id, created_at, updated_at)
       VALUES
-        (gen_random_uuid(), format('Space %s', i), user_ids[((i - 1) % 15) + 1], user_ids[((i - 1) % 15) + 1], now(), now())
+        (gen_random_uuid(), format('Space %s', i), 'This is a placeholder description for the space.', user_ids[((i - 1) % 15) + 1], user_ids[((i - 1) % 15) + 1], now(), now())  -- Added placeholder description
       RETURNING id INTO space_id;  -- Capture the newly created space ID
 
       -- Insert 3 space_versions for each space

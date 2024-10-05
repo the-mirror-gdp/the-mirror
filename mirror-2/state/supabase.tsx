@@ -128,7 +128,7 @@ export const supabaseApi = createApi({
         const { data, error } = await supabase
           .from("assets")
           .select("*")
-          .textSearch("name", text)
+          .textSearch("name_description", text)
 
         if (error) {
           return { error: error.message };

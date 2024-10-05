@@ -39,15 +39,18 @@ export type Database = {
           asset_url: string
           created_at: string
           creator_user_id: string
+          description: string
           id: string
           name: string
           owner_user_id: string
           updated_at: string
+          name_description: string | null
         }
         Insert: {
           asset_url: string
           created_at?: string
           creator_user_id: string
+          description: string
           id?: string
           name: string
           owner_user_id: string
@@ -57,6 +60,7 @@ export type Database = {
           asset_url?: string
           created_at?: string
           creator_user_id?: string
+          description?: string
           id?: string
           name?: string
           owner_user_id?: string
@@ -247,6 +251,7 @@ export type Database = {
         Row: {
           created_at: string
           creator_user_id: string
+          description: string
           id: string
           name: string
           owner_user_id: string
@@ -255,6 +260,7 @@ export type Database = {
         Insert: {
           created_at?: string
           creator_user_id: string
+          description: string
           id?: string
           name: string
           owner_user_id: string
@@ -263,6 +269,7 @@ export type Database = {
         Update: {
           created_at?: string
           creator_user_id?: string
+          description?: string
           id?: string
           name?: string
           owner_user_id?: string
@@ -332,6 +339,12 @@ export type Database = {
         Args: {
           email: string
           password: string
+        }
+        Returns: string
+      }
+      name_description: {
+        Args: {
+          "": unknown
         }
         Returns: string
       }

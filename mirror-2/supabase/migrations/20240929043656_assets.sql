@@ -4,6 +4,7 @@ create table assets (
   owner_user_id uuid references auth.users(id) not null, -- owner is different from creator. Assets can be transferred and we want to retain the creator
   creator_user_id uuid references auth.users(id) not null,
   name text not null,
+  description text not null,
   asset_url text not null,
   created_at timestamp with time zone not null default now(),
   updated_at timestamp with time zone not null default now()
