@@ -121,6 +121,28 @@ export const supabaseApi = createApi({
       }
     }),
 
+
+    getUserMostRecentlyUpdatedAssets: builder.query<any, any>({
+      queryFn: async () => {
+        const supabase = createSupabaseBrowserClient();
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) {
+          throw new Error('User not found')
+        }
+        const { data, error } = await supabase
+          .from("assets")
+          .select("*")
+          .eq("owner_user_id", user.id)
+          .order("updated_at", { ascending: false })
+
+        if (error) {
+          return { error: error.message };
+        }
+        return { data };
+      }
+    }),
+
+
     searchAssets: builder.query<any, { text: string }>({
       queryFn: async ({ text }) => {
         const supabase = createSupabaseBrowserClient();
@@ -169,6 +191,6 @@ export const {
   /**
    * Assets
    */
-  useSearchAssetsQuery, useLazySearchAssetsQuery, useGetSingleAssetQuery, useUpdateAssetMutation
+  useSearchAssetsQuery, useLazySearchAssetsQuery, useGetSingleAssetQuery, useLazyGetUserMostRecentlyUpdatedAssetsQuery, useUpdateAssetMutation
 } = supabaseApi
 

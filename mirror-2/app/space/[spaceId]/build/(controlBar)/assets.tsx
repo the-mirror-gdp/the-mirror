@@ -7,8 +7,9 @@ import { z } from "zod";
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormField, FormItem, FormControl, FormMessage, FormSuccessMessage } from '@/components/ui/form';
-import { useLazySearchAssetsQuery } from '@/state/supabase';
+import { useLazyGetUserMostRecentlyUpdatedAssetsQuery, useLazySearchAssetsQuery } from '@/state/supabase';
 import { useThrottleCallback } from '@react-hook/throttle'
+import { Tables } from '@/utils/database.types';
 
 const formSchema = z.object({
   text: z.string().min(3)
@@ -25,6 +26,7 @@ export default function Assets() {
     // errors: error TODO add error handling here
   })
   const [triggerSearch, { data: assets, isLoading, isSuccess, error }] = useLazySearchAssetsQuery()
+  const [triggerGetUserMostRecentlyUpdatedAssets, { data: recentAssets }] = useLazyGetUserMostRecentlyUpdatedAssetsQuery({})
 
   const throttledSubmit = useThrottleCallback(() => {
     triggerSearch({ text: form.getValues("text")?.trim() })
@@ -43,6 +45,10 @@ export default function Assets() {
     })
     return () => subscription.unsubscribe()
   }, [])
+
+  useEffect(() => {
+    triggerGetUserMostRecentlyUpdatedAssets({})
+  }, [triggerGetUserMostRecentlyUpdatedAssets])
 
   return (
     <div className="flex flex-col">
@@ -90,14 +96,23 @@ export default function Assets() {
       {/* Scrollable area that takes up remaining space */}
       <div className="flex-1 overflow-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 pb-16">
-          {assets?.map((asset, index) => (
+          {form.formState.isSubmitted ? assets?.map((asset, index) => (
             <div key={index} className="text-center ">
               {/* <img
                 src={name.src}
                 alt={name.text}
                 className="w-full h-auto rounded-lg mb-2"
               /> */}
-              <p>{asset.name}</p>
+              <p>{asset?.name}</p>
+            </div>
+          )) : recentAssets?.map((asset, index) => (
+            <div key={index} className="text-center ">
+              {/* <img
+                src={name.src}
+                alt={name.text}
+                className="w-full h-auto rounded-lg mb-2"
+              /> */}
+              <p>{asset?.name}</p>
             </div>
           ))}
         </div>
