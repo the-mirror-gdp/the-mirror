@@ -36,7 +36,7 @@ export default function InnerControlBar() {
         className={`absolute inset-0 bg-gradient-to-b from-black via-primary to-black bg-opacity-30 ${isDragActive ? 'opacity-80 visible' : 'opacity-0 invisible'
           } transition-opacity duration-300 ease-in-out flex justify-center items-center z-10`}
       >
-        <p className="text-white font-semibold text-lg mt-5">Drop your file here</p>
+        <p className="text-white font-semibold text-lg mt-5">Drop Your Asset Here</p>
       </div>
 
       {/* Content of the control bar */}
