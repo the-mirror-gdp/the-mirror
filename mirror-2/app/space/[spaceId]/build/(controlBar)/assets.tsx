@@ -18,7 +18,7 @@ export default function Assets() {
   // define the form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    mode: "onChange",
+    mode: "onSubmit",
     defaultValues: {
       text: "",
     },
@@ -34,20 +34,19 @@ export default function Assets() {
     throttledSubmit()
   }
 
-  // Reset the form values when the space data is fetched
-  useEffect(() => {
-    if (assets && isSuccess) {
-      form.reset({
-        text: "", // Set the form value once space.name is available
-      });
-    }
-  }, [isSuccess, form]); // Only run this effect when space or isLoading changes
+  // Watch the text input value
+  const watchedText = form.watch('text');
 
   return (
     <div className="flex flex-col">
       {/* Search bar */}
       <Form {...form} >
-        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full" onChange={form.handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full" onChange={() => {
+          const text = form.getValues("text")
+          if (text.length >= 3) {
+            form.handleSubmit(onSubmit)
+          }
+        }}>
           <FormField
             control={form.control}
             name="text"
