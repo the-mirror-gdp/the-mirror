@@ -143,18 +143,21 @@ export default function ControlledDemo() {
   // TreeProps & { label: string } is hacky here but the types don't seem to be importing correctly
   const nodeTemplate = (node: TreeNode, options) => {
     const expanded = options.expanded;
-    console.log('props:', '', options.props);
+
     const hasParent = options.props && options.props['parent']
     const isNodeLeafFn = options.props['isNodeLeaf']
     const isNodeLeaf = isNodeLeafFn(node)
+    let depth = 1
     if (isNodeLeaf) {
-      console.log('isNodeLeaf', node);
+      depth = (options.props.path.match(/-/g) || []).length;
     }
 
-    const className = cn({ 'ml-[5rem]': isNodeLeaf },
+    const marginMult = String(depth * 2)
+    const marginKey = 'ml-[' + marginMult + 'rem]'
+    const className = cn(isNodeLeaf && marginKey,
       'cursor-pointer items-center rounded-lg transition-all  ')
     return (<div className={className} >
-      {node.label}
+      {node.label} {options.props.path}
     </div >)
   }
 
