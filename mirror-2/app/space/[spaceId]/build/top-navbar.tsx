@@ -21,7 +21,7 @@ export function TopNavbar() {
   }, []);
   return (
     <header className="flex h-16 items-center gap-4 bg-muted/40 px-4  lg:px-6">
-      <Link href="/" className="flex items-center gap-2 font-semibold">
+      <Link href="/home" className="flex items-center gap-2 font-semibold">
         <div className="mt-1">
           <AppLogoImageSmall />
         </div>
