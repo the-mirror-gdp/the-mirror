@@ -10,6 +10,7 @@ import { Form, FormField, FormItem, FormControl, FormMessage, FormSuccessMessage
 import { useLazyGetUserMostRecentlyUpdatedAssetsQuery, useLazySearchAssetsQuery } from '@/state/supabase';
 import { useThrottleCallback } from '@react-hook/throttle'
 import { Tables } from '@/utils/database.types';
+import AssetThumbnail from '@/components/ui/asset-thumbnail';
 
 const formSchema = z.object({
   text: z.string().min(3)
@@ -97,23 +98,9 @@ export default function Assets() {
       <div className="flex-1 overflow-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 pb-16">
           {form.formState.isSubmitted ? assets?.map((asset, index) => (
-            <div key={index} className="text-center ">
-              {/* <img
-                src={name.src}
-                alt={name.text}
-                className="w-full h-auto rounded-lg mb-2"
-              /> */}
-              <p>{asset?.name}</p>
-            </div>
-          )) : recentAssets?.map((asset, index) => (
-            <div key={index} className="text-center ">
-              {/* <img
-                src={name.src}
-                alt={name.text}
-                className="w-full h-auto rounded-lg mb-2"
-              /> */}
-              <p>{asset?.name}</p>
-            </div>
+            <AssetThumbnail name={asset.name} imageUrl={""} />
+          )) : recentAssets?.map((asset) => (
+            <AssetThumbnail name={asset.name} imageUrl={""} />
           ))}
         </div>
       </div>
