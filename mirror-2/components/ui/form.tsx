@@ -10,6 +10,7 @@ import {
   FieldValues,
   FormProvider,
   useFormContext,
+  useFormState,
 } from "react-hook-form"
 
 import { cn } from "@/lib/utils"
@@ -166,6 +167,24 @@ const FormMessage = React.forwardRef<
 })
 FormMessage.displayName = "FormMessage"
 
+const FormSuccessMessage = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, children, ...props }, ref) => {
+  const { isSubmitSuccessful } = useFormState()
+
+  return (
+    (isSubmitSuccessful && <p
+      ref={ref}
+      className={cn("text-sm font-medium", className)}
+      {...props}
+    >
+      {children}
+    </p>)
+  )
+})
+FormSuccessMessage.displayName = "FormSuccessMessage"
+
 export {
   useFormField,
   Form,
@@ -174,5 +193,6 @@ export {
   FormControl,
   FormDescription,
   FormMessage,
+  FormSuccessMessage,
   FormField,
 }

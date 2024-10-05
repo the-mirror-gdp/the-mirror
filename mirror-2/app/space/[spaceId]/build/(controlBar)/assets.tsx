@@ -6,7 +6,7 @@ import { XIcon } from 'lucide-react';
 import { z } from "zod";
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, FormField, FormItem, FormControl, FormMessage } from '@/components/ui/form';
+import { Form, FormField, FormItem, FormControl, FormMessage, FormSuccessMessage } from '@/components/ui/form';
 import { useLazySearchAssetsQuery } from '@/state/supabase';
 import { useThrottleCallback } from '@react-hook/throttle'
 
@@ -18,7 +18,7 @@ export default function Assets() {
   // define the form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    mode: "onSubmit",
+    mode: "onChange",
     defaultValues: {
       text: "",
     },
@@ -35,18 +35,20 @@ export default function Assets() {
   }
 
   // Watch the text input value
-  const watchedText = form.watch('text');
+  useEffect(() => {
+    const subscription = form.watch(({ text }, { name, type }) => {
+      if (text && text?.length >= 3) {
+        form.handleSubmit(onSubmit)()
+      }
+    })
+    return () => subscription.unsubscribe()
+  }, [])
 
   return (
     <div className="flex flex-col">
       {/* Search bar */}
       <Form {...form} >
-        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full" onChange={() => {
-          const text = form.getValues("text")
-          if (text.length >= 3) {
-            form.handleSubmit(onSubmit)
-          }
-        }}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
           <FormField
             control={form.control}
             name="text"
@@ -77,6 +79,7 @@ export default function Assets() {
                 </FormControl>
                 {/* TODO add better styling for this so it doesn't shift the input field */}
                 <FormMessage />
+                <FormSuccessMessage >{assets?.length} Results</FormSuccessMessage>
               </FormItem>
             )}
           />
