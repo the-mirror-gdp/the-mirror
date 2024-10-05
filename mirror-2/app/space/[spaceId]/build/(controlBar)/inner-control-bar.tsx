@@ -17,13 +17,13 @@ export default function InnerControlBar() {
   return (
     <div className="p-2 m-2">
       <Suspense fallback={SkeletonCard()}>
-        {currentView === "scenes" && <Scenes />}
-        {currentView === "hierarchy" && <Hierarchy />}
-        {currentView === "assets" && <Assets />}
-        {currentView === "code" && <Code />}
-        {currentView === "database" && <Database />}
-        {currentView === "versions" && <Versions />}
-        {currentView === "settings" && <Settings />}
+        <span className={`${currentView === "scenes" ? "flex" : "hidden"}`}><Scenes /></span>
+        <span className={`${currentView === "hierarchy" ? "flex" : "hidden"}`}><Hierarchy /></span>
+        <span className={`${currentView === "assets" ? "flex" : "hidden"}`}><Assets /></span>
+        <span className={`${currentView === "code" ? "flex" : "hidden"}`}><Code /></span>
+        <span className={`${currentView === "database" ? "flex" : "hidden"}`}><Database /></span>
+        <span className={`${currentView === "versions" ? "flex" : "hidden"}`}><Versions /></span>
+        <span className={`${currentView === "settings" ? "flex" : "hidden"}`}><Settings /></span>
       </Suspense>
 
     </div >
