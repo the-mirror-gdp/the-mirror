@@ -9,11 +9,16 @@
     "start": "next start"
   },
   "dependencies": {
+    "@atlaskit/button": "^20.2.3",
+    "@atlaskit/dropdown-menu": "^12.18.6",
+    "@atlaskit/form": "^10.5.4",
+    "@atlaskit/modal-dialog": "^12.17.3",
     "@atlaskit/pragmatic-drag-and-drop": "^1.3.1",
     "@atlaskit/pragmatic-drag-and-drop-flourish": "^1.1.2",
     "@atlaskit/pragmatic-drag-and-drop-hitbox": "^1.0.3",
     "@atlaskit/pragmatic-drag-and-drop-live-region": "^1.0.7",
     "@atlaskit/pragmatic-drag-and-drop-react-drop-indicator": "^1.1.3",
+    "@atlaskit/select": "^17.19.3",
     "@hookform/resolvers": "^3.9.0",
     "@next/bundle-analyzer": "^14.2.13",
     "@radix-ui/react-checkbox": "^1.1.1",
