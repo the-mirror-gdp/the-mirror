@@ -38,6 +38,10 @@ import { indentPerLevel } from './constants';
 import { MoveDialog } from './move-dialog';
 import { DependencyContext, TreeContext } from './tree-context';
 
+/**
+ * 2024-10-05 19:05:37 NOTE: Tons of boilerplate here atlaskit, so I'm just commenting a lot out for future reference until it's all removed
+ */
+
 const iconColor = token('color.icon', '#44546F');
 
 function ChildIcon() {
@@ -415,7 +419,7 @@ const TreeItem = memo(function TreeItem({
               <span css={labelStyles}>Item {item.id}</span>
               <small css={idStyles}>
                 {item.isDraft ? <code>Draft</code> : null}
-                <code css={debugStyles}>({mode})</code>
+                {/* <code css={debugStyles}>({mode})</code> */}
               </small>
             </span>
             {instruction ? <DropIndicator instruction={instruction} /> : null}
