@@ -170,7 +170,6 @@ export default function ControlledDemo() {
           togglerTemplate={togglerTemplate}
           dragdropScope="hierarchy"
           onDragDrop={(e) => {
-            const droppedNode = e.dragNode;
             const parentKey = e.dropNode.key as string
             // Expand the parent of the dropped node
             setExpandedKeys((prevExpandedKeys) => ({
