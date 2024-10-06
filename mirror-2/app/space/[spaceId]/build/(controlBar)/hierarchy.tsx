@@ -1,189 +1,248 @@
-'use client';
+/**
+ * @jsxRuntime classic
+ * @jsx jsx
+ */
+"use client"
+import { useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 
-import { useState, useEffect } from 'react';
-import { Tree, TreePassThroughOptions, TreeProps, TreeTogglerTemplateOptions } from 'primereact/tree';
-import { Button } from 'primereact/button';
-import { NodeService } from './NodeService';
-import { PrimeReactProvider } from 'primereact/api';
-import Tailwind from 'primereact/passthrough/tailwind';
-import { cn } from '@/utils/cn';
-import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
-import { TreeNode } from 'primereact/treenode';
+// eslint-disable-next-line @atlaskit/ui-styling-standard/use-compiled -- Ignored via go/DSP-18766
+import { css, jsx } from '@emotion/react';
+import memoizeOne from 'memoize-one';
+import invariant from 'tiny-invariant';
+
+import { triggerPostMoveFlash } from '@atlaskit/pragmatic-drag-and-drop-flourish/trigger-post-move-flash';
+import {
+  type Instruction,
+  type ItemMode,
+} from '@atlaskit/pragmatic-drag-and-drop-hitbox/tree-item';
+import * as liveRegion from '@atlaskit/pragmatic-drag-and-drop-live-region';
+import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
+import { monitorForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
+import { token } from '@atlaskit/tokens';
 
 
+import { type TreeItem as TreeItemType, getInitialTreeState, tree, treeStateReducer } from "@/components/tree-view/tree"
+import { type TreeContextValue, TreeContext, DependencyContext } from "@/components/tree-view/tree-context"
+import TreeItem from '@/components/tree-view/tree-item';
 
-export default function ControlledDemo() {
-  const [nodes, setNodes] = useState<any>([]);
-  const [expandedKeys, setExpandedKeys] = useState<any>({ '0': true, '0-0': true });
-  const [selectedKeys, setSelectedKeys] = useState<any>(null);
-  const [hoveredNodeKey, setHoveredNodeKey] = useState<string | null>(null); // State for hovered node during drag
 
-  // Function to expand all nodes
-  const expandAll = () => {
-    let _expandedKeys = {};
-    for (let node of nodes) {
-      expandNode(node, _expandedKeys);
-    }
-    setExpandedKeys(_expandedKeys);
+const treeStyles = css({
+  display: 'flex',
+  boxSizing: 'border-box',
+  width: 280,
+  padding: 8,
+  flexDirection: 'column',
+  background: token('elevation.surface.sunken', '#F7F8F9'),
+});
+
+type CleanupFn = () => void;
+
+function createTreeItemRegistry() {
+  const registry = new Map<string, { element: HTMLElement; actionMenuTrigger: HTMLElement }>();
+
+  const registerTreeItem = ({
+    itemId,
+    element,
+    actionMenuTrigger,
+  }: {
+    itemId: string;
+    element: HTMLElement;
+    actionMenuTrigger: HTMLElement;
+  }): CleanupFn => {
+    registry.set(itemId, { element, actionMenuTrigger });
+    return () => {
+      registry.delete(itemId);
+    };
   };
 
-  // Function to collapse all nodes
-  const collapseAll = () => {
-    setExpandedKeys({});
-  };
+  return { registry, registerTreeItem };
+}
 
-  // Function to expand individual nodes
-  const expandNode = (node, _expandedKeys) => {
-    if (node.children && node.children.length) {
-      _expandedKeys[node.key] = true;
-      for (let child of node.children) {
-        expandNode(child, _expandedKeys);
-      }
-    }
-  };
+export default function Tree() {
+  const [state, updateState] = useReducer(treeStateReducer, null, getInitialTreeState);
+  const ref = useRef<HTMLDivElement>(null);
+  const { extractInstruction } = useContext(DependencyContext);
 
-  // Fetch tree nodes data
+  const [{ registry, registerTreeItem }] = useState(createTreeItemRegistry);
+
+  const { data, lastAction } = state;
+  let lastStateRef = useRef<TreeItemType[]>(data);
   useEffect(() => {
-    NodeService.getTreeNodes().then((data) => setNodes(data));
+    lastStateRef.current = data;
+  }, [data]);
+
+  useEffect(() => {
+    if (lastAction === null) {
+      return;
+    }
+
+    if (lastAction.type === 'modal-move') {
+      const parentName = lastAction.targetId === '' ? 'the root' : `Item ${lastAction.targetId}`;
+
+      liveRegion.announce(
+        `You've moved Item ${lastAction.itemId} to position ${lastAction.index + 1
+        } in ${parentName}.`,
+      );
+
+      const { element, actionMenuTrigger } = registry.get(lastAction.itemId) ?? {};
+      if (element) {
+        triggerPostMoveFlash(element);
+      }
+
+      /**
+       * Only moves triggered by the modal will result in focus being
+       * returned to the trigger.
+       */
+      actionMenuTrigger?.focus();
+
+      return;
+    }
+
+    if (lastAction.type === 'instruction') {
+      const { element } = registry.get(lastAction.itemId) ?? {};
+      if (element) {
+        triggerPostMoveFlash(element);
+      }
+
+      return;
+    }
+  }, [lastAction, registry]);
+
+  useEffect(() => {
+    return () => {
+      liveRegion.cleanup();
+    };
   }, []);
 
-  // Customizing the Tree component's appearance using Tailwind
-  const pt: TreePassThroughOptions = {
-    // node: {
-    //   className: ({ props, context }) => `cursor-pointer items-center p-2 rounded-lg transition-all hover:bg-accent`,
-    // },
-    // label: {
-    //   header: "<h1>hi</h1>",
-    //   className: ({ props, context }) => `cursor-pointer items-center p-2 rounded-lg transition-all text-green-500 ${true ? 'text-red-500' : ''
-    //     }`,
-    // },
-    // toggler: {
-    //   className: 'mr-1', // Add spacing for the toggle icons
-    // },
+  /**
+   * Returns the items that the item with `itemId` can be moved to.
+   *
+   * Uses a depth-first search (DFS) to compile a list of possible targets.
+   */
+  const getMoveTargets = useCallback(({ itemId }: { itemId: string }) => {
+    const data = lastStateRef.current;
 
-  };
+    const targets: any = [];
 
-  const togglerTemplate = (node: TreeNode, options: TreeTogglerTemplateOptions) => {
-    if (!node) {
-      return null;
+    const searchStack: any[] = Array.from(data);
+    while (searchStack.length > 0) {
+      const node = searchStack.pop();
+
+      if (!node) {
+        continue;
+      }
+
+      /**
+       * If the current node is the item we want to move, then it is not a valid
+       * move target and neither are its children.
+       */
+      if (node.id === itemId) {
+        continue;
+      }
+
+      /**
+       * Draft items cannot have children.
+       */
+      if (node.isDraft) {
+        continue;
+      }
+
+      targets.push(node);
+
+      node.children.forEach((childNode) => searchStack.push(childNode));
     }
 
-    // Determine if the node is a leaf node
-    const isNodeLeafFn = options.props['isNodeLeaf'];
-    const isNodeLeaf = isNodeLeafFn(node);
+    return targets;
+  }, []);
 
-    // Calculate depth based on the number of dashes (-) in the path
-    let depth = 0;
-    if (!isNodeLeaf) {
-      depth = (options.props['path'].match(/-/g) || []).length;
+  const getChildrenOfItem = useCallback((itemId: string) => {
+    const data = lastStateRef.current;
+
+    /**
+     * An empty string is representing the root
+     */
+    if (itemId === '') {
+      return data;
     }
 
-    // Calculate the margin in rem based on the depth
-    // const marginLeft = `${depth * 2}rem`;
-    const marginLeft = `${depth}rem`;
+    const item = tree.find(data, itemId);
+    invariant(item);
+    return item.children;
+  }, []);
 
-    const expanded = options.expanded;
-    const hasChildren = node?.children && node.children.length > 0;
+  const context = useMemo<TreeContextValue>(
+    () => ({
+      dispatch: updateState,
+      uniqueContextId: Symbol('unique-id'),
+      // memoizing this function as it is called by all tree items repeatedly
+      // An ideal refactor would be to update our data shape
+      // to allow quick lookups of parents
+      getPathToItem: memoizeOne(
+        (targetId: string) => tree.getPathToItem({ current: lastStateRef.current, targetId }) ?? [],
+      ),
+      getMoveTargets,
+      getChildrenOfItem,
+      registerTreeItem,
+    }),
+    [getChildrenOfItem, getMoveTargets, registerTreeItem],
+  );
 
-    // Use Tailwind for styling, and apply dynamic margin with inline styles
-    const className = cn(
-      'hover:bg-primary rounded-lg transition-all duration-100'
+  useEffect(() => {
+    invariant(ref.current);
+    return combine(
+      monitorForElements({
+        canMonitor: ({ source }) => source.data.uniqueContextId === context.uniqueContextId,
+        onDrop(args) {
+          const { location, source } = args;
+          // didn't drop on anything
+          if (!location.current.dropTargets.length) {
+            return;
+          }
+
+          if (source.data.type === 'tree-item') {
+            const itemId = source.data.id as string;
+
+            const target = location.current.dropTargets[0];
+            const targetId = target.data.id as string;
+
+            const instruction: Instruction | null = extractInstruction(target.data);
+
+            if (instruction !== null) {
+              updateState({
+                type: 'instruction',
+                instruction,
+                itemId,
+                targetId,
+              });
+            }
+          }
+        },
+      }),
     );
-    return (
-      hasChildren && (
-        <button
-          type="button"
-          className={className}
-          style={{ 'marginLeft': marginLeft }}
-          tabIndex={-1}
-          onClick={options.onClick}
-        >
-          {expanded ? <ChevronDown /> : <ChevronRight />}
-        </button>
-      )
-    );
-  };
-
-  const handleDragOver = (e, nodeKey) => {
-    e.preventDefault(); // Necessary to allow the drop
-    setHoveredNodeKey(nodeKey); // Set the hovered node
-  };
-
-  // Function to handle drag leave event and remove highlight
-  const handleDragLeave = () => {
-    setHoveredNodeKey(null); // Clear the hovered node
-  };
-  // TreeProps & { label: string } is hacky here but the types don't seem to be importing correctly
-  const nodeTemplate = (node: TreeNode, options) => {
-    const expanded = options.expanded;
-
-    // Determine if the node is a leaf node
-    const isNodeLeafFn = options.props['isNodeLeaf'];
-    const isNodeLeaf = isNodeLeafFn(node);
-
-    // Calculate depth based on the number of dashes (-) in the path
-    let depth = 0;
-    if (isNodeLeaf) {
-      depth = (options.props.path.match(/-/g) || []).length;
-    }
-
-    // Calculate the margin in rem based on the depth
-    const marginLeft = `${depth * 1.5}rem`;
-
-    // Use Tailwind for styling, but apply dynamic margin with inline styles
-    const className = cn(
-      'cursor-pointer items-center rounded-lg transition-all',
-      hoveredNodeKey === node.key && 'bg-primary text-white p-3 duration-50' // Highlight on hover during drag
-    );
-
-    return (
-      <div className={className} style={{ marginLeft }}
-        onDragOver={(e) => handleDragOver(e, node.key)} // Highlight on drag over
-        onDragLeave={handleDragLeave} // Remove highlight on drag leave
-      >
-        {node.label}
-      </div>
-    );
-  };
+  }, [context, extractInstruction]);
 
   return (
-    <PrimeReactProvider value={{ unstyled: true, pt: Tailwind }}>
-      <div className="p-4 mb-4">
-        {/* Expand/Collapse Buttons */}
-        <Button type="button" icon="pi pi-plus" label="Expand All" onClick={expandAll} />
-        <Button type="button" icon="pi pi-minus" label="Collapse All" onClick={collapseAll} />
-        {/* Tree Component */}
-        <Tree
-          pt={pt}
-          value={nodes}
-          // metaKeySelection: true means CMD/CTRL is required for multiple select
-          metaKeySelection={true}
-          selectionKeys={selectedKeys}
-          selectionMode="multiple"
-          expandedKeys={expandedKeys}
-          onSelectionChange={(e) => {
-            setSelectedKeys(e.value)
-          }}
-          onToggle={(e) => setExpandedKeys(e.value)}
-          className="w-full md:w-96"
-          nodeTemplate={nodeTemplate}
-          togglerTemplate={togglerTemplate}
-          dragdropScope="hierarchy"
-          onDragDrop={(e) => {
-            const parentKey = e.dropNode.key as string
-            // Expand the parent of the dropped node
-            setExpandedKeys((prevExpandedKeys) => ({
-              ...prevExpandedKeys,
-              [parentKey]: true, // Ensure the new parent is expanded
-            }));
+    <TreeContext.Provider value={context}>
+      {/* eslint-disable-next-line @atlaskit/ui-styling-standard/enforce-style-prop -- Ignored via go/DSP-18766 */}
+      <div style={{ display: 'flex', justifyContent: 'center', padding: 24 }}>
+        <div css={treeStyles} id="tree" ref={ref}>
+          {data.map((item, index, array) => {
+            const type: ItemMode = (() => {
+              if (item.children.length && item.isOpen) {
+                return 'expanded';
+              }
 
+              if (index === array.length - 1) {
+                return 'last-in-group';
+              }
 
-            setHoveredNodeKey(null)
-            setNodes(e.value)
-          }} // Handle the drop complete event
+              return 'standard';
+            })();
 
-        />
+            return <TreeItem item={item} level={0} key={item.id} mode={type} index={index} />;
+          })}
+        </div>
       </div>
-    </PrimeReactProvider>
+    </TreeContext.Provider>
   );
 }
