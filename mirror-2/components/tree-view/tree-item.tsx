@@ -374,7 +374,6 @@ const TreeItem = memo(function TreeItem({
             style={{ paddingLeft: level * indentPerLevel }}
             data-index={index}
             data-level={level}
-            data-testid={`tree-item-${item.id}`}
           >
             <span
               css={[
