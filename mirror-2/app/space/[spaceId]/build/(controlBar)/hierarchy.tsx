@@ -19,13 +19,12 @@ import * as liveRegion from '@atlaskit/pragmatic-drag-and-drop-live-region';
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
 import { monitorForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 
-
 import { type TreeItem as TreeItemType, getInitialTreeState, tree, treeStateReducer } from "@/components/tree-view/tree"
 import { type TreeContextValue, TreeContext, DependencyContext } from "@/components/tree-view/tree-context"
 import TreeItem from '@/components/tree-view/tree-item';
 import { cn } from '@/utils/cn';
 
-
+// here for reference from boilerplate 2024-10-05 18:57:58
 // const treeStyles = css({
 //   display: 'flex',
 //   boxSizing: 'border-box',
@@ -223,8 +222,7 @@ export default function Tree() {
 
   return (
     <TreeContext.Provider value={context}>
-      {/* eslint-disable-next-line @atlaskit/ui-styling-standard/enforce-style-prop -- Ignored via go/DSP-18766 */}
-      <div style={{ display: 'flex', justifyContent: 'center', padding: 24 }}>
+      <div style={{ justifyContent: 'center' }}>
         <div id="tree" className={cn('')} ref={ref}>
           {data.map((item, index, array) => {
             const type: ItemMode = (() => {
