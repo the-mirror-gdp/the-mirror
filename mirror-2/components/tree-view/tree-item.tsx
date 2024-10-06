@@ -34,7 +34,7 @@ import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/el
 import type { DragLocationHistory } from '@atlaskit/pragmatic-drag-and-drop/types';
 import { token } from '@atlaskit/tokens';
 
-import { type TreeItem as TreeItemType } from '../../data/tree';
+import { type TreeItem as TreeItemType } from './tree';
 
 import { indentPerLevel } from './constants';
 import { MoveDialog } from './move-dialog';
