@@ -226,7 +226,10 @@ export default function ControlledDemo() {
           nodeTemplate={nodeTemplate}
           togglerTemplate={togglerTemplate}
           dragdropScope="hierarchy"
-          onDragDrop={(e) => setNodes(e.value)} // Handle the drop event
+          onDragDrop={(e) => {
+            setHoveredNodeKey(null)
+            setNodes(e.value)
+          }} // Handle the drop complete event
 
         />
       </div>
