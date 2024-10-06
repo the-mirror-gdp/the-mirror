@@ -9,14 +9,10 @@ import { css, jsx } from '@emotion/react';
 import ReactDOM from 'react-dom';
 import invariant from 'tiny-invariant';
 
-import Button from '@atlaskit/button';
-import DropdownMenu, { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
 import mergeRefs from '@atlaskit/ds-lib/merge-refs';
 import FocusRing from '@atlaskit/focus-ring';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
-import MoreIcon from '@atlaskit/icon/glyph/more';
-import { ModalTransition } from '@atlaskit/modal-dialog';
 import {
   type Instruction,
   type ItemMode,
@@ -361,7 +357,6 @@ const TreeItem = memo(function TreeItem({
     },
     [cancelExpand],
   );
-
 
   return (
     <Fragment>
