@@ -35,7 +35,6 @@ import { token } from '@atlaskit/tokens';
 import { type TreeItem as TreeItemType } from './tree';
 
 import { indentPerLevel } from './constants';
-import { MoveDialog } from './move-dialog';
 import { DependencyContext, TreeContext } from './tree-context';
 
 /**
@@ -377,9 +376,7 @@ const TreeItem = memo(function TreeItem({
   })();
 
   const [isMoveDialogOpen, setIsMoveDialogOpen] = useState(false);
-  const openMoveDialog = useCallback(() => {
-    setIsMoveDialogOpen(true);
-  }, []);
+
   const closeMoveDialog = useCallback(() => {
     setIsMoveDialogOpen(false);
   }, []);
@@ -475,9 +472,6 @@ const TreeItem = memo(function TreeItem({
           })}
         </div>
       ) : null}
-      <ModalTransition>
-        {isMoveDialogOpen && <MoveDialog onClose={closeMoveDialog} itemId={item.id} />}
-      </ModalTransition>
     </Fragment>
   );
 });
