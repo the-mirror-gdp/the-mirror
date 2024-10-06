@@ -8,64 +8,8 @@ import { PrimeReactProvider } from 'primereact/api';
 import Tailwind from 'primereact/passthrough/tailwind';
 import { cn } from '@/utils/cn';
 import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
+import { TreeNode } from 'primereact/treenode';
 
-export interface TreeNode {
-  /**
-   * Unique identifier of the element.
-   */
-  id?: string | undefined;
-  /**
-   * Unique key of the node.
-   */
-  key?: string | number | undefined;
-  /**
-   * Label of the node.
-   */
-  label?: string | undefined;
-  /**
-   * Data represented by the node.
-   */
-  data?: any | undefined;
-  /**
-   * Icon of the node to display next to content.
-   */
-  icon?: any
-  /**
-   * Used to get the child elements of the component.
-   * @readonly
-   */
-  children?: TreeNode[] | undefined;
-  /**
-   * Inline style of the node.
-   */
-  style?: React.CSSProperties | undefined;
-  /**
-   * Style class of the node.
-   */
-  className?: string | undefined;
-  /**
-   * Whether the node is droppable when dragdrop is enabled.
-   * @defaultValue true
-   */
-  droppable?: boolean | undefined;
-  /**
-   * Whether the node is draggable when dragdrop is enabled.
-   * @defaultValue true
-   */
-  draggable?: boolean | undefined;
-  /**
-   * Whether the node is selectable when selection mode is enabled.
-   */
-  selectable?: boolean | undefined;
-  /**
-   * Specifies if the node has children. Used in lazy loading.
-   */
-  leaf?: boolean | undefined;
-  /**
-   * Visibility of node.
-   */
-  expanded?: boolean | undefined;
-}
 
 
 export default function ControlledDemo() {
@@ -189,7 +133,7 @@ export default function ControlledDemo() {
     // Use Tailwind for styling, but apply dynamic margin with inline styles
     const className = cn(
       'cursor-pointer items-center rounded-lg transition-all',
-      hoveredNodeKey === node.key && 'bg-primary text-white' // Highlight on hover during drag
+      hoveredNodeKey === node.key && 'bg-primary text-white p-3 duration-50' // Highlight on hover during drag
     );
 
     return (
@@ -218,7 +162,6 @@ export default function ControlledDemo() {
           selectionMode="multiple"
           expandedKeys={expandedKeys}
           onSelectionChange={(e) => {
-            console.log('setting selected', e.value)
             setSelectedKeys(e.value)
           }}
           onToggle={(e) => setExpandedKeys(e.value)}
@@ -227,6 +170,15 @@ export default function ControlledDemo() {
           togglerTemplate={togglerTemplate}
           dragdropScope="hierarchy"
           onDragDrop={(e) => {
+            const droppedNode = e.dragNode;
+            const parentKey = e.dropNode.key as string
+            // Expand the parent of the dropped node
+            setExpandedKeys((prevExpandedKeys) => ({
+              ...prevExpandedKeys,
+              [parentKey]: true, // Ensure the new parent is expanded
+            }));
+
+
             setHoveredNodeKey(null)
             setNodes(e.value)
           }} // Handle the drop complete event
