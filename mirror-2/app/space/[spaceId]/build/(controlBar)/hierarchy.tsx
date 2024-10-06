@@ -23,6 +23,11 @@ import { type TreeItem as TreeItemType, getInitialTreeState, tree, treeStateRedu
 import { type TreeContextValue, TreeContext, DependencyContext } from "@/components/tree-view/tree-context"
 import TreeItem from '@/components/tree-view/tree-item';
 import { cn } from '@/utils/cn';
+import { Button } from '@/components/ui/button';
+import { PlusCircleIcon } from 'lucide-react';
+import { useCreateEntityMutation } from '@/state/supabase';
+import { useAppSelector } from '@/hooks/hooks';
+import { getCurrentScene } from '@/state/local';
 
 // here for reference from boilerplate 2024-10-05 18:57:58
 // const treeStyles = css({
@@ -58,7 +63,10 @@ function createTreeItemRegistry() {
 }
 
 export default function Tree() {
+  const currentScene = useAppSelector(getCurrentScene)
   const [state, updateState] = useReducer(treeStateReducer, null, getInitialTreeState);
+  const [createEntity, { data: createdEntity }] = useCreateEntityMutation();
+
   const ref = useRef<HTMLDivElement>(null);
   const { extractInstruction } = useContext(DependencyContext);
 
@@ -220,27 +228,35 @@ export default function Tree() {
     );
   }, [context, extractInstruction]);
 
+
   return (
-    <TreeContext.Provider value={context}>
-      <div style={{ justifyContent: 'center' }}>
-        <div id="tree" className={cn('')} ref={ref}>
-          {data.map((item, index, array) => {
-            const type: ItemMode = (() => {
-              if (item.children.length && item.isOpen) {
-                return 'expanded';
-              }
+    <div>
+      {/* Create Scene Button */}
+      <Button className="w-full my-4" type="button" onClick={() => createEntity({ name: "New Entity", scene_id: currentScene })}>
+        <PlusCircleIcon className="mr-2" />
+        Create Entity
+      </Button>
+      <TreeContext.Provider value={context}>
+        <div style={{ justifyContent: 'center' }}>
+          <div id="tree" className={cn('')} ref={ref}>
+            {data.map((item, index, array) => {
+              const type: ItemMode = (() => {
+                if (item.children.length && item.isOpen) {
+                  return 'expanded';
+                }
 
-              if (index === array.length - 1) {
-                return 'last-in-group';
-              }
+                if (index === array.length - 1) {
+                  return 'last-in-group';
+                }
 
-              return 'standard';
-            })();
+                return 'standard';
+              })();
 
-            return <TreeItem item={item} level={0} key={item.id} mode={type} index={index} />;
-          })}
+              return <TreeItem item={item} level={0} key={item.id} mode={type} index={index} />;
+            })}
+          </div>
         </div>
-      </div>
-    </TreeContext.Provider>
+      </TreeContext.Provider>
+    </div >
   );
 }

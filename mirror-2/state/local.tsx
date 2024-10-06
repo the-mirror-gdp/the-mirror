@@ -1,6 +1,7 @@
 import { RootState } from '@/state/store'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
+import { Scene } from 'playcanvas'
 
 export type ControlBarView = "assets" | "hierarchy" | "scenes" | "code" | "database" | "versions" | "settings"
 
@@ -12,7 +13,10 @@ interface LocalUserState {
 interface LocalState {
   uiSoundsCanPlay: boolean
   controlBarCurrentView: ControlBarView,
-  user?: LocalUserState
+  user?: LocalUserState,
+
+  // Viewport et al.
+  currentScene: string
 }
 
 // Define the initial state using that type
@@ -24,7 +28,8 @@ const initialState: LocalState = {
     email: "",
     id: "",
     is_anonymous: false
-  }
+  },
+  currentScene: ''
 }
 
 export const localSlice = createSlice({
@@ -45,19 +50,26 @@ export const localSlice = createSlice({
       state.user = action.payload
     },
     clearLocalUserState: (state) => {
-      console.log('auth clearLocalUserState')
       state.user = undefined
+    },
+
+    /**
+     * Viewport et al.
+     */
+    setCurrentScene: (state, action: PayloadAction<string>) => {
+      state.currentScene = action.payload
     }
   },
 })
 
 
-export const { turnOffUiSounds, turnOnUiSounds, setControlBarCurrentView, updateLocalUserState, clearLocalUserState } = localSlice.actions
+export const { turnOffUiSounds, turnOnUiSounds, setControlBarCurrentView, updateLocalUserState, clearLocalUserState, setCurrentScene } = localSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectUiSoundsCanPlay = (state: RootState) => state.local.uiSoundsCanPlay
 export const selectControlBarCurrentView = (state: RootState) => state.local.controlBarCurrentView
 export const selectLocalUserState = (state: RootState) => state.local.user
+export const getCurrentScene = (state: RootState) => state.local.currentScene
 
 export default localSlice.reducer
 

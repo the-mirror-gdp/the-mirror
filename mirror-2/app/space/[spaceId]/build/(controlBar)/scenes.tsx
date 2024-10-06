@@ -8,6 +8,8 @@ import { useParams } from 'next/navigation';
 
 import { z } from 'zod'; // Import zod for validation
 import { TwoWayInput } from '@/components/two-way-input';
+import { useAppDispatch } from '@/hooks/hooks';
+import { setCurrentScene } from '@/state/local';
 
 export default function Scenes() {
   const params = useParams<{ spaceId: string }>()
@@ -16,6 +18,7 @@ export default function Scenes() {
   const [createScene, { data: createdScene }] = useCreateSceneMutation();
   const [deleteScene] = useDeleteSceneMutation();
   const [updateScene] = useUpdateSceneMutation();
+  const dispatch = useAppDispatch();
 
   // Validation schema for scene name
   const formSchema = z.object({
@@ -38,6 +41,10 @@ export default function Scenes() {
               <div
                 key={scene.id}
                 className="relative flex flex-col items-center shadow-md rounded-lg p-4 gap-4 border border-transparent hover:border-primary transition-all duration-100 cursor-pointer"
+                onClick={() => {
+                  // Handle scene click
+                  dispatch(setCurrentScene(scene.id));
+                }}
               >
                 <img
                   src={scene.image_url || "/dev/150.jpg"} // Fallback to a placeholder image if no image_url is present
