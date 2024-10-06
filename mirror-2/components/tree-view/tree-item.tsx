@@ -83,7 +83,6 @@ const outerButtonStyles = css({
 const outerHoverStyles = css({
   borderRadius: 3,
   cursor: 'pointer',
-  // eslint-disable-next-line @atlaskit/ui-styling-standard/no-unsafe-selectors -- Ignored via go/DSP-18766
   ':hover': {
     background: token('color.background.neutral.subtle.hovered', 'rgba(9, 30, 66, 0.06)'),
   },
@@ -174,7 +173,6 @@ const TreeItem = memo(function TreeItem({
   index: number;
 }) {
   const buttonRef = useRef<HTMLButtonElement>(null);
-
   const [state, setState] = useState<'idle' | 'dragging' | 'preview' | 'parent-of-instruction'>(
     'idle',
   );
@@ -187,7 +185,6 @@ const TreeItem = memo(function TreeItem({
     dispatch({ type: 'toggle', itemId: item.id });
   }, [dispatch, item]);
 
-  // const actionMenuTriggerRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     invariant(buttonRef.current);
     // invariant(actionMenuTriggerRef.current);
@@ -365,38 +362,20 @@ const TreeItem = memo(function TreeItem({
     [cancelExpand],
   );
 
-  const aria = (() => {
-    if (!item.children.length) {
-      return undefined;
-    }
-    return {
-      'aria-expanded': item.isOpen,
-      'aria-controls': `tree-item-${item.id}--subtree`,
-    };
-  })();
-
-  const [isMoveDialogOpen, setIsMoveDialogOpen] = useState(false);
-
-  const closeMoveDialog = useCallback(() => {
-    setIsMoveDialogOpen(false);
-  }, []);
 
   return (
     <Fragment>
       <div
         css={[state === 'idle' ? outerHoverStyles : undefined]}
-        // eslint-disable-next-line @atlaskit/ui-styling-standard/enforce-style-prop -- Ignored via go/DSP-18766
         style={{ position: 'relative' }}
       >
         <FocusRing isInset>
           <button
-            {...aria}
             css={[outerButtonStyles]}
             id={`tree-item-${item.id}`}
             onClick={toggleOpen}
             ref={buttonRef}
             type="button"
-            // eslint-disable-next-line @atlaskit/ui-styling-standard/no-imported-style-values -- Ignored via go/DSP-18766
             style={{ paddingLeft: level * indentPerLevel }}
             data-index={index}
             data-level={level}
@@ -414,40 +393,13 @@ const TreeItem = memo(function TreeItem({
             >
               <Icon item={item} />
               <span css={labelStyles}>Item {item.id}</span>
-              <small css={idStyles}>
-                {item.isDraft ? <code>Draft</code> : null}
-                {/* <code css={debugStyles}>({mode})</code> */}
-              </small>
             </span>
             {instruction ? <DropIndicator instruction={instruction} /> : null}
           </button>
         </FocusRing>
-        {/* <DropdownMenu
-          trigger={({ triggerRef, ...triggerProps }) => (
-            <Button
-              ref={mergeRefs([triggerRef, actionMenuTriggerRef])}
-              iconBefore={
-                <MoreIcon
-                  label="Actions"
-                  size="small"
-                  primaryColor={token('color.icon.subtle', '#626F86')}
-                />
-              }
-              {...triggerProps}
-              spacing="compact"
-              // eslint-disable-next-line @atlaskit/ui-styling-standard/enforce-style-prop -- Ignored via go/DSP-18766
-              style={{ position: 'absolute', top: 8, right: 8 }}
-              appearance="subtle"
-            />
-          )}
-        >
-          <DropdownItemGroup>
-            <DropdownItem onClick={openMoveDialog}>Move</DropdownItem>
-          </DropdownItemGroup>
-        </DropdownMenu> */}
       </div>
       {item.children.length && item.isOpen ? (
-        <div id={aria?.['aria-controls']}>
+        <div >
           {item.children.map((child, index, array) => {
             const childType: ItemMode = (() => {
               if (child.children.length && child.isOpen) {
