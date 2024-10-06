@@ -62,7 +62,7 @@ function createTreeItemRegistry() {
   return { registry, registerTreeItem };
 }
 
-export default function Tree() {
+export default function EntityHierarchy() {
   const currentScene = useAppSelector(getCurrentScene)
   const [state, updateState] = useReducer(treeStateReducer, null, getInitialTreeState);
   const [createEntity, { data: createdEntity }] = useCreateEntityMutation();

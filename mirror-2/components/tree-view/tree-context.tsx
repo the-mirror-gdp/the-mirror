@@ -7,7 +7,6 @@ import {
 import { DropIndicator } from '@atlaskit/pragmatic-drag-and-drop-react-drop-indicator/tree-item';
 import { TreeAction, TreeItem } from '@/components/tree-view/tree';
 
-
 export type TreeContextValue = {
   dispatch: (action: TreeAction) => void;
   uniqueContextId: Symbol;

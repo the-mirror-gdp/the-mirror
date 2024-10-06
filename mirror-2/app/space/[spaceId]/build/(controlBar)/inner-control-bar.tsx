@@ -3,7 +3,7 @@
 import Assets from "@/app/space/[spaceId]/build/(controlBar)/assets";
 import Code from "@/app/space/[spaceId]/build/(controlBar)/code";
 import Database from "@/app/space/[spaceId]/build/(controlBar)/database";
-import Hierarchy from "@/app/space/[spaceId]/build/(controlBar)/hierarchy";
+import Hierarchy from "@/app/space/[spaceId]/build/(controlBar)/entity-hierarchy";
 import Scenes from "@/app/space/[spaceId]/build/(controlBar)/scenes";
 import Settings from "@/app/space/[spaceId]/build/(controlBar)/settings";
 import { SkeletonCard } from "@/app/space/[spaceId]/build/(controlBar)/skeleton-card";
