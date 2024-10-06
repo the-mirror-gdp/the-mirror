@@ -37,18 +37,18 @@ import { cn } from '@/utils/cn';
 type CleanupFn = () => void;
 
 function createTreeItemRegistry() {
-  const registry = new Map<string, { element: HTMLElement; actionMenuTrigger: HTMLElement }>();
+  const registry = new Map<string, { element: HTMLElement; actionMenuTrigger?: HTMLElement }>();
 
   const registerTreeItem = ({
     itemId,
     element,
-    actionMenuTrigger,
+    // actionMenuTrigger,
   }: {
     itemId: string;
     element: HTMLElement;
-    actionMenuTrigger: HTMLElement;
+    // actionMenuTrigger: HTMLElement;
   }): CleanupFn => {
-    registry.set(itemId, { element, actionMenuTrigger });
+    registry.set(itemId, { element });
     return () => {
       registry.delete(itemId);
     };
