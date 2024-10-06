@@ -18,22 +18,22 @@ import {
 import * as liveRegion from '@atlaskit/pragmatic-drag-and-drop-live-region';
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
 import { monitorForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
-import { token } from '@atlaskit/tokens';
 
 
 import { type TreeItem as TreeItemType, getInitialTreeState, tree, treeStateReducer } from "@/components/tree-view/tree"
 import { type TreeContextValue, TreeContext, DependencyContext } from "@/components/tree-view/tree-context"
 import TreeItem from '@/components/tree-view/tree-item';
+import { cn } from '@/utils/cn';
 
 
-const treeStyles = css({
-  display: 'flex',
-  boxSizing: 'border-box',
-  width: 280,
-  padding: 8,
-  flexDirection: 'column',
-  background: token('elevation.surface.sunken', '#F7F8F9'),
-});
+// const treeStyles = css({
+//   display: 'flex',
+//   boxSizing: 'border-box',
+//   width: 280,
+//   padding: 8,
+//   flexDirection: 'column',
+//   background: '#FFFFFF'
+// });
 
 type CleanupFn = () => void;
 
@@ -225,7 +225,7 @@ export default function Tree() {
     <TreeContext.Provider value={context}>
       {/* eslint-disable-next-line @atlaskit/ui-styling-standard/enforce-style-prop -- Ignored via go/DSP-18766 */}
       <div style={{ display: 'flex', justifyContent: 'center', padding: 24 }}>
-        <div css={treeStyles} id="tree" ref={ref}>
+        <div id="tree" className={cn('')} ref={ref}>
           {data.map((item, index, array) => {
             const type: ItemMode = (() => {
               if (item.children.length && item.isOpen) {
