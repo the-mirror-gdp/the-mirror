@@ -5,14 +5,12 @@
 
 import { Fragment, memo, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
-// eslint-disable-next-line @atlaskit/ui-styling-standard/use-compiled -- Ignored via go/DSP-18766
 import { css, jsx } from '@emotion/react';
 import ReactDOM from 'react-dom';
 import invariant from 'tiny-invariant';
 
 import Button from '@atlaskit/button';
 import DropdownMenu, { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
-// eslint-disable-next-line @atlaskit/design-system/no-banned-imports
 import mergeRefs from '@atlaskit/ds-lib/merge-refs';
 import FocusRing from '@atlaskit/focus-ring';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
@@ -186,14 +184,14 @@ const TreeItem = memo(function TreeItem({
     dispatch({ type: 'toggle', itemId: item.id });
   }, [dispatch, item]);
 
-  const actionMenuTriggerRef = useRef<HTMLButtonElement>(null);
+  // const actionMenuTriggerRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     invariant(buttonRef.current);
-    invariant(actionMenuTriggerRef.current);
+    // invariant(actionMenuTriggerRef.current);
     return registerTreeItem({
       itemId: item.id,
       element: buttonRef.current,
-      actionMenuTrigger: actionMenuTriggerRef.current,
+      // actionMenuTrigger: actionMenuTriggerRef.current,
     });
   }, [item.id, registerTreeItem]);
 
@@ -423,7 +421,7 @@ const TreeItem = memo(function TreeItem({
             {instruction ? <DropIndicator instruction={instruction} /> : null}
           </button>
         </FocusRing>
-        <DropdownMenu
+        {/* <DropdownMenu
           trigger={({ triggerRef, ...triggerProps }) => (
             <Button
               ref={mergeRefs([triggerRef, actionMenuTriggerRef])}
@@ -445,7 +443,7 @@ const TreeItem = memo(function TreeItem({
           <DropdownItemGroup>
             <DropdownItem onClick={openMoveDialog}>Move</DropdownItem>
           </DropdownItemGroup>
-        </DropdownMenu>
+        </DropdownMenu> */}
       </div>
       {item.children.length && item.isOpen ? (
         <div id={aria?.['aria-controls']}>
