@@ -392,6 +392,12 @@ export type Database = {
         }
         Returns: Json
       }
+      get_hierarchical_space_with_populated_children: {
+        Args: {
+          _space_id: string
+        }
+        Returns: Json
+      }
       get_space_with_children: {
         Args: {
           space_id: string

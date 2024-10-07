@@ -75,42 +75,48 @@ export const spacesApi = createApi({
       queryFn: async (spaceId) => {
         const supabase = createSupabaseBrowserClient();
 
-        // Nested select with joins for scenes, entities, and components
-        const { data, error } = await supabase
-          .from("spaces")
-          .select(`
-                *,
-                scenes (
-                  *,
-                  entities (
-                    *,
-                    components (*)
-                  )
-                )
-              `)
-          .eq("id", spaceId)
+        // Fetch space data with nested relations for scenes, entities, and components
+        // const { data, error } = await supabase
+        //   .from('spaces')
+        //   .select(`
+        //         *,
+        //         scenes (
+        //           *,
+        //           entities (
+        //             *,
+        //             components (*)
+        //           )
+        //         )
+        //       `)
+        //   .eq('id', spaceId)
+        // .single();
+
+        const { data, error }: { data: any, error: any } = await supabase
+          .rpc('get_hierarchical_space_with_populated_children', { _space_id: spaceId })
           .single();
 
         if (error) {
           return { error: error.message };
         }
 
-        return { data };
+        // Organize the data to make it easier to consume
+        const organizedData = {
+          space: data,
+          scenes: data?.scenes || [],
+          entities: data.scenes?.flatMap(scene => scene.entities || []) || [],
+          components: data.scenes?.flatMap(scene =>
+            scene.entities?.flatMap(entity => entity.components || []) || []
+          ) || []
+        };
+
+        return { data: organizedData };
       },
       providesTags: (result, error, spaceId) => {
         if (result) {
-          // Extract scene, entity, and component ids for proper tag management
-          const sceneIds = result.scenes?.map(scene => ({ type: SCENES_TAG_NAME_FOR_GENERAL_ENTITY, id: scene.id })) || [];
-          const entityIds = result.scenes?.flatMap(scene =>
-            scene.entities?.map(entity => ({ type: ENTITIES_TAG_NAME_FOR_GENERAL_ENTITY, id: entity.id }))
-          ) || [];
-          const componentIds = result.scenes?.flatMap(scene =>
-            scene.entities?.flatMap(entity =>
-              entity.components?.map(component => ({ type: COMPONENTS_TAG_NAME_FOR_GENERAL_ENTITY, id: component.id }))
-            )
-          ) || [];
+          const sceneIds = result.scenes?.map(scene => ({ type: 'Scenes', id: scene.id })) || [];
+          const entityIds = result.entities?.map(entity => ({ type: 'Entities', id: entity.id })) || [];
+          const componentIds = result.components?.map(component => ({ type: 'Components', id: component.id })) || [];
 
-          // Return tags for space, scenes, entities, and components
           return [
             { type: TAG_NAME_FOR_GENERAL_ENTITY, id: spaceId },
             ...sceneIds,
@@ -121,7 +127,6 @@ export const spacesApi = createApi({
         return [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: spaceId }];
       }
     }),
-
 
     updateSpace: builder.mutation<Database['public']['Tables']['spaces']['Row'], { id: string, updateData: Partial<Database['public']['Tables']['spaces']['Update']> }>({
       queryFn: async ({ id: spaceId, updateData }) => {

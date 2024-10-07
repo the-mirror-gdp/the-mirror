@@ -403,6 +403,9 @@ const TreeItem = memo(function TreeItem({
         <div >
           {item.children.map((child, index, array) => {
             const childType: ItemMode = (() => {
+              if (child.children === undefined) {
+                debugger
+              }
               if (child.children.length && child.isOpen) {
                 return 'expanded';
               }

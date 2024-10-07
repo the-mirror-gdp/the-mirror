@@ -28,7 +28,9 @@ import { PlusCircleIcon } from 'lucide-react';
 
 import { useAppSelector } from '@/hooks/hooks';
 import { getCurrentScene } from '@/state/local';
-import { useCreateEntityMutation, useGetAllEntitiesQuery, useLazyGetAllEntitiesQuery } from '@/state/entities';
+import { useCreateEntityMutation, useUpdateEntityMutation } from '@/state/entities';
+import { useGetSingleSpaceBuildModeQuery, useLazyGetSingleSpaceBuildModeQuery } from '@/state/spaces';
+import { useParams } from 'next/navigation';
 
 // here for reference from boilerplate 2024-10-05 18:57:58
 // const treeStyles = css({
@@ -65,19 +67,24 @@ function createTreeItemRegistry() {
 
 export default function EntityHierarchy() {
   const currentScene = useAppSelector(getCurrentScene)
-  const [getAllEntities, { data: entities }] = useLazyGetAllEntitiesQuery()
+  const params = useParams<{ spaceId: string }>()
+  const { data: spaceBuildModeData, error } = useGetSingleSpaceBuildModeQuery(params.spaceId)
+  const { space, scenes, entities, components } = spaceBuildModeData || {};
+
+  const [updateEntity] = useUpdateEntityMutation();
 
   const [state, updateState] = useReducer(
-    treeStateReducer,
+    (state, action) => treeStateReducer(state, action, updateEntity), // Pass updateEntity to the reducer
     entities ? entities : [], // Fallback to an empty array before entities load
     getInitialTreeState
   );
 
-  useEffect(() => {
-    if (currentScene) {
-      getAllEntities(currentScene);
-    }
-  }, [currentScene]);
+  // useEffect(() => {
+  //   debugger
+  //   if (currentScene) {
+  //     getSingleSpace(currentScene);
+  //   }
+  // }, [currentScene]);
   useEffect(() => {
     if (entities && entities.length > 0) {
       console.log('set-tree', entities)
@@ -260,7 +267,10 @@ export default function EntityHierarchy() {
           <div id="tree" className={cn('')} ref={ref}>
             {data.map((item, index, array) => {
               const type: ItemMode = (() => {
-                if (item.children.length && item.isOpen) {
+                if (!item.children) {
+                  // debugger
+                }
+                if (item.children?.length && item.isOpen) {
                   return 'expanded';
                 }
 
