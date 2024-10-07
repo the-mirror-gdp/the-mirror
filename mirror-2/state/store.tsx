@@ -6,6 +6,7 @@ import { spacesApi } from '@/state/spaces'
 import { scenesApi } from '@/state/scenes'
 import { entitiesApi } from '@/state/entities'
 import { assetsApi } from '@/state/assets'
+import { componentsApi } from '@/state/components'
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     [spacesApi.reducerPath]: spacesApi.reducer,
     [scenesApi.reducerPath]: scenesApi.reducer,
     [entitiesApi.reducerPath]: entitiesApi.reducer,
+    [componentsApi.reducerPath]: componentsApi.reducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
@@ -24,6 +26,7 @@ export const store = configureStore({
       .concat(spacesApi.middleware)
       .concat(scenesApi.middleware)
       .concat(entitiesApi.middleware)
+      .concat(componentsApi.middleware)
 })
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors

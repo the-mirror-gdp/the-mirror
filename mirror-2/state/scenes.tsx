@@ -3,11 +3,6 @@ import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import { createSupabaseBrowserClient } from '@/utils/supabase/client';
 import { Database } from '@/utils/database.types';
 
-// Entity adapters for Spaces, Scenes, and Entities
-const scenesAdapter = createEntityAdapter<Database['public']['Tables']['scenes']['Row']>();
-
-// Initial state using the adapter
-const initialScenesState = scenesAdapter.getInitialState();
 export const TAG_NAME_FOR_GENERAL_ENTITY = 'Scenes'
 
 // Supabase API for spaces

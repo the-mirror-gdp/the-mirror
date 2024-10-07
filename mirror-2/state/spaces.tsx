@@ -4,11 +4,6 @@ import { createSupabaseBrowserClient } from '@/utils/supabase/client';
 import { Database } from '@/utils/database.types';
 import { generateSpaceName } from '@/actions/name-generator';
 
-// Entity adapters for Spaces, Scenes, and Entities
-const spacesAdapter = createEntityAdapter<Database['public']['Tables']['spaces']['Row']>();
-
-// Initial state using the adapter
-const initialSpacesState = spacesAdapter.getInitialState();
 export const TAG_NAME_FOR_GENERAL_ENTITY = 'Spaces'
 
 // Supabase API for spaces

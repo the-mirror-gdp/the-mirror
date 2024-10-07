@@ -2,19 +2,15 @@ import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/too
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import { createSupabaseBrowserClient } from '@/utils/supabase/client';
 import { Database } from '@/utils/database.types';
-import { generateSpaceName } from '@/actions/name-generator';
 
 export const ASSETS_BUCKET_USERS_FOLDER = 'users' // used for the assets bucket
 export const ASSETS_BUCKET_VERSIONED_ASSETS_FOLDER = 'versioned' // generally immutable, used for space_versions (published Spaces/games)
+const TABLE_NAME = "assets"
+
 export interface CreateAssetMutation {
   name: string
 }
 export const TAG_NAME_FOR_GENERAL_ENTITY = 'Assets'
-// Entity adapters for Spaces, Scenes, and Entities
-const spacesAdapter = createEntityAdapter<Database['public']['Tables']['assets']['Row']>();
-
-// Initial state using the adapter
-const initialSpacesState = spacesAdapter.getInitialState();
 
 // Supabase API for spaces
 export const assetsApi = createApi({
@@ -46,7 +42,7 @@ export const assetsApi = createApi({
           data: Database['public']['Tables']['assets']['Row'] | null,
           error: any
         } = await supabase
-          .from("assets")
+          .from(TABLE_NAME)
           .insert([assetInsertData])
           .select('*')
           .single();
@@ -88,7 +84,7 @@ export const assetsApi = createApi({
 
           // Update the asset with the file URL and thumbnail URL
           const { error: updateError } = await supabase
-            .from("assets")
+            .from(TABLE_NAME)
             .update({
               file_url: fileUrl,
               thumbnail_url: thumbnailUrl,
@@ -111,7 +107,7 @@ export const assetsApi = createApi({
         const supabase = createSupabaseBrowserClient();
 
         const { data, error } = await supabase
-          .from("assets")
+          .from(TABLE_NAME)
           .select("*")
           .eq("id", assetId)
           .single()
@@ -133,7 +129,7 @@ export const assetsApi = createApi({
           throw new Error('User not found')
         }
         const { data, error } = await supabase
-          .from("assets")
+          .from(TABLE_NAME)
           .select("*")
           .eq("owner_user_id", user.id)
           .order("updated_at", { ascending: false })
@@ -181,7 +177,7 @@ export const assetsApi = createApi({
         const supabase = createSupabaseBrowserClient();
 
         const { data, error } = await supabase
-          .from("assets")
+          .from(TABLE_NAME)
           .update(updateData)
           .eq("id", assetId)
           .single()

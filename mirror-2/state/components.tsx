@@ -3,16 +3,17 @@ import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import { createSupabaseBrowserClient } from '@/utils/supabase/client';
 import { Database } from '@/utils/database.types';
 
-export const TAG_NAME_FOR_GENERAL_ENTITY = 'Entities'
+const TAG_NAME_FOR_GENERAL_ENTITY = 'Components'
+const TABLE_NAME = "components"
 
 // Supabase API for spaces
-export const entitiesApi = createApi({
-  reducerPath: 'entitiesApi',
+export const componentsApi = createApi({
+  reducerPath: 'componentsApi',
   baseQuery: fakeBaseQuery(),
   tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, 'LIST'],
   endpoints: (builder) => ({
-    createEntity: builder.mutation<any, { name: string, scene_id: string }>({
-      queryFn: async ({ name, scene_id }) => {
+    createComponent: builder.mutation<any, { name: string, entity_id: string }>({
+      queryFn: async ({ name, entity_id }) => {
         const supabase = createSupabaseBrowserClient();
         const { data: { user }, error: authError } = await supabase.auth.getUser();
 
@@ -20,15 +21,15 @@ export const entitiesApi = createApi({
           return { error: 'User not found' };
         }
 
-        if (!scene_id) {
-          return { error: 'No scene_id provided' };
+        if (!entity_id) {
+          return { error: 'No entity_id provided' };
         }
 
         const { data, error } = await supabase
-          .from("entities")
+          .from(TABLE_NAME)
           .insert([{
             name,
-            scene_id,
+            entity_id,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
           }])
@@ -44,14 +45,14 @@ export const entitiesApi = createApi({
 
     }),
 
-    getAllEntities: builder.query<any, string>({
-      queryFn: async (sceneId) => {
+    getAllComponents: builder.query<any, string>({
+      queryFn: async (entityId) => {
         const supabase = createSupabaseBrowserClient();
 
         const { data, error } = await supabase
-          .from("entities")
+          .from(TABLE_NAME)
           .select("*")
-          .eq("scene_id", sceneId);
+          .eq("entity_id", entityId);
 
         if (error) {
           return { error: error.message };
@@ -67,14 +68,14 @@ export const entitiesApi = createApi({
           : [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }],
     }),
 
-    getSingleEntity: builder.query<any, string>({
-      queryFn: async (entityId) => {
+    getSingleComponent: builder.query<any, string>({
+      queryFn: async (id) => {
         const supabase = createSupabaseBrowserClient();
 
         const { data, error } = await supabase
-          .from("entities")
+          .from(TABLE_NAME)
           .select("*")
-          .eq("id", entityId)
+          .eq("id", id)
           .single();
 
         if (error) {
@@ -82,17 +83,17 @@ export const entitiesApi = createApi({
         }
         return { data };
       },
-      providesTags: (result, error, entityId) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: entityId }], // Provide the entity tag based on entityId
+      providesTags: (result, error, id) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id }],
     }),
 
-    updateEntity: builder.mutation<any, { entityId: string, updateData: Record<string, any> }>({
-      queryFn: async ({ entityId, updateData }) => {
+    updateComponent: builder.mutation<any, { id: string, updateData: Record<string, any> }>({
+      queryFn: async ({ id, updateData }) => {
         const supabase = createSupabaseBrowserClient();
 
         const { data, error } = await supabase
-          .from("entities")
+          .from(TABLE_NAME)
           .update(updateData)
-          .eq("id", entityId)
+          .eq("id", id)
           .single();
 
         if (error) {
@@ -100,17 +101,17 @@ export const entitiesApi = createApi({
         }
         return { data };
       },
-      invalidatesTags: (result, error, { entityId }) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: entityId }], // Invalidate tag for entityId
+      invalidatesTags: (result, error, { id }) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id }],
     }),
 
-    deleteEntity: builder.mutation<any, string>({
-      queryFn: async (entityId) => {
+    deleteComponent: builder.mutation<any, string>({
+      queryFn: async (id) => {
         const supabase = createSupabaseBrowserClient();
 
         const { data, error } = await supabase
-          .from("entities")
+          .from(TABLE_NAME)
           .delete()
-          .eq("id", entityId)
+          .eq("id", id)
           .single();
 
         if (error) {
@@ -118,7 +119,7 @@ export const entitiesApi = createApi({
         }
         return { data };
       },
-      invalidatesTags: (result, error, entityId) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: entityId }]
+      invalidatesTags: (result, error, id) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id }]
     }),
 
   }),
@@ -128,7 +129,7 @@ export const entitiesApi = createApi({
 // // Slice for managing space-related state
 // const entitiesSlice = createSlice({
 //   name: 'spaces',
-//   initialState: initialEntitiesState,
+//   initialState: initialComponentsState,
 //   reducers: {},
 //   extraReducers: (builder) => {
 //     builder
@@ -155,5 +156,5 @@ export const entitiesApi = createApi({
 
 // Export the API hooks
 export const {
-  useCreateEntityMutation, useGetAllEntitiesQuery, useUpdateEntityMutation, useGetSingleEntityQuery, useLazyGetAllEntitiesQuery, useDeleteEntityMutation
-} = entitiesApi;
+  useCreateComponentMutation, useGetAllComponentsQuery, useUpdateComponentMutation, useGetSingleComponentQuery, useLazyGetAllComponentsQuery, useDeleteComponentMutation
+} = componentsApi;
