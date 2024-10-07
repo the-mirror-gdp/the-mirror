@@ -1,8 +1,8 @@
-import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/toolkit';
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import { createSupabaseBrowserClient } from '@/utils/supabase/client';
 import { Database } from '@/utils/database.types';
 import { generateSpaceName } from '@/actions/name-generator';
+import { scenesApi } from '@/state/scenes';
 
 export const TAG_NAME_FOR_GENERAL_ENTITY = 'Spaces'
 
@@ -13,16 +13,17 @@ export const spacesApi = createApi({
   tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, 'LIST'],
   endpoints: (builder) => ({
     createSpace: builder.mutation<any, any>({
-      queryFn: async () => {
+      queryFn: async (_, { dispatch }) => {
         const supabase = createSupabaseBrowserClient();
         const { data: { user } } = await supabase.auth.getUser()
         if (!user) {
           throw new Error('User not found')
         }
+        const name = await generateSpaceName()
         const { data, error } = await supabase
           .from("spaces")
           .insert([{
-            name: await generateSpaceName(),
+            name,
             creator_user_id: user?.id,
             owner_user_id: user.id
           }])
@@ -32,6 +33,16 @@ export const spacesApi = createApi({
         if (error) {
           return { error: error.message };
         }
+
+        // Now that the space is created, dispatch the `createScene` mutation
+        const result = await dispatch(
+          scenesApi.endpoints.createScene.initiate({ name: "Main", space_id: data.id })
+        ).unwrap(); // .unwrap() to handle the promise correctly
+
+        if (result.error) {
+          return { error: result.error };
+        }
+
         return { data };
       },
       invalidatesTags: [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }],
