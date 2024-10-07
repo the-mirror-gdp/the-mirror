@@ -9,7 +9,7 @@ export const ASSETS_BUCKET_VERSIONED_ASSETS_FOLDER = 'versioned' // generally im
 export interface CreateAssetMutation {
   name: string
 }
-
+export const TAG_NAME_FOR_GENERAL_ENTITY = 'Assets'
 // Entity adapters for Spaces, Scenes, and Entities
 const spacesAdapter = createEntityAdapter<Database['public']['Tables']['assets']['Row']>();
 
@@ -20,7 +20,7 @@ const initialSpacesState = spacesAdapter.getInitialState();
 export const assetsApi = createApi({
   reducerPath: 'assetsApi',
   baseQuery: fakeBaseQuery(),
-  tagTypes: ['Assets'],
+  tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, 'LIST'],
   endpoints: (builder) => ({
     createAsset: builder.mutation<any, { assetData: CreateAssetMutation, file?: File }>({
       queryFn: async ({ assetData, file }) => {
@@ -103,7 +103,7 @@ export const assetsApi = createApi({
 
         return { data: insertedAsset };
       },
-      invalidatesTags: ['Assets']
+      invalidatesTags: [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }],
     }),
 
     getSingleAsset: builder.query<any, string>({
@@ -121,7 +121,7 @@ export const assetsApi = createApi({
         }
         return { data };
       },
-      providesTags: (result, error, assetId) => [{ type: 'Assets', id: assetId }],
+      providesTags: (result, error, id) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id }],
     }),
 
 
@@ -144,7 +144,12 @@ export const assetsApi = createApi({
         return { data };
       },
       providesTags: (result) =>
-        result ? result.map(({ id }) => ({ type: 'Assets', id })) : [],
+        result
+          ? [
+            ...result.map(({ id }) => ({ type: TAG_NAME_FOR_GENERAL_ENTITY, id })),
+            { type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' },
+          ]
+          : [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }],
     },),
 
 
@@ -161,7 +166,14 @@ export const assetsApi = createApi({
           return { error: error.message };
         }
         return { data };
-      }
+      },
+      providesTags: (result) =>
+        result
+          ? [
+            ...result.map(({ id }) => ({ type: TAG_NAME_FOR_GENERAL_ENTITY, id })),
+            { type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' },
+          ]
+          : [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }],
     }),
 
     updateAsset: builder.mutation<any, { assetId: string, updateData: Record<string, any> }>({
@@ -179,7 +191,7 @@ export const assetsApi = createApi({
         }
         return { data };
       },
-      invalidatesTags: (result, error, { assetId }) => [{ type: 'Assets', id: assetId }],
+      invalidatesTags: (result, error, { assetId }) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: assetId }],
     }),
 
 

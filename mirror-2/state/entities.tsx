@@ -8,12 +8,13 @@ const entitiesAdapter = createEntityAdapter<Database['public']['Tables']['entiti
 
 // Initial state using the adapter
 const initialEntitiesState = entitiesAdapter.getInitialState();
+export const TAG_NAME_FOR_GENERAL_ENTITY = 'Entities'
 
 // Supabase API for spaces
 export const entitiesApi = createApi({
   reducerPath: 'entitiesApi',
   baseQuery: fakeBaseQuery(),
-  tagTypes: ['Entities'],
+  tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, 'LIST'],
   endpoints: (builder) => ({
     createEntity: builder.mutation<any, { name: string, scene_id: string }>({
       queryFn: async ({ name, scene_id }) => {
@@ -44,7 +45,8 @@ export const entitiesApi = createApi({
         }
         return { data };
       },
-      invalidatesTags: ['Entities'] // TODO optimize this
+      invalidatesTags: [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }],
+
     }),
 
     getAllEntities: builder.query<any, string>({
@@ -61,8 +63,13 @@ export const entitiesApi = createApi({
         }
         return { data };
       },
-      providesTags: (result, error, entityId) =>
-        result ? [{ type: 'Entities', id: entityId }] : [], // Provide tag for entityId
+      providesTags: (result) =>
+        result
+          ? [
+            ...result.map(({ id }) => ({ type: TAG_NAME_FOR_GENERAL_ENTITY, id })),
+            { type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' },
+          ]
+          : [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }],
     }),
 
     getSingleEntity: builder.query<any, string>({
@@ -80,7 +87,7 @@ export const entitiesApi = createApi({
         }
         return { data };
       },
-      providesTags: (result, error, entityId) => [{ type: 'Entities', id: entityId }], // Provide the entity tag based on entityId
+      providesTags: (result, error, entityId) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: entityId }], // Provide the entity tag based on entityId
     }),
 
     updateEntity: builder.mutation<any, { entityId: string, updateData: Record<string, any> }>({
@@ -98,7 +105,7 @@ export const entitiesApi = createApi({
         }
         return { data };
       },
-      invalidatesTags: (result, error, { entityId }) => [{ type: 'Entities', id: entityId }], // Invalidate tag for entityId
+      invalidatesTags: (result, error, { entityId }) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: entityId }], // Invalidate tag for entityId
     }),
 
     deleteEntity: builder.mutation<any, string>({
@@ -116,7 +123,7 @@ export const entitiesApi = createApi({
         }
         return { data };
       },
-      invalidatesTags: ['Entities']
+      invalidatesTags: (result, error, entityId) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: entityId }]
     }),
 
   }),

@@ -9,12 +9,13 @@ const spacesAdapter = createEntityAdapter<Database['public']['Tables']['spaces']
 
 // Initial state using the adapter
 const initialSpacesState = spacesAdapter.getInitialState();
+export const TAG_NAME_FOR_GENERAL_ENTITY = 'Spaces'
 
 // Supabase API for spaces
 export const spacesApi = createApi({
   reducerPath: 'spacesApi',
   baseQuery: fakeBaseQuery(),
-  tagTypes: ['Spaces'],
+  tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, 'LIST'],
   endpoints: (builder) => ({
     createSpace: builder.mutation<any, any>({
       queryFn: async () => {
@@ -38,7 +39,7 @@ export const spacesApi = createApi({
         }
         return { data };
       },
-      invalidatesTags: ['Spaces']
+      invalidatesTags: [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }],
     }),
 
     getSingleSpace: builder.query<any, string>({
@@ -56,7 +57,7 @@ export const spacesApi = createApi({
         }
         return { data };
       },
-      providesTags: (result, error, spaceId) => [{ type: 'Spaces', id: spaceId }]
+      providesTags: (result, error, id) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id }],
     }),
 
     /**
@@ -103,13 +104,13 @@ export const spacesApi = createApi({
 
           // Return tags for space, scenes, entities, and components
           return [
-            { type: 'Spaces', id: spaceId },
+            { type: TAG_NAME_FOR_GENERAL_ENTITY, id: spaceId },
             ...sceneIds,
             ...entityIds,
             ...componentIds
           ];
         }
-        return [{ type: 'Spaces', id: spaceId }];
+        return [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: spaceId }];
       }
     }),
 
@@ -130,7 +131,7 @@ export const spacesApi = createApi({
 
         return { data };
       },
-      invalidatesTags: (result, error, { spaceId }) => [{ type: 'Spaces', id: spaceId }],
+      invalidatesTags: (result, error, { spaceId }) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: spaceId }],
     }),
 
     deleteSpace: builder.mutation<Database['public']['Tables']['spaces']['Row'], string>({
@@ -148,7 +149,7 @@ export const spacesApi = createApi({
 
         return { data };
       },
-      invalidatesTags: ['Spaces'],
+      invalidatesTags: (result, error, spaceId) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: spaceId }],
     }),
   }),
 });

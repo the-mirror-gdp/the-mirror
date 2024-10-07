@@ -8,12 +8,13 @@ const scenesAdapter = createEntityAdapter<Database['public']['Tables']['scenes']
 
 // Initial state using the adapter
 const initialScenesState = scenesAdapter.getInitialState();
+export const TAG_NAME_FOR_GENERAL_ENTITY = 'Scenes'
 
 // Supabase API for spaces
 export const scenesApi = createApi({
   reducerPath: 'scenesApi',
   baseQuery: fakeBaseQuery(),
-  tagTypes: ['Scenes'],
+  tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, 'LIST'],
   endpoints: (builder) => ({
 
     /**
@@ -48,7 +49,7 @@ export const scenesApi = createApi({
         }
         return { data };
       },
-      invalidatesTags: (result, error, { space_id }) => [{ type: 'Scenes', id: space_id }], // Invalidate the tag for the specific space_id. TODO check this tag logic
+      invalidatesTags: [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }],
     }),
 
     /**
@@ -69,7 +70,7 @@ export const scenesApi = createApi({
         }
         return { data };
       },
-      providesTags: (result, error, sceneId) => [{ type: 'Scenes', id: sceneId }], // Provide the scene tag based on sceneId
+      providesTags: (result, error, sceneId) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: sceneId }], // Provide the scene tag based on sceneId
     }),
 
     /**
@@ -89,8 +90,13 @@ export const scenesApi = createApi({
         }
         return { data };
       },
-      providesTags: (result, error, spaceId) =>
-        result ? [{ type: 'Scenes', id: spaceId }] : [], // Provide tag for spaceId
+      providesTags: (result) =>
+        result
+          ? [
+            ...result.map(({ id }) => ({ type: TAG_NAME_FOR_GENERAL_ENTITY, id })),
+            { type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' },
+          ]
+          : [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }],
     }),
 
     /**
@@ -111,7 +117,7 @@ export const scenesApi = createApi({
         }
         return { data };
       },
-      invalidatesTags: (result, error, { sceneId }) => [{ type: 'Scenes', id: sceneId }], // Invalidate tag for sceneId
+      invalidatesTags: (result, error, { sceneId }) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: sceneId }], // Invalidate tag for sceneId
     }),
 
     /**
@@ -132,7 +138,7 @@ export const scenesApi = createApi({
         }
         return { data };
       },
-      invalidatesTags: ['Scenes']
+      invalidatesTags: (result, error, sceneId) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: sceneId }]
     }),
 
 
