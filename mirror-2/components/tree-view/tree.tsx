@@ -206,18 +206,19 @@ export const tree = {
     targetId: string;
     parentIds?: string[];
   }): string[] | undefined {
-
     for (const item of current) {
       if (item.id === targetId) {
         return parentIds;
       }
-      const nested = tree.getPathToItem({
-        current: item.children,
-        targetId: targetId,
-        parentIds: [...parentIds, item.id],
-      });
-      if (nested) {
-        return nested;
+      if (item?.children) {
+        const nested = tree.getPathToItem({
+          current: item.children,
+          targetId: targetId,
+          parentIds: [...parentIds, item.id],
+        });
+        if (nested) {
+          return nested;
+        }
       }
     }
   },

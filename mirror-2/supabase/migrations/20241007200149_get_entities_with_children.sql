@@ -114,6 +114,7 @@ BEGIN
                                             'name', child.name,
                                             'parent_id', child.parent_id,
                                             'children', (
+                                                -- Recursively get the full grandchild entities
                                                 SELECT COALESCE(jsonb_agg(
                                                     jsonb_build_object(
                                                         'id', grandchild.id,
@@ -134,6 +135,17 @@ BEGIN
                                                 ), '[]'::jsonb)
                                                 FROM entities grandchild
                                                 WHERE grandchild.parent_id = child.id
+                                            ),
+                                            'components', (
+                                                SELECT COALESCE(jsonb_agg(
+                                                    jsonb_build_object(
+                                                        'id', c.id,
+                                                        'component_key', c.component_key,
+                                                        'attributes', c.attributes
+                                                    )
+                                                ), '[]'::jsonb)
+                                                FROM components c
+                                                WHERE c.entity_id = child.id
                                             )
                                         )
                                     ), '[]'::jsonb)
@@ -158,8 +170,8 @@ BEGIN
                         AND e.parent_id IS NULL -- Only include root-level entities
                     )
                 )
-            ) 
-            FROM scenes sc 
+            )
+            FROM scenes sc
             WHERE sc.space_id = s.id
         )
     )
