@@ -8,6 +8,7 @@ import { Fragment, memo, useCallback, useContext, useEffect, useRef, useState } 
 import { css, jsx } from '@emotion/react';
 import ReactDOM from 'react-dom';
 import invariant from 'tiny-invariant';
+import { z } from 'zod'; // Import zod for validation
 
 import mergeRefs from '@atlaskit/ds-lib/merge-refs';
 import FocusRing from '@atlaskit/focus-ring';
@@ -32,6 +33,8 @@ import { type TreeItem as TreeItemType } from './tree';
 
 import { indentPerLevel } from './constants';
 import { DependencyContext, TreeContext } from './tree-context';
+import { useGetSingleEntityQuery, useUpdateEntityMutation } from '@/state/entities';
+import { TwoWayInput } from '@/components/two-way-input';
 
 /**
  * 2024-10-05 19:05:37 NOTE: Tons of boilerplate here atlaskit, so I'm just commenting a lot out for future reference until it's all removed
@@ -386,7 +389,10 @@ const TreeItem = memo(function TreeItem({
               ]}
             >
               <Icon item={item} />
-              <span css={labelStyles}>Item {item.id}</span>
+              {/* <span css={labelStyles}>{item.name}</span> */}
+              <TwoWayInput id={item.id} defaultValue={item.name} fieldName="name" formSchema={z.object({
+                name: z.string().min(3, { message: "Entity name must be at least 1 character long" }),
+              })} useGeneralGetEntityQuery={useGetSingleEntityQuery} useGeneralUpdateEntityMutation={useUpdateEntityMutation} />
             </span>
             {instruction ? <DropIndicator instruction={instruction} /> : null}
           </button>

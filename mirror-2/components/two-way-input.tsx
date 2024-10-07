@@ -9,7 +9,7 @@ import { z, ZodSchema } from "zod";
 import clsx from "clsx"; // Utility to merge class names
 
 interface TwoWayInputProps<T> {
-  entityId: string;
+  id: string;
   fieldName: keyof T;
   formSchema: ZodSchema;
   defaultValue: string;
@@ -17,14 +17,14 @@ interface TwoWayInputProps<T> {
   useGeneralGetEntityQuery: (id: string) => { data?: T; isLoading: boolean; isSuccess: boolean; error?: any };
   // "General"  entity bc not referring our proper Entity, but anything
   useGeneralUpdateEntityMutation: () => readonly [
-    (args: { sceneId: string; updateData: Partial<T> }) => any, // The mutation trigger function
+    (args: { id: string; updateData: Partial<T> }) => any, // The mutation trigger function
     { isLoading: boolean; isSuccess: boolean; error?: any }
   ];
   className?: string; // Optional className prop
 }
 //  TODO fix and ensure deduping works correctly to not fire a ton of network requests
 export function TwoWayInput<T>({
-  entityId,
+  id: generalEntityId,
   fieldName,
   formSchema,
   defaultValue,
@@ -32,10 +32,10 @@ export function TwoWayInput<T>({
   useGeneralUpdateEntityMutation, // "General"  entity bc not referring our proper Entity, but anything
   className, // Destructure the className prop
 }: TwoWayInputProps<T>) {
-  const { data: entity, isLoading, isSuccess } = useGeneralGetEntityQuery(entityId);
+  const { data: entity, isLoading, isSuccess } = useGeneralGetEntityQuery(generalEntityId);
 
   // Destructure the mutation trigger function and its state from the readonly tuple
-  const [updateEntity, { isLoading: isUpdating, isSuccess: isUpdated, error }] = useGeneralUpdateEntityMutation();
+  const [updateGeneralEntity, { isLoading: isUpdating, isSuccess: isUpdated, error }] = useGeneralUpdateEntityMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -47,7 +47,7 @@ export function TwoWayInput<T>({
 
   // Handle form submission
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await updateEntity({ sceneId: entityId, updateData: { [fieldName]: values[fieldName] } as Partial<T> });
+    await updateGeneralEntity({ id: generalEntityId, updateData: { [fieldName]: values[fieldName] } as Partial<T> });
   }
 
   // Reset form when entity data is fetched

@@ -8,6 +8,7 @@ export type TreeItem = {
   isDraft?: boolean;
   children: TreeItem[];
   isOpen?: boolean;
+  name: string;
 };
 
 export type TreeState = {
@@ -23,51 +24,51 @@ export function getInitialTreeState(initial): TreeState {
 export function getInitialData(): TreeItem[] {
 
   return [
-    {
-      id: '1',
-      isOpen: false,
+    //   {
+    //     id: '1',
+    //     isOpen: false,
 
-      children: [
-        {
-          id: '1.3',
-          isOpen: true,
+    //     children: [
+    //       {
+    //         id: '1.3',
+    //         isOpen: true,
 
-          children: [
-            {
-              id: '1.3.1',
-              children: [],
-            },
-            {
-              id: '1.3.2',
-              isDraft: true,
-              children: [],
-            },
-          ],
-        },
-        { id: '1.4', children: [] },
-      ],
-    },
-    {
-      id: '2',
-      isOpen: true,
-      children: [
-        {
-          id: '2.3',
-          isOpen: true,
+    //         children: [
+    //           {
+    //             id: '1.3.1',
+    //             children: [],
+    //           },
+    //           {
+    //             id: '1.3.2',
+    //             isDraft: true,
+    //             children: [],
+    //           },
+    //         ],
+    //       },
+    //       { id: '1.4', children: [] },
+    //     ],
+    //   },
+    //   {
+    //     id: '2',
+    //     isOpen: true,
+    //     children: [
+    //       {
+    //         id: '2.3',
+    //         isOpen: true,
 
-          children: [
-            {
-              id: '2.3.1',
-              children: [],
-            },
-            {
-              id: '2.3.2',
-              children: [],
-            },
-          ],
-        },
-      ],
-    },
+    //         children: [
+    //           {
+    //             id: '2.3.1',
+    //             children: [],
+    //           },
+    //           {
+    //             id: '2.3.2',
+    //             children: [],
+    //           },
+    //         ],
+    //       },
+    //     ],
+    //   },
   ];
 }
 

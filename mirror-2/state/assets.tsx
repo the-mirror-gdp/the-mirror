@@ -172,8 +172,8 @@ export const assetsApi = createApi({
           : [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }],
     }),
 
-    updateAsset: builder.mutation<any, { assetId: string, updateData: Record<string, any> }>({
-      queryFn: async ({ assetId, updateData }) => {
+    updateAsset: builder.mutation<any, { id: string, updateData: Record<string, any> }>({
+      queryFn: async ({ id: assetId, updateData }) => {
         const supabase = createSupabaseBrowserClient();
 
         const { data, error } = await supabase
@@ -187,7 +187,7 @@ export const assetsApi = createApi({
         }
         return { data };
       },
-      invalidatesTags: (result, error, { assetId }) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: assetId }],
+      invalidatesTags: (result, error, { id: assetId }) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: assetId }],
     }),
 
 

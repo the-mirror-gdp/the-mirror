@@ -97,8 +97,8 @@ export const scenesApi = createApi({
     /**
      * Update a Scene by its ID
      */
-    updateScene: builder.mutation<any, { sceneId: string, updateData: Record<string, any> }>({
-      queryFn: async ({ sceneId, updateData }) => {
+    updateScene: builder.mutation<any, { id: string, updateData: Record<string, any> }>({
+      queryFn: async ({ id: sceneId, updateData }) => {
         const supabase = createSupabaseBrowserClient();
 
         const { data, error } = await supabase
@@ -112,7 +112,7 @@ export const scenesApi = createApi({
         }
         return { data };
       },
-      invalidatesTags: (result, error, { sceneId }) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: sceneId }], // Invalidate tag for sceneId
+      invalidatesTags: (result, error, { id: sceneId }) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: sceneId }], // Invalidate tag for sceneId
     }),
 
     /**

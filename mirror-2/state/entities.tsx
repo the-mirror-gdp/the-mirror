@@ -97,8 +97,8 @@ export const entitiesApi = createApi({
       providesTags: (result, error, entityId) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: entityId }], // Provide the entity tag based on entityId
     }),
 
-    updateEntity: builder.mutation<any, { entityId: string, updateData: Record<string, any> }>({
-      queryFn: async ({ entityId, updateData }) => {
+    updateEntity: builder.mutation<any, { id: string, updateData: Record<string, any> }>({
+      queryFn: async ({ id: entityId, updateData }) => {
         const supabase = createSupabaseBrowserClient();
 
         const { data, error } = await supabase
@@ -112,7 +112,7 @@ export const entitiesApi = createApi({
         }
         return { data };
       },
-      invalidatesTags: (result, error, { entityId }) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: entityId }], // Invalidate tag for entityId
+      invalidatesTags: (result, error, { id: entityId }) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: entityId }], // Invalidate tag for entityId
     }),
 
     deleteEntity: builder.mutation<any, string>({

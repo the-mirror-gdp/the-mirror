@@ -123,8 +123,8 @@ export const spacesApi = createApi({
     }),
 
 
-    updateSpace: builder.mutation<Database['public']['Tables']['spaces']['Row'], { spaceId: string, updateData: Partial<Database['public']['Tables']['spaces']['Update']> }>({
-      queryFn: async ({ spaceId, updateData }) => {
+    updateSpace: builder.mutation<Database['public']['Tables']['spaces']['Row'], { id: string, updateData: Partial<Database['public']['Tables']['spaces']['Update']> }>({
+      queryFn: async ({ id: spaceId, updateData }) => {
         const supabase = createSupabaseBrowserClient();
         const { data, error } = await supabase
           .from("spaces")
@@ -139,7 +139,7 @@ export const spacesApi = createApi({
 
         return { data };
       },
-      invalidatesTags: (result, error, { spaceId }) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: spaceId }],
+      invalidatesTags: (result, error, { id: spaceId }) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: spaceId }],
     }),
 
     deleteSpace: builder.mutation<Database['public']['Tables']['spaces']['Row'], string>({

@@ -5,15 +5,15 @@ import { Database } from '@/utils/database.types';
 
 export const TAG_NAME_FOR_GENERAL_ENTITY = 'Components'
 const TABLE_NAME = "components"
-
+export type ComponentKey = Database['public']['Enums']['component_key'];
 // Supabase API for spaces
 export const componentsApi = createApi({
   reducerPath: 'componentsApi',
   baseQuery: fakeBaseQuery(),
   tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, 'LIST'],
   endpoints: (builder) => ({
-    createComponent: builder.mutation<any, { name: string, entity_id: string }>({
-      queryFn: async ({ name, entity_id }) => {
+    createComponent: builder.mutation<any, { name: string, entity_id: string, component_key: ComponentKey }>({
+      queryFn: async ({ entity_id, component_key }) => {
         const supabase = createSupabaseBrowserClient();
         const { data: { user }, error: authError } = await supabase.auth.getUser();
 
@@ -28,8 +28,8 @@ export const componentsApi = createApi({
         const { data, error } = await supabase
           .from(TABLE_NAME)
           .insert([{
-            name,
             entity_id,
+            component_key,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
           }])

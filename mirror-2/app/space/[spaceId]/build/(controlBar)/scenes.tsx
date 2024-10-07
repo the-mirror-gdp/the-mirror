@@ -55,7 +55,7 @@ export default function Scenes() {
                 <div className="flex justify-between w-full">
                   <div className="flex-auto">
                     <TwoWayInput
-                      entityId={scene.id}
+                      id={scene.id}
                       fieldName="name"
                       formSchema={formSchema} // Your Zod validation schema
                       defaultValue={scene.name}
