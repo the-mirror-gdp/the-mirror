@@ -200,7 +200,7 @@ export default function EntityHierarchy() {
 
     const item = tree.find(data, itemId);
     invariant(item);
-    return item.children;
+    return item?.children || []
   }, []);
 
   const context = useMemo<TreeContextValue>(

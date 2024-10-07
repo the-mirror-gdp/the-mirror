@@ -57,7 +57,7 @@ function GroupIcon({ isOpen }: { isOpen: boolean }) {
 }
 
 function Icon({ item }: { item: TreeItemType }) {
-  if (!item.children.length) {
+  if (!item?.children?.length) {
     return <ChildIcon />;
   }
   return <GroupIcon isOpen={item.isOpen ?? false} />;
@@ -399,14 +399,11 @@ const TreeItem = memo(function TreeItem({
           </button>
         </FocusRing>
       </div>
-      {item.children.length && item.isOpen ? (
+      {item?.children?.length && item.isOpen ? (
         <div >
-          {item.children.map((child, index, array) => {
+          {item?.children?.map((child, index, array) => {
             const childType: ItemMode = (() => {
-              if (child.children === undefined) {
-                debugger
-              }
-              if (child.children.length && child.isOpen) {
+              if (child?.children?.length && child.isOpen) {
                 return 'expanded';
               }
 
