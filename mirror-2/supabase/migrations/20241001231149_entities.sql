@@ -7,7 +7,7 @@ create table entities (
   scale float8[] NOT NULL DEFAULT ARRAY[1, 1, 1], -- storing scale as an array of 3 floats
   rotation float8[] NOT NULL DEFAULT ARRAY[0, 0, 0], -- storing rotation as an array of 3 floats
   tags text[] DEFAULT ARRAY[]::text[], -- storing tags as an empty array of text 
-  parent_id uuid REFERENCES entities ON DELETE SET NULL, -- reference to parent entity, allows hierarchical structure
+  parent_id uuid REFERENCES entities ON DELETE CASCADE, -- reference to parent entity, allows hierarchical structure
   created_at timestamp with time zone NOT NULL DEFAULT now(),
   updated_at timestamp with time zone NOT NULL DEFAULT now(),
   CONSTRAINT name_length CHECK (char_length(name) >= 0)

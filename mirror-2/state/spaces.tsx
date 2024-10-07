@@ -56,7 +56,7 @@ export const spacesApi = createApi({
     }),
 
     /**
- * Helper: includes scenes, entities, assets, etc.
+ * Helper: includes scenes, entities, assets,, components, etc.
  */
     getSingleSpaceBuildMode: builder.query<any, string>({
       queryFn: async (spaceId) => {
