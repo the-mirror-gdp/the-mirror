@@ -5,6 +5,7 @@ import { generateSpaceName } from '@/actions/name-generator';
 import { scenesApi, TAG_NAME_FOR_GENERAL_ENTITY as SCENES_TAG_NAME_FOR_GENERAL_ENTITY } from '@/state/scenes';
 import { TAG_NAME_FOR_GENERAL_ENTITY as ENTITIES_TAG_NAME_FOR_GENERAL_ENTITY } from '@/state/entities';
 import { TAG_NAME_FOR_GENERAL_ENTITY as COMPONENTS_TAG_NAME_FOR_GENERAL_ENTITY } from '@/state/components';
+import { TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY } from '@/state/shared-cache-tags';
 
 export const TAG_NAME_FOR_GENERAL_ENTITY = 'Spaces'
 
@@ -12,7 +13,7 @@ export const TAG_NAME_FOR_GENERAL_ENTITY = 'Spaces'
 export const spacesApi = createApi({
   reducerPath: 'spacesApi',
   baseQuery: fakeBaseQuery(),
-  tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, SCENES_TAG_NAME_FOR_GENERAL_ENTITY, ENTITIES_TAG_NAME_FOR_GENERAL_ENTITY, 'LIST'],
+  tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, SCENES_TAG_NAME_FOR_GENERAL_ENTITY, ENTITIES_TAG_NAME_FOR_GENERAL_ENTITY, TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY, 'LIST'],
   endpoints: (builder) => ({
     createSpace: builder.mutation<any, any>({
       queryFn: async (_, { dispatch }) => {
@@ -121,7 +122,8 @@ export const spacesApi = createApi({
             { type: TAG_NAME_FOR_GENERAL_ENTITY, id: spaceId },
             ...sceneIds,
             ...entityIds,
-            ...componentIds
+            ...componentIds,
+            TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY
           ];
         }
         return [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: spaceId }];

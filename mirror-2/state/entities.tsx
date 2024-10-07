@@ -2,6 +2,8 @@ import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/too
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import { createSupabaseBrowserClient } from '@/utils/supabase/client';
 import { Database } from '@/utils/database.types';
+import { TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY } from '@/state/shared-cache-tags';
+
 
 export const TAG_NAME_FOR_GENERAL_ENTITY = 'Entities'
 
@@ -9,7 +11,7 @@ export const TAG_NAME_FOR_GENERAL_ENTITY = 'Entities'
 export const entitiesApi = createApi({
   reducerPath: 'entitiesApi',
   baseQuery: fakeBaseQuery(),
-  tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, 'LIST'],
+  tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, 'LIST', TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY],
   endpoints: (builder) => ({
     createEntity: builder.mutation<any, { name: string, scene_id: string, parent_id?: string }>({
       queryFn: async ({ name, scene_id, parent_id }) => {
@@ -112,7 +114,10 @@ export const entitiesApi = createApi({
         }
         return { data };
       },
-      invalidatesTags: (result, error, { id: entityId }) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: entityId }], // Invalidate tag for entityId
+      invalidatesTags: (result, error, { id: entityId }) => [
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: entityId },
+        TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY
+      ], // Invalidate tag for entityId
     }),
 
     deleteEntity: builder.mutation<any, string>({
