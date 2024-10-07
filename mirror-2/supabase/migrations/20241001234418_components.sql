@@ -22,13 +22,11 @@ CREATE TYPE component_key AS ENUM (
 
 CREATE TABLE components (
   id UUID NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
-  name TEXT NOT NULL,
   entity_id UUID REFERENCES entities(id) ON DELETE CASCADE NOT NULL, -- delete the component if entity is deleted
   component_key component_key NOT NULL,
   attributes JSONB DEFAULT '{}'::jsonb,  -- New column with default empty JSON object
   created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
-  updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
-  CONSTRAINT name_length CHECK (char_length(name) >= 0)
+  updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
 );
 
   -- add RLS

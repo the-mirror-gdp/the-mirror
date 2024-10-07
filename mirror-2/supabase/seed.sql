@@ -120,12 +120,11 @@ BEGIN
 
           -- Insert 3 components for each entity, including component_key and attributes
           FOR c IN 1..3 LOOP
-            component_name := format('Component %s-%s-%s-%s', i, j, k, c);  -- Create unique component names
 
             INSERT INTO public.components
-              (id, name, entity_id, component_key, attributes, created_at, updated_at)
+              (id, entity_id, component_key, attributes, created_at, updated_at)
             VALUES
-              (gen_random_uuid(), component_name, entity_id, 'script', '{"attribute": "value"}'::jsonb, now(), now());  -- Add component_key and attributes
+              (gen_random_uuid(), entity_id, 'script', '{"attribute": "value"}'::jsonb, now(), now());  -- Add component_key and attributes
           END LOOP;
 
         END LOOP;
