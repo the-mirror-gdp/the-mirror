@@ -267,9 +267,7 @@ export default function EntityHierarchy() {
           <div id="tree" className={cn('')} ref={ref}>
             {data.map((item, index, array) => {
               const type: ItemMode = (() => {
-                if (!item.children) {
-                  // debugger
-                }
+
                 if (item.children?.length && item.isOpen) {
                   return 'expanded';
                 }
