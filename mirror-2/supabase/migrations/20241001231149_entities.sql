@@ -1,11 +1,17 @@
 create table entities (
-  id uuid not null primary key default uuid_generate_v4(),
-  name text not null,
-  scene_id uuid references scenes on delete cascade not null, -- delete the entity if scene is deleted
-  created_at timestamp with time zone not null default now(),
-  updated_at timestamp with time zone not null default now(),
-  constraint name_length check (char_length(name) >= 0)
-  );
+  id uuid NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name text NOT NULL,
+  enabled boolean NOT NULL DEFAULT true,
+  scene_id uuid REFERENCES scenes ON DELETE CASCADE NOT NULL, -- delete entity if scene is deleted
+  position float8[] NOT NULL DEFAULT ARRAY[0, 0, 0], -- storing position as an array of 3 floats
+  scale float8[] NOT NULL DEFAULT ARRAY[1, 1, 1], -- storing scale as an array of 3 floats
+  rotation float8[] NOT NULL DEFAULT ARRAY[0, 0, 0], -- storing rotation as an array of 3 floats
+  tags text[] DEFAULT ARRAY[]::text[], -- storing tags as an empty array of text 
+  parent_id uuid REFERENCES entities ON DELETE SET NULL, -- reference to parent entity, allows hierarchical structure
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  updated_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT name_length CHECK (char_length(name) >= 0)
+);
 
   -- add RLS
 alter table entities

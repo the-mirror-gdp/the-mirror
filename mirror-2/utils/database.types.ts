@@ -87,6 +87,8 @@ export type Database = {
       }
       components: {
         Row: {
+          attributes: Json | null
+          component_key: Database["public"]["Enums"]["component_key"]
           created_at: string
           entity_id: string
           id: string
@@ -94,6 +96,8 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          attributes?: Json | null
+          component_key: Database["public"]["Enums"]["component_key"]
           created_at?: string
           entity_id: string
           id?: string
@@ -101,6 +105,8 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          attributes?: Json | null
+          component_key?: Database["public"]["Enums"]["component_key"]
           created_at?: string
           entity_id?: string
           id?: string
@@ -120,26 +126,51 @@ export type Database = {
       entities: {
         Row: {
           created_at: string
+          enabled: boolean
           id: string
           name: string
+          parent_id: string | null
+          position: number[]
+          rotation: number[]
+          scale: number[]
           scene_id: string
+          tags: string[] | null
           updated_at: string
         }
         Insert: {
           created_at?: string
+          enabled?: boolean
           id?: string
           name: string
+          parent_id?: string | null
+          position?: number[]
+          rotation?: number[]
+          scale?: number[]
           scene_id: string
+          tags?: string[] | null
           updated_at?: string
         }
         Update: {
           created_at?: string
+          enabled?: boolean
           id?: string
           name?: string
+          parent_id?: string | null
+          position?: number[]
+          rotation?: number[]
+          scale?: number[]
           scene_id?: string
+          tags?: string[] | null
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "entities_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "entities"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "entities_scene_id_fkey"
             columns: ["scene_id"]
@@ -381,6 +412,26 @@ export type Database = {
     }
     Enums: {
       avatar_type: "ready_player_me"
+      component_key:
+        | "script"
+        | "render"
+        | "collision"
+        | "rigidbody"
+        | "camera"
+        | "light"
+        | "anim"
+        | "sprite"
+        | "screen"
+        | "element"
+        | "button"
+        | "particlesystem"
+        | "gsplat"
+        | "audiolistener"
+        | "sound"
+        | "scrollbar"
+        | "scrollview"
+        | "layoutgroup"
+        | "layoutchild"
     }
     CompositeTypes: {
       [_ in never]: never

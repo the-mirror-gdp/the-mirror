@@ -226,6 +226,7 @@ const dataReducer = (data: TreeItem[], action: TreeAction) => {
       const desiredId = path[instruction.desiredLevel];
       let result = tree.remove(data, action.itemId);
       result = tree.insertAfter(result, desiredId, item);
+      console.log('tree result', result)
       return result;
     }
 
@@ -237,18 +238,21 @@ const dataReducer = (data: TreeItem[], action: TreeAction) => {
     if (instruction.type === 'reorder-above') {
       let result = tree.remove(data, action.itemId);
       result = tree.insertBefore(result, action.targetId, item);
+      console.log('tree result', result)
       return result;
     }
 
     if (instruction.type === 'reorder-below') {
       let result = tree.remove(data, action.itemId);
       result = tree.insertAfter(result, action.targetId, item);
+      console.log('tree result', result)
       return result;
     }
 
     if (instruction.type === 'make-child') {
       let result = tree.remove(data, action.itemId);
       result = tree.insertChild(result, action.targetId, item);
+      console.log('tree result', result)
       return result;
     }
 

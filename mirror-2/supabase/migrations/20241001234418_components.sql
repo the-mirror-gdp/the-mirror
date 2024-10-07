@@ -1,11 +1,35 @@
-create table components (
-  id uuid not null primary key default uuid_generate_v4(),
-  name text not null,
-  entity_id uuid references entities on delete cascade not null, -- delete the component if entity is deleted
-  created_at timestamp with time zone not null default now(),
-  updated_at timestamp with time zone not null default now(),
-  constraint name_length check (char_length(name) >= 0)
-  );
+CREATE TYPE component_key AS ENUM (
+    'script',
+    'render',
+    'collision',
+    'rigidbody',
+    'camera',
+    'light',
+    'anim',
+    'sprite',
+    'screen',
+    'element',
+    'button',
+    'particlesystem',
+    'gsplat',
+    'audiolistener',
+    'sound',
+    'scrollbar',
+    'scrollview',
+    'layoutgroup',
+    'layoutchild'
+);
+
+CREATE TABLE components (
+  id UUID NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name TEXT NOT NULL,
+  entity_id UUID REFERENCES entities(id) ON DELETE CASCADE NOT NULL, -- delete the component if entity is deleted
+  component_key component_key NOT NULL,
+  attributes JSONB DEFAULT '{}'::jsonb,  -- New column with default empty JSON object
+  created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+  updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+  CONSTRAINT name_length CHECK (char_length(name) >= 0)
+);
 
   -- add RLS
 alter table components

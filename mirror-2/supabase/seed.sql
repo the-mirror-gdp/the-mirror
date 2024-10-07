@@ -118,14 +118,14 @@ BEGIN
             (gen_random_uuid(), entity_name, scene_id, now(), now())
           RETURNING id INTO entity_id;  -- Capture the newly created entity ID
 
-          -- Insert 3 components for each entity
+          -- Insert 3 components for each entity, including component_key and attributes
           FOR c IN 1..3 LOOP
             component_name := format('Component %s-%s-%s-%s', i, j, k, c);  -- Create unique component names
 
             INSERT INTO public.components
-              (id, name, entity_id, created_at, updated_at)
+              (id, name, entity_id, component_key, attributes, created_at, updated_at)
             VALUES
-              (gen_random_uuid(), component_name, entity_id, now(), now());
+              (gen_random_uuid(), component_name, entity_id, 'script', '{"attribute": "value"}'::jsonb, now(), now());  -- Add component_key and attributes
           END LOOP;
 
         END LOOP;
