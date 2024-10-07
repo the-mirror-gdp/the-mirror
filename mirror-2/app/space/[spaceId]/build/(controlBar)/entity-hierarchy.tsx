@@ -25,9 +25,10 @@ import TreeItem from '@/components/tree-view/tree-item';
 import { cn } from '@/utils/cn';
 import { Button } from '@/components/ui/button';
 import { PlusCircleIcon } from 'lucide-react';
-import { useCreateEntityMutation, useGetAllEntitiesQuery } from '@/state/supabase';
+
 import { useAppSelector } from '@/hooks/hooks';
 import { getCurrentScene } from '@/state/local';
+import { useCreateEntityMutation, useGetAllEntitiesQuery } from '@/state/entities';
 
 // here for reference from boilerplate 2024-10-05 18:57:58
 // const treeStyles = css({
@@ -65,7 +66,6 @@ function createTreeItemRegistry() {
 export default function EntityHierarchy() {
   const currentScene = useAppSelector(getCurrentScene)
   const entities = useGetAllEntitiesQuery(currentScene)
-  console.log('entities', entities);
 
   const [state, updateState] = useReducer(treeStateReducer, entities, getInitialTreeState);
   const [createEntity, { data: createdEntity }] = useCreateEntityMutation();

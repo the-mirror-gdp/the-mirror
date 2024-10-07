@@ -1,6 +1,7 @@
 import { useCallback } from "react";
-import { useCreateAssetMutation } from "@/state/supabase";
+
 import { Database } from "@/utils/database.types";
+import { useCreateAssetMutation } from "@/state/assets";
 
 
 export function useGetFileUpload() {

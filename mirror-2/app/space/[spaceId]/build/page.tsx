@@ -2,7 +2,8 @@
 
 import { useAppDispatch } from "@/hooks/hooks"
 import { setCurrentScene } from "@/state/local"
-import { useGetSingleSpaceBuildModeQuery } from "@/state/supabase"
+import { useGetSingleSpaceBuildModeQuery } from "@/state/spaces"
+
 import { useParams } from "next/navigation"
 import { useEffect } from "react"
 
@@ -16,7 +17,6 @@ export default function Page() {
   const dispatch = useAppDispatch();
   useEffect(() => {
     // if no current Scene, set it to the first scene
-
     if (space?.scenes.length > 0) {
       console.log("setting current scene to first scene", space.scenes[0])
       dispatch(setCurrentScene(space.scenes[0].id))

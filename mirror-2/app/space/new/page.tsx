@@ -3,9 +3,9 @@
 import { ProgressIndeterminate } from "@/components/ui/progress-indeterminate";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAppDispatch } from "@/hooks/hooks";
-import { useCreateSpaceMutation } from "@/state/supabase";
 import { useEffect } from "react";
 import { useRouter } from 'next/navigation'
+import { useCreateSpaceMutation } from "@/state/spaces";
 
 export default function NewSpacePage() {
   const [createSpace] = useCreateSpaceMutation()

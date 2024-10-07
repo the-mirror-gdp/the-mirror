@@ -1,6 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { useCreateSceneMutation, useDeleteSceneMutation, useGetAllScenesQuery, useGetSingleSceneQuery, useUpdateSceneMutation } from '@/state/supabase';
+
 import { ScrollArea } from '@radix-ui/react-scroll-area';
 import { PlusCircleIcon, MoreHorizontal } from 'lucide-react'; // Import MoreHorizontal for ellipsis icon
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu'; // shadcn dropdown menu
@@ -10,6 +10,7 @@ import { z } from 'zod'; // Import zod for validation
 import { TwoWayInput } from '@/components/two-way-input';
 import { useAppDispatch } from '@/hooks/hooks';
 import { setCurrentScene } from '@/state/local';
+import { useCreateSceneMutation, useDeleteSceneMutation, useGetAllScenesQuery, useGetSingleSceneQuery, useUpdateSceneMutation } from '@/state/scenes';
 
 export default function Scenes() {
   const params = useParams<{ spaceId: string }>()
@@ -58,8 +59,8 @@ export default function Scenes() {
                       fieldName="name"
                       formSchema={formSchema} // Your Zod validation schema
                       defaultValue={scene.name}
-                      useGetEntityQuery={useGetSingleSceneQuery}
-                      useUpdateEntityMutation={useUpdateSceneMutation}
+                      useGeneralGetEntityQuery={useGetSingleSceneQuery}
+                      useGeneralUpdateEntityMutation={useUpdateSceneMutation}
                     />
                   </div>
                   <div className="flex-none content-center">

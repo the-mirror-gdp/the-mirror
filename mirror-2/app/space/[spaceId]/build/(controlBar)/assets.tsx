@@ -5,7 +5,8 @@ import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } 
 import AssetUploadButton from '@/components/ui/custom-buttons/asset-upload.button';
 import { Form, FormControl, FormField, FormItem, FormMessage, FormSuccessMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useLazyDownloadAssetQuery, useLazyGetUserMostRecentlyUpdatedAssetsQuery, useLazySearchAssetsQuery } from '@/state/supabase';
+import { useLazySearchAssetsQuery, useLazyGetUserMostRecentlyUpdatedAssetsQuery, useLazyDownloadAssetQuery } from '@/state/assets';
+
 import downloadFile from '@/utils/download-file';
 import { createSupabaseBrowserClient } from '@/utils/supabase/client';
 import { zodResolver } from '@hookform/resolvers/zod';

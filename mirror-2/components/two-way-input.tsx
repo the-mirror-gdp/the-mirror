@@ -13,8 +13,10 @@ interface TwoWayInputProps<T> {
   fieldName: keyof T;
   formSchema: ZodSchema;
   defaultValue: string;
-  useGetEntityQuery: (id: string) => { data?: T; isLoading: boolean; isSuccess: boolean; error?: any };
-  useUpdateEntityMutation: () => readonly [
+  // "General"  entity bc not referring our proper Entity, but anything
+  useGeneralGetEntityQuery: (id: string) => { data?: T; isLoading: boolean; isSuccess: boolean; error?: any };
+  // "General"  entity bc not referring our proper Entity, but anything
+  useGeneralUpdateEntityMutation: () => readonly [
     (args: { sceneId: string; updateData: Partial<T> }) => any, // The mutation trigger function
     { isLoading: boolean; isSuccess: boolean; error?: any }
   ];
@@ -26,14 +28,14 @@ export function TwoWayInput<T>({
   fieldName,
   formSchema,
   defaultValue,
-  useGetEntityQuery,
-  useUpdateEntityMutation,
+  useGeneralGetEntityQuery, // "General"  entity bc not referring our proper Entity, but anything
+  useGeneralUpdateEntityMutation, // "General"  entity bc not referring our proper Entity, but anything
   className, // Destructure the className prop
 }: TwoWayInputProps<T>) {
-  const { data: entity, isLoading, isSuccess } = useGetEntityQuery(entityId);
+  const { data: entity, isLoading, isSuccess } = useGeneralGetEntityQuery(entityId);
 
   // Destructure the mutation trigger function and its state from the readonly tuple
-  const [updateEntity, { isLoading: isUpdating, isSuccess: isUpdated, error }] = useUpdateEntityMutation();
+  const [updateEntity, { isLoading: isUpdating, isSuccess: isUpdated, error }] = useGeneralUpdateEntityMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

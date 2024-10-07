@@ -1,6 +1,8 @@
 "use client"
 
-import { useGetAllEntitiesQuery, useGetAllScenesQuery } from "@/state/supabase";
+import { useGetAllEntitiesQuery } from "@/state/entities";
+import { useGetAllScenesQuery } from "@/state/scenes";
+
 import { useParams } from "next/navigation";
 
 export default function SpaceViewport() {

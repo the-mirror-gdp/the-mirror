@@ -2,18 +2,28 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query/react'
 import { localSlice } from '@/state/local'
-import { supabaseApi } from '@/state/supabase'
+import { spacesApi } from '@/state/spaces'
+import { scenesApi } from '@/state/scenes'
+import { entitiesApi } from '@/state/entities'
+import { assetsApi } from '@/state/assets'
 
 export const store = configureStore({
   reducer: {
     // Add the generated reducer as a specific top-level slice
     [localSlice.reducerPath]: localSlice.reducer,
-    [supabaseApi.reducerPath]: supabaseApi.reducer,
+    [assetsApi.reducerPath]: assetsApi.reducer,
+    [spacesApi.reducerPath]: spacesApi.reducer,
+    [scenesApi.reducerPath]: scenesApi.reducer,
+    [entitiesApi.reducerPath]: entitiesApi.reducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(supabaseApi.middleware),
+    getDefaultMiddleware()
+      .concat(assetsApi.middleware)
+      .concat(spacesApi.middleware)
+      .concat(scenesApi.middleware)
+      .concat(entitiesApi.middleware)
 })
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors
