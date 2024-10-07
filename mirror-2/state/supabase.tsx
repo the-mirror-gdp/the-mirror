@@ -13,7 +13,7 @@ export interface CreateAssetMutation {
 export const supabaseApi = createApi({
   reducerPath: 'supabaseApi',
   baseQuery: fakeBaseQuery(),
-  tagTypes: ['Assets', 'Spaces', 'Scenes', 'Entities', 'Users'],
+  tagTypes: ['Assets', 'Spaces', 'Scenes', 'Entities', 'Components', 'Users'],
   endpoints: (builder) => ({
 
     /**
@@ -40,8 +40,10 @@ export const supabaseApi = createApi({
           return { error: error.message };
         }
         return { data };
-      }
-    }),
+      },
+      invalidatesTags: ['Spaces']
+    },
+    ),
 
     getSingleSpace: builder.query<any, string>({
       queryFn: async (spaceId) => {
@@ -57,6 +59,61 @@ export const supabaseApi = createApi({
           return { error: error.message };
         }
         return { data };
+      },
+      providesTags: (result, error, spaceId) => [{ type: 'Spaces', id: spaceId }]
+    }),
+
+    /**
+     * Helper: includes scenes, entities, assets, etc.
+     */
+    getSingleSpaceBuildMode: builder.query<any, string>({
+      queryFn: async (spaceId) => {
+        const supabase = createSupabaseBrowserClient();
+
+        // Nested select with joins for scenes, entities, and components
+        const { data, error } = await supabase
+          .from("spaces")
+          .select(`
+            *,
+            scenes (
+              *,
+              entities (
+                *,
+                components (*)
+              )
+            )
+          `)
+          .eq("id", spaceId)
+          .single();
+
+        if (error) {
+          return { error: error.message };
+        }
+
+        return { data };
+      },
+      providesTags: (result, error, spaceId) => {
+        if (result) {
+          // Extract scene, entity, and component ids for proper tag management
+          const sceneIds = result.scenes?.map(scene => ({ type: 'Scenes', id: scene.id })) || [];
+          const entityIds = result.scenes?.flatMap(scene =>
+            scene.entities?.map(entity => ({ type: 'Entities', id: entity.id }))
+          ) || [];
+          const componentIds = result.scenes?.flatMap(scene =>
+            scene.entities?.flatMap(entity =>
+              entity.components?.map(component => ({ type: 'Components', id: component.id }))
+            )
+          ) || [];
+
+          // Return tags for space, scenes, entities, and components
+          return [
+            { type: 'Spaces', id: spaceId },
+            ...sceneIds,
+            ...entityIds,
+            ...componentIds
+          ];
+        }
+        return [{ type: 'Spaces', id: spaceId }];
       }
     }),
 
@@ -74,7 +131,8 @@ export const supabaseApi = createApi({
           return { error: error.message };
         }
         return { data };
-      }
+      },
+      invalidatesTags: (result, error, { spaceId }) => [{ type: 'Spaces', id: spaceId }], // Invalidate tag for spaceId
     }),
 
 
@@ -270,6 +328,10 @@ export const supabaseApi = createApi({
           return { error: 'User not found' };
         }
 
+        if (!space_id) {
+          return { error: 'No spaceId provided' };
+        }
+
         const { data, error } = await supabase
           .from("scenes")
           .insert([{
@@ -286,7 +348,7 @@ export const supabaseApi = createApi({
         }
         return { data };
       },
-      invalidatesTags: (result, error, { space_id }) => [{ type: 'Scenes', id: space_id }], // Invalidate the tag for the specific space_id
+      invalidatesTags: (result, error, { space_id }) => [{ type: 'Scenes', id: space_id }], // Invalidate the tag for the specific space_id. TODO check this tag logic
     }),
 
     /**
@@ -385,6 +447,10 @@ export const supabaseApi = createApi({
           return { error: 'User not found' };
         }
 
+        if (!scene_id) {
+          return { error: 'No scene_id provided' };
+        }
+
         const { data, error } = await supabase
           .from("entities")
           .insert([{
@@ -401,7 +467,7 @@ export const supabaseApi = createApi({
         }
         return { data };
       },
-      invalidatesTags: (result, error, { scene_id }) => [{ type: 'Entities', id: scene_id }], // Invalidate the tag for the specific scene_id
+      invalidatesTags: ['Entities'] // TODO optimize this
     }),
 
     getAllEntities: builder.query<any, string>({
@@ -418,8 +484,8 @@ export const supabaseApi = createApi({
         }
         return { data };
       },
-      providesTags: (result, error, sceneId) =>
-        result ? [{ type: 'Entities', id: sceneId }] : [], // Provide tag for sceneId
+      providesTags: (result, error, entityId) =>
+        result ? [{ type: 'Entities', id: entityId }] : [], // Provide tag for entityId
     }),
 
     getSingleEntity: builder.query<any, string>({
@@ -486,7 +552,7 @@ export const {
   /**
    * Spaces
    */
-  useGetSingleSpaceQuery, useUpdateSpaceMutation, useCreateSpaceMutation,
+  useGetSingleSpaceQuery, useUpdateSpaceMutation, useCreateSpaceMutation, useGetSingleSpaceBuildModeQuery,
 
 
   /**

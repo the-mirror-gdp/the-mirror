@@ -14,15 +14,17 @@ export type TreeState = {
   data: TreeItem[];
 };
 
-export function getInitialTreeState(): TreeState {
+export function getInitialTreeState(initial): TreeState {
+  console.log('initial', initial);
   return { data: getInitialData(), lastAction: null };
 }
 
 export function getInitialData(): TreeItem[] {
+
   return [
     {
       id: '1',
-      isOpen: true,
+      isOpen: false,
 
       children: [
         {

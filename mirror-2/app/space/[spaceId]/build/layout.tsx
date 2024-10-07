@@ -16,6 +16,9 @@ export default async function Layout({ children, params }: {
         <Sidebar />
         <InnerControlBar />
         <SpaceViewport />
+
+        {/* only loading children for separate data fetching to keep this as server component */}
+        {children}
       </div>
     </div>
   )
