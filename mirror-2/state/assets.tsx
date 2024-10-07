@@ -212,34 +212,6 @@ export const assetsApi = createApi({
 });
 
 
-// not sure if this is needed since the RTK query API handles things so well
-// // Slice for managing space-related state
-// const spacesSlice = createSlice({
-//   name: 'spaces',
-//   initialState: initialSpacesState,
-//   reducers: {},
-//   extraReducers: (builder) => {
-//     builder
-//       .addMatcher(spacesApi.endpoints.createSpace.matchFulfilled, (state, action) => {
-//         spacesAdapter.addOne(state, action.payload);
-//       })
-//       .addMatcher(spacesApi.endpoints.getSingleSpace.matchFulfilled, (state, action) => {
-//         spacesAdapter.setOne(state, action.payload);
-//       })
-//       .addMatcher(spacesApi.endpoints.updateSpace.matchFulfilled, (state, action) => {
-//         spacesAdapter.updateOne(state, { id: action.payload.id, changes: action.payload });
-//       })
-//       .addMatcher(spacesApi.endpoints.deleteSpace.matchFulfilled, (state, action) => {
-//         debugger; // check spaceId in orginalArgs
-//         spacesAdapter.removeOne(state, action.meta.arg.originalArgs);
-//       });
-//   }
-// });
-
-
-// // Export the slice reducers
-// export const spacesReducer = spacesSlice.reducer;
-
 // Export the API hooks
 export const {
   useCreateAssetMutation, useSearchAssetsQuery, useLazySearchAssetsQuery, useGetSingleAssetQuery, useLazyGetUserMostRecentlyUpdatedAssetsQuery, useUpdateAssetMutation, useLazyDownloadAssetQuery,

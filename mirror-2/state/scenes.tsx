@@ -140,33 +140,6 @@ export const scenesApi = createApi({
   }),
 });
 
-// not sure if this is needed since the RTK query API handles things so well
-// Slice for managing space-related state
-// const spacesSlice = createSlice({
-//   name: 'spaces',
-//   initialState: initialScenesState,
-//   reducers: {},
-//   extraReducers: (builder) => {
-//     builder
-//       .addMatcher(scenesApi.endpoints.createScene.matchFulfilled, (state, action) => {
-//         scenesAdapter.addOne(state, action.payload);
-//       })
-//       .addMatcher(scenesApi.endpoints.getSingleScene.matchFulfilled, (state, action) => {
-//         scenesAdapter.setOne(state, action.payload);
-//       })
-//       .addMatcher(scenesApi.endpoints.updateScene.matchFulfilled, (state, action) => {
-//         scenesAdapter.updateOne(state, { id: action.payload.id, changes: action.payload });
-//       })
-//       .addMatcher(scenesApi.endpoints.deleteScene.matchFulfilled, (state, action) => {
-//         debugger; // check spaceId in orginalArgs
-//         scenesAdapter.removeOne(state, action.meta.arg.originalArgs);
-//       });
-//   }
-// });
-
-// Export the slice reducers
-// export const scenesReducer = spacesSlice.reducer;
-
 // Export the API hooks
 export const {
   useCreateSceneMutation, useGetAllScenesQuery, useUpdateSceneMutation, useGetSingleSceneQuery, useLazyGetSingleSceneQuery, useDeleteSceneMutation,

@@ -125,35 +125,6 @@ export const componentsApi = createApi({
   }),
 });
 
-// // not sure if this is needed since the RTK query API handles things so well
-// // Slice for managing space-related state
-// const entitiesSlice = createSlice({
-//   name: 'spaces',
-//   initialState: initialComponentsState,
-//   reducers: {},
-//   extraReducers: (builder) => {
-//     builder
-//       .addMatcher(entitiesApi.endpoints.createEntity.matchFulfilled, (state, action) => {
-//         entitiesAdapter.addOne(state, action.payload);
-//       })
-//       .addMatcher(entitiesApi.endpoints.getSingleEntity.matchFulfilled, (state, action) => {
-//         entitiesAdapter.setOne(state, action.payload);
-//       })
-//       .addMatcher(entitiesApi.endpoints.updateEntity.matchFulfilled, (state, action) => {
-//         entitiesAdapter.updateOne(state, { id: action.payload.id, changes: action.payload });
-//       })
-//       .addMatcher(entitiesApi.endpoints.deleteEntity.matchFulfilled, (state, action) => {
-//         debugger; // check spaceId in orginalArgs
-//         entitiesAdapter.removeOne(state, action.meta.arg.originalArgs);
-//       });
-//   }
-// });
-
-
-
-// Export the slice reducers
-// export const entitiesReducer = entitiesSlice.reducer;
-
 // Export the API hooks
 export const {
   useCreateComponentMutation, useGetAllComponentsQuery, useUpdateComponentMutation, useGetSingleComponentQuery, useLazyGetAllComponentsQuery, useDeleteComponentMutation
