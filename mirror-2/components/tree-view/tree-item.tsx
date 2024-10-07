@@ -35,6 +35,7 @@ import { indentPerLevel } from './constants';
 import { DependencyContext, TreeContext } from './tree-context';
 import { useGetSingleEntityQuery, useUpdateEntityMutation } from '@/state/entities';
 import { TwoWayInput } from '@/components/two-way-input';
+import { cn } from '@/lib/utils';
 
 /**
  * 2024-10-05 19:05:37 NOTE: Tons of boilerplate here atlaskit, so I'm just commenting a lot out for future reference until it's all removed
@@ -102,35 +103,35 @@ const innerButtonStyles = css({
   borderRadius: 3,
 });
 
-const idStyles = css({
-  margin: 0,
-  color: token('color.text.disabled', '#8993A5'),
-});
+// const idStyles = css({
+//   margin: 0,
+//   color: token('color.text.disabled', '#8993A5'),
+// });
 
-const labelStyles = css({
-  flexGrow: 1,
-  overflow: 'hidden',
-  textAlign: 'left',
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
-});
+// const labelStyles = css({
+//   flexGrow: 1,
+//   overflow: 'hidden',
+//   textAlign: 'left',
+//   textOverflow: 'ellipsis',
+//   whiteSpace: 'nowrap',
+// });
 
-const debugStyles = css({
-  position: 'absolute',
-  right: 'var(--grid)',
-  bottom: 0,
-  fontSize: '6px',
-});
+// const debugStyles = css({
+//   position: 'absolute',
+//   right: 'var(--grid)',
+//   bottom: 0,
+//   fontSize: '6px',
+// });
 
-const previewStyles = css({
-  '--grid': '8px',
-  background: token('elevation.surface.raised', 'red'),
-  padding: 'var(--grid)',
-  borderRadius: 3,
-});
+// const previewStyles = css({
+//   '--grid': '8px',
+//   // background: token('elevation.surface.raised', 'blue'),
+//   padding: 'var(--grid)',
+//   borderRadius: 3,
+// });
 
 function Preview({ item }: { item: TreeItemType }) {
-  return <div css={previewStyles}>Item {item.id}</div>;
+  return <div className={cn('grid p-2 bg-primary')}>{item.name}</div>;
 }
 
 const parentOfInstructionStyles = css({

@@ -109,45 +109,59 @@ export const tree = {
         return item;
       });
   },
+
   insertBefore(data: TreeItem[], targetId: string, newItem: TreeItem): TreeItem[] {
-    return data.flatMap((item) => {
+    return data.map((item) => {
       if (item.id === targetId) {
         return [newItem, item];
       }
       if (tree.hasChildren(item)) {
         return {
           ...item,
-          children: tree.insertBefore(item.children, targetId, newItem),
+          children: tree.insertBefore(item.children, targetId, newItem).map(child => ({
+            ...child,
+            parentId: item.id, // Assign correct parentId for direct children
+          })),
         };
       }
       return item;
-    });
+    }).flat();
   },
+
   insertAfter(data: TreeItem[], targetId: string, newItem: TreeItem): TreeItem[] {
-    return data.flatMap((item) => {
+    return data.map((item) => {
       if (item.id === targetId) {
         return [item, newItem];
       }
-
       if (tree.hasChildren(item)) {
         return {
           ...item,
-          children: tree.insertAfter(item.children, targetId, newItem),
+          children: tree.insertAfter(item.children, targetId, newItem).map(child => ({
+            ...child,
+            parentId: item.id, // Assign correct parentId for direct children
+          })),
         };
       }
-
       return item;
-    });
+    }).flat();
   },
+
   insertChild(data: TreeItem[], targetId: string, newItem: TreeItem): TreeItem[] {
-    return data.flatMap((item) => {
+    return data.map((item) => {
       if (item.id === targetId) {
-        // already a parent: add as first child
         return {
           ...item,
-          // opening item so you can see where item landed
           isOpen: true,
-          children: [newItem, ...item.children],
+          children: [
+            {
+              ...newItem,
+              parentId: item.id, // Assign parentId for new child
+            },
+            ...item.children.map(child => ({
+              ...child,
+              parentId: item.id, // Maintain parentId for existing children
+            })),
+          ],
         };
       }
 
@@ -157,10 +171,14 @@ export const tree = {
 
       return {
         ...item,
-        children: tree.insertChild(item.children, targetId, newItem),
+        children: tree.insertChild(item.children, targetId, newItem).map(child => ({
+          ...child,
+          parentId: item.id, // Ensure correct parentId for all children in recursion
+        })),
       };
     });
   },
+
   find(data: TreeItem[], itemId: string): TreeItem | undefined {
     for (const item of data) {
       if (item.id === itemId) {
@@ -175,6 +193,7 @@ export const tree = {
       }
     }
   },
+
   getPathToItem({
     current,
     targetId,
@@ -198,11 +217,11 @@ export const tree = {
       }
     }
   },
+
   hasChildren(item: TreeItem): boolean {
-    return item.children.length > 0;
+    return item.children && item.children.length > 0;
   },
 };
-
 export function treeStateReducer(state: TreeState, action: TreeAction): TreeState {
   return {
     data: dataReducer(state.data, action),
