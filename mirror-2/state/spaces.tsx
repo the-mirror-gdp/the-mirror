@@ -2,7 +2,9 @@ import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import { createSupabaseBrowserClient } from '@/utils/supabase/client';
 import { Database } from '@/utils/database.types';
 import { generateSpaceName } from '@/actions/name-generator';
-import { scenesApi } from '@/state/scenes';
+import { scenesApi, TAG_NAME_FOR_GENERAL_ENTITY as SCENES_TAG_NAME_FOR_GENERAL_ENTITY } from '@/state/scenes';
+import { TAG_NAME_FOR_GENERAL_ENTITY as ENTITIES_TAG_NAME_FOR_GENERAL_ENTITY } from '@/state/entities';
+import { TAG_NAME_FOR_GENERAL_ENTITY as COMPONENTS_TAG_NAME_FOR_GENERAL_ENTITY } from '@/state/components';
 
 export const TAG_NAME_FOR_GENERAL_ENTITY = 'Spaces'
 
@@ -10,7 +12,7 @@ export const TAG_NAME_FOR_GENERAL_ENTITY = 'Spaces'
 export const spacesApi = createApi({
   reducerPath: 'spacesApi',
   baseQuery: fakeBaseQuery(),
-  tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, 'LIST'],
+  tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, SCENES_TAG_NAME_FOR_GENERAL_ENTITY, ENTITIES_TAG_NAME_FOR_GENERAL_ENTITY, 'LIST'],
   endpoints: (builder) => ({
     createSpace: builder.mutation<any, any>({
       queryFn: async (_, { dispatch }) => {
@@ -98,13 +100,13 @@ export const spacesApi = createApi({
       providesTags: (result, error, spaceId) => {
         if (result) {
           // Extract scene, entity, and component ids for proper tag management
-          const sceneIds = result.scenes?.map(scene => ({ type: 'Scenes', id: scene.id })) || [];
+          const sceneIds = result.scenes?.map(scene => ({ type: SCENES_TAG_NAME_FOR_GENERAL_ENTITY, id: scene.id })) || [];
           const entityIds = result.scenes?.flatMap(scene =>
-            scene.entities?.map(entity => ({ type: 'Entities', id: entity.id }))
+            scene.entities?.map(entity => ({ type: ENTITIES_TAG_NAME_FOR_GENERAL_ENTITY, id: entity.id }))
           ) || [];
           const componentIds = result.scenes?.flatMap(scene =>
             scene.entities?.flatMap(entity =>
-              entity.components?.map(component => ({ type: 'Components', id: component.id }))
+              entity.components?.map(component => ({ type: COMPONENTS_TAG_NAME_FOR_GENERAL_ENTITY, id: component.id }))
             )
           ) || [];
 

@@ -375,6 +375,29 @@ export type Database = {
         }
         Returns: string
       }
+      get_entities_with_children: {
+        Args: {
+          _scene_id: string
+        }
+        Returns: {
+          id: string
+          name: string
+          parent_id: string
+          children: string[]
+        }[]
+      }
+      get_entity_with_children: {
+        Args: {
+          entity_id: string
+        }
+        Returns: Json
+      }
+      get_space_with_children: {
+        Args: {
+          space_id: string
+        }
+        Returns: Json
+      }
       search_assets_by_name_prefix: {
         Args: {
           prefix: string

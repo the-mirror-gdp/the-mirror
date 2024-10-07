@@ -3,7 +3,7 @@ import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import { createSupabaseBrowserClient } from '@/utils/supabase/client';
 import { Database } from '@/utils/database.types';
 
-const TAG_NAME_FOR_GENERAL_ENTITY = 'Components'
+export const TAG_NAME_FOR_GENERAL_ENTITY = 'Components'
 const TABLE_NAME = "components"
 
 // Supabase API for spaces

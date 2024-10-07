@@ -142,5 +142,5 @@ export const scenesApi = createApi({
 
 // Export the API hooks
 export const {
-  useCreateSceneMutation, useGetAllScenesQuery, useUpdateSceneMutation, useGetSingleSceneQuery, useLazyGetSingleSceneQuery, useDeleteSceneMutation,
+  useCreateSceneMutation, useGetAllScenesQuery, useLazyGetAllScenesQuery, useUpdateSceneMutation, useGetSingleSceneQuery, useLazyGetSingleSceneQuery, useDeleteSceneMutation,
 } = scenesApi;

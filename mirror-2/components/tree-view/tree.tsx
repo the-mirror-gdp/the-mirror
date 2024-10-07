@@ -1,6 +1,7 @@
+import { Instruction } from '@atlaskit/pragmatic-drag-and-drop-hitbox/dist/types/tree-item';
 import invariant from 'tiny-invariant';
 
-import type { Instruction } from '@atlaskit/pragmatic-drag-and-drop-hitbox/tree-item';
+
 
 export type TreeItem = {
   id: string;
@@ -89,7 +90,9 @@ export type TreeAction =
     type: 'collapse';
     itemId: string;
   }
-  | { type: 'modal-move'; itemId: string; targetId: string; index: number };
+  | { type: 'modal-move'; itemId: string; targetId: string; index: number }
+  | { type: 'set-tree'; tree: number; itemId?: string }
+  ;
 
 export const tree = {
   remove(data: TreeItem[], id: string): TreeItem[] {
@@ -208,8 +211,14 @@ export function treeStateReducer(state: TreeState, action: TreeAction): TreeStat
 
 const dataReducer = (data: TreeItem[], action: TreeAction) => {
   console.log('action', action);
+  const item = tree.find(data, action.itemId as string);
 
-  const item = tree.find(data, action.itemId);
+  // @ts-ignore weird error, will be refactored anyway
+  if (action?.type === 'set-tree') {
+    return action.tree
+  }
+
+
   if (!item) {
     return data;
   }
@@ -260,6 +269,8 @@ const dataReducer = (data: TreeItem[], action: TreeAction) => {
 
     return data;
   }
+
+
 
   function toggle(item: TreeItem): TreeItem {
     if (!tree.hasChildren(item)) {

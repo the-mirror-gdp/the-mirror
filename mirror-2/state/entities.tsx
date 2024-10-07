@@ -11,8 +11,8 @@ export const entitiesApi = createApi({
   baseQuery: fakeBaseQuery(),
   tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, 'LIST'],
   endpoints: (builder) => ({
-    createEntity: builder.mutation<any, { name: string, scene_id: string }>({
-      queryFn: async ({ name, scene_id }) => {
+    createEntity: builder.mutation<any, { name: string, scene_id: string, parent_id?: string }>({
+      queryFn: async ({ name, scene_id, parent_id }) => {
         const supabase = createSupabaseBrowserClient();
         const { data: { user }, error: authError } = await supabase.auth.getUser();
 
@@ -29,6 +29,7 @@ export const entitiesApi = createApi({
           .insert([{
             name,
             scene_id,
+            parent_id: parent_id || null,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
           }])
@@ -48,10 +49,17 @@ export const entitiesApi = createApi({
       queryFn: async (sceneId) => {
         const supabase = createSupabaseBrowserClient();
 
+        if (!sceneId) {
+          return { error: 'No scene_id provided' };
+        }
+
+        // const { data, error } = await supabase
+        //   .from("entities")
+        //   .select("*")
+        //   .eq("scene_id", sceneId);
+
         const { data, error } = await supabase
-          .from("entities")
-          .select("*")
-          .eq("scene_id", sceneId);
+          .rpc('get_entities_with_children', { _scene_id: sceneId }); // _scene_id is the name of the parameter in the function to not clash with column name scene_id
 
         if (error) {
           return { error: error.message };
@@ -71,11 +79,15 @@ export const entitiesApi = createApi({
       queryFn: async (entityId) => {
         const supabase = createSupabaseBrowserClient();
 
+        // const { data, error } = await supabase
+        //   .from("entities")
+        //   .select("*")
+        //   .eq("id", entityId)
+        //   .single();
+        // Call the Postgres function get_entity_with_children
         const { data, error } = await supabase
-          .from("entities")
-          .select("*")
-          .eq("id", entityId)
-          .single();
+          .rpc('get_entity_with_children', { entity_id: entityId });
+
 
         if (error) {
           return { error: error.message };

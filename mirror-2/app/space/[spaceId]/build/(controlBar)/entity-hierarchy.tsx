@@ -28,7 +28,7 @@ import { PlusCircleIcon } from 'lucide-react';
 
 import { useAppSelector } from '@/hooks/hooks';
 import { getCurrentScene } from '@/state/local';
-import { useCreateEntityMutation, useGetAllEntitiesQuery } from '@/state/entities';
+import { useCreateEntityMutation, useGetAllEntitiesQuery, useLazyGetAllEntitiesQuery } from '@/state/entities';
 
 // here for reference from boilerplate 2024-10-05 18:57:58
 // const treeStyles = css({
@@ -65,9 +65,25 @@ function createTreeItemRegistry() {
 
 export default function EntityHierarchy() {
   const currentScene = useAppSelector(getCurrentScene)
-  const entities = useGetAllEntitiesQuery(currentScene)
+  const [getAllEntities, { data: entities }] = useLazyGetAllEntitiesQuery()
 
-  const [state, updateState] = useReducer(treeStateReducer, entities, getInitialTreeState);
+  const [state, updateState] = useReducer(
+    treeStateReducer,
+    entities ? entities : [], // Fallback to an empty array before entities load
+    getInitialTreeState
+  );
+
+  useEffect(() => {
+    if (currentScene) {
+      getAllEntities(currentScene);
+    }
+  }, [currentScene]);
+  useEffect(() => {
+    if (entities && entities.length > 0) {
+      console.log('set-tree', entities)
+      updateState({ tree: entities, itemId: '', type: 'set-tree' });
+    }
+  }, [entities]);  // Re-run effect when 'entities' changes
   const [createEntity, { data: createdEntity }] = useCreateEntityMutation();
 
   const ref = useRef<HTMLDivElement>(null);
