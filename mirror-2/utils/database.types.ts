@@ -126,6 +126,7 @@ export type Database = {
           enabled: boolean
           id: string
           name: string
+          order_under_parent: number | null
           parent_id: string | null
           position: number[]
           rotation: number[]
@@ -139,6 +140,7 @@ export type Database = {
           enabled?: boolean
           id?: string
           name: string
+          order_under_parent?: number | null
           parent_id?: string | null
           position?: number[]
           rotation?: number[]
@@ -152,6 +154,7 @@ export type Database = {
           enabled?: boolean
           id?: string
           name?: string
+          order_under_parent?: number | null
           parent_id?: string | null
           position?: number[]
           rotation?: number[]
@@ -403,6 +406,17 @@ export type Database = {
           space_id: string
         }
         Returns: Json
+      }
+      get_space_with_nested_data: {
+        Args: {
+          _space_id: string
+        }
+        Returns: {
+          space: Json
+          scene: Json
+          entity: Json
+          component: Json
+        }[]
       }
       search_assets_by_name_prefix: {
         Args: {

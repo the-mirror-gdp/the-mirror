@@ -20,7 +20,6 @@ export type TreeState = {
 };
 
 export function getInitialTreeState(initial): TreeState {
-  console.log('initial', initial);
   return { data: getInitialData(), lastAction: null };
 }
 
@@ -236,7 +235,7 @@ export function treeStateReducer(state: TreeState, action: TreeAction, updateEnt
 
 const dataReducer = (data: TreeItem[], action: TreeAction, updateEntity) => {
 
-  console.log('action', action);
+  // console.log('action', action);
   const item = tree.find(data, action.itemId as string);
 
   // Handle set-tree action
@@ -264,7 +263,6 @@ const dataReducer = (data: TreeItem[], action: TreeAction, updateEntity) => {
         ...item,
         parentId: desiredId, // Update parentId during reparenting
       });
-      console.log('tree result', result);
 
       // Dispatch to update entity's parentId in the backend
       updateEntity({ id: action.itemId, updateData: { parent_id: desiredId } })
@@ -280,7 +278,6 @@ const dataReducer = (data: TreeItem[], action: TreeAction, updateEntity) => {
         ...item,
         parentId: targetItem?.parentId || null, // Update parentId to match the target item's parentId
       });
-      console.log('tree result', result);
 
       // Dispatch to update entity's parentId in the backend
       updateEntity({ id: action.itemId, updateData: { parent_id: targetItem?.parentId || null } })
@@ -296,7 +293,6 @@ const dataReducer = (data: TreeItem[], action: TreeAction, updateEntity) => {
         ...item,
         parentId: targetItem?.parentId || null, // Update parentId to match the target item's parentId
       });
-      console.log('tree result', result);
 
       // Dispatch to update entity's parentId in the backend
       updateEntity({ id: action.itemId, updateData: { parent_id: targetItem?.parentId || null } })
@@ -311,7 +307,6 @@ const dataReducer = (data: TreeItem[], action: TreeAction, updateEntity) => {
         ...item,
         parentId: action.targetId, // Update parentId to reflect the new parent
       });
-      console.log('tree result', result);
 
       // Dispatch to update entity's parentId in the backend
       updateEntity({ id: action.itemId, updateData: { parent_id: action.targetId } })

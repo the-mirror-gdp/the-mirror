@@ -90,10 +90,11 @@ export const spacesApi = createApi({
         //         )
         //       `)
         //   .eq('id', spaceId)
-        // .single();
+        //   .single();
 
         const { data, error }: { data: any, error: any } = await supabase
-          .rpc('get_hierarchical_space_with_populated_children', { _space_id: spaceId })
+          // @ts-ignore
+          .rpc('get_space_with_nested_data', { _space_id: spaceId })
           .single();
 
         if (error) {

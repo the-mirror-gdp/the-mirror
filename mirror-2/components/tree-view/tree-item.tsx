@@ -299,7 +299,7 @@ const TreeItem = memo(function TreeItem({
             // expand after 500ms if still merging
             if (
               instruction?.type === 'make-child' &&
-              item.children.length &&
+              item.children?.length &&
               !item.isOpen &&
               !cancelExpandRef.current
             ) {

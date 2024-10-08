@@ -28,9 +28,11 @@ import { PlusCircleIcon } from 'lucide-react';
 
 import { useAppSelector } from '@/hooks/hooks';
 import { getCurrentScene } from '@/state/local';
-import { useCreateEntityMutation, useUpdateEntityMutation } from '@/state/entities';
-import { useGetSingleSpaceBuildModeQuery, useLazyGetSingleSpaceBuildModeQuery } from '@/state/spaces';
+import { useCreateEntityMutation, useGetAllEntitiesQuery, useUpdateEntityMutation } from '@/state/entities';
+import { useGetSingleSpaceBuildModeQuery, useGetSingleSpaceQuery, useLazyGetSingleSpaceBuildModeQuery } from '@/state/spaces';
 import { useParams } from 'next/navigation';
+import { useGetAllScenesQuery } from '@/state/scenes';
+import { skipToken } from '@reduxjs/toolkit/query';
 
 // here for reference from boilerplate 2024-10-05 18:57:58
 // const treeStyles = css({
@@ -68,8 +70,12 @@ function createTreeItemRegistry() {
 export default function EntityHierarchy() {
   const currentScene = useAppSelector(getCurrentScene)
   const params = useParams<{ spaceId: string }>()
-  const { data: spaceBuildModeData, error } = useGetSingleSpaceBuildModeQuery(params.spaceId)
-  const { space, scenes, entities, components } = spaceBuildModeData || {};
+  // const { data: spaceBuildModeData, error } = useGetSingleSpaceBuildModeQuery(params.spaceId)
+  const { data: space } = useGetSingleSpaceQuery(params.spaceId)
+  const { data: scenes, isLoading: isScenesLoading } = useGetAllScenesQuery(params.spaceId)
+  const { data: entities, isFetching: isEntitiesFetching } = useGetAllEntitiesQuery(
+    scenes && scenes.length > 0 ? scenes.map(scene => scene.id) : skipToken  // Conditional query
+  );
 
   const [updateEntity] = useUpdateEntityMutation();
 

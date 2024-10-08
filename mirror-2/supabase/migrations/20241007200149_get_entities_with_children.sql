@@ -182,3 +182,30 @@ BEGIN
     RETURN result;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION get_space_with_nested_data(_space_id UUID)
+RETURNS TABLE (
+    space jsonb,
+    scene jsonb,
+    entity jsonb,
+    component jsonb
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        row_to_json(spaces.*)::jsonb AS space,
+        row_to_json(scenes.*)::jsonb AS scene,
+        row_to_json(entities.*)::jsonb AS entity,
+        row_to_json(components.*)::jsonb AS component
+    FROM 
+        spaces
+    LEFT JOIN 
+        scenes ON scenes.space_id = spaces.id
+    LEFT JOIN 
+        entities ON entities.scene_id = scenes.id
+    LEFT JOIN 
+        components ON components.entity_id = entities.id
+    WHERE 
+        spaces.id = _space_id;
+END;
+$$ LANGUAGE plpgsql;

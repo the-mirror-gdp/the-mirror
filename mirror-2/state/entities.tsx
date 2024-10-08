@@ -55,13 +55,13 @@ export const entitiesApi = createApi({
           return { error: 'No scene_id provided' };
         }
 
-        // const { data, error } = await supabase
-        //   .from("entities")
-        //   .select("*")
-        //   .eq("scene_id", sceneId);
-
         const { data, error } = await supabase
-          .rpc('get_entities_with_children', { _scene_id: sceneId }); // _scene_id is the name of the parameter in the function to not clash with column name scene_id
+          .from("entities")
+          .select("*")
+          .eq("scene_id", sceneId);
+
+        // const { data, error } = await supabase
+        // .rpc('get_entities_with_children', { _scene_id: sceneId }); // _scene_id is the name of the parameter in the function to not clash with column name scene_id
 
         if (error) {
           return { error: error.message };

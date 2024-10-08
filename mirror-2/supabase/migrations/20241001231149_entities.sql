@@ -1,4 +1,4 @@
-create table entities (
+CREATE TABLE entities (
   id uuid NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
   name text NOT NULL,
   enabled boolean NOT NULL DEFAULT true,
@@ -8,11 +8,16 @@ create table entities (
   rotation float8[] NOT NULL DEFAULT ARRAY[0, 0, 0], -- storing rotation as an array of 3 floats
   tags text[] DEFAULT ARRAY[]::text[], -- storing tags as an empty array of text 
   parent_id uuid REFERENCES entities ON DELETE CASCADE, -- reference to parent entity, allows hierarchical structure
+  order_under_parent integer, -- order of the entity under the parent entity, null when parent_id is null
   created_at timestamp with time zone NOT NULL DEFAULT now(),
   updated_at timestamp with time zone NOT NULL DEFAULT now(),
-  CONSTRAINT name_length CHECK (char_length(name) >= 0)
+  CONSTRAINT name_length CHECK (char_length(name) >= 0),
+  CONSTRAINT unique_order_under_parent UNIQUE (parent_id, order_under_parent),
+  CONSTRAINT check_order_under_parent CHECK (
+    (parent_id IS NOT NULL AND order_under_parent IS NOT NULL) OR
+    (parent_id IS NULL AND order_under_parent IS NULL) -- Ensure both are null if no parent
+  )
 );
-
   -- add RLS
 alter table entities
   enable row level security;
