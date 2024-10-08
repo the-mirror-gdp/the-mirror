@@ -58,3 +58,9 @@
     --chart-5: 340 75% 55%;
   }
 }
+.ant-tree-switcher_close {
+  margin-top: 0.5rem !important;
+}
+.ant-tree-switcher_open {
+  margin-top: 0.5rem !important;
+}

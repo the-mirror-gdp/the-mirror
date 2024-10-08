@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z, ZodSchema } from "zod";
 import clsx from "clsx"; // Utility to merge class names
+import { cn } from "@/lib/utils";
 
 interface TwoWayInputProps<T> {
   id: string;
@@ -65,7 +66,7 @@ export function TwoWayInput<T>({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className={clsx("w-full", className)} onBlur={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className={cn(className)} onBlur={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name={fieldName as string} // Type casting to string since fieldName is dynamic
@@ -74,7 +75,7 @@ export function TwoWayInput<T>({
               <FormControl>
                 <Input
                   type="text"
-                  className={clsx("w-full dark:bg-transparent border-none text-lg shadow-none", className)} // Apply className prop here
+                  className={clsx("dark:bg-transparent border-none shadow-none", className)} // Apply className prop here
                   {...field}
                 />
               </FormControl>

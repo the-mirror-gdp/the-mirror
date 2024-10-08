@@ -5,19 +5,26 @@ import { useAppSelector } from '@/hooks/hooks';
 import { useParams } from 'next/navigation';
 import { useGetSingleSpaceQuery } from '@/state/spaces';
 import { useGetAllScenesQuery } from '@/state/scenes';
-import { useCreateEntityMutation, useGetAllEntitiesQuery, useUpdateEntityMutation } from '@/state/entities';
+import { useCreateEntityMutation, useGetAllEntitiesQuery, useGetSingleEntityQuery, useUpdateEntityMutation } from '@/state/entities';
 import { getCurrentScene } from '@/state/local';
 import { skipToken } from '@reduxjs/toolkit/query';
 import { Database } from '@/utils/database.types';
+import { DataNode } from 'antd/es/tree';
+import { TwoWayInput } from '@/components/two-way-input';
+import { z } from 'zod';
+import { PlusCircle } from 'lucide-react';
 
 type Entity = Database['public']['Tables']['entities']['Row'];
 type EntityWithPopulatedChildren = Omit<Entity, 'children'> & {
   key: string,
   title: string,
+  icon?: any,
   children: EntityWithPopulatedChildren[]; // children now contain an array of Entity objects
 };
 
-function transformDbEntityStructureWithPopulatedChildren(entities: Entity[]): TreeDataNode[] {
+type TreeDataNodeWithEntityData = TreeDataNode & { name: string, id: string }
+
+function transformDbEntityStructureWithPopulatedChildren(entities: Entity[]): TreeDataNodeWithEntityData[] {
   const entityMap = new Map<string, EntityWithPopulatedChildren & { childIds: string[] }>();
   const assignedChildIds = new Set<string>(); // Track all child IDs to remove from the main array
 
@@ -152,7 +159,7 @@ const EntityTree: React.FC = () => {
             colorBgContainer: 'transparent',
             fontFamily: 'montserrat',
             // @ts-ignore using rem instead of number is working..
-            fontSize: '1rem',
+            fontSize: '0.9rem',
             nodeSelectedBg: '#3B82F6',
             nodeHoverBg: '#256BFB',
             directoryNodeSelectedBg: 'green'
@@ -165,10 +172,25 @@ const EntityTree: React.FC = () => {
         draggable={{ icon: false }}
         blockNode
         defaultExpandAll={true}
-        showLine={true}
+        showLine={false}
+        showIcon
+        autoExpandParent={true}
         onDragEnter={onDragEnter}
         onDrop={onDrop}
         treeData={treeData}
+        titleRender={(nodeData: TreeDataNodeWithEntityData) => (
+          <>
+            <TwoWayInput
+              id={nodeData.id}
+              defaultValue={nodeData.name}
+              // className={'p-0 m-0 h-8 '}
+              fieldName="name" formSchema={z.object({
+                name: z.string().min(1, { message: "Entity name must be at least 1 character long" }),
+              })}
+              useGeneralGetEntityQuery={useGetSingleEntityQuery}
+              useGeneralUpdateEntityMutation={useUpdateEntityMutation} />
+          </>
+        )}
       />
     </ConfigProvider>
   );
