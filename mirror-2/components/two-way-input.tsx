@@ -48,6 +48,10 @@ export function TwoWayInput<T>({
 
   // Handle form submission
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    // check if values changed
+    if (entity && isSuccess && entity[fieldName] === values[fieldName]) {
+      return;
+    }
     await updateGeneralEntity({ id: generalEntityId, updateData: { [fieldName]: values[fieldName] } as Partial<T> });
   }
 
