@@ -27,7 +27,7 @@ export default function InnerControlBar() {
   });
 
   return (
-    <div className="relative px-2 m-2" {...getRootProps()}>
+    <div className="relative px-2" {...getRootProps()}>
       {/* Input element for handling file uploads */}
       <input {...getInputProps()} />
 
