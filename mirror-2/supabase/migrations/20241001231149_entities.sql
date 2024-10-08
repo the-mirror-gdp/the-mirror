@@ -17,6 +17,36 @@ CREATE TABLE entities (
   ),
   CONSTRAINT parent_id_not_self CHECK (parent_id IS DISTINCT FROM id) -- Ensures parent_id is not the same as id
 );
+
+CREATE OR REPLACE FUNCTION check_circular_reference()
+RETURNS TRIGGER AS $$
+DECLARE
+    current_parent uuid;
+BEGIN
+    -- Set the current parent to the newly inserted/updated parent_id
+    current_parent := NEW.parent_id;
+
+    -- Traverse up the hierarchy
+    WHILE current_parent IS NOT NULL LOOP
+        -- If at any point, the current parent is the same as the entity's id, we have a cycle
+        IF current_parent = NEW.id THEN
+            RAISE EXCEPTION 'Circular reference detected: Entity % is an ancestor of itself.', NEW.id;
+        END IF;
+
+        -- Move to the next parent in the hierarchy
+        SELECT parent_id INTO current_parent FROM entities WHERE id = current_parent;
+    END LOOP;
+
+    -- If no circular reference is found, return and allow the insert/update
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER prevent_circular_reference
+BEFORE INSERT OR UPDATE ON entities
+FOR EACH ROW
+EXECUTE FUNCTION check_circular_reference();
+
   -- add RLS
 alter table entities
   enable row level security;
