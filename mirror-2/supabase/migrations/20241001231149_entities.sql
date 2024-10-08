@@ -14,7 +14,8 @@ CREATE TABLE entities (
   CONSTRAINT name_length CHECK (char_length(name) >= 0),
   CONSTRAINT order_not_null_if_parent_id_exists CHECK (
     (parent_id IS NOT NULL AND order_under_parent IS NOT NULL) OR parent_id IS NULL
-  )
+  ),
+  CONSTRAINT parent_id_not_self CHECK (parent_id IS DISTINCT FROM id) -- Ensures parent_id is not the same as id
 );
   -- add RLS
 alter table entities
