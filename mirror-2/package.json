@@ -28,6 +28,7 @@
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
     "ahooks": "^3.8.1",
+    "antd": "^5.21.2",
     "autoprefixer": "10.4.17",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
