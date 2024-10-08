@@ -47,7 +47,7 @@ export const spacesApi = createApi({
         }
         // // create root entity
         const { data: createEntityData, error: createEntityError } = await dispatch(
-          entitiesApi.endpoints.createEntity.initiate({ name: "Root", is_root: true, scene_id: createSceneData.id })
+          entitiesApi.endpoints.upsertEntity.initiate({ name: "Root", scene_id: createSceneData.id, isRootEntity: true })
         )
 
         if (createEntityError) {
@@ -186,3 +186,4 @@ export const {
   useUpdateSpaceMutation,
   useDeleteSpaceMutation,
 } = spacesApi;
+

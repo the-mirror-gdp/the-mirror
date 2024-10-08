@@ -5,77 +5,80 @@ import { useAppSelector } from '@/hooks/hooks';
 import { useParams } from 'next/navigation';
 import { useGetSingleSpaceQuery } from '@/state/spaces';
 import { useGetAllScenesQuery } from '@/state/scenes';
-import { useCreateEntityMutation, useGetAllEntitiesQuery, useGetSingleEntityQuery, useUpdateEntityMutation } from '@/state/entities';
+import { useUpsertEntityMutation, useGetAllEntitiesQuery, useGetSingleEntityQuery, useUpdateEntityMutation, useBatchUpdateEntitiesMutation } from '@/state/entities';
 import { getCurrentScene } from '@/state/local';
 import { skipToken } from '@reduxjs/toolkit/query';
 import { Database } from '@/utils/database.types';
 import { DataNode } from 'antd/es/tree';
 import { TwoWayInput } from '@/components/two-way-input';
 import { z } from 'zod';
-import { PlusCircle } from 'lucide-react';
+import { useUpdate } from 'ahooks';
 
 
-type TreeDataNodeWithEntityData = TreeDataNode & { name: string, id: string }
+type TreeDataNodeWithEntityData = TreeDataNode & { name: string, id: string, order_under_parent: number }
 
-function transformDbEntityStructureWithPopulatedChildren(entities) {
-  const entityMap = new Map();
-  const assignedChildIds = new Set();
+function transformDbEntityStructureToTree(entities): TreeDataNodeWithEntityData[] {
+  const entityMap: any = {}; // Map to hold entities by their ID for quick lookup
 
-  // Step 1: Populate the map with entities and their child IDs
+  // Initialize the map and add a 'children' array to each entity
   entities.forEach(entity => {
-    const entityWithChildren = {
-      ...entity,
-      children: [], // Will hold actual child objects
-      key: entity.id,
-      title: entity.name,
-      childIds: Array.isArray(entity.children) ? [...entity.children] : [] // Clone to avoid mutation
-    };
-    entityMap.set(entity.id, entityWithChildren);
+    entityMap[entity.id] = { ...entity, children: [], key: entity.id };
   });
 
-  // Step 2: Assign children to their respective parents, preventing duplication
-  entityMap.forEach(entity => {
-    if (entity.childIds.length > 0) {
-      entity.children = entity.childIds
-        .filter(childId => {
-          if (assignedChildIds.has(childId)) {
-            console.warn(`Child with ID ${childId} is already assigned to another parent. Skipping assignment to parent ID ${entity.id}.`);
-            return false; // Exclude to prevent duplication
-          }
-          return true; // Include this child
-        })
-        .map(childId => {
-          assignedChildIds.add(childId); // Mark as assigned
-          const childEntity = entityMap.get(childId);
-          if (!childEntity) {
-            console.warn(`Child entity with ID ${childId} not found.`);
-            return null;
-          }
-          return childEntity;
-        })
-        .filter(child => child !== null); // Remove any nulls
+  //disable the root node
+  entities.find(entity => {
+    if (entity.parent_id === null) {
+      entityMap[entity.id].disabled = true;
     }
   });
 
-  // Step 3: Identify root entities (those not assigned as children and marked as root)
-  const rootEntities = Array.from(entityMap.values()).filter(
-    entity => !assignedChildIds.has(entity.id) && entity.is_root
-  );
+  const tree: any[] = [];
 
-  // Step 4: Clean up temporary fields recursively
-  function cleanEntity(entity) {
-    const { childIds, ...rest } = entity;
-    if (rest.children.length > 0) {
-      rest.children = rest.children.map(child => cleanEntity(child));
+  // Build the tree by linking parent and child entities
+  entities.forEach(entity => {
+    if (entity.parent_id) {
+      // If the entity has a parent, add it to the parent's 'children' array
+      const parentEntity = entityMap[entity.parent_id];
+      if (parentEntity) {
+        parentEntity.children.push(entityMap[entity.id]);
+      } else {
+        // Handle case where parent_id does not exist in the entityMap
+        console.warn(`Parent entity with ID ${entity.parent_id} not found.`);
+        tree.push(entityMap[entity.id]); // Treat as root if parent not found
+      }
+    } else {
+      // If the entity has no parent, it's a root entity
+      tree.push(entityMap[entity.id]);
     }
-    return rest;
+  });
+
+  // Function to recursively sort children based on 'order_under_parent'
+  function sortChildren(entity) {
+    if (entity.children && entity.children.length > 0) {
+      // Sort the children array based on 'order_under_parent'
+      entity.children.sort((a, b) => {
+        const orderA = a.order_under_parent ?? 0;
+        const orderB = b.order_under_parent ?? 0;
+        return orderA - orderB;
+      });
+
+      // Recursively sort the children's children
+      entity.children.forEach(child => sortChildren(child));
+    }
   }
 
-  const cleanedRootEntities = rootEntities.map(cleanEntity);
+  // Sort the root-level entities if needed
+  tree.sort((a, b) => {
+    const orderA = a.order_under_parent ?? 0;
+    const orderB = b.order_under_parent ?? 0;
+    return orderA - orderB;
+  });
 
-  return cleanedRootEntities;
+  // Recursively sort the entire tree
+  tree.forEach(rootEntity => sortChildren(rootEntity));
+
+  return tree;
 }
-
 
 const EntityTree: React.FC = () => {
   const [treeData, setTreeData] = useState<any>([]);
@@ -90,7 +93,7 @@ const EntityTree: React.FC = () => {
   );
 
   const [updateEntity] = useUpdateEntityMutation();
-  const [createEntity, { data: createdEntity }] = useCreateEntityMutation();
+  const [batchUpdateEntity] = useBatchUpdateEntitiesMutation();
 
   // useEffect(() => {
   //   debugger
@@ -100,7 +103,7 @@ const EntityTree: React.FC = () => {
   // }, [currentScene]);
   useEffect(() => {
     if (entities && entities.length > 0) {
-      const data = transformDbEntityStructureWithPopulatedChildren(entities)
+      const data = transformDbEntityStructureToTree(entities)
       // debugger
       setTreeData(data)
       // updateState({ entities, type: 'set-tree', itemId: '' });
@@ -114,11 +117,16 @@ const EntityTree: React.FC = () => {
 
   const onDrop: TreeProps['onDrop'] = (info) => {
     console.log(info);
+
+    // check to ensure not creating new root. stop if so
+    if (info.node['parent_id'] === null && info.dropToGap === true) {
+      return
+    }
+
     const dropKey = info.node.key;
     const dragKey = info.dragNode.key;
     const dropPos = info.node.pos.split('-');
     const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]); // the drop position relative to the drop node, inside 0, top -1, bottom 1
-    let dragParent: any = null;
 
     const loop = (
       data: TreeDataNode[],
@@ -135,62 +143,74 @@ const EntityTree: React.FC = () => {
       }
     };
 
-
-    // Function to find the parent of the drag node
-    const findParentNode = (data, childKey: React.Key) => {
-      for (let i = 0; i < data.length; i++) {
-        if (data && data[i] && data[i].children) {
-          const children = data[i].children
-          const hasChild = children?.some(child => child.key === childKey);
-          if (hasChild) {
-            dragParent = data[i]; // Found the parent node
-            return; // Exit once found
-          }
-          findParentNode(children, childKey);
-        }
-      }
-    };
-
-    // Find the parent of the dragged node
-    findParentNode(treeData, dragKey); // `treeData` is your current tree structure
-
-    console.log('Parent of dragged node:', dragParent);
-
     const data = [...treeData];
 
     // Find dragObject
     let dragObj: TreeDataNode;
     loop(data, dragKey, (item, index, arr) => {
       arr.splice(index, 1);
-      dragParent.children = arr
       dragObj = item;
     });
 
     if (!info.dropToGap) {
+
+      const entitiesUpdateArray: any[] = []
+      const mainEntityId = info.dragNode['id']
       console.log('content drop to new parent', data)
       // Drop on the content
+      let newPosition = 0
       loop(data, dropKey, (item) => {
         item.children = item.children || [];
         // where to insert. New item was inserted to the start of the array in this example, but can be anywhere
         item.children.unshift(dragObj);
+
+        item.children.forEach((child, index) => {
+          const order_under_parent = index
+          let updateData = { id: child['id'], order_under_parent, name: child['name'] }
+          if (child['id'] === mainEntityId) {
+            updateData = Object.assign({}, updateData, {
+              parent_id: info.node['id'] // should be info.node here, which is the node the dragNode is getting dropped under, so we want the ID of that node (note: different from getting the parent_id of it, below)
+            })
+          }
+          entitiesUpdateArray.push(updateData)
+        })
       });
 
-      // update the node and dragnode in DB
-      if (info.node && info.node['id'] && info.node.children) {
-        const childIds = info.node.children.map(child => child['id'])
-        // debugger
-        updateEntity({ id: info.node['id'], updateData: { children: childIds } })
-      }
-      if (info.dragNode && info.dragNode['id'] && info.dragNode.children) {
-        const childIds = info.dragNode.children.map(child => child['id'])
-        // debugger
-        updateEntity({ id: info.dragNode['id'], updateData: { children: childIds } })
+      // do the same for data.children: this updates the order_under_parent of the list that the dragNode is being moved OUT of
+      if (data && data[0] && data[0].children) {
+        data[0].children.forEach((child, index) => {
+          const order_under_parent = index
+          let updateData = { id: child['id'], order_under_parent, name: child['name'] }
+          if (child['id'] === mainEntityId) {
+            updateData = Object.assign({}, updateData, {
+              parent_id: info.node['id'] // should be info.node here, which is the node the dragNode is getting dropped under, so we want the ID of that node (note: different from getting the parent_id of it, below)
+            })
+          }
+          entitiesUpdateArray.push(updateData)
+        })
       }
 
+      batchUpdateEntity({
+        entities: entitiesUpdateArray
+      })
+
+      // update the node and dragnode in DB
+      // if (info.node && info.node['id'] && info.node.children) {
+      //   const childIds = info.node.children.map(child => child['id'])
+      //   // debugger
+      //   updateEntity({ id: info.node['id'], updateData: { children: childIds } })
+      // }
+      // if (info.dragNode && info.dragNode['id'] && info.dragNode.children) {
+      //   const childIds = info.dragNode.children.map(child => child['id'])
+      //   // debugger
+      //   updateEntity({ id: info.dragNode['id'], updateData: { children: childIds } })
+      // }
 
     } else {
       console.log('gap drop', data)
 
+      const entitiesUpdateArray: any[] = []
+      const mainEntityId = info.dragNode['id']
       let ar: TreeDataNode[] = [];
       let i: number;
       loop(data, dropKey, (_item, index, arr) => {
@@ -204,21 +224,34 @@ const EntityTree: React.FC = () => {
         // Drop on the bottom of the drop node
         ar.splice(i! + 1, 0, dragObj!);
       }
+      // get the new position from ar
+      // updates order_under_parent of each
+      ar.forEach((child, index) => {
+        const order_under_parent = index
+        let updateData = { id: child['id'], order_under_parent, name: child['name'] }
+        if (child['id'] === mainEntityId) {
+          updateData = Object.assign({}, updateData, {
+            parent_id: info.node['parent_id'] // should be info.node here, which is the node the dragNode is getting dropped under, so we want the parent_id of THAT node
+          })
+        }
+        entitiesUpdateArray.push(updateData)
+      })
+
+      batchUpdateEntity({
+        entities: entitiesUpdateArray
+      })
+
       // debugger // not yet
       // update the node and dragnode in DB
-      if (info.node && info.node['id'] && info.node.children) {
-        const childIds = info.node.children.map(child => child['id'])
-        updateEntity({ id: info.node['id'], updateData: { children: childIds } })
-      }
-      if (info.dragNode && info.dragNode['id'] && info.dragNode.children) {
-        const childIds = info.dragNode.children.map(child => child['id'])
-        updateEntity({ id: info.dragNode['id'], updateData: { children: childIds } })
-      }
+      // if (info.node && info.node['id'] && info.node.children) {
+      //   const childIds = info.node.children.map(child => child['id'])
+      //   updateEntity({ id: info.node['id'], updateData: { children: childIds } })
+      // }
+      // if (info.dragNode && info.dragNode['id'] && info.dragNode.children) {
+      //   const childIds = info.dragNode.children.map(child => child['id'])
+      //   updateEntity({ id: info.dragNode['id'], updateData: { children: childIds } })
+      // }
     }
-
-    // update the dragParent to remove the child from its children array
-    const childIds = dragParent.children.map(child => child['id'])
-    updateEntity({ id: dragParent.id, updateData: { children: childIds } })
 
     setTreeData(data);
 
@@ -256,6 +289,7 @@ const EntityTree: React.FC = () => {
           <>
             <TwoWayInput
               id={nodeData.id}
+              generalEntity={nodeData}
               defaultValue={nodeData.name}
               // className={'p-0 m-0 h-8 '}
               fieldName="name" formSchema={z.object({
@@ -263,6 +297,7 @@ const EntityTree: React.FC = () => {
               })}
               useGeneralGetEntityQuery={useGetSingleEntityQuery}
               useGeneralUpdateEntityMutation={useUpdateEntityMutation} />
+            {nodeData.order_under_parent}
           </>
         )}
       />

@@ -13,8 +13,8 @@ export const entitiesApi = createApi({
   baseQuery: fakeBaseQuery(),
   tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, 'LIST', TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY],
   endpoints: (builder) => ({
-    createEntity: builder.mutation<any, { name: string, scene_id: string, children?: string[], is_root?: boolean, parent_id?: string }>({
-      queryFn: async ({ name, scene_id, children, is_root, parent_id }) => {
+    upsertEntity: builder.mutation<any, { id?: string, name?: string, scene_id?: string, parent_id?: string, order_under_parent?: number, isRootEntity?: boolean }>({
+      queryFn: async ({ id, name, scene_id, parent_id, order_under_parent, isRootEntity }) => {
         const supabase = createSupabaseBrowserClient();
         const { data: { user }, error: authError } = await supabase.auth.getUser();
 
@@ -22,17 +22,13 @@ export const entitiesApi = createApi({
           return { error: 'User not found' };
         }
 
-        if (!scene_id) {
-          return { error: 'No scene_id provided' };
-        }
-
-        // if no parent_id and not is_root, find the root entity
-        if (!parent_id && !is_root) {
+        // if no parent_id and not the root entity upon creation, find the root entity
+        if (!parent_id && !isRootEntity) {
           const { data: rootEntity, error: rootEntityError } = await supabase
             .from("entities")
             .select("*")
             .eq("scene_id", scene_id)
-            .eq("is_root", true)
+            .is("parent_id", null)
             .single();
 
           if (rootEntityError) {
@@ -42,16 +38,35 @@ export const entitiesApi = createApi({
           parent_id = rootEntity.id;
         }
 
+        if ((parent_id && order_under_parent === undefined) || (parent_id && order_under_parent) === null) {
+          // need to find the order_under_parent to use for the new entity
+          const { data: entitiesWithSameParent, error: parentEntityError } = await supabase
+            .from("entities")
+            .select("*")
+            .eq("parent_id", parent_id)
+
+          if (parentEntityError) {
+            return { error: parentEntityError.message };
+          }
+          // find the highest order_under_parent
+          const highestOrderUnderParent = entitiesWithSameParent.reduce((max, entity) => {
+            return entity.order_under_parent > max ? entity.order_under_parent : max;
+          }, -1);
+          order_under_parent = highestOrderUnderParent + 1;
+        }
+
+
         const { data, error } = await supabase
           .from("entities")
-          .insert([{
+          .upsert({
+            id,
             name,
             scene_id,
-            is_root,
-            children: children || [],
+            parent_id,
+            order_under_parent,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
-          }])
+          })
           .select('*')
           .single();
 
@@ -59,15 +74,6 @@ export const entitiesApi = createApi({
           return { error: error.message };
         }
 
-        // update the parent of the new entity to have it in the children array
-        if (!is_root && parent_id) {
-          const { data: addChildToEntityData, error: addChildToEntityError } = await supabase
-            .rpc('add_child_to_entity', { _parent_id: parent_id, _child_id: data.id });
-
-          if (addChildToEntityError) {
-            return { error: addChildToEntityError };
-          }
-        }
         return { data };
       },
       invalidatesTags: [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }],
@@ -126,14 +132,64 @@ export const entitiesApi = createApi({
       providesTags: (result, error, entityId) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: entityId }], // Provide the entity tag based on entityId
     }),
 
-    updateEntity: builder.mutation<any, { id: string, updateData: Record<string, any> }>({
-      queryFn: async ({ id: entityId, updateData }) => {
+    updateEntity: builder.mutation<any, { id: string, name?: string, parent_id?: string, order_under_parent?: number, scene_id?: string }>({
+      queryFn: async ({ id, name, parent_id, order_under_parent, scene_id }) => {
         const supabase = createSupabaseBrowserClient();
+
+        // if no parent_id, find the root entity
+        if (!parent_id) {
+          if (!scene_id) {
+            // must have scene_id to find the root entity
+            return { error: 'No scene_id provided' };
+          }
+          const { data: rootEntity, error: rootEntityError } = await supabase
+            .from("entities")
+            .select("*")
+            .eq("scene_id", scene_id)
+            .is("parent_id", null)
+            .single();
+
+          if (rootEntityError) {
+            return { error: rootEntityError.message };
+          }
+
+          parent_id = rootEntity.id;
+        }
+
+        // case: parent_id exists but no order_under_parent
+        if ((parent_id && order_under_parent === undefined) || (parent_id && order_under_parent === null)) {
+          // need to find the order_under_parent to use for the new entity
+          const { data: entitiesWithSameParent, error: parentEntityError } = await supabase
+            .from("entities")
+            .select("*")
+            .eq("parent_id", parent_id)
+
+          if (parentEntityError) {
+            return { error: parentEntityError.message };
+          }
+          // find the highest order_under_parent
+          const highestOrderUnderParent = entitiesWithSameParent.reduce((max, entity) => {
+            return entity.order_under_parent > max ? entity.order_under_parent : max;
+          }, -1);
+          order_under_parent = highestOrderUnderParent + 1;
+        }
+
+        // case: parent_id and order_under_parent exist
+        // if (parent_id && order_under_parent) {
+        //   // increment all order_under_parents below the new entity since it's being inserted
+        //   const { data, error }: { data: any, error: any } = await supabase
+        //     // @ts-ignore
+        //     .rpc('increment_and_resequence_order_under_parent', { p_scene_id: scene_id, p_entity_id: id })
+        //     .single();
+        // }
+
 
         const { data, error } = await supabase
           .from("entities")
-          .update(updateData)
-          .eq("id", entityId)
+          .update(
+            { name, parent_id, order_under_parent, scene_id }
+          )
+          .eq("id", id)
           .single();
 
         if (error) {
@@ -148,6 +204,47 @@ export const entitiesApi = createApi({
       ], // Invalidate tag for entityId
     }),
 
+    batchUpdateEntities: builder.mutation<any, { entities: { id: string, name?: string, scene_id?: string, parent_id?: string, order_under_parent?: number }[] }>({
+      queryFn: async ({ entities }) => {
+        const supabase = createSupabaseBrowserClient();
+        const entityIds = entities.map(entity => entity.id);
+
+        // Fetch all current entities by the provided IDs. This is needed since supabase batch upsert requires ALL properties to be passed in or else it overwrites the existing data.
+        const { data: existingEntities, error: fetchError } = await supabase
+          .from('entities')
+          .select('*')
+          .in('id', entityIds);
+
+        if (fetchError) {
+          return { error: fetchError.message };
+        }
+
+        // Merge each entity's new properties with existing data
+        const entitiesToUpsert = entities.map(newEntity => {
+          const existingEntity = existingEntities.find(e => e.id === newEntity.id);
+
+          // Merge existing entity fields with new updates
+          return {
+            ...existingEntity,  // Existing entity data
+            ...newEntity,       // New updates, this will override fields like name, scene_id, etc.
+            updated_at: new Date().toISOString(),  // Update timestamp
+          };
+        });
+
+        // Perform the batch upsert
+        const { data: upsertData, error: upsertError } = await supabase
+          .from('entities')
+          .upsert(entitiesToUpsert)
+          .select('*');  // You can select specific fields if you want
+
+        if (upsertError) {
+          return { error: upsertError.message };
+        }
+
+        return { data: upsertData };
+      },
+      invalidatesTags: [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }], // Invalidates the cache
+    }),
 
     deleteEntity: builder.mutation<any, string>({
       queryFn: async (entityId) => {
@@ -173,5 +270,5 @@ export const entitiesApi = createApi({
 
 // Export the API hooks
 export const {
-  useCreateEntityMutation, useGetAllEntitiesQuery, useUpdateEntityMutation, useGetSingleEntityQuery, useLazyGetAllEntitiesQuery, useDeleteEntityMutation
+  useUpsertEntityMutation, useBatchUpdateEntitiesMutation, useGetAllEntitiesQuery, useUpdateEntityMutation, useGetSingleEntityQuery, useLazyGetAllEntitiesQuery, useDeleteEntityMutation
 } = entitiesApi;

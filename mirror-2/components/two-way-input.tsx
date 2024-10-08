@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 
 interface TwoWayInputProps<T> {
   id: string;
+  generalEntity: any;
   fieldName: keyof T;
   formSchema: ZodSchema;
   defaultValue: string;
@@ -18,7 +19,7 @@ interface TwoWayInputProps<T> {
   useGeneralGetEntityQuery: (id: string) => { data?: T; isLoading: boolean; isSuccess: boolean; error?: any };
   // "General"  entity bc not referring our proper Entity, but anything
   useGeneralUpdateEntityMutation: () => readonly [
-    (args: { id: string; updateData: Partial<T> }) => any, // The mutation trigger function
+    (args: { id: string;[fieldName: string]: any }) => any, // The mutation trigger function
     { isLoading: boolean; isSuccess: boolean; error?: any }
   ];
   className?: string; // Optional className prop
@@ -26,6 +27,7 @@ interface TwoWayInputProps<T> {
 //  TODO fix and ensure deduping works correctly to not fire a ton of network requests
 export function TwoWayInput<T>({
   id: generalEntityId,
+  generalEntity,
   fieldName,
   formSchema,
   defaultValue,
@@ -52,7 +54,7 @@ export function TwoWayInput<T>({
     if (entity && isSuccess && entity[fieldName] === values[fieldName]) {
       return;
     }
-    await updateGeneralEntity({ id: generalEntityId, updateData: { [fieldName]: values[fieldName] } as Partial<T> });
+    await updateGeneralEntity({ id: generalEntityId, ...generalEntity, [fieldName]: values[fieldName] });
   }
 
   // Reset form when entity data is fetched
@@ -79,7 +81,7 @@ export function TwoWayInput<T>({
               <FormControl>
                 <Input
                   type="text"
-                  className={clsx("dark:bg-transparent border-none shadow-none", className)} // Apply className prop here
+                  className={cn("dark:bg-transparent border-none shadow-none text-white", className)} // Apply className prop here
                   {...field}
                 />
               </FormControl>
