@@ -13,8 +13,8 @@ export const entitiesApi = createApi({
   baseQuery: fakeBaseQuery(),
   tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, 'LIST', TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY],
   endpoints: (builder) => ({
-    createEntity: builder.mutation<any, { name: string, scene_id: string, children?: string[] }>({
-      queryFn: async ({ name, scene_id, children }) => {
+    createEntity: builder.mutation<any, { name: string, scene_id: string, children?: string[], is_root?: boolean, parent_id?: string }>({
+      queryFn: async ({ name, scene_id, children, is_root, parent_id }) => {
         const supabase = createSupabaseBrowserClient();
         const { data: { user }, error: authError } = await supabase.auth.getUser();
 
@@ -26,11 +26,28 @@ export const entitiesApi = createApi({
           return { error: 'No scene_id provided' };
         }
 
+        // if no parent_id and not is_root, find the root entity
+        if (!parent_id && !is_root) {
+          const { data: rootEntity, error: rootEntityError } = await supabase
+            .from("entities")
+            .select("*")
+            .eq("scene_id", scene_id)
+            .eq("is_root", true)
+            .single();
+
+          if (rootEntityError) {
+            return { error: rootEntityError.message };
+          }
+
+          parent_id = rootEntity.id;
+        }
+
         const { data, error } = await supabase
           .from("entities")
           .insert([{
             name,
             scene_id,
+            is_root,
             children: children || [],
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
@@ -40,6 +57,16 @@ export const entitiesApi = createApi({
 
         if (error) {
           return { error: error.message };
+        }
+
+        // update the parent of the new entity to have it in the children array
+        if (!is_root && parent_id) {
+          const { data: addChildToEntityData, error: addChildToEntityError } = await supabase
+            .rpc('add_child_to_entity', { _parent_id: parent_id, _child_id: data.id });
+
+          if (addChildToEntityError) {
+            return { error: addChildToEntityError };
+          }
         }
         return { data };
       },
@@ -120,6 +147,7 @@ export const entitiesApi = createApi({
         TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY
       ], // Invalidate tag for entityId
     }),
+
 
     deleteEntity: builder.mutation<any, string>({
       queryFn: async (entityId) => {

@@ -126,6 +126,7 @@ export type Database = {
           created_at: string
           enabled: boolean
           id: string
+          is_root: boolean | null
           name: string
           position: number[]
           rotation: number[]
@@ -139,6 +140,7 @@ export type Database = {
           created_at?: string
           enabled?: boolean
           id?: string
+          is_root?: boolean | null
           name: string
           position?: number[]
           rotation?: number[]
@@ -152,6 +154,7 @@ export type Database = {
           created_at?: string
           enabled?: boolean
           id?: string
+          is_root?: boolean | null
           name?: string
           position?: number[]
           rotation?: number[]
@@ -361,6 +364,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      add_child_to_entity: {
+        Args: {
+          _parent_id: string
+          _child_id: string
+        }
+        Returns: undefined
+      }
       create_user: {
         Args: {
           email: string

@@ -3,7 +3,7 @@ import { createSupabaseBrowserClient } from '@/utils/supabase/client';
 import { Database } from '@/utils/database.types';
 import { generateSpaceName } from '@/actions/name-generator';
 import { scenesApi, TAG_NAME_FOR_GENERAL_ENTITY as SCENES_TAG_NAME_FOR_GENERAL_ENTITY } from '@/state/scenes';
-import { TAG_NAME_FOR_GENERAL_ENTITY as ENTITIES_TAG_NAME_FOR_GENERAL_ENTITY } from '@/state/entities';
+import { TAG_NAME_FOR_GENERAL_ENTITY as ENTITIES_TAG_NAME_FOR_GENERAL_ENTITY, entitiesApi } from '@/state/entities';
 import { TAG_NAME_FOR_GENERAL_ENTITY as COMPONENTS_TAG_NAME_FOR_GENERAL_ENTITY } from '@/state/components';
 import { TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY } from '@/state/shared-cache-tags';
 
@@ -38,14 +38,21 @@ export const spacesApi = createApi({
         }
 
         // Now that the space is created, dispatch the `createScene` mutation
-        const result = await dispatch(
+        const { data: createSceneData, error: createSceneError } = await dispatch(
           scenesApi.endpoints.createScene.initiate({ name: "Main", space_id: data.id })
-        ).unwrap(); // .unwrap() to handle the promise correctly
+        )
 
-        if (result.error) {
-          return { error: result.error };
+        if (createSceneError) {
+          return { error: createSceneError };
         }
+        // // create root entity
+        const { data: createEntityData, error: createEntityError } = await dispatch(
+          entitiesApi.endpoints.createEntity.initiate({ name: "Root", is_root: true, scene_id: createSceneData.id })
+        )
 
+        if (createEntityError) {
+          return { error: createEntityError };
+        }
         return { data };
       },
       invalidatesTags: [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }],

@@ -101,6 +101,10 @@ const EntityTree: React.FC = () => {
     const dropPos = info.node.pos.split('-');
     const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]); // the drop position relative to the drop node, inside 0, top -1, bottom 1
 
+    // for updating db
+
+
+
     const loop = (
       data: TreeDataNode[],
       key: React.Key,
@@ -125,13 +129,27 @@ const EntityTree: React.FC = () => {
     });
 
     if (!info.dropToGap) {
+      console.log('content drop', data)
       // Drop on the content
       loop(data, dropKey, (item) => {
         item.children = item.children || [];
         // where to insert. New item was inserted to the start of the array in this example, but can be anywhere
         item.children.unshift(dragObj);
       });
+
+      // update the node and dragnode in DB
+      if (info.node && info.node['id'] && info.node.children) {
+        const childIds = info.node.children.map(child => child['id'])
+        updateEntity({ id: info.node['id'], updateData: { children: childIds } })
+      }
+      if (info.dragNode && info.dragNode['id'] && info.dragNode.children) {
+        const childIds = info.dragNode.children.map(child => child['id'])
+        updateEntity({ id: info.dragNode['id'], updateData: { children: info.dragNode.children } })
+      }
+
     } else {
+      console.log('gap drop', data)
+
       let ar: TreeDataNode[] = [];
       let i: number;
       loop(data, dropKey, (_item, index, arr) => {
@@ -145,9 +163,20 @@ const EntityTree: React.FC = () => {
         // Drop on the bottom of the drop node
         ar.splice(i! + 1, 0, dragObj!);
       }
+      debugger
+      // update the node and dragnode in DB
+      if (info.node && info.node['id'] && info.node.children) {
+        const childIds = info.node.children.map(child => child['id'])
+        updateEntity({ id: info.node['id'], updateData: { children: childIds } })
+      }
+      if (info.dragNode && info.dragNode['id'] && info.dragNode.children) {
+        const childIds = info.dragNode.children.map(child => child['id'])
+        updateEntity({ id: info.dragNode['id'], updateData: { children: info.dragNode.children } })
+      }
     }
-    // debugger
+
     setTreeData(data);
+
   };
 
   return (

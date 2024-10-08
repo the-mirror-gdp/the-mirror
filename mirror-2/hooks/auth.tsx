@@ -32,8 +32,8 @@ export function useSetupAuthEvents() {
   const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
     function handleLogin() {
       if (session?.user) {
-        console.log('auth: DID fire')
-        console.log("updateLocalUserState", event, session?.user)
+        // console.log('auth: DID fire')
+        // console.log("updateLocalUserState", event, session?.user)
         const { id, email, is_anonymous } = session.user
         dispatch(updateLocalUserState({ id, email, is_anonymous }))
       } else {
@@ -45,7 +45,7 @@ export function useSetupAuthEvents() {
       dispatch(clearLocalUserState())
       router.push("/login")
     }
-    console.log("auth", event, session)
+    // console.log("auth", event, session)
     if (event === 'INITIAL_SESSION') {
       // handle initial session
       if (session?.user) {

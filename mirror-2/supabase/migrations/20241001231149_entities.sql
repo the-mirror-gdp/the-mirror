@@ -2,6 +2,7 @@ CREATE TABLE entities (
   id uuid NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
   name text NOT NULL,
   enabled boolean NOT NULL DEFAULT true,
+  is_root boolean, -- only 1 per scene
   scene_id uuid REFERENCES scenes ON DELETE CASCADE NOT NULL, -- delete entity if scene is deleted
   position float8[] NOT NULL DEFAULT ARRAY[0, 0, 0], -- storing position as an array of 3 floats
   scale float8[] NOT NULL DEFAULT ARRAY[1, 1, 1], -- storing scale as an array of 3 floats
@@ -67,3 +68,19 @@ using (
     and spaces.owner_user_id = auth.uid()
   )
 );
+
+CREATE POLICY "Disallow Root entity deletion"
+ON entities
+FOR DELETE
+USING (
+  is_root = false
+);
+
+CREATE OR REPLACE FUNCTION add_child_to_entity(_parent_id UUID, _child_id UUID)
+RETURNS VOID AS $$
+BEGIN
+  UPDATE entities
+  SET children = array_append(children, _child_id)
+  WHERE id = _parent_id;
+END;
+$$ LANGUAGE plpgsql;
