@@ -76,68 +76,6 @@ export const spacesApi = createApi({
       providesTags: (result, error, id) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id }],
     }),
 
-    /**
- * Helper: includes scenes, entities, assets,, components, etc.
- */
-    getSingleSpaceBuildMode: builder.query<any, string>({
-      queryFn: async (spaceId) => {
-        const supabase = createSupabaseBrowserClient();
-
-        // Fetch space data with nested relations for scenes, entities, and components
-        // const { data, error } = await supabase
-        //   .from('spaces')
-        //   .select(`
-        //         *,
-        //         scenes (
-        //           *,
-        //           entities (
-        //             *,
-        //             components (*)
-        //           )
-        //         )
-        //       `)
-        //   .eq('id', spaceId)
-        //   .single();
-
-        const { data, error }: { data: any, error: any } = await supabase
-          // @ts-ignore
-          .rpc('get_space_with_nested_data', { _space_id: spaceId })
-          .single();
-
-        if (error) {
-          return { error: error.message };
-        }
-
-        // Organize the data to make it easier to consume
-        const organizedData = {
-          space: data,
-          scenes: data?.scenes || [],
-          entities: data.scenes?.flatMap(scene => scene.entities || []) || [],
-          components: data.scenes?.flatMap(scene =>
-            scene.entities?.flatMap(entity => entity.components || []) || []
-          ) || []
-        };
-
-        return { data: organizedData };
-      },
-      providesTags: (result, error, spaceId) => {
-        if (result) {
-          const sceneIds = result.scenes?.map(scene => ({ type: 'Scenes', id: scene.id })) || [];
-          const entityIds = result.entities?.map(entity => ({ type: 'Entities', id: entity.id })) || [];
-          const componentIds = result.components?.map(component => ({ type: 'Components', id: component.id })) || [];
-
-          return [
-            { type: TAG_NAME_FOR_GENERAL_ENTITY, id: spaceId },
-            ...sceneIds,
-            ...entityIds,
-            ...componentIds,
-            TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY
-          ];
-        }
-        return [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: spaceId }];
-      }
-    }),
-
     updateSpace: builder.mutation<Database['public']['Tables']['spaces']['Row'], { id: string, updateData: Partial<Database['public']['Tables']['spaces']['Update']> }>({
       queryFn: async ({ id: spaceId, updateData }) => {
         const supabase = createSupabaseBrowserClient();
@@ -180,8 +118,6 @@ export const spacesApi = createApi({
 // Export the API hooks
 export const {
   useGetSingleSpaceQuery,
-  useGetSingleSpaceBuildModeQuery,
-  useLazyGetSingleSpaceBuildModeQuery,
   useCreateSpaceMutation,
   useUpdateSpaceMutation,
   useDeleteSpaceMutation,

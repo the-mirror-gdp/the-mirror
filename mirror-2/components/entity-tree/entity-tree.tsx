@@ -85,7 +85,6 @@ const EntityTree: React.FC = () => {
 
   const currentScene = useAppSelector(getCurrentScene)
   const params = useParams<{ spaceId: string }>()
-  // const { data: spaceBuildModeData, error } = useGetSingleSpaceBuildModeQuery(params.spaceId)
   const { data: space } = useGetSingleSpaceQuery(params.spaceId)
   const { data: scenes, isLoading: isScenesLoading } = useGetAllScenesQuery(params.spaceId)
   const { data: entities, isFetching: isEntitiesFetching } = useGetAllEntitiesQuery(
