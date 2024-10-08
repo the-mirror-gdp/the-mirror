@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { ConfigProvider, Tree } from 'antd';
 import type { TreeDataNode, TreeProps } from 'antd';
-import { useAppSelector } from '@/hooks/hooks';
 import { useParams } from 'next/navigation';
-import { useGetSingleSpaceQuery } from '@/state/spaces';
 import { useGetAllScenesQuery } from '@/state/scenes';
-import { useUpsertEntityMutation, useGetAllEntitiesQuery, useGetSingleEntityQuery, useUpdateEntityMutation, useBatchUpdateEntitiesMutation } from '@/state/entities';
-import { getCurrentScene } from '@/state/local';
+import { useGetAllEntitiesQuery, useGetSingleEntityQuery, useUpdateEntityMutation, useBatchUpdateEntitiesMutation } from '@/state/entities';
 import { skipToken } from '@reduxjs/toolkit/query';
-import { Database } from '@/utils/database.types';
-import { DataNode } from 'antd/es/tree';
 import { TwoWayInput } from '@/components/two-way-input';
 import { z } from 'zod';
-import { useUpdate } from 'ahooks';
 
 
 type TreeDataNodeWithEntityData = TreeDataNode & { name: string, id: string, order_under_parent: number }
@@ -83,29 +77,18 @@ function transformDbEntityStructureToTree(entities): TreeDataNodeWithEntityData[
 const EntityTree: React.FC = () => {
   const [treeData, setTreeData] = useState<any>([]);
 
-  const currentScene = useAppSelector(getCurrentScene)
   const params = useParams<{ spaceId: string }>()
-  const { data: space } = useGetSingleSpaceQuery(params.spaceId)
   const { data: scenes, isLoading: isScenesLoading } = useGetAllScenesQuery(params.spaceId)
   const { data: entities, isFetching: isEntitiesFetching } = useGetAllEntitiesQuery(
     scenes && scenes.length > 0 ? scenes.map(scene => scene.id) : skipToken  // Conditional query
   );
 
-  const [updateEntity] = useUpdateEntityMutation();
   const [batchUpdateEntity] = useBatchUpdateEntitiesMutation();
 
-  // useEffect(() => {
-  //   debugger
-  //   if (currentScene) {
-  //     getSingleSpace(currentScene);
-  //   }
-  // }, [currentScene]);
   useEffect(() => {
     if (entities && entities.length > 0) {
       const data = transformDbEntityStructureToTree(entities)
-      // debugger
       setTreeData(data)
-      // updateState({ entities, type: 'set-tree', itemId: '' });
     }
   }, [entities]);  // Re-run effect when 'entities' changes
 
@@ -193,18 +176,6 @@ const EntityTree: React.FC = () => {
         entities: entitiesUpdateArray
       })
 
-      // update the node and dragnode in DB
-      // if (info.node && info.node['id'] && info.node.children) {
-      //   const childIds = info.node.children.map(child => child['id'])
-      //   // debugger
-      //   updateEntity({ id: info.node['id'], updateData: { children: childIds } })
-      // }
-      // if (info.dragNode && info.dragNode['id'] && info.dragNode.children) {
-      //   const childIds = info.dragNode.children.map(child => child['id'])
-      //   // debugger
-      //   updateEntity({ id: info.dragNode['id'], updateData: { children: childIds } })
-      // }
-
     } else {
       console.log('gap drop', data)
 
@@ -239,17 +210,6 @@ const EntityTree: React.FC = () => {
       batchUpdateEntity({
         entities: entitiesUpdateArray
       })
-
-      // debugger // not yet
-      // update the node and dragnode in DB
-      // if (info.node && info.node['id'] && info.node.children) {
-      //   const childIds = info.node.children.map(child => child['id'])
-      //   updateEntity({ id: info.node['id'], updateData: { children: childIds } })
-      // }
-      // if (info.dragNode && info.dragNode['id'] && info.dragNode.children) {
-      //   const childIds = info.dragNode.children.map(child => child['id'])
-      //   updateEntity({ id: info.dragNode['id'], updateData: { children: childIds } })
-      // }
     }
 
     setTreeData(data);
@@ -290,13 +250,12 @@ const EntityTree: React.FC = () => {
               id={nodeData.id}
               generalEntity={nodeData}
               defaultValue={nodeData.name}
-              // className={'p-0 m-0 h-8 '}
+              className={'p-0 m-0 h-8 '}
               fieldName="name" formSchema={z.object({
                 name: z.string().min(1, { message: "Entity name must be at least 1 character long" }),
               })}
               useGeneralGetEntityQuery={useGetSingleEntityQuery}
               useGeneralUpdateEntityMutation={useUpdateEntityMutation} />
-            {nodeData.order_under_parent}
           </>
         )}
       />
