@@ -8,38 +8,53 @@ import { useGetAllScenesQuery } from '@/state/scenes';
 import { useCreateEntityMutation, useGetAllEntitiesQuery, useUpdateEntityMutation } from '@/state/entities';
 import { getCurrentScene } from '@/state/local';
 import { skipToken } from '@reduxjs/toolkit/query';
+import { Database } from '@/utils/database.types';
 
-const x = 3;
-const y = 2;
-const z = 1;
-const defaultData: TreeDataNode[] = [];
-
-const generateData = (_level: number, _preKey?: React.Key, _tns?: TreeDataNode[]) => {
-  const preKey = _preKey || '0';
-  const tns = _tns || defaultData;
-
-  const children: React.Key[] = [];
-  for (let i = 0; i < x; i++) {
-    const key = `${preKey}-${i}`;
-    tns.push({ title: key, key });
-    if (i < y) {
-      children.push(key);
-    }
-  }
-  if (_level < 0) {
-    return tns;
-  }
-  const level = _level - 1;
-  children.forEach((key, index) => {
-    tns[index].children = [];
-    return generateData(level, key, tns[index].children);
-  });
+type Entity = Database['public']['Tables']['entities']['Row'];
+type EntityWithPopulatedChildren = Omit<Entity, 'children'> & {
+  key: string,
+  title: string,
+  children: EntityWithPopulatedChildren[]; // children now contain an array of Entity objects
 };
-generateData(z);
+
+function transformDbEntityStructureWithPopulatedChildren(entities: Entity[]): TreeDataNode[] {
+  const entityMap = new Map<string, EntityWithPopulatedChildren & { childIds: string[] }>();
+  const assignedChildIds = new Set<string>(); // Track all child IDs to remove from the main array
+
+  // Create a map for easy lookup of entities by ID, and keep the original children as string IDs
+  entities.forEach((entity) => {
+    const entityWithChildren: EntityWithPopulatedChildren & { childIds: string[] } = {
+      ...entity,
+      children: [], // Initialize as an empty array for the populated children
+      key: entity.id,
+      title: entity.name,
+      childIds: entity.children ? (entity.children as string[]) : [] // Temporarily store child IDs
+    };
+    entityMap.set(entity.id, entityWithChildren);
+  });
+
+  // Now replace childIds with the actual EntityWithPopulatedChildren objects
+  entityMap.forEach((entityWithChildren) => {
+    if (entityWithChildren.childIds.length > 0) {
+      entityWithChildren.children = entityWithChildren.childIds.map((childId) => {
+        const childEntity = entityMap.get(childId)!;
+        assignedChildIds.add(childId); // Mark this ID as assigned to a parent
+        return childEntity; // Get the actual child entity
+      });
+    }
+  });
+
+  // Filter out entities that were assigned as children (remove duplicates)
+  const rootEntities = Array.from(entityMap.values()).filter(
+    (entity) => !assignedChildIds.has(entity.id) // Keep only the root-level entities
+  );
+
+  // Return the filtered entities without the temporary `childIds` field
+  return rootEntities.map(({ childIds, ...entity }) => entity);
+}
 
 const EntityTree: React.FC = () => {
-  const [gData, setGData] = useState(defaultData);
-  const [expandedKeys] = useState(['0-0', '0-0-0', '0-0-0-0']);
+  const [treeData, setTreeData] = useState<any>([]);
 
   const currentScene = useAppSelector(getCurrentScene)
   const params = useParams<{ spaceId: string }>()
@@ -61,7 +76,8 @@ const EntityTree: React.FC = () => {
   // }, [currentScene]);
   useEffect(() => {
     if (entities && entities.length > 0) {
-
+      const data = transformDbEntityStructureWithPopulatedChildren(entities)
+      setTreeData(data)
       // updateState({ entities, type: 'set-tree', itemId: '' });
     }
   }, [entities]);  // Re-run effect when 'entities' changes
@@ -69,8 +85,6 @@ const EntityTree: React.FC = () => {
 
   const onDragEnter: TreeProps['onDragEnter'] = (info) => {
     console.log(info);
-    // expandedKeys, set it when controlled is needed
-    // setExpandedKeys(info.expandedKeys)
   };
 
   const onDrop: TreeProps['onDrop'] = (info) => {
@@ -94,7 +108,7 @@ const EntityTree: React.FC = () => {
         }
       }
     };
-    const data = [...gData];
+    const data = [...treeData];
 
     // Find dragObject
     let dragObj: TreeDataNode;
@@ -125,7 +139,8 @@ const EntityTree: React.FC = () => {
         ar.splice(i! + 1, 0, dragObj!);
       }
     }
-    setGData(data);
+    // debugger
+    setTreeData(data);
   };
 
   return (
@@ -147,13 +162,13 @@ const EntityTree: React.FC = () => {
     >
       <Tree
         className="draggable-tree"
-        defaultExpandedKeys={expandedKeys}
         draggable={{ icon: false }}
         blockNode
+        defaultExpandAll={true}
         showLine={true}
         onDragEnter={onDragEnter}
         onDrop={onDrop}
-        treeData={gData}
+        treeData={treeData}
       />
     </ConfigProvider>
   );
