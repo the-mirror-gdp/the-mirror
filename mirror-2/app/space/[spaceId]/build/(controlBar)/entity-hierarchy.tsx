@@ -19,7 +19,7 @@ import * as liveRegion from '@atlaskit/pragmatic-drag-and-drop-live-region';
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
 import { monitorForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 
-import { type TreeItem as TreeItemType, getInitialTreeState, tree, treeStateReducer } from "@/components/tree-view/tree"
+import { type TreeItem as TreeItemType, getInitialTreeState, tree, treeStateReducer, replaceDbEntityStructureWithPopulatedChildren } from "@/components/tree-view/tree"
 import { type TreeContextValue, TreeContext, DependencyContext } from "@/components/tree-view/tree-context"
 import TreeItem from '@/components/tree-view/tree-item';
 import { cn } from '@/utils/cn';
@@ -94,7 +94,8 @@ export default function EntityHierarchy() {
   useEffect(() => {
     if (entities && entities.length > 0) {
       console.log('set-tree', entities)
-      updateState({ tree: entities, itemId: '', type: 'set-tree' });
+      const formattedEntities = replaceDbEntityStructureWithPopulatedChildren(entities)
+      updateState({ tree: formattedEntities, itemId: '', type: 'set-tree' });
     }
   }, [entities]);  // Re-run effect when 'entities' changes
   const [createEntity, { data: createdEntity }] = useCreateEntityMutation();

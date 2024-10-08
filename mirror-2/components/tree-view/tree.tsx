@@ -1,13 +1,11 @@
 import { useAppDispatch } from '@/hooks/hooks';
 import { useUpdateEntityMutation } from '@/state/entities';
+import { Database } from '@/utils/database.types';
 import { Instruction } from '@atlaskit/pragmatic-drag-and-drop-hitbox/dist/types/tree-item';
 import invariant from 'tiny-invariant';
 
-
-
 export type TreeItem = {
   id: string;
-  parentId?: string | null;
   isDraft?: boolean;
   children: TreeItem[];
   isOpen?: boolean;
@@ -19,22 +17,62 @@ export type TreeState = {
   data: TreeItem[];
 };
 
+type Entity = Database['public']['Tables']['entities']['Row'];
+type EntityWithPopulatedChildren = Omit<Entity, 'children'> & {
+  children: EntityWithPopulatedChildren[]; // children now contain an array of Entity objects
+};
+
+/**
+ * For any entity.children: ["some-uuid"], this populates it so the entity.children property contains actual entity objects
+ * and removes the duplicates from the main array.
+ */
+export function replaceDbEntityStructureWithPopulatedChildren(entities: Entity[]): EntityWithPopulatedChildren[] {
+  const entityMap = new Map<string, EntityWithPopulatedChildren & { childIds: string[] }>();
+  const assignedChildIds = new Set<string>(); // Track all child IDs to remove from the main array
+
+  // Create a map for easy lookup of entities by ID, and keep the original children as string IDs
+  entities.forEach((entity) => {
+    const entityWithChildren: EntityWithPopulatedChildren & { childIds: string[] } = {
+      ...entity,
+      children: [], // Initialize as an empty array for the populated children
+      childIds: entity.children ? (entity.children as string[]) : [] // Temporarily store child IDs
+    };
+    entityMap.set(entity.id, entityWithChildren);
+  });
+
+  // Now replace childIds with the actual EntityWithPopulatedChildren objects
+  entityMap.forEach((entityWithChildren) => {
+    if (entityWithChildren.childIds.length > 0) {
+      entityWithChildren.children = entityWithChildren.childIds.map((childId) => {
+        const childEntity = entityMap.get(childId)!;
+        assignedChildIds.add(childId); // Mark this ID as assigned to a parent
+        return childEntity; // Get the actual child entity
+      });
+    }
+  });
+
+  // Filter out entities that were assigned as children (remove duplicates)
+  const rootEntities = Array.from(entityMap.values()).filter(
+    (entity) => !assignedChildIds.has(entity.id) // Keep only the root-level entities
+  );
+
+  // Return the filtered entities without the temporary `childIds` field
+  return rootEntities.map(({ childIds, ...entity }) => entity);
+}
+
 export function getInitialTreeState(initial): TreeState {
   return { data: getInitialData(), lastAction: null };
 }
 
 export function getInitialData(): TreeItem[] {
-
   return [
     //   {
     //     id: '1',
     //     isOpen: false,
-
     //     children: [
     //       {
     //         id: '1.3',
     //         isOpen: true,
-
     //         children: [
     //           {
     //             id: '1.3.1',
@@ -57,7 +95,6 @@ export function getInitialData(): TreeItem[] {
     //       {
     //         id: '2.3',
     //         isOpen: true,
-
     //         children: [
     //           {
     //             id: '2.3.1',
@@ -94,8 +131,7 @@ export type TreeAction =
     itemId: string;
   }
   | { type: 'modal-move'; itemId: string; targetId: string; index: number }
-  | { type: 'set-tree'; tree: TreeItem[]; itemId?: string }
-  ;
+  | { type: 'set-tree'; tree: TreeItem[]; itemId?: string };
 
 export const tree = {
   remove(data: TreeItem[], id: string): TreeItem[] {
@@ -113,39 +149,37 @@ export const tree = {
   },
 
   insertBefore(data: TreeItem[], targetId: string, newItem: TreeItem): TreeItem[] {
-    return data.map((item) => {
-      if (item.id === targetId) {
-        return [newItem, item];
-      }
-      if (tree.hasChildren(item)) {
-        return {
-          ...item,
-          children: tree.insertBefore(item.children, targetId, newItem).map(child => ({
-            ...child,
-            parentId: item.id, // Assign correct parentId for direct children
-          })),
-        };
-      }
-      return item;
-    }).flat();
+    return data
+      .map((item) => {
+        if (item.id === targetId) {
+          return [newItem, item];
+        }
+        if (tree.hasChildren(item)) {
+          return {
+            ...item,
+            children: tree.insertBefore(item.children, targetId, newItem),
+          };
+        }
+        return item;
+      })
+      .flat();
   },
 
   insertAfter(data: TreeItem[], targetId: string, newItem: TreeItem): TreeItem[] {
-    return data.map((item) => {
-      if (item.id === targetId) {
-        return [item, newItem];
-      }
-      if (tree.hasChildren(item)) {
-        return {
-          ...item,
-          children: tree.insertAfter(item.children, targetId, newItem).map(child => ({
-            ...child,
-            parentId: item.id, // Assign correct parentId for direct children
-          })),
-        };
-      }
-      return item;
-    }).flat();
+    return data
+      .map((item) => {
+        if (item.id === targetId) {
+          return [item, newItem];
+        }
+        if (tree.hasChildren(item)) {
+          return {
+            ...item,
+            children: tree.insertAfter(item.children, targetId, newItem),
+          };
+        }
+        return item;
+      })
+      .flat();
   },
 
   insertChild(data: TreeItem[], targetId: string, newItem: TreeItem): TreeItem[] {
@@ -154,16 +188,7 @@ export const tree = {
         return {
           ...item,
           isOpen: true,
-          children: [
-            {
-              ...newItem,
-              parentId: item.id, // Assign parentId for new child
-            },
-            ...item.children.map(child => ({
-              ...child,
-              parentId: item.id, // Maintain parentId for existing children
-            })),
-          ],
+          children: [...item.children, newItem],
         };
       }
 
@@ -173,10 +198,7 @@ export const tree = {
 
       return {
         ...item,
-        children: tree.insertChild(item.children, targetId, newItem).map(child => ({
-          ...child,
-          parentId: item.id, // Ensure correct parentId for all children in recursion
-        })),
+        children: tree.insertChild(item.children, targetId, newItem),
       };
     });
   },
@@ -226,6 +248,7 @@ export const tree = {
     return item.children && item.children.length > 0;
   },
 };
+
 export function treeStateReducer(state: TreeState, action: TreeAction, updateEntity): TreeState {
   return {
     data: dataReducer(state.data, action, updateEntity),
@@ -234,11 +257,8 @@ export function treeStateReducer(state: TreeState, action: TreeAction, updateEnt
 }
 
 const dataReducer = (data: TreeItem[], action: TreeAction, updateEntity) => {
-
-  // console.log('action', action);
   const item = tree.find(data, action.itemId as string);
 
-  // Handle set-tree action
   if (action?.type === 'set-tree') {
     return action.tree;
   }
@@ -250,7 +270,6 @@ const dataReducer = (data: TreeItem[], action: TreeAction, updateEntity) => {
   if (action.type === 'instruction') {
     const instruction = action.instruction;
 
-    // Reparenting: make an item a child of another item
     if (instruction.type === 'reparent') {
       const path = tree.getPathToItem({
         current: data,
@@ -259,67 +278,50 @@ const dataReducer = (data: TreeItem[], action: TreeAction, updateEntity) => {
       invariant(path);
       const desiredId = path[instruction.desiredLevel];
       let result = tree.remove(data, action.itemId);
-      result = tree.insertAfter(result, desiredId, {
-        ...item,
-        parentId: desiredId, // Update parentId during reparenting
-      });
+      result = tree.insertAfter(result, desiredId, { ...item });
 
-      // Dispatch to update entity's parentId in the backend
-      updateEntity({ id: action.itemId, updateData: { parent_id: desiredId } })
+      // Dispatch to update entity's children in the backend
+      updateEntity({ id: action.targetId, updateData: { children: result } });
 
       return result;
     }
 
-    // Reordering above
     if (instruction.type === 'reorder-above') {
       const targetItem = tree.find(data, action.targetId);
       let result = tree.remove(data, action.itemId);
-      result = tree.insertBefore(result, action.targetId, {
-        ...item,
-        parentId: targetItem?.parentId || null, // Update parentId to match the target item's parentId
-      });
+      result = tree.insertBefore(result, action.targetId, { ...item });
 
-      // Dispatch to update entity's parentId in the backend
-      updateEntity({ id: action.itemId, updateData: { parent_id: targetItem?.parentId || null } })
+      updateEntity({ id: action.targetId, updateData: { children: result } });
 
       return result;
     }
 
-    // Reordering below
     if (instruction.type === 'reorder-below') {
       const targetItem = tree.find(data, action.targetId);
       let result = tree.remove(data, action.itemId);
-      result = tree.insertAfter(result, action.targetId, {
-        ...item,
-        parentId: targetItem?.parentId || null, // Update parentId to match the target item's parentId
-      });
+      result = tree.insertAfter(result, action.targetId, { ...item });
 
-      // Dispatch to update entity's parentId in the backend
-      updateEntity({ id: action.itemId, updateData: { parent_id: targetItem?.parentId || null } })
+      updateEntity({ id: action.targetId, updateData: { children: result } });
 
       return result;
     }
 
-    // Making an item a child of another
     if (instruction.type === 'make-child') {
       let result = tree.remove(data, action.itemId);
-      result = tree.insertChild(result, action.targetId, {
-        ...item,
-        parentId: action.targetId, // Update parentId to reflect the new parent
-      });
-
-      // Dispatch to update entity's parentId in the backend
-      updateEntity({ id: action.itemId, updateData: { parent_id: action.targetId } })
+      result = tree.insertChild(result, action.targetId, { ...item });
+      // targetId = new parent id
+      const parent = result.filter(item => item.id === action.targetId)[0]
+      const childrenOfParentObjects = parent.children
+      const childrenOfParentIds = childrenOfParentObjects.map(child => child.id)
+      updateEntity({ id: action.targetId, updateData: { children: childrenOfParentIds } });
 
       return result;
     }
 
     console.warn('TODO: action not implemented', instruction);
-
     return data;
   }
 
-  // Toggle open/close state of an item
   function toggle(item: TreeItem): TreeItem {
     if (!tree.hasChildren(item)) {
       return item;
@@ -350,7 +352,6 @@ const dataReducer = (data: TreeItem[], action: TreeAction, updateEntity) => {
     return data;
   }
 
-  // Modal-move action
   if (action.type === 'modal-move') {
     let result = tree.remove(data, item.id);
 
@@ -358,38 +359,24 @@ const dataReducer = (data: TreeItem[], action: TreeAction, updateEntity) => {
 
     if (siblingItems.length === 0) {
       if (action.targetId === '') {
-        // If the target is the root level
-        result = [{ ...item, parentId: null }]; // Update parentId to null if moved to root
+        result = [{ ...item }];
 
-        // Dispatch to update entity's parentId in the backend
-        updateEntity({ id: item.id, updateData: { parent_id: null } })
+        updateEntity({ id: item.id, updateData: { children: result } });
       } else {
-        result = tree.insertChild(result, action.targetId, {
-          ...item,
-          parentId: action.targetId, // Update parentId to targetId if moved as child
-        });
+        result = tree.insertChild(result, action.targetId, { ...item });
 
-        // Dispatch to update entity's parentId in the backend
-        updateEntity({ id: item.id, updateData: { parent_id: action.targetId } })
+        updateEntity({ id: action.targetId, updateData: { children: result } });
       }
     } else if (action.index === siblingItems.length) {
       const relativeTo = siblingItems[siblingItems.length - 1];
-      result = tree.insertAfter(result, relativeTo.id, {
-        ...item,
-        parentId: relativeTo?.parentId || null, // Update parentId to match the relative item's parentId
-      });
+      result = tree.insertAfter(result, relativeTo.id, { ...item });
 
-      // Dispatch to update entity's parentId in the backend
-      updateEntity({ id: item.id, updateData: { parent_id: relativeTo?.parentId || null } })
+      updateEntity({ id: relativeTo.id, updateData: { children: result } });
     } else {
       const relativeTo = siblingItems[action.index];
-      result = tree.insertBefore(result, relativeTo.id, {
-        ...item,
-        parentId: relativeTo?.parentId || null, // Update parentId to match the relative item's parentId
-      });
+      result = tree.insertBefore(result, relativeTo.id, { ...item });
 
-      // Dispatch to update entity's parentId in the backend
-      updateEntity({ id: item.id, updateData: { parent_id: relativeTo?.parentId || null } })
+      updateEntity({ id: relativeTo.id, updateData: { children: result } });
     }
 
     return result;
@@ -398,8 +385,7 @@ const dataReducer = (data: TreeItem[], action: TreeAction, updateEntity) => {
   return data;
 };
 
-function getChildItems(data: TreeItem[], targetId: string) {
-  // If the targetId is empty, return the root-level items
+function getChildItems(data: TreeItem[], targetId: string): TreeItem[] {
   if (targetId === '') {
     return data;
   }

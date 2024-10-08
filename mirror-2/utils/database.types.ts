@@ -122,12 +122,11 @@ export type Database = {
       }
       entities: {
         Row: {
+          children: string[] | null
           created_at: string
           enabled: boolean
           id: string
           name: string
-          order_under_parent: number | null
-          parent_id: string | null
           position: number[]
           rotation: number[]
           scale: number[]
@@ -136,12 +135,11 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          children?: string[] | null
           created_at?: string
           enabled?: boolean
           id?: string
           name: string
-          order_under_parent?: number | null
-          parent_id?: string | null
           position?: number[]
           rotation?: number[]
           scale?: number[]
@@ -150,12 +148,11 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          children?: string[] | null
           created_at?: string
           enabled?: boolean
           id?: string
           name?: string
-          order_under_parent?: number | null
-          parent_id?: string | null
           position?: number[]
           rotation?: number[]
           scale?: number[]
@@ -164,13 +161,6 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "entities_parent_id_fkey"
-            columns: ["parent_id"]
-            isOneToOne: false
-            referencedRelation: "entities"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "entities_scene_id_fkey"
             columns: ["scene_id"]
