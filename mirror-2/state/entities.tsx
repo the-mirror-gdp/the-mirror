@@ -119,10 +119,6 @@ export const entitiesApi = createApi({
           .select("*")
           .eq("id", entityId)
           .single();
-        // Call the Postgres function get_entity_with_children
-        // const { data, error } = await supabase
-        //   .rpc('get_entity_with_children', { entity_id: entityId });
-
 
         if (error) {
           return { error: error.message };
