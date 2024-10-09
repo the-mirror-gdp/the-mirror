@@ -43,7 +43,7 @@ export default function Scenes() {
             {scenes?.map((scene) => (
               <div
                 key={scene.id}
-                className={cn("relative flex flex-col items-center shadow-md rounded-lg p-4 gap-4 border border-transparent hover:border-white transition-all duration-100 cursor-pointer", { "border border-primary": currentScene === scene.id })}
+                className={cn("relative flex flex-col items-center shadow-md rounded-lg p-4 gap-4 border border-transparent hover:border-accent transition-all duration-100 cursor-pointer", { "border border-primary": currentScene?.id === scene.id })}
                 onClick={() => {
                   // Handle scene click
                   dispatch(setCurrentScene(scene));

@@ -11,7 +11,7 @@ export default function AssetUploadButton() {
   return (
     <>
       <input {...getInputProps()} />
-      <Button className="w-full my-4" type="button" onClick={() => open()}>
+      <Button className="w-full mb-4" type="button" onClick={() => open()}>
         <FileUp className="size-7 mr-2" />
         Upload Asset
       </Button>

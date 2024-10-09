@@ -49,12 +49,24 @@ export const scenesApi = createApi({
           .is("parent_id", null)
           .maybeSingle();
 
+        if (entityCheckError) {
+          return { error: entityCheckError };
+        }
+
         if (!entityCheck) {
           const { data: createEntityData, error: createEntityError } = await dispatch(
             entitiesApi.endpoints.createEntity.initiate({ name: "Root", scene_id: data.id, isRootEntity: true })
           )
           if (createEntityError) {
             return { error: createEntityError };
+          }
+
+          // create blank entity for the root entity bc this is a flow the user will always do, so save them a step.
+          const { data: createEntityData2, error: createEntityError2 } = await dispatch(
+            entitiesApi.endpoints.createEntity.initiate({ name: "New Entity", scene_id: data.id })
+          )
+          if (createEntityError2) {
+            return { error: createEntityError2 };
           }
         }
 
