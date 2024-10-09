@@ -20,7 +20,7 @@ export default function Page() {
     // if no current Scene, set it to the first scene
     if (scenes?.length > 0 && scenes[0]) {
       console.log("setting current scene to first scene", scenes[0])
-      dispatch(setCurrentScene(scenes[0].id))
+      dispatch(setCurrentScene(scenes[0]))
     }
   }, [space])
 

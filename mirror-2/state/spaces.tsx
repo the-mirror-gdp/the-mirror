@@ -45,14 +45,14 @@ export const spacesApi = createApi({
         if (createSceneError) {
           return { error: createSceneError };
         }
-        // // create root entity
-        const { data: createEntityData, error: createEntityError } = await dispatch(
-          entitiesApi.endpoints.upsertEntity.initiate({ name: "Root", scene_id: createSceneData.id, isRootEntity: true })
-        )
+        // create root entity
+        // const { data: createEntityData, error: createEntityError } = await dispatch(
+        //   entitiesApi.endpoints.createEntity.initiate({ name: "Root", scene_id: createSceneData.id })
+        // )
 
-        if (createEntityError) {
-          return { error: createEntityError };
-        }
+        // if (createEntityError) {
+        //   return { error: createEntityError };
+        // }
         return { data };
       },
       invalidatesTags: [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }],

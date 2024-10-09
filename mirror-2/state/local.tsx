@@ -1,9 +1,11 @@
 import { RootState } from '@/state/store'
+import { Database } from '@/utils/database.types';
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
-import { Scene } from 'playcanvas'
 
 export type ControlBarView = "assets" | "hierarchy" | "scenes" | "code" | "database" | "versions" | "settings"
+
+export type Scene = Database["public"]["Tables"]["scenes"]["Row"];
 
 interface LocalUserState {
   id: string,
@@ -16,7 +18,7 @@ interface LocalState {
   user?: LocalUserState,
 
   // Viewport et al.
-  currentScene: string
+  currentScene?: Scene
 }
 
 // Define the initial state using that type
@@ -29,7 +31,9 @@ const initialState: LocalState = {
     id: "",
     is_anonymous: false
   },
-  currentScene: ''
+  currentScene: {
+    created_at: '', id: '', name: '', space_id: '', updated_at: ''
+  }
 }
 
 export const localSlice = createSlice({
@@ -56,7 +60,7 @@ export const localSlice = createSlice({
     /**
      * Viewport et al.
      */
-    setCurrentScene: (state, action: PayloadAction<string>) => {
+    setCurrentScene: (state, action: PayloadAction<Scene>) => {
       state.currentScene = action.payload
     }
   },
@@ -69,7 +73,9 @@ export const { turnOffUiSounds, turnOnUiSounds, setControlBarCurrentView, update
 export const selectUiSoundsCanPlay = (state: RootState) => state.local.uiSoundsCanPlay
 export const selectControlBarCurrentView = (state: RootState) => state.local.controlBarCurrentView
 export const selectLocalUserState = (state: RootState) => state.local.user
-export const getCurrentScene = (state: RootState) => state.local.currentScene
+export const getCurrentScene = (state: RootState): Scene | undefined => {
+  return state.local.currentScene;
+};
 
 export default localSlice.reducer
 

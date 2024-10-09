@@ -8,9 +8,10 @@ import { useParams } from 'next/navigation';
 
 import { z } from 'zod'; // Import zod for validation
 import { TwoWayInput } from '@/components/two-way-input';
-import { useAppDispatch } from '@/hooks/hooks';
-import { setCurrentScene } from '@/state/local';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
+import { getCurrentScene, setControlBarCurrentView, setCurrentScene } from '@/state/local';
 import { useCreateSceneMutation, useDeleteSceneMutation, useGetAllScenesQuery, useGetSingleSceneQuery, useUpdateSceneMutation } from '@/state/scenes';
+import { cn } from '@/utils/cn';
 
 export default function Scenes() {
   const params = useParams<{ spaceId: string }>()
@@ -20,6 +21,7 @@ export default function Scenes() {
   const [deleteScene] = useDeleteSceneMutation();
   const [updateScene] = useUpdateSceneMutation();
   const dispatch = useAppDispatch();
+  const currentScene = useAppSelector(getCurrentScene);
 
   // Validation schema for scene name
   const formSchema = z.object({
@@ -41,10 +43,11 @@ export default function Scenes() {
             {scenes?.map((scene) => (
               <div
                 key={scene.id}
-                className="relative flex flex-col items-center shadow-md rounded-lg p-4 gap-4 border border-transparent hover:border-primary transition-all duration-100 cursor-pointer"
+                className={cn("relative flex flex-col items-center shadow-md rounded-lg p-4 gap-4 border border-transparent hover:border-white transition-all duration-100 cursor-pointer", { "border border-primary": currentScene === scene.id })}
                 onClick={() => {
                   // Handle scene click
-                  dispatch(setCurrentScene(scene.id));
+                  dispatch(setCurrentScene(scene));
+                  dispatch(setControlBarCurrentView('hierarchy'));
                 }}
               >
                 <img
@@ -59,6 +62,7 @@ export default function Scenes() {
                       fieldName="name"
                       formSchema={formSchema} // Your Zod validation schema
                       defaultValue={scene.name}
+                      generalEntity={scene}
                       useGeneralGetEntityQuery={useGetSingleSceneQuery}
                       useGeneralUpdateEntityMutation={useUpdateSceneMutation}
                     />

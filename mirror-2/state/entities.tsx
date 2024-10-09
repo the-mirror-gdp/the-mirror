@@ -1,7 +1,6 @@
 import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/toolkit';
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import { createSupabaseBrowserClient } from '@/utils/supabase/client';
-import { Database } from '@/utils/database.types';
 import { TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY } from '@/state/shared-cache-tags';
 
 
@@ -13,8 +12,8 @@ export const entitiesApi = createApi({
   baseQuery: fakeBaseQuery(),
   tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, 'LIST', TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY],
   endpoints: (builder) => ({
-    upsertEntity: builder.mutation<any, { id?: string, name?: string, scene_id?: string, parent_id?: string, order_under_parent?: number, isRootEntity?: boolean }>({
-      queryFn: async ({ id, name, scene_id, parent_id, order_under_parent, isRootEntity }) => {
+    createEntity: builder.mutation<any, { name?: string, scene_id: string, parent_id?: string, order_under_parent?: number, isRootEntity?: boolean }>({
+      queryFn: async ({ name, scene_id, parent_id, order_under_parent, isRootEntity }) => {
         const supabase = createSupabaseBrowserClient();
         const { data: { user }, error: authError } = await supabase.auth.getUser();
 
@@ -58,8 +57,7 @@ export const entitiesApi = createApi({
 
         const { data, error } = await supabase
           .from("entities")
-          .upsert({
-            id,
+          .insert({
             name,
             scene_id,
             parent_id,
@@ -263,5 +261,5 @@ export const entitiesApi = createApi({
 
 // Export the API hooks
 export const {
-  useUpsertEntityMutation, useBatchUpdateEntitiesMutation, useGetAllEntitiesQuery, useUpdateEntityMutation, useGetSingleEntityQuery, useLazyGetAllEntitiesQuery, useDeleteEntityMutation
+  useCreateEntityMutation, useBatchUpdateEntitiesMutation, useGetAllEntitiesQuery, useUpdateEntityMutation, useGetSingleEntityQuery, useLazyGetAllEntitiesQuery, useDeleteEntityMutation
 } = entitiesApi;

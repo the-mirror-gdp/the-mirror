@@ -2,13 +2,15 @@
 "use client";
 import { ProgressIndeterminate } from "@/components/ui/progress-indeterminate";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useAppDispatch } from "@/hooks/hooks";
-import { useEffect } from "react";
+
 import { useRouter } from 'next/navigation'
 import { useCreateSpaceMutation } from "@/state/spaces";
+import { useEffect, useState } from "react";
 
+// Note: with React 19 this will annoying run twice with strict mode. Not sure about solution and I don't want to disable strict mode. https://stackoverflow.com/questions/72238175/why-useeffect-running-twice-and-how-to-handle-it-well-in-react#comment139336889_78443665
 export default function NewSpacePage() {
   const [createSpace] = useCreateSpaceMutation()
+  const [started, setStarted] = useState(false)
   const router = useRouter()
   useEffect(() => {
     async function create() {
@@ -20,8 +22,12 @@ export default function NewSpacePage() {
       // navigate to the space
       router.replace(`/space/${data.id}/build`)
     }
-    create()
-  }, [router])
+    if (!started) {
+      setStarted(true)
+      // debugger
+      create();
+    }
+  }, [])
   return (
     <div className="flex flex-col">
       {/* Top Menu Bar */}

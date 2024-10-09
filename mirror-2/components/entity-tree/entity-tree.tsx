@@ -7,6 +7,8 @@ import { useGetAllEntitiesQuery, useGetSingleEntityQuery, useUpdateEntityMutatio
 import { skipToken } from '@reduxjs/toolkit/query';
 import { TwoWayInput } from '@/components/two-way-input';
 import { z } from 'zod';
+import { getCurrentScene } from '@/state/local';
+import { useAppSelector } from '@/hooks/hooks';
 
 
 type TreeDataNodeWithEntityData = TreeDataNode & { name: string, id: string, order_under_parent: number }
@@ -78,9 +80,10 @@ const EntityTree: React.FC = () => {
   const [treeData, setTreeData] = useState<any>([]);
 
   const params = useParams<{ spaceId: string }>()
+  const currentScene = useAppSelector(getCurrentScene)
   const { data: scenes, isLoading: isScenesLoading } = useGetAllScenesQuery(params.spaceId)
   const { data: entities, isFetching: isEntitiesFetching } = useGetAllEntitiesQuery(
-    scenes && scenes.length > 0 ? scenes.map(scene => scene.id) : skipToken  // Conditional query
+    currentScene?.id || (scenes && scenes.length > 0 ? scenes.map(scene => scene.id) : skipToken)  // Conditional query
   );
 
   const [batchUpdateEntity] = useBatchUpdateEntitiesMutation();
