@@ -64,12 +64,20 @@ export const localSlice = createSlice({
     setCurrentScene: (state, action: PayloadAction<Scene>) => {
       state.currentScene = action.payload;
     },
-
     setExpandedEntityIds: (state, action: PayloadAction<{ entityIds: string[] }>) => {
       const { entityIds } = action.payload;
 
       // update, ensuring no duplicate IDs
       state.expandedEntityIds = entityIds.filter(function (x, i, a) {
+        return a.indexOf(x) == i;
+      });
+    },
+
+    addExpandedEntityIds: (state, action: PayloadAction<{ entityIds: string[] }>) => {
+      const { entityIds } = action.payload;
+
+      // add new IDs, ensuring no duplicate IDs
+      state.expandedEntityIds = [...state.expandedEntityIds, ...entityIds].filter(function (x, i, a) {
         return a.indexOf(x) == i;
       });
     },
@@ -94,6 +102,7 @@ export const {
   clearLocalUserState,
   setCurrentScene,
   setExpandedEntityIds,
+  addExpandedEntityIds,
   insertAutomaticallyExpandedSceneIds
 } = localSlice.actions;
 

@@ -7,7 +7,7 @@ import { useGetAllEntitiesQuery, useGetSingleEntityQuery, useUpdateEntityMutatio
 import { skipToken } from '@reduxjs/toolkit/query';
 import { TwoWayInput } from '@/components/two-way-input';
 import { z } from 'zod';
-import { getCurrentScene, insertAutomaticallyExpandedSceneIds, selectAutomaticallyExpandedSceneIds, selectExpandedEntityIds, setExpandedEntityIds } from '@/state/local';
+import { addExpandedEntityIds, getCurrentScene, insertAutomaticallyExpandedSceneIds, selectAutomaticallyExpandedSceneIds, selectExpandedEntityIds, setExpandedEntityIds } from '@/state/local';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { current } from '@reduxjs/toolkit';
 
@@ -128,7 +128,7 @@ const EntityTree: React.FC = () => {
 
   // whenever expandedKeys changes, update the store so it persists across component unmount
   useEffect(() => {
-    dispatch(setExpandedEntityIds({ entityIds: expandedKeys.map(key => String(key)) }));
+    dispatch(addExpandedEntityIds({ entityIds: expandedKeys.map(key => String(key)) }));
   }, [expandedKeys])
 
 
