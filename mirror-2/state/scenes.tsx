@@ -38,15 +38,17 @@ export const scenesApi = createApi({
           }])
           .select('*')
           .single();
-
+        if (error) {
+          return { error: error.message };
+        }
         // create root entity for this scene if it doesn't exist
-
         const { data: entityCheck, error: entityCheckError } = await supabase
           .from("entities")
           .select('*')
           .eq("scene_id", data.id)
-          .eq("parent_id", null)
-          .single();
+          .is("parent_id", null)
+          .maybeSingle();
+
         if (!entityCheck) {
           const { data: createEntityData, error: createEntityError } = await dispatch(
             entitiesApi.endpoints.createEntity.initiate({ name: "Root", scene_id: data.id, isRootEntity: true })

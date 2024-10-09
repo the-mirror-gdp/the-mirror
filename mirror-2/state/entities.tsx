@@ -12,6 +12,7 @@ export const entitiesApi = createApi({
   baseQuery: fakeBaseQuery(),
   tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, 'LIST', TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY],
   endpoints: (builder) => ({
+
     createEntity: builder.mutation<any, { name?: string, scene_id: string, parent_id?: string, order_under_parent?: number, isRootEntity?: boolean }>({
       queryFn: async ({ name, scene_id, parent_id, order_under_parent, isRootEntity }) => {
         const supabase = createSupabaseBrowserClient();
@@ -37,7 +38,7 @@ export const entitiesApi = createApi({
           parent_id = rootEntity.id;
         }
 
-        if ((parent_id && order_under_parent === undefined) || (parent_id && order_under_parent) === null) {
+        if (parent_id && (order_under_parent === undefined || order_under_parent === null)) {
           // need to find the order_under_parent to use for the new entity
           const { data: entitiesWithSameParent, error: parentEntityError } = await supabase
             .from("entities")
@@ -48,10 +49,13 @@ export const entitiesApi = createApi({
             return { error: parentEntityError.message };
           }
           // find the highest order_under_parent
-          const highestOrderUnderParent = entitiesWithSameParent.reduce((max, entity) => {
-            return entity.order_under_parent > max ? entity.order_under_parent : max;
-          }, -1);
-          order_under_parent = highestOrderUnderParent + 1;
+          if (entitiesWithSameParent) {
+            const highestOrderUnderParent = entitiesWithSameParent.reduce((max, entity) => {
+              const entityOrderUnderParent = entity.order_under_parent ?? -1; // If null or undefined, default to -1
+              return (entityOrderUnderParent > max ? entityOrderUnderParent : max);
+            }, -1);
+            order_under_parent = highestOrderUnderParent + 1;
+          }
         }
 
 
