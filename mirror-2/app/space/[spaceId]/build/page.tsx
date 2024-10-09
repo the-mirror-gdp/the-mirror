@@ -21,11 +21,13 @@ export default function Page() {
   const dispatch = useAppDispatch();
   useEffect(() => {
     // if no current Scene, set it to the first scene
-    if (!currentScene && scenes?.length > 0 && scenes[0]) {
-      console.log("setting current scene to first scene", scenes[0])
-      dispatch(setCurrentScene(scenes[0]))
+    if (scenes?.length > 0 && scenes[0]) {
+      if (!currentScene?.id) {
+        console.log("setting current scene to first scene", scenes[0])
+        dispatch(setCurrentScene(scenes[0]))
+      }
     } else {
-      console.log('No scenes to set', scenes)
+      console.log('No scenes to set', scenes, currentScene)
     }
   }, [space, scenes])
 

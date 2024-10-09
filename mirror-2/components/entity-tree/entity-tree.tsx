@@ -126,12 +126,10 @@ const EntityTree: React.FC = () => {
     }
   }, [entities]);  // Re-run effect when 'entities' changes
 
-  // if currentScene changes, reset hasInitialExpandedKeys to false
-  // useEffect(() => {
-  //   if (currentScene) {
-  //     setHasInitialExpandedKeys(false)
-  //   }
-  // }, [currentScene])
+  // whenever expandedKeys changes, update the store so it persists across component unmount
+  useEffect(() => {
+    dispatch(setExpandedEntityIds({ entityIds: expandedKeys.map(key => String(key)) }));
+  }, [expandedKeys])
 
 
   const onDragEnter: TreeProps['onDragEnter'] = (info) => {
