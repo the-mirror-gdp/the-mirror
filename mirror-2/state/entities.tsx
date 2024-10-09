@@ -13,7 +13,7 @@ export const entitiesApi = createApi({
   tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, 'LIST', TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY],
   endpoints: (builder) => ({
 
-    createEntity: builder.mutation<any, { name?: string, scene_id: string, parent_id?: string, order_under_parent?: number, isRootEntity?: boolean }>({
+    createEntity: builder.mutation<any, { name: string, scene_id: string, parent_id?: string, order_under_parent?: number, isRootEntity?: boolean }>({
       queryFn: async ({ name, scene_id, parent_id, order_under_parent, isRootEntity }) => {
         const supabase = createSupabaseBrowserClient();
         const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -62,7 +62,7 @@ export const entitiesApi = createApi({
         const { data, error } = await supabase
           .from("entities")
           .insert({
-            name,
+            name: name,
             scene_id,
             parent_id,
             order_under_parent,
@@ -163,7 +163,7 @@ export const entitiesApi = createApi({
             return { error: parentEntityError.message };
           }
           // find the highest order_under_parent
-          const highestOrderUnderParent = entitiesWithSameParent.reduce((max, entity) => {
+          const highestOrderUnderParent = entitiesWithSameParent.reduce((max, entity: any) => {
             return entity.order_under_parent > max ? entity.order_under_parent : max;
           }, -1);
           order_under_parent = highestOrderUnderParent + 1;
@@ -218,12 +218,22 @@ export const entitiesApi = createApi({
         const entitiesToUpsert = entities.map(newEntity => {
           const existingEntity = existingEntities.find(e => e.id === newEntity.id);
 
+          if (existingEntity === undefined) {
+            throw new Error(`Entity with ID ${(existingEntity as any).id} doesn't exist`);
+          }
+
           // Merge existing entity fields with new updates
-          return {
+          const data = {
             ...existingEntity,  // Existing entity data
             ...newEntity,       // New updates, this will override fields like name, scene_id, etc.
             updated_at: new Date().toISOString(),  // Update timestamp
           };
+
+          if (!existingEntity?.name) {
+            throw new Error(`Entity with ID ${existingEntity?.id} is missing a name`);
+          }
+
+          return data
         });
 
         // Perform the batch upsert

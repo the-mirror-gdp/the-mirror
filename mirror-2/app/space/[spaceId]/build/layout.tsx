@@ -1,9 +1,9 @@
-import InnerControlBar from "@/app/space/[spaceId]/build/(controlBar)/inner-control-bar"
+import InnerControlBar from "@/app/space/[spaceId]/build/controlBar/inner-control-bar"
 import { Sidebar } from "@/app/space/[spaceId]/build/sidebar"
 import SpaceViewport from "@/app/space/[spaceId]/build/space-viewport"
 import { TopNavbar } from "@/app/space/[spaceId]/build/top-navbar"
 
-export default async function Layout({ children, params }: {
+export default function Layout({ children, params }: {
   children: React.ReactNode,
   spaceViewport: React.ReactNode,
   params: { spaceId: string }

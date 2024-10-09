@@ -1,3 +1,4 @@
+"use client"
 import { createAccountAction, loginAction } from "@/actions/auth";
 import { FormMessage, Message } from "@/components/form-message";
 import { SubmitButton } from "@/components/submit-button";

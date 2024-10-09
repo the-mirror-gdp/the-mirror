@@ -28,7 +28,7 @@ export default function Login({ searchParams }: { searchParams: Message }) {
 
     // Simulate form submission by calling formAction
     // Since the SubmitButton uses formAction, this will trigger loginAction
-    document.getElementById("login-form")?.requestSubmit();
+    (document.getElementById("login-form") as HTMLFormElement)?.requestSubmit();
   };
 
   return (
