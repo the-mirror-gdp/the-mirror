@@ -58,7 +58,7 @@ export default function MusicPage() {
                             The Next Era of The Mirror
                           </h2>
                           <p className="text-sm text-muted-foreground">
-                            Weclome, let's build.
+                            Welcome, let's build.
                           </p>
                         </div>
                         <div className="ml-auto mr-4">
