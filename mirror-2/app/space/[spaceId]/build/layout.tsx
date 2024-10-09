@@ -10,9 +10,9 @@ export default async function Layout({ children, params }: {
 }) {
 
   return (
-    <div className="h-screen w-screen grid grid-rows-[auto,1fr] overflow-hidden">
+    <div className="h-screen max-h-screen w-screen grid grid-rows-[auto,1fr] overflow-hidden">
       <TopNavbar />
-      <div className="grid grid-cols-[minmax(100px,4%),3fr,10fr]">
+      <div className="grid grid-cols-[minmax(100px,4%),3fr,10fr] h-full overflow-hidden">
         <Sidebar />
         <InnerControlBar />
         <SpaceViewport />
@@ -21,5 +21,5 @@ export default async function Layout({ children, params }: {
         {children}
       </div>
     </div>
-  )
+  );
 }

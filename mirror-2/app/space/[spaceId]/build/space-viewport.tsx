@@ -6,11 +6,7 @@ import { useGetAllScenesQuery } from "@/state/scenes";
 import { useParams } from "next/navigation";
 
 export default function SpaceViewport() {
-  // // get all entities for the scene. may move this to a loader in the future
-  const params = useParams<{ spaceId: string }>()
-  // const { data: scenes } = useGetAllScenesQuery(params.spaceId);
-  // const { data: entities } = useGetAllEntitiesQuery(params.spaceId);
-
+  const params = useParams<{ spaceId: string }>();
 
   return (
     <main className="h-full">

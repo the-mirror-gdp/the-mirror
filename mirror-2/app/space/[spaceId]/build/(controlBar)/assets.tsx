@@ -75,7 +75,7 @@ export default function Assets() {
   };
 
   return (
-    <div className="flex flex-col p-4">
+    <>
       {/* Search bar */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
@@ -119,7 +119,7 @@ export default function Assets() {
 
       {/* Scrollable area that takes up remaining space */}
       <div className="flex-1 overflow-auto">
-        <ScrollArea className="h-screen">
+        <ScrollArea className="">
           <div className="grid grid-cols-[repeat(auto-fill,minmax(80px,1fr))] gap-4 pb-40">
             {form.formState.isSubmitted ? assets?.map((asset) => (
               <ContextMenu key={asset.id}>
@@ -153,6 +153,6 @@ export default function Assets() {
           </div>
         </ScrollArea>
       </div>
-    </div>
+    </>
   );
 }

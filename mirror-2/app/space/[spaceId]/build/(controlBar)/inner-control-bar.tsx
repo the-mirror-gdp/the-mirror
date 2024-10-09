@@ -3,7 +3,7 @@
 import Assets from "@/app/space/[spaceId]/build/(controlBar)/assets";
 import Code from "@/app/space/[spaceId]/build/(controlBar)/code";
 import Database from "@/app/space/[spaceId]/build/(controlBar)/database";
-import Hierarchy from "@/app/space/[spaceId]/build/(controlBar)/entity-hierarchy";
+import Hierarchy from "@/app/space/[spaceId]/build/(controlBar)/hierarchy";
 import Scenes from "@/app/space/[spaceId]/build/(controlBar)/scenes";
 import Settings from "@/app/space/[spaceId]/build/(controlBar)/settings";
 import { SkeletonCard } from "@/app/space/[spaceId]/build/(controlBar)/skeleton-card";
@@ -27,7 +27,7 @@ export default function InnerControlBar() {
   });
 
   return (
-    <div className="relative px-2" {...getRootProps()}>
+    <div className="relative px-2 h-full overflow-y-auto" {...getRootProps()}>
       {/* Input element for handling file uploads */}
       <input {...getInputProps()} />
 
@@ -41,13 +41,15 @@ export default function InnerControlBar() {
 
       {/* Content of the control bar */}
       <Suspense fallback={<SkeletonCard />}>
-        <span className={`${currentView === "scenes" ? "" : "hidden"}`}><Scenes /></span>
-        <span className={`${currentView === "hierarchy" ? "" : "hidden"}`}><Hierarchy /></span>
-        <span className={`${currentView === "assets" ? "" : "hidden"}`}><Assets /></span>
-        <span className={`${currentView === "code" ? "" : "hidden"}`}><Code /></span>
-        <span className={`${currentView === "database" ? "" : "hidden"}`}><Database /></span>
-        <span className={`${currentView === "versions" ? "" : "hidden"}`}><Versions /></span>
-        <span className={`${currentView === "settings" ? "" : "hidden"}`}><Settings /></span>
+        <div className="flex flex-col pt-3">
+          {currentView === "scenes" && <Scenes />}
+          {currentView === "hierarchy" && <Hierarchy />}
+          {currentView === "assets" && <Assets />}
+          {currentView === "code" && <Code />}
+          {currentView === "database" && <Database />}
+          {currentView === "versions" && <Versions />}
+          {currentView === "settings" && <Settings />}
+        </div>
       </Suspense>
     </div>
   );

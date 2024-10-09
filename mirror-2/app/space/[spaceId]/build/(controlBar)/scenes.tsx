@@ -29,7 +29,7 @@ export default function Scenes() {
   });
 
   return (
-    <div className="flex flex-col p-4">
+    <>
       {/* Create Scene Button */}
       <Button className="w-full my-4" type="button" onClick={() => createScene({ name: "New Scene", space_id: params.spaceId })}>
         <PlusCircleIcon className="mr-2" />
@@ -37,8 +37,8 @@ export default function Scenes() {
       </Button>
 
       {/* Scrollable area that takes up remaining space */}
-      <div className="flex-1 overflow-auto">
-        <ScrollArea className="h-screen">
+      <div className="flex-1 overflow-hidden">
+        <ScrollArea className="">
           <div className="grid grid-cols-1 gap-4 pb-40">
             {scenes?.map((scene) => (
               <div
@@ -87,6 +87,6 @@ export default function Scenes() {
           </div>
         </ScrollArea>
       </div>
-    </div>
+    </>
   );
 }
