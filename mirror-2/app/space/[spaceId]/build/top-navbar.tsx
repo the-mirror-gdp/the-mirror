@@ -8,13 +8,15 @@ import { signOut } from "@/hooks/auth";
 import { useAppSelector } from "@/hooks/hooks";
 import { AppLogoImageSmall } from "@/lib/theme-service";
 import { selectLocalUserState } from "@/state/local";
-import { CircleUser } from "lucide-react";
+import { CircleUser, Play } from "lucide-react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export function TopNavbar() {
   const localUserState = useAppSelector(selectLocalUserState)
   const [hasMounted, setHasMounted] = useState(false);
+  const params = useParams<{ spaceId: string }>()
 
   // Check if the component is fully mounted (client-side)
   useEffect(() => {
@@ -31,14 +33,27 @@ export function TopNavbar() {
         <EditableSpaceName />
       </div>
       <ThemeSwitcher />
-      {hasMounted && !localUserState?.id && <Button
-        asChild
-        size="sm"
-        variant={"outline"}
-        className="opacity-75"
-      >
-        <Link href="/create-account">Create Account</Link>
-      </Button>}
+      {hasMounted &&
+        <>
+          <Button
+            asChild
+            variant={"outlineAccent"}
+            className="hover:text-white"
+          >
+            <Link href={`/space/${params.spaceId}/play`}><Play className="mr-2 text-white" />
+              Play
+            </Link>
+          </Button>
+          {!localUserState?.id && <Button
+            asChild
+            size="sm"
+            variant={"outline"}
+            className="opacity-75"
+          >
+            <Link href="/create-account">Create Account</Link>
+          </Button>}
+        </>
+      }
       <AccountDropdownMenu />
     </header>
   );
