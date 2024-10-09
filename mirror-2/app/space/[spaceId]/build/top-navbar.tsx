@@ -3,16 +3,13 @@ import { EditableSpaceName } from "@/components/editable-space-name";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 import AccountDropdownMenu from "@/components/ui/account-dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { signOut } from "@/hooks/auth";
 import { useAppSelector } from "@/hooks/hooks";
 import { AppLogoImageSmall } from "@/lib/theme-service";
 import { selectLocalUserState } from "@/state/local";
-import { CircleUser, Play } from "lucide-react";
+import { Play } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useRouter } from 'next/navigation'
 
 export function TopNavbar() {
   const localUserState = useAppSelector(selectLocalUserState)
@@ -23,15 +20,6 @@ export function TopNavbar() {
   useEffect(() => {
     setHasMounted(true);
   }, []);
-
-  // prefetch /play for speed
-
-  const router = useRouter()
-  useEffect(() => {
-    // console.log('prefetch play')
-    // router.prefetch(`/space/${params.spaceId}/play`);
-    // const PlayPage = dynamic(() => import(`@/app/space/${params.spaceId}/build`), { ssr: false });
-  }, [params.spaceId]);
 
   return (
     <header className="flex h-16 items-center gap-4 bg-muted/40 px-4  lg:px-6">
