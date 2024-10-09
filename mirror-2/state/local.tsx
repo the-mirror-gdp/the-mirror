@@ -22,7 +22,8 @@ interface LocalState {
   currentScene?: Scene;
 
   // Property to track the entire tree for each scene
-  expandedEntityIds: string[]
+  expandedEntityIds: string[];
+  automaticallyExpandedSceneIds: string[] // used for checking whether we auto expanded or not for a scene's entity hierarchy
 }
 
 // Define the initial state using that type
@@ -37,7 +38,8 @@ const initialState: LocalState = {
   currentScene: {
     created_at: '', id: '', name: '', space_id: '', updated_at: ''
   },
-  expandedEntityIds: [], // Initialize the sceneTrees state
+  expandedEntityIds: [],
+  automaticallyExpandedSceneIds: [],
 }
 
 export const localSlice = createSlice({
@@ -71,6 +73,16 @@ export const localSlice = createSlice({
         return a.indexOf(x) == i;
       });
     },
+
+    insertAutomaticallyExpandedSceneIds: (state, action: PayloadAction<{ sceneId: string }>) => {
+      const { sceneId } = action.payload;
+
+      state.automaticallyExpandedSceneIds.push(sceneId)
+      // update, ensuring no duplicate IDs
+      state.automaticallyExpandedSceneIds = state.automaticallyExpandedSceneIds.filter(function (x, i, a) {
+        return a.indexOf(x) == i;
+      });
+    },
   },
 });
 
@@ -81,7 +93,8 @@ export const {
   updateLocalUserState,
   clearLocalUserState,
   setCurrentScene,
-  setExpandedEntityIds
+  setExpandedEntityIds,
+  insertAutomaticallyExpandedSceneIds
 } = localSlice.actions;
 
 // Selectors
@@ -91,6 +104,7 @@ export const selectLocalUserState = (state: RootState) => state.local.user;
 export const getCurrentScene = (state: RootState): Scene | undefined => {
   return state.local.currentScene;
 };
-export const selectExpandedEntityIds = (state: RootState) => state.local.expandedEntityIds; // Selector for scene trees
+export const selectExpandedEntityIds = (state: RootState) => state.local.expandedEntityIds;
+export const selectAutomaticallyExpandedSceneIds = (state: RootState) => state.local.automaticallyExpandedSceneIds;
 
 export default localSlice.reducer;

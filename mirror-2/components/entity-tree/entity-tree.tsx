@@ -7,8 +7,9 @@ import { useGetAllEntitiesQuery, useGetSingleEntityQuery, useUpdateEntityMutatio
 import { skipToken } from '@reduxjs/toolkit/query';
 import { TwoWayInput } from '@/components/two-way-input';
 import { z } from 'zod';
-import { getCurrentScene, selectExpandedEntityIds, setExpandedEntityIds } from '@/state/local';
+import { getCurrentScene, insertAutomaticallyExpandedSceneIds, selectAutomaticallyExpandedSceneIds, selectExpandedEntityIds, setExpandedEntityIds } from '@/state/local';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
+import { current } from '@reduxjs/toolkit';
 
 
 type TreeDataNodeWithEntityData = TreeDataNode & { name: string, id: string, order_under_parent: number }
@@ -83,6 +84,7 @@ const EntityTree: React.FC = () => {
 
   const params = useParams<{ spaceId: string }>()
   const currentScene = useAppSelector(getCurrentScene)
+  const automaticallyExpandedSceneIds = useAppSelector(selectAutomaticallyExpandedSceneIds)
   const expandedEntityIds = useAppSelector(selectExpandedEntityIds)
   const { data: scenes, isLoading: isScenesLoading } = useGetAllScenesQuery(params.spaceId)
   const { data: entities, isFetching: isEntitiesFetching } = useGetAllEntitiesQuery(
@@ -94,25 +96,30 @@ const EntityTree: React.FC = () => {
   useEffect(() => {
     if (entities && entities.length > 0) {
       const data = transformDbEntityStructureToTree(entities)
-      if (currentScene) {
 
+      if (currentScene && !automaticallyExpandedSceneIds.includes(currentScene.id)) {
+        // If the scene is not in the list of automatically expanded scenes, expand all and add it to the list
         // Recursive function to collect all keys from the node and its descendants
-        // const collectExpandedKeys = (node) => {
-        //   expandedKeys.push(node.key);
-        //   if (node.children && node.children.length > 0) {
-        //     node.children.forEach((child) => {
-        //       collectExpandedKeys(child); // Recursively collect keys for all children
-        //     });
-        //   }
-        // };
+        const allExpandedKeys: any[] = []
+        const collectExpandedKeys = (node) => {
+          allExpandedKeys.push(node.key);
+          if (node.children && node.children.length > 0) {
+            node.children.forEach((child) => {
+              collectExpandedKeys(child); // Recursively collect keys for all children
+            });
+          }
+        };
 
         // Iterate over each node and recursively collect expanded keys
-        // data.forEach((node) => {
-        //   collectExpandedKeys(node);
-        // });
+        data.forEach((node) => {
+          collectExpandedKeys(node);
+        });
 
-        let expandedKeysFromStore = expandedEntityIds
-        setExpandedKeys(expandedKeysFromStore);
+        setExpandedKeys(allExpandedKeys);
+        dispatch(insertAutomaticallyExpandedSceneIds({ sceneId: currentScene.id }))
+      } else {
+        // load expanded entity IDs from store
+        setExpandedKeys(expandedEntityIds);
       }
 
       setTreeData(data)
