@@ -224,6 +224,9 @@ const EntityTree: React.FC = () => {
       theme={{
         components: {
           Tree: {
+            motionDurationFast: '0.025s',
+            motionDurationSlow: '0.05s',
+            motionDurationMid: '0.05s',
             colorText: '#FFFFFF',
             colorBgContainer: 'transparent',
             fontFamily: 'montserrat',
