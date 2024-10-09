@@ -81,7 +81,7 @@ export function TwoWayInput<T>({
               <FormControl>
                 <Input
                   type="text"
-                  className={cn("dark:bg-transparent border-none shadow-none text-white", className)} // Apply className prop here
+                  className={cn("dark:bg-transparent border-none shadow-none  text-white", className)} // Apply className prop here
                   {...field}
                 />
               </FormControl>

@@ -273,9 +273,9 @@ const EntityTree: React.FC = () => {
             motionDurationMid: '0.05s',
             colorText: '#FFFFFF',
             colorBgContainer: 'transparent',
-            fontFamily: 'montserrat',
+            // fontFamily: 'Montserrat',
             // @ts-ignore using rem instead of number is working..
-            fontSize: '0.9rem',
+            // fontSize: '0.9rem',
             nodeSelectedBg: '#3B82F6',
             nodeHoverBg: '#256BFB',
             directoryNodeSelectedBg: 'green'
@@ -302,7 +302,7 @@ const EntityTree: React.FC = () => {
               id={nodeData.id}
               generalEntity={nodeData}
               defaultValue={nodeData.name}
-              className={'p-0 m-0 h-8 '}
+              className={'p-0 m-0 h-8 text-base font-light font-sans tracking-wide'}
               fieldName="name" formSchema={z.object({
                 name: z.string().min(1, { message: "Entity name must be at least 1 character long" }),
               })}
