@@ -7,8 +7,8 @@ import { useGetAllEntitiesQuery, useGetSingleEntityQuery, useUpdateEntityMutatio
 import { skipToken } from '@reduxjs/toolkit/query';
 import { TwoWayInput } from '@/components/two-way-input';
 import { z } from 'zod';
-import { getCurrentScene } from '@/state/local';
-import { useAppSelector } from '@/hooks/hooks';
+import { getCurrentScene, selectExpandedEntityIds, setExpandedEntityIds } from '@/state/local';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 
 
 type TreeDataNodeWithEntityData = TreeDataNode & { name: string, id: string, order_under_parent: number }
@@ -78,9 +78,12 @@ function transformDbEntityStructureToTree(entities): TreeDataNodeWithEntityData[
 
 const EntityTree: React.FC = () => {
   const [treeData, setTreeData] = useState<any>([]);
+  const [expandedKeys, setExpandedKeys] = useState<string[]>([]);
+  const dispatch = useAppDispatch()
 
   const params = useParams<{ spaceId: string }>()
   const currentScene = useAppSelector(getCurrentScene)
+  const expandedEntityIds = useAppSelector(selectExpandedEntityIds)
   const { data: scenes, isLoading: isScenesLoading } = useGetAllScenesQuery(params.spaceId)
   const { data: entities, isFetching: isEntitiesFetching } = useGetAllEntitiesQuery(
     currentScene?.id || (scenes && scenes.length > 0 ? scenes.map(scene => scene.id) : skipToken)  // Conditional query
@@ -91,9 +94,37 @@ const EntityTree: React.FC = () => {
   useEffect(() => {
     if (entities && entities.length > 0) {
       const data = transformDbEntityStructureToTree(entities)
+      if (currentScene) {
+
+        // Recursive function to collect all keys from the node and its descendants
+        // const collectExpandedKeys = (node) => {
+        //   expandedKeys.push(node.key);
+        //   if (node.children && node.children.length > 0) {
+        //     node.children.forEach((child) => {
+        //       collectExpandedKeys(child); // Recursively collect keys for all children
+        //     });
+        //   }
+        // };
+
+        // Iterate over each node and recursively collect expanded keys
+        // data.forEach((node) => {
+        //   collectExpandedKeys(node);
+        // });
+
+        let expandedKeysFromStore = expandedEntityIds
+        setExpandedKeys(expandedKeysFromStore);
+      }
+
       setTreeData(data)
     }
   }, [entities]);  // Re-run effect when 'entities' changes
+
+  // if currentScene changes, reset hasInitialExpandedKeys to false
+  // useEffect(() => {
+  //   if (currentScene) {
+  //     setHasInitialExpandedKeys(false)
+  //   }
+  // }, [currentScene])
 
 
   const onDragEnter: TreeProps['onDragEnter'] = (info) => {
@@ -219,6 +250,14 @@ const EntityTree: React.FC = () => {
 
   };
 
+  const onExpand: TreeProps['onExpand'] = (expandedKeysValue) => {
+    console.log('onExpand', expandedKeysValue);
+    // Ensure it's a string array
+    setExpandedKeys(expandedKeysValue.map(key => String(key))); // Convert to string[]
+    dispatch(setExpandedEntityIds({ entityIds: expandedKeysValue.map(key => String(key)) }));
+  };
+
+
   return (
     <ConfigProvider
       theme={{
@@ -246,7 +285,9 @@ const EntityTree: React.FC = () => {
         defaultExpandAll={true}
         showLine={false}
         showIcon
-        autoExpandParent={true}
+        onExpand={onExpand}
+        expandedKeys={expandedKeys}
+        autoExpandParent={false}
         onDragEnter={onDragEnter}
         onDrop={onDrop}
         treeData={treeData}
