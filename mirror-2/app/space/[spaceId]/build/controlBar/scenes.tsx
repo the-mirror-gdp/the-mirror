@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { getCurrentScene, setControlBarCurrentView, setCurrentScene } from '@/state/local';
 import { useCreateSceneMutation, useDeleteSceneMutation, useGetAllScenesQuery, useGetSingleSceneQuery, useUpdateSceneMutation } from '@/state/scenes';
 import { cn } from '@/utils/cn';
+import { generateSceneName } from '@/actions/name-generator';
 
 export default function Scenes() {
   const params = useParams<{ spaceId: string }>()
@@ -31,7 +32,16 @@ export default function Scenes() {
   return (
     <>
       {/* Create Scene Button */}
-      <Button className="w-full my-4" type="button" onClick={() => createScene({ name: "New Scene", space_id: params.spaceId })}>
+      <Button className="w-full my-4" type="button" onClick={async () => {
+        const result = await createScene({ name: await generateSceneName(), space_id: params.spaceId });
+        if (result.data) {
+          console.log("Scene created successfully:", result.data);
+          await dispatch(setCurrentScene(result.data));
+          dispatch(setControlBarCurrentView('hierarchy'));
+        } else {
+          console.error("Error creating scene:", result.error);
+        }
+      }}>
         <PlusCircleIcon className="mr-2" />
         Create Scene
       </Button>
