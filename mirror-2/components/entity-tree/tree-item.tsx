@@ -10,7 +10,7 @@ export default function EntityTreeItem({ nodeData }) {
       id={nodeData.id}
       generalEntity={nodeData}
       defaultValue={nodeData.name}
-      className={'p-0 m-0 h-8 text-base font-light font-sans tracking-wide bg-transparent cursor-pointer'}
+      className={'p-0 m-0 text-base font-light font-sans tracking-wide bg-transparent cursor-pointer duration-0'}
       fieldName="name"
       formSchema={z.object({
         name: z.string().min(1, { message: "Entity name must be at least 1 character long" }),
