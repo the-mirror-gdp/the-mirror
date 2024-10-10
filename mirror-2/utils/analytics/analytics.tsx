@@ -1,5 +1,4 @@
 "use client"
-import { useEffect } from 'react';
 import packageJson from '../../package.json';
 import { GameAnalytics } from 'gameanalytics'
 import { appNameKebabCase } from '@/lib/theme-service';
@@ -21,10 +20,8 @@ export function sendAnalyticsEvent(event: any, eventValue?: number) {
     const eventName = `${app}:${eventDetails}`
     console.log('Analytics: Event: ' + eventName)
     if (eventValue !== undefined) {
-      // GameAnalytics("addDesignEvent", eventName, eventValue);
       GameAnalytics.addDesignEvent(eventName, eventValue);
     } else {
-      // GameAnalytics("addDesignEvent", eventName);
       GameAnalytics.addDesignEvent(eventName);
     }
 
@@ -38,7 +35,7 @@ export function sendAnalyticsEvent(event: any, eventValue?: number) {
 
 
 export function setAnalyticsUserId(userId: string) {
-  // GameAnalytics.configureUserId(userId);
+  s
   if (typeof window !== 'undefined' && !analyticsInitialized) {
     ampli.client.setUserId(userId)
   }
@@ -46,7 +43,7 @@ export function setAnalyticsUserId(userId: string) {
 
 
 const analytics = function () {
-  // useEffect(() => {
+  // Will liklely remote gameanalytics but trying it for a bit
   if (typeof window !== 'undefined' && !analyticsInitialized) {
     if (!process.env.NEXT_PUBLIC_AMPLITUDE_PUBLIC_KEY) {
       throw new Error("Missing analytics key")
@@ -66,9 +63,7 @@ const analytics = function () {
     GameAnalytics.startSession()
     analyticsInitialized = true
   }
-  // }, [])
 
-  // return <></>
 }
 
 analytics()
