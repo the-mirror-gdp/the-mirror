@@ -89,6 +89,7 @@ export function TwoWayInput<T>({
               <FormControl>
                 <Input
                   type="text"
+                  autoComplete="off"
                   className={cn("dark:bg-transparent border-none shadow-none  text-white", className)} // Apply className prop here
                   {...field}
                   onBlur={() => {
