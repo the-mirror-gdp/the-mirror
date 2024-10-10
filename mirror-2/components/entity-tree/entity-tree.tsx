@@ -275,7 +275,8 @@ const EntityTree: React.FC = () => {
             colorText: '#FFFFFF',
             colorBgContainer: 'transparent',
             nodeSelectedBg: 'transparent',
-            directoryNodeSelectedBg: 'green'
+            directoryNodeSelectedBg: 'green',
+            nodeHoverBg: 'rgba(255, 255, 255, 0.05)'
           },
         },
       }}
