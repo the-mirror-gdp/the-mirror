@@ -8,6 +8,7 @@ import { useAppSelector } from '@/hooks/hooks';
 import { useCreateEntityMutation } from '@/state/entities';
 import { getCurrentScene } from '@/state/local';
 import { useParams } from 'next/navigation';
+import { Separator } from '@/components/ui/separator';
 
 export default function Hierarchy() {
   const currentScene = useAppSelector(getCurrentScene)
@@ -16,7 +17,8 @@ export default function Hierarchy() {
 
   return (
     <>
-      <h2>{currentScene && <>Scene: {currentScene.name}</>}</h2>
+      <h2 className='text-lg'>{currentScene && <>Scene: {currentScene.name}</>}</h2>
+      <Separator className='mt-2 mb-1' />
       {/* Create Entity Button */}
       {currentScene && <Button className="w-full my-4" type="button" onClick={() => createEntity({ name: "New Entity", scene_id: currentScene.id })}>
         <PlusCircleIcon className="mr-2" />
