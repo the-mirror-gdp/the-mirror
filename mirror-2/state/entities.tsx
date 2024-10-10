@@ -193,6 +193,19 @@ export const entitiesApi = createApi({
         }
         return { data };
       },
+      async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          entitiesApi.util.updateQueryData('getSingleEntity', id, (draft) => {
+            Object.assign(draft, patch)
+          })
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult.undo()
+        }
+      },
+
       invalidatesTags: (result, error, { id: entityId }) => [
         { type: TAG_NAME_FOR_GENERAL_ENTITY, id: entityId },
         TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY

@@ -10,6 +10,7 @@ import { z } from 'zod';
 import { addExpandedEntityIds, getCurrentScene, insertAutomaticallyExpandedSceneIds, selectAutomaticallyExpandedSceneIds, selectExpandedEntityIds, setExpandedEntityIds } from '@/state/local';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { current } from '@reduxjs/toolkit';
+import EntityTreeItem from '@/components/entity-tree/tree-item';
 
 
 type TreeDataNodeWithEntityData = TreeDataNode & { name: string, id: string, order_under_parent: number }
@@ -273,11 +274,7 @@ const EntityTree: React.FC = () => {
             motionDurationMid: '0.05s',
             colorText: '#FFFFFF',
             colorBgContainer: 'transparent',
-            // fontFamily: 'Montserrat',
-            // @ts-ignore using rem instead of number is working..
-            // fontSize: '0.9rem',
-            nodeSelectedBg: '#3B82F6',
-            nodeHoverBg: '#256BFB',
+            nodeSelectedBg: 'transparent',
             directoryNodeSelectedBg: 'green'
           },
         },
@@ -298,16 +295,7 @@ const EntityTree: React.FC = () => {
         treeData={treeData}
         titleRender={(nodeData: TreeDataNodeWithEntityData) => (
           <>
-            <TwoWayInput
-              id={nodeData.id}
-              generalEntity={nodeData}
-              defaultValue={nodeData.name}
-              className={'p-0 m-0 h-8 text-base font-light font-sans tracking-wide'}
-              fieldName="name" formSchema={z.object({
-                name: z.string().min(1, { message: "Entity name must be at least 1 character long" }),
-              })}
-              useGeneralGetEntityQuery={useGetSingleEntityQuery}
-              useGeneralUpdateEntityMutation={useUpdateEntityMutation} />
+            <EntityTreeItem nodeData={nodeData} />
           </>
         )}
       />
