@@ -1,4 +1,5 @@
 {
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "dev": "next dev & supabase start",
@@ -32,6 +33,7 @@
     "autoprefixer": "10.4.17",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "gameanalytics": "^4.4.7",
     "geist": "^1.2.1",
     "lucide-react": "^0.446.0",
     "next": "latest",

@@ -1,7 +1,8 @@
 import { RootState } from '@/state/store';
+import { setAnalyticsUserId } from '@/utils/analytics/analytics';
 import { Database } from '@/utils/database.types';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { createSlice } from '@reduxjs/toolkit';
+import { createListenerMiddleware, createSlice } from '@reduxjs/toolkit';
 
 export type ControlBarView = "assets" | "hierarchy" | "scenes" | "code" | "database" | "versions" | "settings";
 
@@ -105,6 +106,16 @@ export const {
   addExpandedEntityIds,
   insertAutomaticallyExpandedSceneIds
 } = localSlice.actions;
+
+// Middleware
+export const listenerMiddlewareLocal = createListenerMiddleware()
+listenerMiddlewareLocal.startListening({
+  actionCreator: updateLocalUserState,
+  effect: async (action, listenerApi) => {
+    setAnalyticsUserId(action.payload.id)
+  }
+})
+
 
 // Selectors
 export const selectUiSoundsCanPlay = (state: RootState) => state.local.uiSoundsCanPlay;
