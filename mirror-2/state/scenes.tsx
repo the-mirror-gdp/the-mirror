@@ -2,8 +2,10 @@ import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/too
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import { createSupabaseBrowserClient } from '@/utils/supabase/client';
 import { entitiesApi } from '@/state/entities';
+import { Database } from '@/utils/database.types';
 
 export const TAG_NAME_FOR_GENERAL_ENTITY = 'Scenes'
+export type DatabaseScene = Database["public"]["Tables"]["scenes"]["Row"];
 
 // Supabase API for spaces
 export const scenesApi = createApi({
