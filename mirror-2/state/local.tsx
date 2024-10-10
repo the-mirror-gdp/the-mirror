@@ -1,12 +1,11 @@
+import { DatabaseEntity } from '@/state/entities';
+import { DatabaseScene } from '@/state/scenes';
 import { RootState } from '@/state/store';
 import { setAnalyticsUserId } from '@/utils/analytics/analytics';
-import { Database } from '@/utils/database.types';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createListenerMiddleware, createSlice } from '@reduxjs/toolkit';
 
 export type ControlBarView = "assets" | "hierarchy" | "scenes" | "code" | "database" | "versions" | "settings";
-
-export type Scene = Database["public"]["Tables"]["scenes"]["Row"];
 
 interface LocalUserState {
   id: string,
@@ -20,7 +19,8 @@ interface LocalState {
   user?: LocalUserState;
 
   // Viewport et al.
-  currentScene?: Scene;
+  currentScene?: DatabaseScene;
+  currentEntity?: DatabaseEntity;
 
   // Property to track the entire tree for each scene
   expandedEntityIds: string[];
@@ -62,8 +62,14 @@ export const localSlice = createSlice({
     clearLocalUserState: (state) => {
       state.user = undefined;
     },
-    setCurrentScene: (state, action: PayloadAction<Scene>) => {
+    setCurrentScene: (state, action: PayloadAction<DatabaseScene>) => {
       state.currentScene = action.payload;
+    },
+    setCurrentEntity: (state, action: PayloadAction<DatabaseEntity>) => {
+      state.currentEntity = action.payload;
+    },
+    clearCurrentEntity: (state) => {
+      state.currentScene = undefined
     },
     setExpandedEntityIds: (state, action: PayloadAction<{ entityIds: string[] }>) => {
       const { entityIds } = action.payload;
@@ -102,6 +108,8 @@ export const {
   updateLocalUserState,
   clearLocalUserState,
   setCurrentScene,
+  setCurrentEntity,
+  clearCurrentEntity,
   setExpandedEntityIds,
   addExpandedEntityIds,
   insertAutomaticallyExpandedSceneIds
@@ -121,8 +129,11 @@ listenerMiddlewareLocal.startListening({
 export const selectUiSoundsCanPlay = (state: RootState) => state.local.uiSoundsCanPlay;
 export const selectControlBarCurrentView = (state: RootState) => state.local.controlBarCurrentView;
 export const selectLocalUserState = (state: RootState) => state.local.user;
-export const getCurrentScene = (state: RootState): Scene | undefined => {
+export const getCurrentScene = (state: RootState): DatabaseScene | undefined => {
   return state.local.currentScene;
+};
+export const getCurrentEntity = (state: RootState): DatabaseEntity | undefined => {
+  return state.local.currentEntity;
 };
 export const selectExpandedEntityIds = (state: RootState) => state.local.expandedEntityIds;
 export const selectAutomaticallyExpandedSceneIds = (state: RootState) => state.local.automaticallyExpandedSceneIds;

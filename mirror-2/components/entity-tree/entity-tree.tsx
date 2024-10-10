@@ -7,7 +7,7 @@ import { useGetAllEntitiesQuery, useGetSingleEntityQuery, useUpdateEntityMutatio
 import { skipToken } from '@reduxjs/toolkit/query';
 import { TwoWayInput } from '@/components/two-way-input';
 import { z } from 'zod';
-import { addExpandedEntityIds, getCurrentScene, insertAutomaticallyExpandedSceneIds, selectAutomaticallyExpandedSceneIds, selectExpandedEntityIds, setExpandedEntityIds } from '@/state/local';
+import { addExpandedEntityIds, getCurrentScene, insertAutomaticallyExpandedSceneIds, selectAutomaticallyExpandedSceneIds, selectExpandedEntityIds, setCurrentEntity, setExpandedEntityIds } from '@/state/local';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { current } from '@reduxjs/toolkit';
 import EntityTreeItem from '@/components/entity-tree/tree-item';
@@ -293,6 +293,15 @@ const EntityTree: React.FC = () => {
         onDragEnter={onDragEnter}
         onDrop={onDrop}
         treeData={treeData}
+        onSelect={(selectedKeys) => {
+          const entityId = selectedKeys[0];
+          const entity = treeData[0].children.find(item => item.key === entityId);
+          if (!entity) {
+            return
+          }
+          console.log('Selected Entity:', entity);
+          dispatch(setCurrentEntity(entity))
+        }}
         titleRender={(nodeData: TreeDataNodeWithEntityData) => (
           <>
             <EntityTreeItem nodeData={nodeData} />
