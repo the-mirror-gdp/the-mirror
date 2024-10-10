@@ -3,7 +3,7 @@ import { Montserrat } from 'next/font/google'
 import "./globals.css";
 import { Metadata } from "next";
 import { appName, appDescription, faviconPath } from "@/lib/theme-service";
-import Analytics from "@/utils/analytics/analytics";
+import "@/utils/analytics/analytics";
 
 
 export const metadata: Metadata = {
@@ -24,7 +24,7 @@ export default function RootLayout({
         <link rel="icon" href={faviconPath()} sizes="any" />
       </head>
       <body className="h-screen bg-background text-foreground ">
-        <Analytics />
+        {/* <Analytics /> */}
         <ClientLayout>
           {children}
         </ClientLayout>
