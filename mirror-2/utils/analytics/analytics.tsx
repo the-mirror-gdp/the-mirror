@@ -3,14 +3,15 @@ import { useEffect } from 'react';
 import packageJson from '../../package.json';
 import { GameAnalytics } from 'gameanalytics'
 import { AppNameKebabCaseType, appNameKebabCase } from '@/lib/theme-service';
+import * as amplitude from '@amplitude/analytics-browser';
 
 let analyticsInitialized = false
 
-type AnalyticsEvent = [string, string?, string?, string?];
+type GameAnalyticsEvent = [string, string?, string?, string?];
 
-export function sendAnalyticsEvent(event: AnalyticsEvent, eventValue?: number) {
+export function sendAnalyticsEvent(event: GameAnalyticsEvent, eventValue?: number) {
   // don't track if we're not client-side since NextJS renders the HTML on server
-  if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' && analyticsInitialized) {
     const app = appNameKebabCase();
 
     // Join the non-empty parts of the event tuple with a colon separator
@@ -24,9 +25,14 @@ export function sendAnalyticsEvent(event: AnalyticsEvent, eventValue?: number) {
       GameAnalytics.addDesignEvent(eventName, eventValue);
     } else {
       // GameAnalytics("addDesignEvent", eventName);
-      GameAnalytics.addDesignEvent(eventName, eventName);
-
+      GameAnalytics.addDesignEvent(eventName);
     }
+
+    const versionName = process.env.NEXT_PUBLIC_VERSION_NAME
+    amplitude.track({
+      event_type: eventName,
+      app_version: packageJson.version
+    })
 
   }
 }
@@ -34,12 +40,14 @@ export function sendAnalyticsEvent(event: AnalyticsEvent, eventValue?: number) {
 
 export function setAnalyticsUserId(userId: string) {
   // GameAnalytics.configureUserId(userId);
+  amplitude.setUserId(userId)
 }
 
 
 const Analytics = function () {
   useEffect(() => {
     if (typeof window !== 'undefined' && !analyticsInitialized) {
+      amplitude.init('4a9417393c890dc8498e1a3a93a92424', { "autocapture": true });
       // console.log('Analytics: Initing & starting session')
       console.log('Analytics: Initing')
       // GameAnalytics("configureBuild", `web ${packageJson.version}`);
