@@ -24,9 +24,5 @@ export default function ClientLayout({ children }) {
 // separate component here because auth setup needs to be within the store
 export function AuthLayout({ children }) {
   useSetupAuthEvents();
-  return (
-    <main className="items-center">
-      <div className="">{children}</div>
-    </main>
-  );
+  return <main className="items-center h-full">{children}</main>;
 }

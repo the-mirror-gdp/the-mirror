@@ -1,7 +1,7 @@
 "use client"
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query/react'
-import { localSlice } from '@/state/local'
+import { listenerMiddlewareLocal, localSlice } from '@/state/local'
 import { spacesApi } from '@/state/spaces'
 import { scenesApi } from '@/state/scenes'
 import { entitiesApi } from '@/state/entities'
@@ -27,6 +27,7 @@ export const store = configureStore({
       .concat(scenesApi.middleware)
       .concat(entitiesApi.middleware)
       .concat(componentsApi.middleware)
+      .concat(listenerMiddlewareLocal.middleware)
 })
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors

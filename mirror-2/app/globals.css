@@ -16,7 +16,7 @@
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
+    --accent: 165 100% 67%;
     --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
@@ -44,7 +44,7 @@
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
+    --accent: 165 100% 67%;
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
@@ -115,6 +115,32 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+}
+
+#application-canvas {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+#application-canvas.fill-mode-NONE {
+  margin: auto;
+}
+#application-canvas.fill-mode-KEEP_ASPECT {
+  width: 100%;
+  height: auto;
+  margin: 0;
+}
+#application-canvas.fill-mode-FILL_WINDOW {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+canvas:focus {
+  outline: none;
 }
 
 .ant-tree-switcher_close {

@@ -3,7 +3,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z, ZodSchema } from "zod";
 import clsx from "clsx"; // Utility to merge class names
@@ -23,6 +23,8 @@ interface TwoWayInputProps<T> {
     { isLoading: boolean; isSuccess: boolean; error?: any }
   ];
   className?: string; // Optional className prop
+  onSubmitFn?: Function
+  onBlurFn?: Function
 }
 //  TODO fix and ensure deduping works correctly to not fire a ton of network requests
 export function TwoWayInput<T>({
@@ -34,6 +36,8 @@ export function TwoWayInput<T>({
   useGeneralGetEntityQuery, // "General"  entity bc not referring our proper Entity, but anything
   useGeneralUpdateEntityMutation, // "General"  entity bc not referring our proper Entity, but anything
   className, // Destructure the className prop
+  onSubmitFn,
+  onBlurFn
 }: TwoWayInputProps<T>) {
   const { data: entity, isLoading, isSuccess } = useGeneralGetEntityQuery(generalEntityId);
 
@@ -46,6 +50,7 @@ export function TwoWayInput<T>({
     defaultValues: {
       [fieldName]: entity?.[fieldName] ?? defaultValue,
     },
+
   });
 
   // Handle form submission
@@ -53,6 +58,9 @@ export function TwoWayInput<T>({
     // check if values changed
     if (entity && isSuccess && entity[fieldName] === values[fieldName]) {
       return;
+    }
+    if (onSubmitFn) {
+      onSubmitFn()
     }
     await updateGeneralEntity({ id: generalEntityId, ...generalEntity, [fieldName]: values[fieldName] });
   }
@@ -81,8 +89,14 @@ export function TwoWayInput<T>({
               <FormControl>
                 <Input
                   type="text"
-                  className={cn("dark:bg-transparent border-none shadow-none text-white", className)} // Apply className prop here
+                  className={cn("dark:bg-transparent border-none shadow-none  text-white", className)} // Apply className prop here
                   {...field}
+                  onBlur={() => {
+                    if (onBlurFn) {
+                      onBlurFn()
+                    }
+                  }
+                  }
                 />
               </FormControl>
               <FormMessage />

@@ -1,7 +1,8 @@
 import { RootState } from '@/state/store';
+import { setAnalyticsUserId } from '@/utils/analytics/analytics';
 import { Database } from '@/utils/database.types';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { createSlice } from '@reduxjs/toolkit';
+import { createListenerMiddleware, createSlice } from '@reduxjs/toolkit';
 
 export type ControlBarView = "assets" | "hierarchy" | "scenes" | "code" | "database" | "versions" | "settings";
 
@@ -64,12 +65,20 @@ export const localSlice = createSlice({
     setCurrentScene: (state, action: PayloadAction<Scene>) => {
       state.currentScene = action.payload;
     },
-
     setExpandedEntityIds: (state, action: PayloadAction<{ entityIds: string[] }>) => {
       const { entityIds } = action.payload;
 
       // update, ensuring no duplicate IDs
       state.expandedEntityIds = entityIds.filter(function (x, i, a) {
+        return a.indexOf(x) == i;
+      });
+    },
+
+    addExpandedEntityIds: (state, action: PayloadAction<{ entityIds: string[] }>) => {
+      const { entityIds } = action.payload;
+
+      // add new IDs, ensuring no duplicate IDs
+      state.expandedEntityIds = [...state.expandedEntityIds, ...entityIds].filter(function (x, i, a) {
         return a.indexOf(x) == i;
       });
     },
@@ -94,8 +103,19 @@ export const {
   clearLocalUserState,
   setCurrentScene,
   setExpandedEntityIds,
+  addExpandedEntityIds,
   insertAutomaticallyExpandedSceneIds
 } = localSlice.actions;
+
+// Middleware
+export const listenerMiddlewareLocal = createListenerMiddleware()
+listenerMiddlewareLocal.startListening({
+  actionCreator: updateLocalUserState,
+  effect: async (action, listenerApi) => {
+    setAnalyticsUserId(action.payload.id)
+  }
+})
+
 
 // Selectors
 export const selectUiSoundsCanPlay = (state: RootState) => state.local.uiSoundsCanPlay;

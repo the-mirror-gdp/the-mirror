@@ -45,10 +45,7 @@ export const spacesApi = createApi({
         if (createSceneError) {
           return { error: createSceneError };
         }
-        // create root entity
-        // const { data: createEntityData, error: createEntityError } = await dispatch(
-        //   entitiesApi.endpoints.createEntity.initiate({ name: "Root", scene_id: createSceneData.id })
-        // )
+        // create root entity is managed by create Scene
 
         // if (createEntityError) {
         //   return { error: createEntityError };

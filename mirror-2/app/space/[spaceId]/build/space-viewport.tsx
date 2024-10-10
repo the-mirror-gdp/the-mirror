@@ -70,12 +70,12 @@ export default function SpaceViewport() {
   }, []);
 
   return (
-    <main className="h-full">
+    <div style={{ width: '100%', height: '100%' }} >
       <canvas
         ref={canvasRef}
-        className="flex h-full w-full items-center justify-center rounded-sm border border-dashed shadow-sm"
-        style={{ width: '100%', height: '100%' }} // Ensure canvas fills the parent
+        className="flex h-full w-full items-center justify-center shadow-sm"
+      // style={{ width: '100%', height: '100%' }} // Ensure canvas fills the parent
       />
-    </main>
+    </div>
   );
 }
