@@ -15,11 +15,12 @@ import { useEffect, useState } from "react";
 const ThemeSwitcher = () => {
   const [shown, setShown] = useState(false);
   const { theme, setTheme } = useTheme();
+  const appName = process.env.NEXT_PUBLIC_APP_NAME;
 
   // useEffect only runs on the client, so now we can safely show the UI
   useEffect(() => {
-    setTheme("dark");
-  }, []);
+    setTheme(appName === "The Mirror" ? "blue-theme" : "red-theme");
+  }, [appName]);
 
   if (!shown) {
     return null;
