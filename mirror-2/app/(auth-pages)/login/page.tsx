@@ -10,10 +10,10 @@ import { AppLogoImageMedium } from "@/lib/theme-service";
 import Link from "next/link";
 import { useRef } from "react";
 
+const isDevelopment = process.env.NODE_ENV === 'development';
+
 export default function Login({ searchParams }: { searchParams: Message }) {
   useRedirectToHomeIfSignedIn()
-
-  const isDevelopment = process.env.NODE_ENV === 'development';
 
   // References for email and password fields
   const emailRef = useRef<HTMLInputElement>(null);

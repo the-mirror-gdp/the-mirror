@@ -121,7 +121,7 @@ listenerMiddlewareSpaces.startListening({
     spacesApi.endpoints.createSpace.matchFulfilled  // Match fulfilled action of the createSpace mutation
   ),
   effect: async (action, listenerApi) => {
-    sendAnalyticsEvent(['space', 'create'])
+    sendAnalyticsEvent("Create Space")
   }
 })
 

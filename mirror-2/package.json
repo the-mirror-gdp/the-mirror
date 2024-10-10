@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^2.11.7",
+    "@amplitude/plugin-session-replay-browser": "^1.8.0",
     "@hookform/resolvers": "^3.9.0",
     "@next/bundle-analyzer": "^14.2.13",
     "@radix-ui/react-checkbox": "^1.1.1",

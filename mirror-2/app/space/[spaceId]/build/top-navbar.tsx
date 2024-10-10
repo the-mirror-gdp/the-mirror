@@ -41,7 +41,7 @@ export function TopNavbar() {
 
           >
             <Link href={`/space/${params.spaceId}/play`} prefetch={true}><Play className="mr-2 text-white" />
-              Play
+              Preview
             </Link>
           </Button>
           {!localUserState?.id && <Button
