@@ -31,7 +31,6 @@ export function sendAnalyticsEvent(event: any) {
 
 
 export function setAnalyticsUserId(userId: string) {
-  s
   if (typeof window !== 'undefined' && !analyticsInitialized) {
     ampli.client.setUserId(userId)
   }

@@ -1,9 +1,12 @@
-import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/toolkit';
-import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createSlice, createEntityAdapter, createAsyncThunk, createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
+import { RootState, createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import { createSupabaseBrowserClient } from '@/utils/supabase/client';
 import { TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY } from '@/state/shared-cache-tags';
+import { updateEngineApp } from '@/state/engine/engine';
+import { Database } from '@/utils/database.types';
+import { createGeneralEntityListenerMiddleware, selectAllEntities } from '@/state/engine/middleware';
 
-
+export type DatabaseEntity = Database['public']['Tables']['spaces']['Row']
 export const TAG_NAME_FOR_GENERAL_ENTITY = 'Entities'
 
 // Supabase API for spaces
@@ -275,6 +278,66 @@ export const entitiesApi = createApi({
   }),
 });
 
+export const listenerMiddlewareEntities = createGeneralEntityListenerMiddleware(
+  entitiesApi,
+  'Entities',
+  selectAllEntities
+);
+
+
+// export const listenerMiddlewareEntities = createListenerMiddleware();
+
+// listenerMiddlewareEntities.startListening({
+//   matcher: isAnyOf(
+//     entitiesApi.endpoints.createEntity.matchPending,
+//     entitiesApi.endpoints.updateEntity.matchPending,
+//     entitiesApi.endpoints.batchUpdateEntities.matchPending,
+//     entitiesApi.endpoints.deleteEntity.matchPending
+//   ),
+//   effect: async (action, listenerApi) => {
+//     // Optimistically update PlayCanvas when mutation starts
+//     const state: any = listenerApi.getState();
+//     const entities = state.entitiesApi.queries; // Adjust based on how your state is structured
+
+//     // Pass the optimistic changes to PlayCanvas
+//     updateEngineApp(entities, { isOptimistic: true });
+//   },
+// });
+
+// listenerMiddlewareEntities.startListening({
+//   matcher: isAnyOf(
+//     entitiesApi.endpoints.createEntity.matchFulfilled,
+//     entitiesApi.endpoints.updateEntity.matchFulfilled,
+//     entitiesApi.endpoints.batchUpdateEntities.matchFulfilled,
+//     entitiesApi.endpoints.deleteEntity.matchFulfilled,
+//     entitiesApi.endpoints.getAllEntities.matchFulfilled
+//   ),
+//   effect: async (action, listenerApi) => {
+//     // Confirm the update when the mutation is successfully completed
+//     const state: any = listenerApi.getState();
+//     const entities = state.entitiesApi.queries; // Adjust based on how your state is structured
+
+//     updateEngineApp(entities, { isOptimistic: false });
+//   },
+// });
+
+// listenerMiddlewareEntities.startListening({
+//   matcher: isAnyOf(
+//     entitiesApi.endpoints.createEntity.matchRejected,
+//     entitiesApi.endpoints.updateEntity.matchRejected,
+//     entitiesApi.endpoints.batchUpdateEntities.matchRejected,
+//     entitiesApi.endpoints.deleteEntity.matchRejected
+//   ),
+//   effect: async (action, listenerApi) => {
+//     // Revert PlayCanvas update when mutation fails
+//     const state: any = listenerApi.getState()
+//     const entities = state.entitiesApi.queries; // Adjust based on how your state is structured
+
+//     updateEngineApp(entities, { isReverted: true });
+//   },
+// });
+
+export const selectEntitiesResult = entitiesApi.endpoints.getAllEntities.select;
 
 // Export the API hooks
 export const {
