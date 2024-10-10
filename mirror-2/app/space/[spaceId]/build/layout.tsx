@@ -12,7 +12,7 @@ export default function Layout({ children, params }: {
   return (
     <div className="h-screen max-h-screen w-screen grid grid-rows-[auto,1fr] overflow-hidden">
       <TopNavbar />
-      <div className="grid grid-cols-[minmax(100px,4%),3fr,10fr] h-full overflow-hidden">
+      <div className="grid grid-cols-[minmax(100px,4%),minmax(200px,3fr),10fr] h-full overflow-hidden">
         <Sidebar />
         <InnerControlBar />
         <SpaceViewport />
