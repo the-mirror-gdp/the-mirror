@@ -2,7 +2,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query/react'
 import { listenerMiddlewareLocal, localSlice } from '@/state/local'
-import { spacesApi } from '@/state/spaces'
+import { listenerMiddlewareSpaces, spacesApi } from '@/state/spaces'
 import { scenesApi } from '@/state/scenes'
 import { entitiesApi } from '@/state/entities'
 import { assetsApi } from '@/state/assets'
@@ -28,6 +28,7 @@ export const store = configureStore({
       .concat(entitiesApi.middleware)
       .concat(componentsApi.middleware)
       .concat(listenerMiddlewareLocal.middleware)
+      .concat(listenerMiddlewareSpaces.middleware)
 })
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors

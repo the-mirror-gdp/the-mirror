@@ -6,6 +6,8 @@ import { scenesApi, TAG_NAME_FOR_GENERAL_ENTITY as SCENES_TAG_NAME_FOR_GENERAL_E
 import { TAG_NAME_FOR_GENERAL_ENTITY as ENTITIES_TAG_NAME_FOR_GENERAL_ENTITY, entitiesApi } from '@/state/entities';
 import { TAG_NAME_FOR_GENERAL_ENTITY as COMPONENTS_TAG_NAME_FOR_GENERAL_ENTITY } from '@/state/components';
 import { TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY } from '@/state/shared-cache-tags';
+import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
+import { sendAnalyticsEvent } from '@/utils/analytics/analytics';
 
 export const TAG_NAME_FOR_GENERAL_ENTITY = 'Spaces'
 
@@ -111,6 +113,17 @@ export const spacesApi = createApi({
     }),
   }),
 });
+
+// Middleware
+export const listenerMiddlewareSpaces = createListenerMiddleware()
+listenerMiddlewareSpaces.startListening({
+  matcher: isAnyOf(
+    spacesApi.endpoints.createSpace.matchFulfilled  // Match fulfilled action of the createSpace mutation
+  ),
+  effect: async (action, listenerApi) => {
+    sendAnalyticsEvent(['space', 'create'])
+  }
+})
 
 // Export the API hooks
 export const {

@@ -4,6 +4,8 @@ import "./globals.css";
 import { Metadata } from "next";
 import { appName, appDescription, faviconPath } from "@/lib/theme-service";
 import Analytics from "@/utils/analytics/analytics";
+
+
 export const metadata: Metadata = {
   title: appName(),
   description: appDescription(),
