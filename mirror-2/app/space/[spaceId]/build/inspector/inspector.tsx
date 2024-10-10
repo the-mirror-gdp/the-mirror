@@ -1,8 +1,10 @@
 "use client"
 import { TwoWayInput } from "@/components/two-way-input";
+import { Input } from "@/components/ui/input";
 import { useAppSelector } from "@/hooks/hooks";
 import { useGetSingleEntityQuery, useUpdateEntityMutation } from "@/state/entities";
 import { getCurrentEntity } from "@/state/local";
+import { cn } from "@/utils/cn";
 import { z } from 'zod'; // Import zod for validation
 
 export default function Inspector() {
@@ -21,6 +23,14 @@ export default function Inspector() {
       generalEntity={entity}
       useGeneralGetEntityQuery={useGetSingleEntityQuery}
       useGeneralUpdateEntityMutation={useUpdateEntityMutation}
+      renderComponent={(field) => (
+        <Input
+          type="text"
+          autoComplete="off"
+          className={cn("dark:bg-transparent border-none shadow-none  text-white")} // Apply className prop here
+          {...field}
+        />
+      )}
     />
     }
   </div>
