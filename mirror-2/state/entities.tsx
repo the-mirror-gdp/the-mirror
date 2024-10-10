@@ -169,16 +169,6 @@ export const entitiesApi = createApi({
           order_under_parent = highestOrderUnderParent + 1;
         }
 
-        // case: parent_id and order_under_parent exist
-        // if (parent_id && order_under_parent) {
-        //   // increment all order_under_parents below the new entity since it's being inserted
-        //   const { data, error }: { data: any, error: any } = await supabase
-        //     // @ts-ignore
-        //     .rpc('increment_and_resequence_order_under_parent', { p_scene_id: scene_id, p_entity_id: id })
-        //     .single();
-        // }
-
-
         const { data, error } = await supabase
           .from("entities")
           .update(
@@ -188,11 +178,11 @@ export const entitiesApi = createApi({
           .single();
 
         if (error) {
-          debugger
           return { error: error.message };
         }
         return { data };
       },
+      // optimistic update
       async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
           entitiesApi.util.updateQueryData('getSingleEntity', id, (draft) => {

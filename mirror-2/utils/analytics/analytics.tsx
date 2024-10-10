@@ -8,7 +8,7 @@ import { sessionReplayPlugin } from '@amplitude/plugin-session-replay-browser';
 let analyticsInitialized = false
 
 
-export function sendAnalyticsEvent(event: any, eventValue?: number) {
+export function sendAnalyticsEvent(event: any) {
   // don't track if we're not client-side since NextJS renders the HTML on server
   if (typeof window !== 'undefined' && analyticsInitialized) {
     const app = appNameKebabCase();
@@ -19,14 +19,10 @@ export function sendAnalyticsEvent(event: any, eventValue?: number) {
     // Send the event to GameAnalytics with the appended event details
     const eventName = `${app}:${eventDetails}`
     console.log('Analytics: Event: ' + eventName)
-    if (eventValue !== undefined) {
-      GameAnalytics.addDesignEvent(eventName, eventValue);
-    } else {
-      GameAnalytics.addDesignEvent(eventName);
-    }
+    GameAnalytics.addDesignEvent(eventName);
 
     ampli.track({
-      event_type: eventName,
+      event_type: event,
       app_version: packageJson.version
     })
 
