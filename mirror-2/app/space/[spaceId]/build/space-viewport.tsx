@@ -3,6 +3,8 @@
 import { useEffect, useRef } from "react";
 import { useParams } from "next/navigation";
 import * as pc from 'playcanvas'
+import { setApp } from "@/state/engine/engine";
+
 
 export default function SpaceViewport() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null); // Create a reference for the canvas
@@ -15,7 +17,7 @@ export default function SpaceViewport() {
         mouse: new pc.Mouse(canvas),
         touch: new pc.TouchDevice(canvas),
       });
-
+      setApp(app)
       app.start();
 
       // Function to resize canvas based on its parent container
@@ -33,33 +35,6 @@ export default function SpaceViewport() {
 
       // Update the canvas size on window resize
       window.addEventListener('resize', resizeCanvas);
-
-      // Create a camera
-      const camera = new pc.Entity();
-      camera.addComponent('camera', {
-        clearColor: new pc.Color(0.5, 0.5, 0.5),
-      });
-      camera.setPosition(0, 1, 5); // Position the camera
-      app.root.addChild(camera);
-
-      // Create a light
-      const light = new pc.Entity();
-      light.addComponent('light');
-      light.setEulerAngles(45, 0, 0); // Set the light angle
-      app.root.addChild(light);
-
-      // Create a mesh
-      const box = new pc.Entity();
-      box.addComponent('model', {
-        type: 'box',
-      });
-      box.setLocalPosition(0, 1, 0); // Center the mesh
-      app.root.addChild(box);
-
-      // Update the application
-      app.on("update", function (dt) {
-        box.rotate(10 * dt, 20 * dt, 30 * dt); // Rotate the mesh
-      });
 
       // Cleanup function to remove event listeners and destroy the app on unmount
       return () => {
