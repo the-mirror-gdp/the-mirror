@@ -1,5 +1,7 @@
 import { TwoWayInput } from "@/components/two-way-input";
+import { Input } from "@/components/ui/input";
 import { useGetSingleEntityQuery, useUpdateEntityMutation } from "@/state/entities";
+import { cn } from "@/utils/cn";
 import { useState } from "react";
 import { z } from "zod";
 
@@ -17,6 +19,14 @@ export default function EntityTreeItem({ nodeData }) {
       })}
       useGeneralGetEntityQuery={useGetSingleEntityQuery}
       useGeneralUpdateEntityMutation={useUpdateEntityMutation}
+      renderComponent={(field) => (
+        <Input
+          type="text"
+          autoComplete="off"
+          className={cn("dark:bg-transparent border-none shadow-none  text-white")} // Apply className prop here
+          {...field}
+        />
+      )}
     />
     }
   </div>

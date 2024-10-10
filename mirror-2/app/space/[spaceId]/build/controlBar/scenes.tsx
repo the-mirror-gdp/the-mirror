@@ -13,6 +13,7 @@ import { getCurrentScene, setControlBarCurrentView, setCurrentScene } from '@/st
 import { useCreateSceneMutation, useDeleteSceneMutation, useGetAllScenesQuery, useGetSingleSceneQuery, useUpdateSceneMutation } from '@/state/scenes';
 import { cn } from '@/utils/cn';
 import { generateSceneName } from '@/actions/name-generator';
+import { Input } from '@/components/ui/input';
 
 export default function Scenes() {
   const params = useParams<{ spaceId: string }>()
@@ -75,6 +76,14 @@ export default function Scenes() {
                       generalEntity={scene}
                       useGeneralGetEntityQuery={useGetSingleSceneQuery}
                       useGeneralUpdateEntityMutation={useUpdateSceneMutation}
+                      renderComponent={(field) => (
+                        <Input
+                          type="text"
+                          autoComplete="off"
+                          className={cn("dark:bg-transparent border-none shadow-none  text-white")} // Apply className prop here
+                          {...field}
+                        />
+                      )}
                     />
                   </div>
                   <div className="flex-none content-center">
