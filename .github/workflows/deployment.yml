@@ -74,7 +74,7 @@ jobs:
       game-export-preset: MacOS-themirror-dev
       game-binary-name: The Mirror Dev.app
       bucket-name: no-bucket
-      os: ${{ github.event.repository.name != 'the-mirror' && 'macos-mirror' || 'macos-13' }}
+      os: ${{ github.event.repository.name != 'the-mirror' && 'macos-mirror' || 'macos-latest' }}
       editor-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/${{needs.get-or-build-engine.outputs.commit_hash}}/MirrorGodotEditorMac.app.zip
       template-download-url: https://storage.googleapis.com/mirror_native_client_builds/Engine/${{needs.get-or-build-engine.outputs.commit_hash}}/macos_template.app.zip
   build-linux-client:
