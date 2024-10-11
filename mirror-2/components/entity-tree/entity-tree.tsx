@@ -282,7 +282,6 @@ const EntityTree: React.FC = () => {
   };
 
   const onExpand: TreeProps['onExpand'] = (expandedKeysValue) => {
-    console.log('onExpand', expandedKeysValue);
     // Ensure it's a string array
     setExpandedKeys(expandedKeysValue.map(key => String(key))); // Convert to string[]
     dispatch(setExpandedEntityIds({ entityIds: expandedKeysValue.map(key => String(key)) }));

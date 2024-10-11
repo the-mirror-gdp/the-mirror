@@ -14,7 +14,7 @@ export default function Inspector({ className }) {
     name: z.string().min(3, { message: "Scene name must be at least 1 character long" }),
   });
 
-  return <div className={cn(className)}>
+  return <div className={cn(className, "mt-2")}>
     {entity &&
       <TwoWayInput
         id={entity.id}
