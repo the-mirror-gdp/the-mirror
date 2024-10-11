@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import { useGetAllScenesQuery } from '@/state/scenes';
 import { useGetAllEntitiesQuery, useGetSingleEntityQuery, useUpdateEntityMutation, useBatchUpdateEntitiesMutation } from '@/state/entities';
 import { skipToken } from '@reduxjs/toolkit/query';
-import { TwoWayInput } from '@/components/two-way-input';
+import { SyncedTextInput } from '@/components/ui/synced-inputs/synced-text-input';
 import { z } from 'zod';
 import { addExpandedEntityIds, getCurrentScene, insertAutomaticallyExpandedSceneIds, selectAutomaticallyExpandedSceneIds, selectExpandedEntityIds, setCurrentEntity, setExpandedEntityIds } from '@/state/local';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';

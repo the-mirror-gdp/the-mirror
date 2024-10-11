@@ -2,7 +2,7 @@
 import { DatabaseEntity, useGetSingleEntityQuery, useUpdateEntityMutation } from "@/state/entities";
 import { Separator } from "@/components/ui/separator";
 import InputVector3 from "@/components/ui/input.vector3";
-import { TwoWayInput } from "@/components/two-way-input";
+import { SyncedTextInput } from "@/components/ui/synced-inputs/synced-text-input";
 import { cn } from "@/lib/utils";
 import { Input } from "antd";
 import { z } from "zod";
@@ -10,7 +10,7 @@ import { z } from "zod";
 export function EntityFormGroup({ entity }: { entity: DatabaseEntity }) {
   return (
     <>
-      <TwoWayInput
+      <SyncedTextInput
         id={entity.id}
         generalEntity={entity}
         defaultValue={entity.name}
