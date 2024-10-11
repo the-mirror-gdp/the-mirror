@@ -2,10 +2,37 @@
 import { DatabaseEntity, useGetSingleEntityQuery, useUpdateEntityMutation } from "@/state/entities";
 import { Separator } from "@/components/ui/separator";
 import InputVector3 from "@/components/ui/input.vector3";
+import { TwoWayInput } from "@/components/two-way-input";
+import { cn } from "@/lib/utils";
+import { Input } from "antd";
+import { z } from "zod";
 
 export function EntityFormGroup({ entity }: { entity: DatabaseEntity }) {
   return (
     <>
+      <TwoWayInput
+        id={entity.id}
+        generalEntity={entity}
+        defaultValue={entity.name}
+        className={'p-0 m-0 bg-transparent cursor-pointer duration-0'}
+        fieldName="name"
+        formSchema={z.object({
+          name: z.string().min(1, { message: "Entity name must be at least 1 character long" }),
+        })}
+        useGeneralGetEntityQuery={useGetSingleEntityQuery}
+        useGeneralUpdateEntityMutation={useUpdateEntityMutation}
+        renderComponent={(field) => (
+          <Input
+            type="text"
+            autoComplete="off"
+            className={cn("dark:bg-transparent py-1 pr-1 pl-0 text-lg border-none shadow-none tracking-wider hover:bg-[#ffffff0d] text-white")}
+            {...field}
+          />
+        )}
+      />
+
+      <Separator className="mb-2" />
+
       <InputVector3
         label="Position"
         entity={entity}
