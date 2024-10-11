@@ -1,6 +1,5 @@
 "use client"
 import packageJson from '../../package.json';
-import { appNameKebabCase } from '@/lib/theme-service';
 import { ampli } from '@/src/ampli';
 import { sessionReplayPlugin } from '@amplitude/plugin-session-replay-browser';
 import { useEffect } from 'react';
