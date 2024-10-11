@@ -125,12 +125,12 @@ export type Database = {
           created_at: string
           enabled: boolean
           id: string
+          local_position: number[]
+          local_rotation: number[]
+          local_scale: number[]
           name: string
           order_under_parent: number | null
           parent_id: string | null
-          position: number[]
-          rotation: number[]
-          scale: number[]
           scene_id: string
           tags: string[] | null
           updated_at: string
@@ -139,12 +139,12 @@ export type Database = {
           created_at?: string
           enabled?: boolean
           id?: string
+          local_position?: number[]
+          local_rotation?: number[]
+          local_scale?: number[]
           name: string
           order_under_parent?: number | null
           parent_id?: string | null
-          position?: number[]
-          rotation?: number[]
-          scale?: number[]
           scene_id: string
           tags?: string[] | null
           updated_at?: string
@@ -153,12 +153,12 @@ export type Database = {
           created_at?: string
           enabled?: boolean
           id?: string
+          local_position?: number[]
+          local_rotation?: number[]
+          local_scale?: number[]
           name?: string
           order_under_parent?: number | null
           parent_id?: string | null
-          position?: number[]
-          rotation?: number[]
-          scale?: number[]
           scene_id?: string
           tags?: string[] | null
           updated_at?: string
