@@ -151,7 +151,9 @@ export const entitiesApi = createApi({
             return { error: rootEntityError.message };
           }
 
-          parent_id = rootEntity.id;
+          if (rootEntity.id !== id) { // ensure that it's not setting a reference to itself; this can occur when editing the root entity name
+            parent_id = rootEntity.id;
+          }
         }
 
         // case: parent_id exists but no order_under_parent
