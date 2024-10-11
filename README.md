@@ -25,7 +25,7 @@ The **easiest** way is via our compiled Mirror Official app: [Get Started](https
 - **Player controllers**: Out-of-the-box FPS (first-person shooter), TPS (third-person shooter), and VR (virtual reality) supported.
 - **VR-ready**: Just put on the tethered headset when playing! We test with Meta Quest 2 and 3.
 - **Intentional architecture**: (Space)Objects are a simple game object abstraction with the aim of supporting **any** type of Godot node in the future.
-- **Bidirectionality with Godot**: Start in The Mirror and end in Godot, or start in Godt and end in The Mirror. Our aim is to make it easy to transition between the two or develop side-by-side: your choice.
+- **Bidirectionality with Godot**: Start in The Mirror and end in Godot, or start in Godot and end in The Mirror. Our aim is to make it easy to transition between the two or develop side-by-side: your choice.
   ![Bidirectionality with Godot](bidirectionality-with-godot.jpg)
 - **Godot plugin:** Coming soon
 
