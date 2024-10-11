@@ -14,8 +14,8 @@ interface SyncedTextInputProps<T> {
   fieldName: keyof T;
   formSchema: ZodSchema;
   defaultValue: string;
-  useGeneralGetEntityQuery: (id: string) => { data?: T; isLoading: boolean; isSuccess: boolean; error?: any };
-  useGeneralUpdateEntityMutation: () => readonly [
+  useGenericGetEntityQuery: (id: string) => { data?: T; isLoading: boolean; isSuccess: boolean; error?: any };
+  useGenericUpdateEntityMutation: () => readonly [
     (args: { id: string;[fieldName: string]: any }) => any, // The mutation trigger function
     { isLoading: boolean; isSuccess: boolean; error?: any }
   ];
@@ -32,17 +32,17 @@ export function SyncedTextInput<T>({
   fieldName,
   formSchema,
   defaultValue,
-  useGeneralGetEntityQuery,
-  useGeneralUpdateEntityMutation,
+  useGenericGetEntityQuery: useGenericGetEntityQuery,
+  useGenericUpdateEntityMutation: useGenericUpdateEntityMutation,
   className,
   onSubmitFn,
   onBlurFn,
   renderComponent,
   convertSubmissionToNumber = false, // Default to false
 }: SyncedTextInputProps<T>) {
-  const { data: entity, isLoading, isSuccess } = useGeneralGetEntityQuery(generalEntityId);
+  const { data: entity, isLoading, isSuccess } = useGenericGetEntityQuery(generalEntityId);
 
-  const [updateGeneralEntity, { isLoading: isUpdating, isSuccess: isUpdated, error }] = useGeneralUpdateEntityMutation();
+  const [updateGeneralEntity, { isLoading: isUpdating, isSuccess: isUpdated, error }] = useGenericUpdateEntityMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
