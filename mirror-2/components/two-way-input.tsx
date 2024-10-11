@@ -82,6 +82,17 @@ export function TwoWayInput<T>({
     }
   }, [entity, isSuccess, form]);
 
+  const formSubmitFn = async (event) => {
+    event.preventDefault()
+    const isValid = await form.trigger(fieldName as string); // Manually trigger validation
+
+    if (isValid) {
+      const values = form.getValues(); // Get current form values
+      console.log("Form is valid, triggering submission:", values);
+      onSubmit(values); // Manually call onSubmit after validation passes
+    }
+  }
+
   // Display loading state if data is still being fetched
   if (isLoading) {
     return <Skeleton className={clsx("w-full dark:bg-transparent border-none text-lg shadow-none", className)} />;
@@ -91,15 +102,10 @@ export function TwoWayInput<T>({
     <Form {...form}>
       <form
         className={cn(className)}
-        onBlur={async (event) => {
-          const isValid = await form.trigger(fieldName as string); // Manually trigger validation
-
-          if (isValid) {
-            const values = form.getValues(); // Get current form values
-            console.log("Form is valid, triggering submission:", values);
-            onSubmit(values); // Manually call onSubmit after validation passes
-          }
-        }}
+        onBlur={
+          formSubmitFn
+        }
+        onSubmit={formSubmitFn}
       >
         <FormField
           control={form.control}
