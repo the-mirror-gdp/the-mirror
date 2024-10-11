@@ -1,13 +1,8 @@
-[gd_resource type="Theme" load_steps=28 format=3 uid="uid://cmn57tuwfayaa"]
+[gd_resource type="Theme" load_steps=23 format=3 uid="uid://cmn57tuwfayaa"]
 
-[ext_resource type="FontFile" uid="uid://cgyrixnr8bppj" path="res://ui/common/fonts/montserrat/montserrat_medium.ttf" id="1_l5u5o"]
 [ext_resource type="StyleBox" uid="uid://biwid7pf726cm" path="res://ui/new_player_ui/inventory/panel_light_blue_rounded.tres" id="2_hirdd"]
 [ext_resource type="StyleBox" uid="uid://d0agfj0dkjits" path="res://ui/new_player_ui/inventory/panel_light_blue_rounded_hover.tres" id="3_00lpo"]
 [ext_resource type="StyleBox" uid="uid://bxdufxik1y0yu" path="res://ui/new_player_ui/inventory/panel_light_blue_rounded_pressed.tres" id="4_ci6um"]
-[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="7_arrhg"]
-[ext_resource type="FontFile" uid="uid://bpw8ywxvp8ctj" path="res://ui/common/fonts/montserrat/montserrat_regular.ttf" id="8_k3pt8"]
-[ext_resource type="Texture2D" uid="uid://d31drr4014mav" path="res://creator/selection/scene_hierarchy/icons/down_arrow_padding.svg" id="12_a7uh6"]
-[ext_resource type="Texture2D" uid="uid://b5fnwwbi3gbuf" path="res://creator/selection/scene_hierarchy/icons/right_arrow_padding.svg" id="13_hg215"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gwi6x"]
 bg_color = Color(0.254902, 0.254902, 0.254902, 1)
@@ -161,7 +156,7 @@ Button/colors/font_color_hover = Color(0.94, 0.94, 0.94, 1)
 Button/colors/font_color_pressed = Color(1, 1, 1, 1)
 Button/constants/hseparation = 2
 Button/font_sizes/font_size = 11
-Button/fonts/font = ExtResource("1_l5u5o")
+Button/fonts/font = null
 Button/styles/disabled = SubResource("StyleBoxFlat_gwi6x")
 Button/styles/focus = ExtResource("2_hirdd")
 Button/styles/hover = ExtResource("3_00lpo")
@@ -180,9 +175,9 @@ ButtonLarge/styles/normal = SubResource("StyleBoxFlat_2eqk7")
 ButtonLarge/styles/pressed = SubResource("StyleBoxFlat_xjomr")
 HSeparator/styles/separator = SubResource("StyleBoxLine_vxl3u")
 Label/font_sizes/font_size = 11
-Label/fonts/font = ExtResource("7_arrhg")
+Label/fonts/font = null
 LabelRegular/base_type = &"Label"
-LabelRegular/fonts/font = ExtResource("8_k3pt8")
+LabelRegular/fonts/font = null
 Panel/styles/panel = SubResource("StyleBoxFlat_p74sg")
 PanelContainer/styles/panel = SubResource("StyleBoxEmpty_6d6jx")
 PanelContainerPopup/base_type = &"PanelContainer"
@@ -192,7 +187,7 @@ PanelSlotActive/styles/panel = SubResource("StyleBoxFlat_4aegr")
 PanelSlotHover/base_type = &"Panel"
 PanelSlotHover/styles/panel = SubResource("StyleBoxFlat_re17b")
 TooltipLabel/colors/font_color = Color(1, 1, 1, 1)
-TooltipLabel/fonts/font = ExtResource("8_k3pt8")
+TooltipLabel/fonts/font = null
 TooltipPanel/styles/panel = SubResource("StyleBoxFlat_2emhc")
 Tree/colors/font_color = Color(1, 1, 1, 1)
 Tree/colors/guide_color = Color(0, 0, 0, 0.333333)
@@ -203,9 +198,9 @@ Tree/constants/scrollbar_h_separation = 0
 Tree/constants/scrollbar_margin_right = 2
 Tree/constants/v_separation = 11
 Tree/font_sizes/font_size = 11
-Tree/fonts/font = ExtResource("1_l5u5o")
-Tree/icons/arrow = ExtResource("12_a7uh6")
-Tree/icons/arrow_collapsed = ExtResource("13_hg215")
+Tree/fonts/font = null
+Tree/icons/arrow = null
+Tree/icons/arrow_collapsed = null
 Tree/styles/button_pressed = SubResource("StyleBoxEmpty_ugmvp")
 Tree/styles/cursor = SubResource("StyleBoxEmpty_lsmgx")
 Tree/styles/cursor_unfocused = SubResource("StyleBoxEmpty_x6iuc")

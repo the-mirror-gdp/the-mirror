@@ -1,8 +1,6 @@
-[gd_resource type="ShaderMaterial" load_steps=7 format=3 uid="uid://bl3v1c1r23n63"]
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://bl3v1c1r23n63"]
 
 [ext_resource type="Shader" path="res://gameplay/space_object/heightmap/heightmap_shader.gdshader" id="1_upstu"]
-[ext_resource type="Texture2D" uid="uid://db7lrvdglwiw4" path="res://gameplay/space_object/heightmap/checker-texture.png" id="2_fxoc6"]
-[ext_resource type="CompressedTexture3D" uid="uid://7qq35u8ac45t" path="res://art/textures/perlworlnoise.png" id="2_igqjo"]
 
 [sub_resource type="Gradient" id="Gradient_2h1ui"]
 offsets = PackedFloat32Array(0.344444, 0.608333)
@@ -30,15 +28,12 @@ shader_parameter/colormap_strength = 0.5
 shader_parameter/colormap_present = false
 shader_parameter/offset_normal = Vector2(1, 0)
 shader_parameter/texture_noise = SubResource("NoiseTexture2D_084j2")
-shader_parameter/texture_noise_3d = ExtResource("2_igqjo")
 shader_parameter/albedo_top = Color(1, 1, 1, 1)
 shader_parameter/uv_scale_top = 0.1
 shader_parameter/normal_strength_top = 1.5
 shader_parameter/roughness_offset_top = 0.1
 shader_parameter/layer_height_top = 0.5
-shader_parameter/texture_albedo_top = ExtResource("2_fxoc6")
 shader_parameter/albedo_side = Color(1, 1, 1, 1)
 shader_parameter/uv_scale_side = 0.1
 shader_parameter/normal_strength_side = 1.5
 shader_parameter/layer_height_side = 0.0
-shader_parameter/texture_albedo_side = ExtResource("2_fxoc6")

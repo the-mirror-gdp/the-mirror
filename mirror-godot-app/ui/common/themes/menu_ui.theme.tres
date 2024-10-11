@@ -1,16 +1,11 @@
-[gd_resource type="Theme" load_steps=38 format=3 uid="uid://ggwm8asxintx"]
+[gd_resource type="Theme" load_steps=33 format=3 uid="uid://ggwm8asxintx"]
 
 [ext_resource type="FontVariation" uid="uid://cnncegbqgc72t" path="res://ui/common/themes/main_menu_ui_button_font.tres" id="1_2ojen"]
-[ext_resource type="Texture2D" uid="uid://1p8xud3vo124" path="res://ui/common/sliders/slider_button.svg" id="2_5as7o"]
-[ext_resource type="Texture2D" uid="uid://cplq1i4kur4rv" path="res://ui/common/sliders/slider_button_highlight.svg" id="3_y70pv"]
 [ext_resource type="FontVariation" uid="uid://cihhrona27xhd" path="res://ui/common/themes/main_menu_ui_line_edit_font.tres" id="5_2615r"]
 [ext_resource type="StyleBox" uid="uid://bq3jyqps48teh" path="res://ui/common/text_edit/text_edit_focus.stylebox.tres" id="6_2qeu3"]
 [ext_resource type="StyleBox" uid="uid://clf3e0ur2nxpy" path="res://ui/common/text_edit/text_edit_normal.stylebox.tres" id="7_v20jb"]
 [ext_resource type="StyleBox" uid="uid://d01geu8jfp48b" path="res://ui/common/panels/panel_default.stylebox.tres" id="8_rnqcb"]
-[ext_resource type="FontFile" uid="uid://cgyrixnr8bppj" path="res://ui/common/fonts/montserrat/montserrat_medium.ttf" id="8_y3bhi"]
-[ext_resource type="Texture2D" uid="uid://7tnro5gaclt3" path="res://ui/art/radiobutton-selected-small.svg" id="8_yjndj"]
 [ext_resource type="StyleBox" uid="uid://bc7pqashdnvd" path="res://ui/common/panels/panel_basic.stylebox.tres" id="9_jo76y"]
-[ext_resource type="Texture2D" uid="uid://cgjjs2r35tdy" path="res://ui/art/radiobutton-unselected-small.svg" id="9_oc6g7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lh8yo"]
 content_margin_left = 12.0
@@ -205,7 +200,6 @@ corner_radius_bottom_left = 3
 corner_detail = 5
 
 [sub_resource type="FontVariation" id="FontVariation_5p5so"]
-base_font = ExtResource("8_y3bhi")
 spacing_top = 6
 spacing_bottom = 6
 
@@ -289,8 +283,8 @@ ButtonAccent2/styles/focus = SubResource("StyleBoxFlat_ows5c")
 ButtonAccent2/styles/hover = SubResource("StyleBoxFlat_ows5c")
 ButtonAccent2/styles/normal = SubResource("StyleBoxFlat_5liqt")
 ButtonAccent2/styles/pressed = SubResource("StyleBoxFlat_r0e00")
-CheckBox/icons/radio_checked = ExtResource("8_yjndj")
-CheckBox/icons/radio_checked_disabled = ExtResource("9_oc6g7")
+CheckBox/icons/radio_checked = null
+CheckBox/icons/radio_checked_disabled = null
 CheckButton/styles/normal = SubResource("StyleBoxFlat_wcs1q")
 FlatButton/base_type = &"Button"
 FlatButton/colors/font_hover_color = Color(0.333333, 1, 0.831373, 1)
@@ -299,8 +293,8 @@ FlatButton/styles/disabled = SubResource("StyleBoxFlat_k7nwg")
 FlatButton/styles/focus = SubResource("StyleBoxFlat_k7nwg")
 FlatButton/styles/hover = SubResource("StyleBoxFlat_iwpcx")
 FlatButton/styles/normal = SubResource("StyleBoxFlat_k7nwg")
-HSlider/icons/grabber = ExtResource("2_5as7o")
-HSlider/icons/grabber_highlight = ExtResource("3_y70pv")
+HSlider/icons/grabber = null
+HSlider/icons/grabber_highlight = null
 HSlider/styles/grabber_area = SubResource("StyleBoxEmpty_hni8n")
 HSlider/styles/grabber_area_highlight = SubResource("StyleBoxEmpty_ecgey")
 HSlider/styles/slider = SubResource("StyleBoxFlat_1gnkj")
@@ -314,8 +308,8 @@ Panel/styles/panel = ExtResource("8_rnqcb")
 Panel/styles/panel_fg = SubResource("StyleBoxFlat_byi1l")
 PopupMenu/font_sizes/font_size = 16
 PopupMenu/fonts/font = SubResource("FontVariation_5p5so")
-PopupMenu/icons/radio_checked = ExtResource("8_yjndj")
-PopupMenu/icons/radio_unchecked = ExtResource("9_oc6g7")
+PopupMenu/icons/radio_checked = null
+PopupMenu/icons/radio_unchecked = null
 PopupMenu/styles/hover = SubResource("StyleBoxFlat_glqot")
 PopupMenu/styles/panel = SubResource("StyleBoxFlat_rxdm6")
 RichTextLabel/fonts/normal_font = SubResource("Font_y5boo")

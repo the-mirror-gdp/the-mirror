@@ -1,5 +1,8 @@
 # Change history for the Godot OpenXR loaders asset
 
+## 3.0.1
+- Fixed hand tracking issue
+
 ## 3.0.0
 - Merge GDExtension into a single implementation
 - Upgrade Android, Gradle, Godot and Kotlin dependencies
@@ -18,6 +21,7 @@
 - Add feature flags to Khronos loader for HTC
 - Add XR_HTC_passthrough extension wrapper
 - Add manifest entries to Pico and switch Pico to using the Khronos Loader
+- Add Meta Passthrough tutorial doc
 
 ## 2.0.3
 - Migrate the export scripts from gdscript to C++ via gdextension

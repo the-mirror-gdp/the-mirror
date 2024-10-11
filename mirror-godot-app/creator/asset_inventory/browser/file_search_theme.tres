@@ -1,8 +1,5 @@
-[gd_resource type="Theme" load_steps=8 format=3 uid="uid://iixsh1y7xih1"]
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://iixsh1y7xih1"]
 
-[ext_resource type="Texture2D" uid="uid://cf0ttxyympec2" path="res://ui/art/arrow_backward/light.png" id="1_2w3ie"]
-[ext_resource type="Texture2D" uid="uid://cxhv0vxb5q0lh" path="res://ui/art/arrow_forward/light.png" id="2_yrnax"]
-[ext_resource type="Texture2D" uid="uid://xt1vcp0ji5k4" path="res://ui/art/arrow_up/light.png" id="3_iiaw6"]
 [ext_resource type="StyleBox" uid="uid://bbs54ft14uu3q" path="res://ui/common/buttons/gray/gray_normal.stylebox.tres" id="4_1r451"]
 [ext_resource type="FontVariation" uid="uid://cjhnx2nsio76o" path="res://ui/common/fonts/montserrat/montserrat_regular_letter_spaced.tres" id="4_5rqby"]
 
@@ -24,9 +21,9 @@ expand_margin_top = 40.0
 
 [resource]
 Button/styles/hover = SubResource("StyleBoxEmpty_e3ljp")
-FileDialog/icons/back_folder = ExtResource("1_2w3ie")
-FileDialog/icons/forward_folder = ExtResource("2_yrnax")
-FileDialog/icons/parent_folder = ExtResource("3_iiaw6")
+FileDialog/icons/back_folder = null
+FileDialog/icons/forward_folder = null
+FileDialog/icons/parent_folder = null
 MarginContainer/constants/margin_bottom = 20
 MarginContainer/constants/margin_left = 20
 MarginContainer/constants/margin_right = 20

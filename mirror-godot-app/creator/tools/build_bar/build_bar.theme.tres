@@ -1,8 +1,4 @@
-[gd_resource type="Theme" load_steps=11 format=3 uid="uid://dqjg12tafkeu2"]
-
-[ext_resource type="FontFile" uid="uid://bjwepurchoc75" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_semi_bold.ttf" id="1_01mxr"]
-[ext_resource type="Texture2D" uid="uid://dcxshtwsv4wbm" path="res://ui/art/checkbox_checked.svg" id="2_u0i3h"]
-[ext_resource type="Texture2D" uid="uid://ctucqgbgww85m" path="res://ui/art/checkbox_unchecked.svg" id="3_lgfr8"]
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://dqjg12tafkeu2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y1lmj"]
 content_margin_left = 4.0
@@ -74,16 +70,16 @@ bg_color = Color(0, 0, 0, 1)
 
 [resource]
 Button/font_sizes/font_size = 11
-Button/fonts/font = ExtResource("1_01mxr")
+Button/fonts/font = null
 Button/styles/disabled = SubResource("StyleBoxFlat_y1lmj")
 Button/styles/focus = SubResource("StyleBoxEmpty_g10io")
 Button/styles/hover = SubResource("StyleBoxFlat_sb54j")
 Button/styles/normal = SubResource("StyleBoxFlat_lj6cp")
 Button/styles/pressed = SubResource("StyleBoxFlat_5bpis")
-CheckBox/icons/checked = ExtResource("2_u0i3h")
-CheckBox/icons/unchecked = ExtResource("3_lgfr8")
+CheckBox/icons/checked = null
+CheckBox/icons/unchecked = null
 Label/font_sizes/font_size = 11
-Label/fonts/font = ExtResource("1_01mxr")
-LineEdit/fonts/font = ExtResource("1_01mxr")
+Label/fonts/font = null
+LineEdit/fonts/font = null
 LineEdit/styles/normal = SubResource("StyleBoxFlat_tr7k2")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_ii6xw")

@@ -1,2 +1,2 @@
 #!/bin/bash
-curl -o "MirrorGodotEditorWindows.exe" "https://storage.googleapis.com/mirror_native_client_builds/Engine/a6443c6c/MirrorGodotEditorWindows.exe"
+curl -o "MirrorGodotEditorWindows.exe" "https://storage.googleapis.com/mirror_native_client_builds/Engine/2ed330c2/MirrorGodotEditorWindows.exe"

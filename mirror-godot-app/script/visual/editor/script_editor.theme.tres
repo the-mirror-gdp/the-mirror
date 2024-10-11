@@ -1,9 +1,6 @@
-[gd_resource type="Theme" load_steps=18 format=3 uid="uid://chpmeyn2g6o6r"]
+[gd_resource type="Theme" load_steps=15 format=3 uid="uid://chpmeyn2g6o6r"]
 
-[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="1_78gun"]
 [ext_resource type="StyleBox" uid="uid://c5cvnb1hsor73" path="res://script/visual/editor/theme/accept_window_panel.stylebox.tres" id="1_dxymh"]
-[ext_resource type="FontFile" uid="uid://bpw8ywxvp8ctj" path="res://ui/common/fonts/montserrat/montserrat_regular.ttf" id="1_j0da5"]
-[ext_resource type="FontFile" uid="uid://cgyrixnr8bppj" path="res://ui/common/fonts/montserrat/montserrat_medium.ttf" id="1_u186u"]
 [ext_resource type="StyleBox" uid="uid://d3h0d32csi0yu" path="res://ui/new_player_ui/inventory/panel_light_blue_disabled.tres" id="2_k4mia"]
 [ext_resource type="StyleBox" uid="uid://biwid7pf726cm" path="res://ui/new_player_ui/inventory/panel_light_blue_rounded.tres" id="2_wqte6"]
 [ext_resource type="StyleBox" uid="uid://d0agfj0dkjits" path="res://ui/new_player_ui/inventory/panel_light_blue_rounded_hover.tres" id="3_t3mh4"]
@@ -42,9 +39,8 @@ corner_radius_bottom_left = 20
 corner_detail = 5
 
 [resource]
-default_font = ExtResource("1_j0da5")
 AcceptDialog/styles/panel = ExtResource("1_dxymh")
-Button/fonts/font = ExtResource("1_u186u")
+Button/fonts/font = null
 Button/styles/disabled = ExtResource("2_k4mia")
 Button/styles/focus = ExtResource("2_wqte6")
 Button/styles/hover = ExtResource("3_t3mh4")
@@ -53,7 +49,7 @@ Button/styles/pressed = ExtResource("4_h5tli")
 ButtonAccent/base_type = &"Button"
 ButtonAccent/styles/normal = SubResource("StyleBoxFlat_jhnid")
 GraphEdit/styles/bg = SubResource("StyleBoxFlat_4in5o")
-GraphNode/fonts/title_font = ExtResource("1_78gun")
+GraphNode/fonts/title_font = null
 GraphNode/styles/frame = SubResource("StyleBoxFlat_6b66v")
 GraphNode/styles/selected_frame = ExtResource("6_h7fds")
 LineEdit/font_sizes/font_size = 16
