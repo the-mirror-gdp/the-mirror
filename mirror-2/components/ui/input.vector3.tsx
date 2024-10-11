@@ -5,22 +5,36 @@ import { cn } from "@/lib/utils";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { DatabaseEntity, useGetSingleEntityQuery, useUpdateEntityMutation } from "@/state/entities";
-import { z } from 'zod'; // Import zod for validation
+import { DatabaseEntity, useGetSingleEntityQuery, useUpdateEntityMutation } from "@/state/entities"; // Import entities
+import { z } from "zod"; // Import zod for validation
 import { useEffect } from "react";
 import { Separator } from "@/components/ui/separator";
 
 interface InputVector3Props {
   label: string;
   entity: DatabaseEntity;
-  /**
-   * Column name, e.g., "local_position", "local_scale". MUST BE SNAKE CASE
-   */
-  dbColumnNameSnakeCase: string;
+  dbColumnNameSnakeCase: keyof DatabaseEntity;
   defaultValues: [number, number, number]; // Array of default values [x, y, z]
+  useGetSingleGenericEntityQuery: (id: string) => { isLoading: boolean; isSuccess: boolean; data?: DatabaseEntity };
+  useUpdateGenericEntityMutation: () => readonly [
+    (args: Partial<DatabaseEntity> & { id: string }) => Promise<any>, // Mutation expects `id` to be required
+    { isLoading: boolean; isSuccess: boolean }
+  ];
+  /**
+   * Use if the update query needs to send existing info for full overwrites, such as with batch updates
+   */
+  propertiesToIncludeInUpdate: { [x: string]: any }
 }
 
-export default function InputVector3({ label, entity, dbColumnNameSnakeCase, defaultValues }: InputVector3Props) {
+export default function InputVector3({
+  label,
+  entity,
+  dbColumnNameSnakeCase,
+  defaultValues,
+  useGetSingleGenericEntityQuery: useGetSingleGenericEntityQuery,
+  useUpdateGenericEntityMutation: useUpdateGenericEntityMutation,
+  propertiesToIncludeInUpdate
+}: InputVector3Props) {
   // Define the form schema for a vector3 input
   const formSchema = z.object({
     x: z.coerce.number().finite().safe(),
@@ -40,40 +54,40 @@ export default function InputVector3({ label, entity, dbColumnNameSnakeCase, def
   });
 
   // Mutation to update the entity in the database
-  const [updateEntity] = useUpdateEntityMutation();
-  const { isLoading, isSuccess, data: fetchedEntity } = useGetSingleEntityQuery(entity.id);
+  const [updateGenericEntity] = useUpdateGenericEntityMutation();
+  const { isLoading, isSuccess, data: fetchedGenericEntity } = useGetSingleGenericEntityQuery(entity.id);
 
   // Update form with fetched values
   useEffect(() => {
-    if (isSuccess && fetchedEntity) {
+    if (isSuccess && fetchedGenericEntity && fetchedGenericEntity[dbColumnNameSnakeCase]) {
+      const values = fetchedGenericEntity[dbColumnNameSnakeCase] as [number, number, number];
       form.reset({
-        x: fetchedEntity[dbColumnNameSnakeCase][0],
-        y: fetchedEntity[dbColumnNameSnakeCase][1],
-        z: fetchedEntity[dbColumnNameSnakeCase][2],
+        x: values[0] ?? defaultValues[0],
+        y: values[1] ?? defaultValues[1],
+        z: values[2] ?? defaultValues[2],
       });
     }
-  }, [fetchedEntity, isSuccess, form, dbColumnNameSnakeCase]);
+  }, [fetchedGenericEntity, isSuccess, form, dbColumnNameSnakeCase, defaultValues]);
 
   // Handle form submission
   async function onSubmit(values: any) {
     const newValues = [values.x, values.y, values.z];
 
     // Only update if values have changed
+    const existingValues = entity[dbColumnNameSnakeCase] as [number, number, number] | null;
     if (
-      newValues[0] === entity[dbColumnNameSnakeCase][0] &&
-      newValues[1] === entity[dbColumnNameSnakeCase][1] &&
-      newValues[2] === entity[dbColumnNameSnakeCase][2]
+      existingValues &&
+      newValues[0] === existingValues[0] &&
+      newValues[1] === existingValues[1] &&
+      newValues[2] === existingValues[2]
     ) {
       return;
     }
 
-
     // Submit the updated vector to the database
-    await updateEntity({
+    await updateGenericEntity({
       id: entity.id,
-      scene_id: entity.scene_id,
-      parent_id: entity.parent_id || undefined,
-      order_under_parent: entity.order_under_parent || undefined,
+      ...propertiesToIncludeInUpdate,
       [dbColumnNameSnakeCase]: newValues, // Update the entire array in the DB
     });
   }
@@ -82,10 +96,7 @@ export default function InputVector3({ label, entity, dbColumnNameSnakeCase, def
     <>
       <div className="text-white mt-1">{label}</div>
       <Form {...form}>
-        <form
-          className="flex space-x-2"
-          onBlur={form.handleSubmit(onSubmit)} // Submit on blur
-        >
+        <form className="flex space-x-2" onBlur={form.handleSubmit(onSubmit)}> {/* Submit on blur */}
           <AxisInput axis="x" field="x" form={form} />
           <AxisInput axis="y" field="y" form={form} />
           <AxisInput axis="z" field="z" form={form} />
