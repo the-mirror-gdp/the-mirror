@@ -11,7 +11,7 @@ If any revenue is generated through the use of the Software, including but not l
 If revenue is generated in fiat currency (e.g., USD, EUR), the user agrees to remit payments to the Company based on the fee structure listed on the Company’s website. Failure to comply with these payment terms will result in the revocation of the license.
 
 3. Payment in Cryptocurrency and Royalties for Non-Fungible Tokens
-Cryptocurrency integrations are exclusive to the Reflekt version of the Software, a separate brand of The Mirror. In contrast, The Mirror version of the Software does not support cryptocurrency usage. This structure is designed to give developers the flexibility to choose between traditional web2 approaches and blockchain-integrated games.
+Cryptocurrency integrations are exclusive to the Reflekt version of the Software, a separate fork of The Mirror. In contrast, The Mirror version of the Software does not support cryptocurrency usage. This structure is designed to give developers the flexibility to choose between traditional web2 approaches and blockchain-integrated games.
 
 Direct Cryptocurrency Transactions: If revenue is generated directly through the Software in the form of cryptocurrency (e.g., in-game transactions, purchases, or other forms of monetization), the user agrees to pay a 10% fee on all such transactions. Payments must be made to the Company’s wallet address as specified on its website. Users are responsible for ensuring accurate and timely payments to the listed address.
 
