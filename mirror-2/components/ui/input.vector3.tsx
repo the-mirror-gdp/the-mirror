@@ -5,19 +5,22 @@ import { cn } from "@/lib/utils";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useGetSingleEntityQuery, useUpdateEntityMutation } from "@/state/entities";
+import { DatabaseEntity, useGetSingleEntityQuery, useUpdateEntityMutation } from "@/state/entities";
 import { z } from 'zod'; // Import zod for validation
 import { useEffect } from "react";
 import { Separator } from "@/components/ui/separator";
 
 interface InputVector3Props {
   label: string;
-  entity: any;
-  fieldName: string; // Array field name, e.g., "local_position"
+  entity: DatabaseEntity;
+  /**
+   * Column name, e.g., "local_position", "local_scale". MUST BE SNAKE CASE
+   */
+  dbColumnNameSnakeCase: string;
   defaultValues: [number, number, number]; // Array of default values [x, y, z]
 }
 
-export default function InputVector3({ label, entity, fieldName, defaultValues }: InputVector3Props) {
+export default function InputVector3({ label, entity, dbColumnNameSnakeCase, defaultValues }: InputVector3Props) {
   // Define the form schema for a vector3 input
   const formSchema = z.object({
     x: z.coerce.number().finite().safe(),
@@ -44,12 +47,12 @@ export default function InputVector3({ label, entity, fieldName, defaultValues }
   useEffect(() => {
     if (isSuccess && fetchedEntity) {
       form.reset({
-        x: fetchedEntity[fieldName][0],
-        y: fetchedEntity[fieldName][1],
-        z: fetchedEntity[fieldName][2],
+        x: fetchedEntity[dbColumnNameSnakeCase][0],
+        y: fetchedEntity[dbColumnNameSnakeCase][1],
+        z: fetchedEntity[dbColumnNameSnakeCase][2],
       });
     }
-  }, [fetchedEntity, isSuccess, form, fieldName]);
+  }, [fetchedEntity, isSuccess, form, dbColumnNameSnakeCase]);
 
   // Handle form submission
   async function onSubmit(values: any) {
@@ -57,9 +60,9 @@ export default function InputVector3({ label, entity, fieldName, defaultValues }
 
     // Only update if values have changed
     if (
-      newValues[0] === entity[fieldName][0] &&
-      newValues[1] === entity[fieldName][1] &&
-      newValues[2] === entity[fieldName][2]
+      newValues[0] === entity[dbColumnNameSnakeCase][0] &&
+      newValues[1] === entity[dbColumnNameSnakeCase][1] &&
+      newValues[2] === entity[dbColumnNameSnakeCase][2]
     ) {
       return;
     }
@@ -69,9 +72,9 @@ export default function InputVector3({ label, entity, fieldName, defaultValues }
     await updateEntity({
       id: entity.id,
       scene_id: entity.scene_id,
-      parent_id: entity.parent_id,
-      order_under_parent: entity.order_under_parent,
-      [fieldName]: newValues, // Update the entire array in the DB
+      parent_id: entity.parent_id || undefined,
+      order_under_parent: entity.order_under_parent || undefined,
+      [dbColumnNameSnakeCase]: newValues, // Update the entire array in the DB
     });
   }
 

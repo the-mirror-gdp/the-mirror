@@ -11,21 +11,21 @@ export function EntityFormGroup({ entity }: { entity: DatabaseEntity }) {
       <InputVector3
         label="Position"
         entity={entity}
-        fieldName="local_position"
+        dbColumnNameSnakeCase="local_position"
         defaultValues={[entity.local_position[0], entity.local_position[1], entity.local_position[2]]}
       />
 
       <InputVector3
         label="Scale"
         entity={entity}
-        fieldName="local_scale"
+        dbColumnNameSnakeCase="local_scale"
         defaultValues={[entity.local_scale[0], entity.local_scale[1], entity.local_scale[2]]}
       />
 
       <InputVector3
         label="Rotation"
         entity={entity}
-        fieldName="local_rotation"
+        dbColumnNameSnakeCase="local_rotation"
         defaultValues={[entity.local_rotation[0], entity.local_rotation[1], entity.local_rotation[2]]}
       />
 

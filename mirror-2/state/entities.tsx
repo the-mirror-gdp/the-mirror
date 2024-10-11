@@ -62,7 +62,6 @@ export const entitiesApi = createApi({
           }
         }
 
-
         const { data, error } = await supabase
           .from("entities")
           .insert({
@@ -113,7 +112,7 @@ export const entitiesApi = createApi({
           : [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }],
     }),
 
-    getSingleEntity: builder.query<any, string>({
+    getSingleEntity: builder.query<DatabaseEntity, string>({
       queryFn: async (entityId) => {
         const supabase = createSupabaseBrowserClient();
 
@@ -169,7 +168,7 @@ export const entitiesApi = createApi({
             return { error: rootEntityError.message };
           }
 
-          if (rootEntity.id !== id) {
+          if (rootEntity.id !== id) { // ensure not self (the Root)
             parent_id = rootEntity.id;
           }
         }
