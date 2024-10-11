@@ -275,7 +275,6 @@ const EntityTree: React.FC = () => {
             colorText: '#FFFFFF',
             colorBgContainer: 'transparent',
             nodeSelectedBg: '#256BFB',
-            directoryNodeSelectedBg: 'green',
             nodeHoverBg: '#ffffff0d'
           },
         },
@@ -300,7 +299,6 @@ const EntityTree: React.FC = () => {
           if (!entity) {
             return
           }
-          console.log('Selected Entity:', entity);
           dispatch(setCurrentEntity(entity))
         }}
         titleRender={(nodeData: TreeDataNodeWithEntityData) => (
