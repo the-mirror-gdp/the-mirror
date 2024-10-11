@@ -1,15 +1,10 @@
-[gd_resource type="Theme" load_steps=46 format=3 uid="uid://d1qd6ity2mdpl"]
+[gd_resource type="Theme" load_steps=41 format=3 uid="uid://d1qd6ity2mdpl"]
 
 [ext_resource type="FontVariation" uid="uid://bwp6hb31ol8la" path="res://ui/new_player_ui/inventory/title_font_bold.tres" id="1_qhqot"]
 [ext_resource type="StyleBox" uid="uid://biwid7pf726cm" path="res://ui/new_player_ui/inventory/panel_light_blue_rounded.tres" id="2_qkk8i"]
 [ext_resource type="StyleBox" uid="uid://d0agfj0dkjits" path="res://ui/new_player_ui/inventory/panel_light_blue_rounded_hover.tres" id="3_608lk"]
 [ext_resource type="StyleBox" uid="uid://bxdufxik1y0yu" path="res://ui/new_player_ui/inventory/panel_light_blue_rounded_pressed.tres" id="4_7gl5v"]
-[ext_resource type="FontFile" uid="uid://dhpbqmk3ulim4" path="res://ui/common/fonts/montserrat/montserrat_bold.ttf" id="5_6nu1u"]
-[ext_resource type="FontFile" uid="uid://bjwepurchoc75" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_semi_bold.ttf" id="5_51sdf"]
-[ext_resource type="FontFile" uid="uid://bpw8ywxvp8ctj" path="res://ui/common/fonts/montserrat/montserrat_regular.ttf" id="6_3wysr"]
-[ext_resource type="FontFile" uid="uid://cgyrixnr8bppj" path="res://ui/common/fonts/montserrat/montserrat_medium.ttf" id="7_lkgfu"]
 [ext_resource type="StyleBox" uid="uid://dcdx4uxyjvmqv" path="res://ui/new_player_ui/inventory/panel_transparent_bg.tres" id="8_54h55"]
-[ext_resource type="FontFile" uid="uid://cyqoty8fo8udu" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_regular.ttf" id="9_fj6hh"]
 [ext_resource type="StyleBox" uid="uid://uqa5bs2gkql3" path="res://creator/common/theme/panel_slot_active.stylebox.tres" id="11_1dgo2"]
 [ext_resource type="StyleBox" uid="uid://bd8ph5tqojh8w" path="res://creator/common/theme/panel_slot_hover.stylebox.tres" id="12_6n06b"]
 
@@ -256,7 +251,6 @@ corner_radius_bottom_right = 13
 corner_radius_bottom_left = 13
 
 [sub_resource type="FontVariation" id="FontVariation_0g3hl"]
-base_font = ExtResource("7_lkgfu")
 spacing_top = 6
 spacing_bottom = 6
 
@@ -360,7 +354,7 @@ Button/colors/font_color_hover = Color(0.94, 0.94, 0.94, 1)
 Button/colors/font_color_pressed = Color(1, 1, 1, 1)
 Button/constants/hseparation = 2
 Button/font_sizes/font_size = 11
-Button/fonts/font = ExtResource("7_lkgfu")
+Button/fonts/font = null
 Button/styles/disabled = SubResource("StyleBoxFlat_xvxpf")
 Button/styles/focus = ExtResource("2_qkk8i")
 Button/styles/hover = ExtResource("3_608lk")
@@ -398,11 +392,11 @@ CheckBox/styles/normal = SubResource("StyleBoxEmpty_7qqml")
 CheckBox/styles/pressed = SubResource("StyleBoxEmpty_6hx7e")
 HSeparator/styles/separator = SubResource("StyleBoxLine_wh0xl")
 Label/font_sizes/font_size = 11
-Label/fonts/font = ExtResource("5_6nu1u")
+Label/fonts/font = null
 LabelRegular/base_type = &"Label"
-LabelRegular/fonts/font = ExtResource("6_3wysr")
+LabelRegular/fonts/font = null
 LineEdit/font_sizes/font_size = 11
-LineEdit/fonts/font = ExtResource("5_51sdf")
+LineEdit/fonts/font = null
 LineEdit/styles/focus = SubResource("StyleBoxFlat_j44l2")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_1nv1v")
 LineEditSearch/base_type = &"LineEdit"
@@ -411,12 +405,12 @@ LineEditSearch/colors/font_color = Color(1, 1, 1, 1)
 LineEditSearch/colors/font_placeholder_color = Color(0.505882, 0.517647, 0.568627, 1)
 LineEditSearch/colors/font_selected_color = Color(1, 1, 1, 1)
 LineEditSearch/font_sizes/font_size = 11
-LineEditSearch/fonts/font = ExtResource("7_lkgfu")
+LineEditSearch/fonts/font = null
 LineEditSearch/styles/focus = ExtResource("8_54h55")
 LineEditSearch/styles/normal = ExtResource("8_54h55")
 LineEditSearch/styles/read_only = ExtResource("8_54h55")
 OptionButton/constants/arrow_margin = 8
-OptionButton/fonts/font = ExtResource("6_3wysr")
+OptionButton/fonts/font = null
 OptionButton/styles/hover = SubResource("StyleBoxFlat_i2qij")
 OptionButton/styles/normal = SubResource("StyleBoxFlat_1mtcs")
 OptionButton/styles/pressed = SubResource("StyleBoxFlat_1mtcs")
@@ -445,7 +439,7 @@ TabContainer/styles/tab_unselected = SubResource("StyleBoxEmpty_yh1yp")
 TextEdit/styles/focus = SubResource("StyleBoxFlat_l5bl3")
 TextEdit/styles/normal = SubResource("StyleBoxFlat_3jtke")
 TooltipLabel/colors/font_color = Color(1, 1, 1, 1)
-TooltipLabel/fonts/font = ExtResource("6_3wysr")
+TooltipLabel/fonts/font = null
 TooltipPanel/styles/panel = SubResource("StyleBoxFlat_nwu4w")
 VSeparator/styles/separator = SubResource("StyleBoxLine_brdol")
 WindowDialog/colors/title_color = Color(1, 1, 1, 1)
@@ -453,7 +447,7 @@ WindowDialog/constants/close_h_ofs = 18
 WindowDialog/constants/close_v_ofs = 18
 WindowDialog/constants/scaleborder_size = 4
 WindowDialog/constants/title_height = 20
-WindowDialog/fonts/title_font = ExtResource("9_fj6hh")
+WindowDialog/fonts/title_font = null
 WindowDialog/icons/close = null
 WindowDialog/icons/close_highlight = null
 WindowDialog/styles/panel = SubResource("StyleBoxFlat_jcfy7")

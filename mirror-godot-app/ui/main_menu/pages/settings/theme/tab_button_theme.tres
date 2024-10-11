@@ -1,6 +1,4 @@
-[gd_resource type="Theme" load_steps=6 format=3 uid="uid://bup8odqu073gb"]
-
-[ext_resource type="FontFile" uid="uid://bjwepurchoc75" path="res://ui/ui_rect_and_font/montserrat/static/montserrat_semi_bold.ttf" id="1_b7vry"]
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://bup8odqu073gb"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cgipo"]
 content_margin_top = 10.0
@@ -19,7 +17,6 @@ content_margin_top = 10.0
 content_margin_bottom = 10.0
 
 [resource]
-default_font = ExtResource("1_b7vry")
 default_font_size = 18
 Button/colors/font_hover_color = Color(0.145098, 0.419608, 0.984314, 1)
 Button/colors/font_hover_pressed_color = Color(0.145098, 0.419608, 0.984314, 1)

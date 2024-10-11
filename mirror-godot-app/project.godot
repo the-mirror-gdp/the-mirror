@@ -82,7 +82,7 @@ global_script_class_icons={
 config/name="The Mirror"
 config/tags=PackedStringArray("open_source")
 run/main_scene="res://scenes/boot_scene.tscn"
-config/features=PackedStringArray("35021301", "4.3", "mirror")
+config/features=PackedStringArray("2ed330c2", "4.3", "mirror")
 boot_splash/bg_color=Color(0.0745098, 0.0862745, 0.184314, 1)
 boot_splash/image="res://art/white_logo_slate_bg_with_text.png"
 boot_splash/fullsize=false
@@ -140,7 +140,7 @@ export/convert_text_resources_to_binary=false
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/compressed_build_exporter/plugin.cfg", "res://addons/draggable_container/plugin.cfg", "res://addons/godot-firebase/plugin.cfg", "res://addons/gut/plugin.cfg", "res://addons/http-sse-client/plugin.cfg", "res://addons/mirror_gltf/plugin.cfg", "res://addons/mirror_internal/plugin.cfg", "res://addons/omi_extensions/plugin.cfg")
+enabled=PackedStringArray("res://addons/compressed_build_exporter/plugin.cfg", "res://addons/godot-firebase/plugin.cfg", "res://addons/gut/plugin.cfg", "res://addons/mirror_gltf/plugin.cfg", "res://addons/mirror_internal/plugin.cfg", "res://addons/omi_extensions/plugin.cfg")
 
 [feature_flags]
 

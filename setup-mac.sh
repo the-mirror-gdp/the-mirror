@@ -1,2 +1,2 @@
 #!/bin/bash
-curl -o "MirrorGodotEditorMac.app.zip" "https://storage.googleapis.com/mirror_native_client_builds/Engine/a6443c6c/MirrorGodotEditorMac.app.zip"
+curl -o "MirrorGodotEditorMac.app.zip" "https://storage.googleapis.com/mirror_native_client_builds/Engine/2ed330c2/MirrorGodotEditorMac.app.zip"

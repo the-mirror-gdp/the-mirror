@@ -1,7 +1,6 @@
-[gd_resource type="Theme" load_steps=10 format=3 uid="uid://j2x4to0hys03"]
+[gd_resource type="Theme" load_steps=9 format=3 uid="uid://j2x4to0hys03"]
 
 [ext_resource type="FontVariation" uid="uid://cnncegbqgc72t" path="res://ui/common/themes/main_menu_ui_button_font.tres" id="1_f4ti0"]
-[ext_resource type="FontFile" uid="uid://cgyrixnr8bppj" path="res://ui/common/fonts/montserrat/montserrat_medium.ttf" id="2_e7mfa"]
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_1d2ur"]
 color = Color(0.282353, 0.505882, 0.968627, 1)
@@ -60,7 +59,6 @@ corner_radius_bottom_left = 10
 anti_aliasing_size = 1.5
 
 [resource]
-default_font = ExtResource("2_e7mfa")
 Button/colors/font_focus_color = Color(0.282353, 0.505882, 0.968627, 1)
 Button/colors/font_hover_color = Color(0.282353, 0.505882, 0.968627, 1)
 Button/colors/font_hover_pressed_color = Color(0.282353, 0.505882, 0.968627, 1)
@@ -83,4 +81,4 @@ ButtonAccent/styles/focus = SubResource("StyleBoxFlat_qolle")
 ButtonAccent/styles/hover = SubResource("StyleBoxFlat_qolle")
 ButtonAccent/styles/normal = SubResource("StyleBoxFlat_kx8ra")
 ButtonAccent/styles/pressed = SubResource("StyleBoxFlat_rg5xs")
-Label/fonts/font = ExtResource("2_e7mfa")
+Label/fonts/font = null
