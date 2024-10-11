@@ -274,9 +274,9 @@ const EntityTree: React.FC = () => {
             motionDurationMid: '0.05s',
             colorText: '#FFFFFF',
             colorBgContainer: 'transparent',
-            nodeSelectedBg: 'transparent',
+            nodeSelectedBg: '#256BFB',
             directoryNodeSelectedBg: 'green',
-            nodeHoverBg: 'rgba(255, 255, 255, 0.05)'
+            nodeHoverBg: '#ffffff0d'
           },
         },
       }}
