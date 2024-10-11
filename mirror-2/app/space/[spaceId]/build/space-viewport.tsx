@@ -29,7 +29,7 @@ export default function SpaceViewport() {
           app.resizeCanvas(canvas.width, canvas.height); // Resize PlayCanvas application
         }
       };
-
+      app.setCanvasFillMode('NONE')
       // Initial resize based on the canvas's parent container size
       resizeCanvas();
 
