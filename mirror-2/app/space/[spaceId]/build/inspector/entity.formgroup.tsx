@@ -7,7 +7,6 @@ import InputVector3 from "@/components/ui/input.vector3";
 export function EntityFormGroup({ entity }: { entity: DatabaseEntity }) {
   return (
     <>
-      {/* Name Field */}
       <InputVector3
         label="Position"
         entity={entity}
