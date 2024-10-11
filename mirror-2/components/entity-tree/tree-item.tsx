@@ -12,7 +12,7 @@ export default function EntityTreeItem({ nodeData }) {
       id={nodeData.id}
       generalEntity={nodeData}
       defaultValue={nodeData.name}
-      className={'p-0 m-0 text-base font-light font-sans tracking-wide bg-transparent cursor-pointer duration-0'}
+      className={'p-0 m-0  bg-transparent cursor-pointer duration-0'}
       fieldName="name"
       formSchema={z.object({
         name: z.string().min(1, { message: "Entity name must be at least 1 character long" }),
@@ -23,7 +23,7 @@ export default function EntityTreeItem({ nodeData }) {
         <Input
           type="text"
           autoComplete="off"
-          className={cn("dark:bg-transparent border-none shadow-none  text-white")} // Apply className prop here
+          className={cn("dark:bg-transparent font-sans text-base border-none shadow-none tracking-wide  text-white")}
           {...field}
         />
       )}
