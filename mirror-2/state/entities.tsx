@@ -131,14 +131,31 @@ export const entitiesApi = createApi({
       providesTags: (result, error, entityId) => [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: entityId }], // Provide the entity tag based on entityId
     }),
 
-    updateEntity: builder.mutation<any, { id: string, name?: string, parent_id?: string, order_under_parent?: number, scene_id?: string }>({
-      queryFn: async ({ id, name, parent_id, order_under_parent, scene_id }) => {
+    updateEntity: builder.mutation<any, {
+      id: string,
+      name?: string,
+      parent_id?: string,
+      order_under_parent?: number,
+      scene_id?: string,
+      local_position?: [number, number, number],  // Using array for vector3
+      local_scale?: [number, number, number],     // Using array for scale
+      local_rotation?: [number, number, number]   // Using array for rotation (Euler angles or quaternion)
+    }>({
+      queryFn: async ({
+        id,
+        name,
+        parent_id,
+        order_under_parent,
+        scene_id,
+        local_position,
+        local_scale,
+        local_rotation
+      }) => {
         const supabase = createSupabaseBrowserClient();
 
-        // if no parent_id, find the root entity
+        // If no parent_id, find the root entity
         if (!parent_id) {
           if (!scene_id) {
-            // must have scene_id to find the root entity
             return { error: 'No scene_id provided' };
           }
           const { data: rootEntity, error: rootEntityError } = await supabase
@@ -152,61 +169,70 @@ export const entitiesApi = createApi({
             return { error: rootEntityError.message };
           }
 
-          if (rootEntity.id !== id) { // ensure that it's not setting a reference to itself; this can occur when editing the root entity name
+          if (rootEntity.id !== id) {
             parent_id = rootEntity.id;
           }
         }
 
-        // case: parent_id exists but no order_under_parent
+        // If parent_id exists but no order_under_parent
         if ((parent_id && order_under_parent === undefined) || (parent_id && order_under_parent === null)) {
-          // need to find the order_under_parent to use for the new entity
           const { data: entitiesWithSameParent, error: parentEntityError } = await supabase
             .from("entities")
             .select("*")
-            .eq("parent_id", parent_id)
+            .eq("parent_id", parent_id);
 
           if (parentEntityError) {
             return { error: parentEntityError.message };
           }
-          // find the highest order_under_parent
+
+          // Find the highest order_under_parent
           const highestOrderUnderParent = entitiesWithSameParent.reduce((max, entity: any) => {
             return entity.order_under_parent > max ? entity.order_under_parent : max;
           }, -1);
           order_under_parent = highestOrderUnderParent + 1;
         }
 
+        // Prepare the update payload
+        const updatePayload: any = { name, parent_id, order_under_parent, scene_id };
+
+        // Add position, scale, rotation updates if provided
+        if (local_position) updatePayload.local_position = local_position;
+        if (local_rotation) updatePayload.local_rotation = local_rotation;
+        if (local_scale) updatePayload.local_scale = local_scale;
+
         const { data, error } = await supabase
           .from("entities")
-          .update(
-            { name, parent_id, order_under_parent, scene_id }
-          )
+          .update(updatePayload)
           .eq("id", id)
           .single();
 
         if (error) {
           return { error: error.message };
         }
+
         return { data };
       },
-      // optimistic update
+
+      // Optimistic update
       async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
           entitiesApi.util.updateQueryData('getSingleEntity', id, (draft) => {
-            Object.assign(draft, patch)
+            Object.assign(draft, patch);
           })
-        )
+        );
         try {
-          await queryFulfilled
+          await queryFulfilled;
         } catch {
-          patchResult.undo()
+          patchResult.undo();
         }
       },
 
       invalidatesTags: (result, error, { id: entityId }) => [
         { type: TAG_NAME_FOR_GENERAL_ENTITY, id: entityId },
-        TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY
-      ], // Invalidate tag for entityId
+        TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY,
+      ],
     }),
+
 
     batchUpdateEntities: builder.mutation<any, { entities: { id: string, name?: string, scene_id?: string, parent_id?: string, order_under_parent?: number }[] }>({
       queryFn: async ({ entities }) => {
