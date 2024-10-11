@@ -74,8 +74,8 @@ export default function Scenes() {
                       formSchema={formSchema} // Your Zod validation schema
                       defaultValue={scene.name}
                       generalEntity={scene}
-                      useGeneralGetEntityQuery={useGetSingleSceneQuery}
-                      useGeneralUpdateEntityMutation={useUpdateSceneMutation}
+                      useGenericGetEntityQuery={useGetSingleSceneQuery}
+                      useGenericUpdateEntityMutation={useUpdateSceneMutation}
                       renderComponent={(field) => (
                         <Input
                           type="text"

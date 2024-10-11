@@ -17,8 +17,8 @@ export default function EntityTreeItem({ nodeData }) {
       formSchema={z.object({
         name: z.string().min(1, { message: "Entity name must be at least 1 character long" }),
       })}
-      useGeneralGetEntityQuery={useGetSingleEntityQuery}
-      useGeneralUpdateEntityMutation={useUpdateEntityMutation}
+      useGenericGetEntityQuery={useGetSingleEntityQuery}
+      useGenericUpdateEntityMutation={useUpdateEntityMutation}
       renderComponent={(field) => (
         <Input
           type="text"
