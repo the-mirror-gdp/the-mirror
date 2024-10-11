@@ -15,6 +15,30 @@ import EntityTreeItem from '@/components/entity-tree/tree-item';
 
 type TreeDataNodeWithEntityData = TreeDataNode & { name: string, id: string, order_under_parent: number }
 
+const findEntity = (treeData, entityId) => {
+  // Base case: if treeData is empty or null, return null
+  if (!treeData || treeData.length === 0) return null;
+
+  // Loop through each item in the current level
+  for (const item of treeData) {
+    if (item.key === entityId) {
+      // If the current item's key matches entityId, return the item
+      return item;
+    }
+
+    // If this item has children, search within its children recursively
+    if (item.children && item.children.length > 0) {
+      const found = findEntity(item.children, entityId);
+      if (found) {
+        return found;
+      }
+    }
+  }
+
+  // Return null if not found at this level or in any children
+  return null;
+};
+
 function transformDbEntityStructureToTree(entities): TreeDataNodeWithEntityData[] {
   const entityMap: any = {}; // Map to hold entities by their ID for quick lookup
 
@@ -23,10 +47,11 @@ function transformDbEntityStructureToTree(entities): TreeDataNodeWithEntityData[
     entityMap[entity.id] = { ...entity, children: [], key: entity.id };
   });
 
-  //disable the root node
+  // set root node not draggable
   entities.find(entity => {
     if (entity.parent_id === null) {
-      entityMap[entity.id].disabled = true;
+      entityMap[entity.id].draggable = false; // we don't want to set to "disabled" because then it can't be selected
+      entityMap[entity.id].selectable = true;
     }
   });
 
@@ -295,7 +320,7 @@ const EntityTree: React.FC = () => {
         treeData={treeData}
         onSelect={(selectedKeys) => {
           const entityId = selectedKeys[0];
-          const entity = treeData[0].children.find(item => item.key === entityId);
+          const entity = findEntity(treeData, entityId)
           if (!entity) {
             return
           }
