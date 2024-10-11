@@ -23,7 +23,7 @@ export default function EntityTreeItem({ nodeData }) {
         <Input
           type="text"
           autoComplete="off"
-          className={cn("dark:bg-transparent p-1 font-sans text-base border-none shadow-none tracking-wider rounded-sm hover:bg-[#ffffff0d] text-white")}
+          className={cn("dark:bg-transparent p-1 border-none shadow-none tracking-wider hover:bg-[#ffffff0d] text-white")}
           {...field}
         />
       )}
