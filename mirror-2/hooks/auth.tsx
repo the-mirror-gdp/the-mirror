@@ -43,7 +43,9 @@ export function useSetupAuthEvents() {
 
     function handleLogout() {
       dispatch(clearLocalUserState())
-      router.push("/login")
+      if (typeof window !== 'undefined') {
+        router.push("/login")
+      }
     }
     // console.log("auth", event, session)
     if (event === 'INITIAL_SESSION') {
