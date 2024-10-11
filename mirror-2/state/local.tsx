@@ -1,3 +1,4 @@
+"use client"
 import { DatabaseEntity } from '@/state/entities';
 import { DatabaseScene } from '@/state/scenes';
 import { RootState } from '@/state/store';

@@ -2,7 +2,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "next dev & supabase start",
+    "dev": "supabase start & next dev",
     "types": "npx supabase gen types --lang=typescript --local > ./utils/database.types.ts",
     "reset": "supabase db reset && yarn types",
     "build": "next build",
@@ -38,7 +38,6 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "1.0.0",
-    "gameanalytics": "^4.4.7",
     "geist": "^1.2.1",
     "lucide-react": "^0.446.0",
     "next": "latest",
