@@ -1,7 +1,7 @@
 "use client";
 import { DatabaseEntity, useGetSingleEntityQuery, useUpdateEntityMutation } from "@/state/entities";
 import { Separator } from "@/components/ui/separator";
-import InputVector3 from "@/components/ui/input.vector3";
+import SyncedVector3Input from "@/components/ui/synced-inputs/synced-vector3-input";
 import { SyncedTextInput } from "@/components/ui/synced-inputs/synced-text-input";
 import { cn } from "@/lib/utils";
 import { Input } from "antd";
@@ -33,7 +33,7 @@ export function EntityFormGroup({ entity }: { entity: DatabaseEntity }) {
 
       <Separator className="mb-2" />
 
-      <InputVector3
+      <SyncedVector3Input
         label="Position"
         entity={entity}
         dbColumnNameSnakeCase="local_position"
@@ -47,7 +47,7 @@ export function EntityFormGroup({ entity }: { entity: DatabaseEntity }) {
         }}
       />
 
-      <InputVector3
+      <SyncedVector3Input
         label="Scale"
         entity={entity}
         dbColumnNameSnakeCase="local_scale"
@@ -61,7 +61,7 @@ export function EntityFormGroup({ entity }: { entity: DatabaseEntity }) {
         }}
       />
 
-      <InputVector3
+      <SyncedVector3Input
         label="Rotation"
         entity={entity}
         dbColumnNameSnakeCase="local_rotation"
