@@ -10,7 +10,7 @@ import { z } from "zod"; // Import zod for validation
 import { useEffect } from "react";
 import { Separator } from "@/components/ui/separator";
 
-interface InputVector3Props {
+interface SyncedVector3InputProps {
   label: string;
   entity: DatabaseEntity;
   dbColumnNameSnakeCase: keyof DatabaseEntity;
@@ -26,7 +26,7 @@ interface InputVector3Props {
   propertiesToIncludeInUpdate: { [x: string]: any }
 }
 
-export default function InputVector3({
+export default function SyncedVector3Input({
   label,
   entity,
   dbColumnNameSnakeCase,
@@ -34,7 +34,7 @@ export default function InputVector3({
   useGetSingleGenericEntityQuery: useGetSingleGenericEntityQuery,
   useUpdateGenericEntityMutation: useUpdateGenericEntityMutation,
   propertiesToIncludeInUpdate
-}: InputVector3Props) {
+}: SyncedVector3InputProps) {
   // Define the form schema for a vector3 input
   const formSchema = z.object({
     x: z.coerce.number().finite().safe(),
