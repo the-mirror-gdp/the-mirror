@@ -1,4 +1,4 @@
-import { TwoWayInput } from "@/components/two-way-input";
+import { SyncedTextInput } from "@/components/ui/synced-inputs/synced-text-input";
 import { Input } from "@/components/ui/input";
 import { useGetSingleEntityQuery, useUpdateEntityMutation } from "@/state/entities";
 import { cn } from "@/utils/cn";
@@ -8,7 +8,7 @@ import { z } from "zod";
 export default function EntityTreeItem({ nodeData }) {
 
   return <div>
-    {<TwoWayInput
+    {<SyncedTextInput
       id={nodeData.id}
       generalEntity={nodeData}
       defaultValue={nodeData.name}

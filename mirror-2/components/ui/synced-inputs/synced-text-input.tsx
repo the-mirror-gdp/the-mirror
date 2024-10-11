@@ -8,7 +8,7 @@ import { z, ZodSchema } from "zod";
 import clsx from "clsx"; // Utility to merge class names
 import { cn } from "@/lib/utils";
 
-interface TwoWayInputProps<T> {
+interface SyncedTextInputProps<T> {
   id: string;
   generalEntity: any;
   fieldName: keyof T;
@@ -26,7 +26,7 @@ interface TwoWayInputProps<T> {
   convertSubmissionToNumber?: boolean; // New optional prop to convert submission to number
 }
 
-export function TwoWayInput<T>({
+export function SyncedTextInput<T>({
   id: generalEntityId,
   generalEntity,
   fieldName,
@@ -39,7 +39,7 @@ export function TwoWayInput<T>({
   onBlurFn,
   renderComponent,
   convertSubmissionToNumber = false, // Default to false
-}: TwoWayInputProps<T>) {
+}: SyncedTextInputProps<T>) {
   const { data: entity, isLoading, isSuccess } = useGeneralGetEntityQuery(generalEntityId);
 
   const [updateGeneralEntity, { isLoading: isUpdating, isSuccess: isUpdated, error }] = useGeneralUpdateEntityMutation();
