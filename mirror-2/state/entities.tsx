@@ -3,10 +3,11 @@ import { RootState, createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/reac
 import { createSupabaseBrowserClient } from '@/utils/supabase/client';
 import { TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY } from '@/state/shared-cache-tags';
 import { updateEngineApp } from '@/state/engine/engine';
-import { Database } from '@/utils/database.types';
-import { createGeneralEntityListenerMiddleware, selectAllEntities } from '@/state/engine/middleware';
 
-export type DatabaseEntity = Database['public']['Tables']['spaces']['Row']
+import { createGeneralEntityListenerMiddleware, selectAllEntities } from '@/state/engine/middleware';
+import { Database } from '@/utils/database.types';
+
+export type DatabaseEntity = Database['public']['Tables']['entities']['Row']
 export const TAG_NAME_FOR_GENERAL_ENTITY = 'Entities'
 
 // Supabase API for spaces

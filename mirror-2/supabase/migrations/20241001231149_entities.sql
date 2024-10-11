@@ -5,9 +5,10 @@ CREATE TABLE entities (
   parent_id uuid REFERENCES entities(id) ON DELETE CASCADE,
   order_under_parent int,
   scene_id uuid REFERENCES scenes ON DELETE CASCADE NOT NULL, -- delete entity if scene is deleted
-  position float8[] NOT NULL DEFAULT ARRAY[0, 0, 0], -- storing position as an array of 3 floats
-  scale float8[] NOT NULL DEFAULT ARRAY[1, 1, 1], -- storing scale as an array of 3 floats
-  rotation float8[] NOT NULL DEFAULT ARRAY[0, 0, 0], -- storing rotation as an array of 3 floats
+  local_position float8[] NOT NULL DEFAULT ARRAY[0, 0, 0], -- storing position as an array of 3 floats
+  -- Future: store position (global as PointZ for large querying)
+  local_scale float8[] NOT NULL DEFAULT ARRAY[1.0, 1.0, 1.0], -- storing scale as an array of 3 floats
+  local_rotation float8[] NOT NULL DEFAULT ARRAY[0.0, 0.0, 0.0, 1.0],  -- Store rotation as a quaternion (x, y, z, w). NOT euler, though euler is mostly used user-facing
   tags text[] DEFAULT ARRAY[]::text[], -- storing tags as an empty array of text 
   created_at timestamp with time zone NOT NULL DEFAULT now(),
   updated_at timestamp with time zone NOT NULL DEFAULT now(),
