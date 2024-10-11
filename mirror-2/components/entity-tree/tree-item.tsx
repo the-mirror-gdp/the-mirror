@@ -8,7 +8,7 @@ import { z } from "zod";
 export default function EntityTreeItem({ nodeData }) {
 
   return <div>
-    {true && <TwoWayInput
+    {<TwoWayInput
       id={nodeData.id}
       generalEntity={nodeData}
       defaultValue={nodeData.name}

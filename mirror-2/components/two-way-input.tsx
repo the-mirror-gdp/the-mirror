@@ -23,6 +23,7 @@ interface TwoWayInputProps<T> {
   onSubmitFn?: Function;
   onBlurFn?: Function;
   renderComponent: (field: any, fieldName: string) => JSX.Element; // Dynamically render a component
+  convertSubmissionToNumber?: boolean; // New optional prop to convert submission to number
 }
 
 export function TwoWayInput<T>({
@@ -36,7 +37,8 @@ export function TwoWayInput<T>({
   className,
   onSubmitFn,
   onBlurFn,
-  renderComponent, // Now accepting a renderComponent prop
+  renderComponent,
+  convertSubmissionToNumber = false, // Default to false
 }: TwoWayInputProps<T>) {
   const { data: entity, isLoading, isSuccess } = useGeneralGetEntityQuery(generalEntityId);
 
@@ -51,6 +53,17 @@ export function TwoWayInput<T>({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    // Handle conversion to number if convertSubmissionToNumber is true
+    if (convertSubmissionToNumber) {
+      const convertedValue = Number(values[fieldName]); // Convert to number
+      if (isNaN(convertedValue)) {
+        console.error("Invalid number input");
+        return;
+      }
+      values = { ...values, [fieldName]: convertedValue }; // Update values with the converted number
+    }
+
+    // Check if the value has actually changed
     if (entity && isSuccess && entity[fieldName] === values[fieldName]) {
       return;
     }
@@ -60,6 +73,7 @@ export function TwoWayInput<T>({
     await updateGeneralEntity({ id: generalEntityId, ...generalEntity, [fieldName]: values[fieldName] });
   }
 
+  // Reset the form when the entity data is successfully fetched
   useEffect(() => {
     if (entity && isSuccess) {
       form.reset({
@@ -68,20 +82,31 @@ export function TwoWayInput<T>({
     }
   }, [entity, isSuccess, form]);
 
+  // Display loading state if data is still being fetched
   if (isLoading) {
     return <Skeleton className={clsx("w-full dark:bg-transparent border-none text-lg shadow-none", className)} />;
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className={cn(className)} onBlur={form.handleSubmit(onSubmit)}>
+      <form
+        className={cn(className)}
+        onBlur={async (event) => {
+          const isValid = await form.trigger(fieldName as string); // Manually trigger validation
+
+          if (isValid) {
+            const values = form.getValues(); // Get current form values
+            console.log("Form is valid, triggering submission:", values);
+            onSubmit(values); // Manually call onSubmit after validation passes
+          }
+        }}
+      >
         <FormField
           control={form.control}
-          name={fieldName as string} // Type casting to string since fieldName is dynamic
+          name={fieldName as string}
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                {/* Use the renderComponent prop to dynamically render any input */}
                 {renderComponent && renderComponent(field, fieldName as string)}
               </FormControl>
               <FormMessage />
