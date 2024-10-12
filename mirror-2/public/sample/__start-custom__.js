@@ -46,18 +46,33 @@ var pcBootstrap = {
 
     // Disable long-touch select on iOS devices
     canvas.style['-webkit-user-select'] = 'none';
+    canvas.className = "transition-opacity duration-1000 opacity-0"
+    // document.body.appendChild(canvas);
+    document.getElementById('direct-container').appendChild(canvas);
 
-    document.body.appendChild(canvas);
+    setTimeout(() => {
+      canvas.classList.add('opacity-100');  // This will smoothly transition to visible
+      canvas.classList.remove('opacity-0');  // This will smoothly transition to visible
+    }, 50);  // A slight delay to ensure the DOM is updated before applying the transition
 
     return canvas;
   },
 
   resizeCanvas: function (app, canvas) {
+    // change to __start__ script here
+    var fillMode = app._fillMode;
+
     canvas.style.width = '';
     canvas.style.height = '';
-    app.resizeCanvas(canvas.width, canvas.height);
+    if (fillMode === pc.FILLMODE_NONE) {
+      // our change for build mode (see below too)
+      const canvasContainer = document.getElementById('build-container')
+      app.resizeCanvas(canvasContainer.offsetWidth, canvasContainer.offsetHeight);
+    } else {
+      // non-custom behavior
+      app.resizeCanvas(canvas.width, canvas.height);
+    }
 
-    var fillMode = app._fillMode;
 
     if (fillMode === pc.FILLMODE_NONE || fillMode === pc.FILLMODE_KEEP_ASPECT) {
       if (
@@ -66,8 +81,11 @@ var pcBootstrap = {
         canvas.clientWidth / canvas.clientHeight >=
         window.innerWidth / window.innerHeight
       ) {
-        canvas.style.marginTop =
-          Math.floor((window.innerHeight - canvas.clientHeight) / 2) + 'px';
+        // old line here for posterity
+        // canvas.style.marginTop = Math.floor((window.innerHeight - canvas.clientHeight) / 2) + 'px';
+        const canvasContainer = document.getElementById('build-container')
+        canvas.style.marginTop = canvasContainer.offsetTop + 'px'
+
       } else {
         canvas.style.marginTop = '';
       }
@@ -282,19 +300,22 @@ function initApp(device) {
       pc.GSplatHandler,
     ].filter(Boolean);
 
+    if (window.INPUT_SETTINGS === undefined) {
+      debugger
+    }
     createOptions.elementInput = new pc.ElementInput(canvas, {
-      useMouse: INPUT_SETTINGS.useMouse,
-      useTouch: INPUT_SETTINGS.useTouch,
+      useMouse: window.INPUT_SETTINGS.useMouse,
+      useTouch: window.INPUT_SETTINGS.useTouch,
     });
-    createOptions.keyboard = INPUT_SETTINGS.useKeyboard
+    createOptions.keyboard = window.INPUT_SETTINGS.useKeyboard
       ? new pc.Keyboard(window)
       : null;
-    createOptions.mouse = INPUT_SETTINGS.useMouse ? new pc.Mouse(canvas) : null;
-    createOptions.gamepads = INPUT_SETTINGS.useGamepads
+    createOptions.mouse = window.INPUT_SETTINGS.useMouse ? new pc.Mouse(canvas) : null;
+    createOptions.gamepads = window.INPUT_SETTINGS.useGamepads
       ? new pc.GamePads()
       : null;
     createOptions.touch =
-      INPUT_SETTINGS.useTouch && pc.platform.touch
+      window.INPUT_SETTINGS.useTouch && pc.platform.touch
         ? new pc.TouchDevice(canvas)
         : null;
     createOptions.assetPrefix = window.ASSET_PREFIX || '';
@@ -306,6 +327,7 @@ function initApp(device) {
     createOptions.xr = pc.XrManager;
 
     app.init(createOptions);
+
     return true;
   } catch (e) {
     displayError('Could not initialize application. Error: ' + e);
@@ -354,6 +376,13 @@ function configure() {
           }
 
           app.start();
+
+          if (window.location.href.includes("build")) {
+            setFillMode(pc.FILLMODE_NONE)
+          } else if (window.location.href.includes("play")) {
+            setFillMode(pc.FILLMODE_FILL_WINDOW)
+          }
+
         });
       });
     });
@@ -385,3 +414,51 @@ function mainInit() {
 }
 mainInit();
 // })(); // Add scope to avoid polluting window scope
+
+
+
+// update code called every frame
+function setFillMode(mode) {
+  const canvas = app.graphicsDevice.canvas;
+  // if (this.app.keyboard.wasPressed(pc.KEY_1)) {
+  if (mode === pc.FILLMODE_FILL_WINDOW) {
+    updateCanvas(pc.FILLMODE_FILL_WINDOW);
+  }
+
+  // if (this.app.keyboard.wasPressed(pc.KEY_2)) {
+  // Set the aspect ratio 
+  if (mode === pc.FILLMODE_KEEP_ASPECT) {
+    canvas.width = 1280;
+    canvas.height = 720;
+    updateCanvas(pc.FILLMODE_KEEP_ASPECT);
+  }
+
+  if (mode === pc.FILLMODE_NONE) {
+    canvas.width = 1000;
+    canvas.height = 500;
+    updateCanvas(pc.FILLMODE_NONE);
+  }
+};
+
+
+function updateCanvas(fillMode) {
+  const previousFillMode = app.fillMode;
+
+  app.setCanvasFillMode(fillMode);
+  const canvas = app.graphicsDevice.canvas;
+
+  // Update the CSS style on the canvas 
+  if (canvas.classList) {
+    canvas.classList.remove('fill-mode-' + previousFillMode);
+    canvas.classList.add('fill-mode-' + fillMode);
+  }
+
+  // Invoke a resize from the boilerplate to move the canvas
+  // into the right place
+  pcBootstrap.resizeCanvas(app, canvas);
+
+  // Have to correct the CSS due to bug in the pcBootstrap
+  if (fillMode === pc.FILLMODE_FILL_WINDOW) {
+    canvas.style.marginTop = '';
+  }
+};
