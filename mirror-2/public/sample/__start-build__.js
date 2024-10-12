@@ -59,10 +59,8 @@ var pcBootstrap = {
     canvas.style.width = '';
     canvas.style.height = '';
     if (fillMode === pc.FILLMODE_NONE) {
-      // our change for build mode
+      // our change for build mode (see below too)
       const canvasContainer = document.getElementById('build-container')
-      console.log(canvasContainer.offsetWidth, canvasContainer.offsetHeight)
-      // canvas.marginTop = canvasContainer.offsetTop + 'px'
       app.resizeCanvas(canvasContainer.offsetWidth, canvasContainer.offsetHeight);
     } else {
       // non-custom behavior
