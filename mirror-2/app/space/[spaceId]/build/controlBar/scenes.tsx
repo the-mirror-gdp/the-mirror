@@ -7,7 +7,7 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import { useParams } from 'next/navigation';
 
 import { z } from 'zod'; // Import zod for validation
-import { SyncedInput } from '@/components/ui/synced-inputs/synced-text-input';
+import { SyncedInput } from '@/components/ui/synced-inputs/synced-input';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { getCurrentScene, setControlBarCurrentView, setCurrentScene } from '@/state/local';
 import { useCreateSceneMutation, useDeleteSceneMutation, useGetAllScenesQuery, useGetSingleSceneQuery, useUpdateSceneMutation } from '@/state/scenes';
