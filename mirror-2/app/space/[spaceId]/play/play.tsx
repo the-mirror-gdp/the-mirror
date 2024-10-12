@@ -1,7 +1,7 @@
 "use client"
 
-import ImportViewportAndWillBeV2 from "@/components/engine/import-viewport"
+import SpaceViewport from "@/components/engine/space-viewport"
 
 export function Play() {
-  return <ImportViewportAndWillBeV2 />
+  return <SpaceViewport />
 }

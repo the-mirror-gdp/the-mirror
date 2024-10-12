@@ -3,7 +3,7 @@ import InnerControlBar from "@/app/space/[spaceId]/build/controlBar/inner-contro
 import Inspector from "@/app/space/[spaceId]/build/inspector/inspector"
 import { Sidebar } from "@/app/space/[spaceId]/build/sidebar"
 import { TopNavbar } from "@/app/space/[spaceId]/build/top-navbar"
-import ImportViewportAndWillBeV2 from "@/components/engine/import-viewport"
+import SpaceViewport from "@/components/engine/space-viewport"
 
 export default function Layout({ children, params }: {
   children: React.ReactNode,
@@ -28,7 +28,7 @@ export default function Layout({ children, params }: {
 
         {/* Space viewport (main content) */}
         <div className="flex-auto transition-all duration-1000" id="build-container">
-          <ImportViewportAndWillBeV2 mode="build" />
+          <SpaceViewport mode="build" />
         </div>
 
         {/* Instead of a div wrapping here, passing in className so that this component can be server compoonent; the Inspector has to use a hook for checking if entity selected */}

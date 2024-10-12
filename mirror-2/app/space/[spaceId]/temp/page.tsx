@@ -1,6 +1,6 @@
 "use client"
-import ImportViewportAndWillBeV2 from "@/components/engine/import-viewport";
+import SpaceViewport from "@/components/engine/space-viewport";
 
 export default function PageTemp() {
-  return <ImportViewportAndWillBeV2 />
+  return <SpaceViewport />
 }
