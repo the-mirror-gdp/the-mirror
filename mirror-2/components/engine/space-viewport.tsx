@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from "react";
  * The main difference between the -play and -build scripts is that the build mode script adjusts the canvas size to fit within the editor.
  */
 
-export default function ImportViewportAndWillBeV2({ mode = 'play' }: { mode?: 'build' | 'play' }) {
+export default function SpaceViewport({ mode = 'play' }: { mode?: 'build' | 'play' }) {
   const [isScriptReady, setIsScriptReady] = useState(false);
   const [settingsLoaded, setSettingsLoaded] = useState(false);
   const [modulesLoaded, setModulesLoaded] = useState(false);
