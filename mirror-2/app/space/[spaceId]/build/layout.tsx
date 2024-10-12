@@ -2,7 +2,6 @@
 import InnerControlBar from "@/app/space/[spaceId]/build/controlBar/inner-control-bar"
 import Inspector from "@/app/space/[spaceId]/build/inspector/inspector"
 import { Sidebar } from "@/app/space/[spaceId]/build/sidebar"
-import SpaceViewport from "@/state/engine/space-viewport"
 import { TopNavbar } from "@/app/space/[spaceId]/build/top-navbar"
 import ImportViewportAndWillBeV2 from "@/components/engine/import-viewport"
 
