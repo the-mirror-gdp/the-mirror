@@ -133,6 +133,7 @@ export const entitiesApi = createApi({
     updateEntity: builder.mutation<any, {
       id: string,
       name?: string,
+      enabled?: boolean,
       parent_id?: string,
       order_under_parent?: number,
       scene_id?: string,
@@ -143,6 +144,7 @@ export const entitiesApi = createApi({
       queryFn: async ({
         id,
         name,
+        enabled,
         parent_id,
         order_under_parent,
         scene_id,
@@ -192,7 +194,7 @@ export const entitiesApi = createApi({
         }
 
         // Prepare the update payload
-        const updatePayload: any = { name, parent_id, order_under_parent, scene_id };
+        const updatePayload: any = { name, enabled, parent_id, order_under_parent, scene_id };
 
         // Add position, scale, rotation updates if provided
         if (local_position) updatePayload.local_position = local_position;
@@ -233,7 +235,7 @@ export const entitiesApi = createApi({
     }),
 
 
-    batchUpdateEntities: builder.mutation<any, { entities: { id: string, name?: string, scene_id?: string, parent_id?: string, order_under_parent?: number }[] }>({
+    batchUpdateEntities: builder.mutation<any, { entities: { id: string, name?: string, scene_id?: string, parent_id?: string, order_under_parent?: number }[], enabled?: boolean }>({
       queryFn: async ({ entities }) => {
         const supabase = createSupabaseBrowserClient();
         const entityIds = entities.map(entity => entity.id);

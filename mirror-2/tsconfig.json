@@ -22,7 +22,7 @@
       {
         "name": "ts-plugin-sort-import-suggestions",
         "moveUpPatterns": ["@/", "\\.{1,2}/"],
-        "moveDownPatterns": ["dist"]
+        "moveDownPatterns": ["dist", "antd"]
       }
     ],
     "paths": {

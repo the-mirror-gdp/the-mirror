@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { ConfigProvider, Tree } from 'antd';
-import type { TreeDataNode, TreeProps } from 'antd';
-import { useParams } from 'next/navigation';
-import { useGetAllScenesQuery } from '@/state/scenes';
-import { useGetAllEntitiesQuery, useGetSingleEntityQuery, useUpdateEntityMutation, useBatchUpdateEntitiesMutation } from '@/state/entities';
-import { skipToken } from '@reduxjs/toolkit/query';
-import { SyncedTextInput } from '@/components/ui/synced-inputs/synced-text-input';
-import { z } from 'zod';
-import { addExpandedEntityIds, getCurrentScene, insertAutomaticallyExpandedSceneIds, selectAutomaticallyExpandedSceneIds, selectExpandedEntityIds, setCurrentEntity, setExpandedEntityIds } from '@/state/local';
-import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
-import { current } from '@reduxjs/toolkit';
 import EntityTreeItem from '@/components/entity-tree/tree-item';
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
+import { useBatchUpdateEntitiesMutation, useGetAllEntitiesQuery } from '@/state/entities';
+import { addExpandedEntityIds, getCurrentScene, insertAutomaticallyExpandedSceneIds, selectAutomaticallyExpandedSceneIds, selectExpandedEntityIds, setCurrentEntity, setExpandedEntityIds } from '@/state/local';
+import { useGetAllScenesQuery } from '@/state/scenes';
+import { skipToken } from '@reduxjs/toolkit/query';
+import type { TreeDataNode, TreeProps } from 'antd';
+import { ConfigProvider, Tree } from 'antd';
+import { useParams } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 
 
 type TreeDataNodeWithEntityData = TreeDataNode & { name: string, id: string, order_under_parent: number }

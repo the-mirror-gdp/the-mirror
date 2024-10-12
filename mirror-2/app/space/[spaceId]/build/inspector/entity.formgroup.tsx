@@ -2,15 +2,18 @@
 import { DatabaseEntity, useGetSingleEntityQuery, useUpdateEntityMutation } from "@/state/entities";
 import { Separator } from "@/components/ui/separator";
 import SyncedVector3Input from "@/components/ui/synced-inputs/synced-vector3-input";
-import { SyncedTextInput } from "@/components/ui/synced-inputs/synced-text-input";
+import { SyncedInput } from "@/components/ui/synced-inputs/synced-text-input";
 import { cn } from "@/lib/utils";
-import { Input } from "antd";
 import { z } from "zod";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { FormItem, FormLabel } from "@/components/ui/form";
+
 
 export function EntityFormGroup({ entity }: { entity: DatabaseEntity }) {
   return (
     <>
-      <SyncedTextInput
+      <SyncedInput
         id={entity.id}
         generalEntity={entity}
         defaultValue={entity.name}
@@ -28,6 +31,38 @@ export function EntityFormGroup({ entity }: { entity: DatabaseEntity }) {
             className={cn("dark:bg-transparent py-1 pr-1 pl-0 text-lg border-none shadow-none tracking-wider hover:bg-[#ffffff0d] text-white")}
             {...field}
           />
+        )}
+      />
+
+      <Separator className="mb-2" />
+
+      <SyncedInput
+        id={entity.id}
+        generalEntity={entity}
+        defaultValue={entity.enabled}
+        className={'p-0 m-0 bg-transparent cursor-pointer duration-0'}
+        fieldName="enabled"
+        formSchema={z.object({
+          enabled: z.boolean()
+        })}
+        useGenericGetEntityQuery={useGetSingleEntityQuery}
+        useGenericUpdateEntityMutation={useUpdateEntityMutation}
+        triggerOnChange={true}
+        renderComponent={(field) => (
+          <>
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md py-2">
+              <Checkbox
+                id={`${entity.id}-enabled`}
+                checked={field.value}
+                onCheckedChange={field.onChange}
+              />
+              <div className="space-y-1 leading-none">
+                <FormLabel htmlFor={`${entity.id}-enabled`} className="cursor-pointer">
+                  Enabled
+                </FormLabel>
+              </div>
+            </FormItem>
+          </>
         )}
       />
 

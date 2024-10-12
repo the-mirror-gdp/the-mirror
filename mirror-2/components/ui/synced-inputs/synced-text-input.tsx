@@ -8,12 +8,12 @@ import { z, ZodSchema } from "zod";
 import clsx from "clsx"; // Utility to merge class names
 import { cn } from "@/lib/utils";
 
-interface SyncedTextInputProps<T> {
+interface SyncedInputProps<T> {
   id: string;
   generalEntity: any;
   fieldName: keyof T;
   formSchema: ZodSchema;
-  defaultValue: string;
+  defaultValue: any;
   useGenericGetEntityQuery: (id: string) => { data?: T; isLoading: boolean; isSuccess: boolean; error?: any };
   useGenericUpdateEntityMutation: () => readonly [
     (args: { id: string;[fieldName: string]: any }) => any, // The mutation trigger function
@@ -24,31 +24,34 @@ interface SyncedTextInputProps<T> {
   onBlurFn?: Function;
   renderComponent: (field: any, fieldName: string) => JSX.Element; // Dynamically render a component
   convertSubmissionToNumber?: boolean; // New optional prop to convert submission to number
+  triggerOnChange?: boolean; // triggers the form component on change. Use for booleans or specific cases.
 }
 
-export function SyncedTextInput<T>({
+export function SyncedInput<T>({
   id: generalEntityId,
   generalEntity,
   fieldName,
   formSchema,
   defaultValue,
-  useGenericGetEntityQuery: useGenericGetEntityQuery,
-  useGenericUpdateEntityMutation: useGenericUpdateEntityMutation,
+  useGenericGetEntityQuery,
+  useGenericUpdateEntityMutation,
   className,
   onSubmitFn,
   onBlurFn,
   renderComponent,
   convertSubmissionToNumber = false, // Default to false
-}: SyncedTextInputProps<T>) {
+  triggerOnChange = false // triggers the form component on change. Use for booleans
+}: SyncedInputProps<T>) {
   const { data: entity, isLoading, isSuccess } = useGenericGetEntityQuery(generalEntityId);
 
   const [updateGeneralEntity, { isLoading: isUpdating, isSuccess: isUpdated, error }] = useGenericUpdateEntityMutation();
+  let defaultValueToSet = entity?.[fieldName] !== undefined ? entity[fieldName] : defaultValue
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: "onBlur",
     defaultValues: {
-      [fieldName]: entity?.[fieldName] ?? defaultValue,
+      [fieldName]: defaultValueToSet
     },
   });
 
@@ -64,8 +67,12 @@ export function SyncedTextInput<T>({
     }
 
     // Check if the value has actually changed
-    if (entity && isSuccess && entity[fieldName] === values[fieldName]) {
-      return;
+    if (entity && isSuccess) {
+      const entityValue = entity[fieldName]
+      const formValue = values[fieldName]
+      if (entityValue === formValue) {
+        return
+      }
     }
     if (onSubmitFn) {
       onSubmitFn();
@@ -76,22 +83,22 @@ export function SyncedTextInput<T>({
   // Reset the form when the entity data is successfully fetched
   useEffect(() => {
     if (entity && isSuccess) {
+      defaultValueToSet = entity?.[fieldName] !== undefined ? entity[fieldName] : defaultValue
+
       form.reset({
-        [fieldName]: entity[fieldName] ?? defaultValue,
+        [fieldName]: defaultValueToSet
       });
     }
   }, [entity, isSuccess, form]);
 
-  const formSubmitFn = async (event) => {
-    event.preventDefault()
+  const handleChange = async () => {
     const isValid = await form.trigger(fieldName as string); // Manually trigger validation
-
     if (isValid) {
       const values = form.getValues(); // Get current form values
       console.log("Form is valid, triggering submission:", values);
       onSubmit(values); // Manually call onSubmit after validation passes
     }
-  }
+  };
 
   // Display loading state if data is still being fetched
   if (isLoading) {
@@ -102,10 +109,7 @@ export function SyncedTextInput<T>({
     <Form {...form}>
       <form
         className={cn(className)}
-        onBlur={
-          formSubmitFn
-        }
-        onSubmit={formSubmitFn}
+        onBlur={form.handleSubmit(onSubmit)} // Trigger submission on blur as fallback
       >
         <FormField
           control={form.control}
@@ -113,7 +117,15 @@ export function SyncedTextInput<T>({
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                {renderComponent && renderComponent(field, fieldName as string)}
+                {renderComponent && renderComponent({
+                  ...field,
+                  onChange: (e) => {
+                    field.onChange(e); // Update form state
+                    if (triggerOnChange) {
+                      handleChange(); // Trigger submission on change if flag is true
+                    }
+                  }
+                }, fieldName as string)}
               </FormControl>
               <FormMessage />
             </FormItem>
