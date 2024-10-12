@@ -3,13 +3,13 @@ import Inspector from "@/app/space/[spaceId]/build/inspector/inspector"
 import { Sidebar } from "@/app/space/[spaceId]/build/sidebar"
 import SpaceViewport from "@/state/engine/space-viewport"
 import { TopNavbar } from "@/app/space/[spaceId]/build/top-navbar"
+import ImportViewportAndWillBeV2 from "@/components/engine/import-viewport"
 
 export default function Layout({ children, params }: {
   children: React.ReactNode,
   spaceViewport: React.ReactNode,
   params: { spaceId: string }
 }) {
-  console.log('here')
 
   return (
     <div className="h-screen max-h-screen w-screen grid grid-rows-[auto,1fr] overflow-hidden">
@@ -28,7 +28,7 @@ export default function Layout({ children, params }: {
 
         {/* Space viewport (main content) */}
         <div className="flex-auto">
-          <SpaceViewport />
+          <ImportViewportAndWillBeV2 />
         </div>
 
         {/* Instead of a div wrapping here, passing in className so that this component can be server compoonent; the Inspector has to use a hook for checking if entity selected */}

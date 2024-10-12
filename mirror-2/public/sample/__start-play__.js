@@ -171,6 +171,9 @@ function createGraphicsDevice(callback) {
       deviceOptions.preferWebGl2 === false
         ? [pc.DEVICETYPE_WEBGL1, pc.DEVICETYPE_WEBGL2]
         : deviceOptions.deviceTypes;
+    if (!deviceTypes) {
+      deviceTypes = []
+    }
     deviceTypes.push(LEGACY_WEBGL);
 
     var gpuLibPath = window.ASSET_PREFIX
