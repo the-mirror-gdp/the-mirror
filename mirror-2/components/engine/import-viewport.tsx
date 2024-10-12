@@ -16,7 +16,7 @@ export default function ImportViewportAndWillBeV2({ mode = 'play' }: { mode?: 'b
   const [modulesLoaded, setModulesLoaded] = useState(false);
   const [engineLoaded, setEngineLoaded] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const startScriptUrl = mode === 'play' ? "/sample/__start-play__.js" : "/sample/__start-build__.js"
+  const startScriptUrl = "/sample/__start-custom__.js"
   useEffect(() => {
     const modifyAndLoadScripts = async () => {
       try {
