@@ -2,7 +2,7 @@ import { createSlice, createEntityAdapter, createAsyncThunk, createListenerMiddl
 import { RootState, createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import { createSupabaseBrowserClient } from '@/utils/supabase/client';
 import { TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY } from '@/state/shared-cache-tags';
-import { updateEngineApp } from '@/state/engine/engine';
+import { updateEngineApp } from '@/state/engine/engine-old';
 
 import { createGeneralEntityListenerMiddleware, selectAllEntities } from '@/state/engine/middleware';
 import { Database } from '@/utils/database.types';

@@ -29,6 +29,15 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "state/engine/__settings__.js",
+    "state/engine/__loading__.js",
+    "state/engine/__modules__.js",
+    "state/engine/__start__.js"
+  ],
   "exclude": ["node_modules"]
 }
