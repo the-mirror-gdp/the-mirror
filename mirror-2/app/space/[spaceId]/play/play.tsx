@@ -1,6 +1,6 @@
 "use client"
 
-import SpaceViewport from "@/app/space/[spaceId]/build/space-viewport"
+import SpaceViewport from "@/state/engine/space-viewport"
 
 export function Play() {
   return <SpaceViewport />

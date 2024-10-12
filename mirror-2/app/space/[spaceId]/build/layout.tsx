@@ -1,7 +1,7 @@
 import InnerControlBar from "@/app/space/[spaceId]/build/controlBar/inner-control-bar"
 import Inspector from "@/app/space/[spaceId]/build/inspector/inspector"
 import { Sidebar } from "@/app/space/[spaceId]/build/sidebar"
-import SpaceViewport from "@/app/space/[spaceId]/build/space-viewport"
+import SpaceViewport from "@/state/engine/space-viewport"
 import { TopNavbar } from "@/app/space/[spaceId]/build/top-navbar"
 
 export default function Layout({ children, params }: {
@@ -9,6 +9,7 @@ export default function Layout({ children, params }: {
   spaceViewport: React.ReactNode,
   params: { spaceId: string }
 }) {
+  console.log('here')
 
   return (
     <div className="h-screen max-h-screen w-screen grid grid-rows-[auto,1fr] overflow-hidden">
