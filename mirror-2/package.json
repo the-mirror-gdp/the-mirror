@@ -40,6 +40,7 @@
     "cmdk": "1.0.0",
     "formidable": "^3.5.1",
     "geist": "^1.2.1",
+    "jszip": "^3.10.1",
     "lucide-react": "^0.446.0",
     "next": "latest",
     "next-themes": "^0.3.0",
