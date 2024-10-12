@@ -7,9 +7,13 @@ import { useCreatePcImportMutation } from '@/state/pc-imports';
 import { useAppSelector } from '@/hooks/hooks';
 import { selectLocalUser } from '@/state/local';
 
+/**
+ * Important: When we importing a PC app, it's stored in an IMMUTABLE form intentionally; with different engine versions and settings, we'll need to patch our __start-custom__.js to handle different cases depending on what the importing app was built on. We don't want to modify the imported files; that's done at runtime for future compatability and not having to run migrations.
+ * Further, we can still optimize this with running the imports server-side with NextJS, but not a priority right now since it's fast.
+ */
+
 // Create the Supabase client
 const supabase = createSupabaseBrowserClient();
-
 
 export const usePCZipFileUpload = () => {
   const [uploading, setUploading] = useState(false); // State to manage the upload progress
