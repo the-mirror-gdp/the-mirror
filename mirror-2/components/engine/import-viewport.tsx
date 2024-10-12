@@ -5,10 +5,10 @@ import Script from "next/script";
 import * as pcImport from 'playcanvas';
 import { useEffect, useRef, useState } from "react";
 
-export default function ImportViewportAndWillBeV2() {
+export default function ImportViewportAndWillBeV2({ mode = 'play' }: { mode?: 'build' | 'play' }) {
   const [isScriptReady, setIsScriptReady] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
+  const startScriptUrl = mode === 'play' ? "/sample/__start-play__.js" : "/sample/__start-play__.js"
   useEffect(() => {
     const modifyAndLoadScripts = async () => {
       try {
@@ -37,7 +37,7 @@ export default function ImportViewportAndWillBeV2() {
           <Script src="/sample/__settings__.import.js" strategy="lazyOnload" />
           <Script src="/sample/__modules__.import.js" strategy="lazyOnload" />
           {/* This is OUR start file, not the imported one (for engine compatability reasons; we use the latest and someone might import an older file) */}
-          <Script src="/sample/__start-play__.js" strategy="lazyOnload" />
+          <Script src={startScriptUrl} strategy="lazyOnload" />
           <style id="import-style"></style>
         </>
       )}
