@@ -3,12 +3,65 @@
 import { replaceInFile } from 'replace-in-file';
 import path from 'path';
 import { promises as fs } from 'fs';  // Use promises from fs to check file existence
+import { pipeline } from 'stream';
+import { promisify } from 'util';
+import unzipper from 'unzipper';
+import { Readable } from 'stream/web';  // Import Readable from 'stream/web'
 
-export async function modifyFile() {
+const pipelineAsync = promisify(pipeline);
+
+export async function pcImport(file: File) {
+  // Step 1: Unzip the file
+  const unzippedFolderPath = await unzipFile(file);
+
+  // Step 2: Find the location of __settings__.import.js within the unzipped directory
+  const settingsFilePath = await findSettingsFile(unzippedFolderPath, '__settings__.import.js');
+
+  // Step 3: Pass the located file to modifyFiles
+  if (settingsFilePath) {
+    return await modifyFiles(settingsFilePath);
+  } else {
+    throw new Error('Unable to locate __settings__.import.js in the unzipped directory.');
+  }
+}
+
+// async function unzipFile(file: File): Promise<string> {
+//   const outputDir = path.join(process.cwd(), 'temp/unzipped');  // Define the output folder
+//   await fs.mkdir(outputDir, { recursive: true });
+
+//   // Convert Web API ReadableStream (file.stream()) to Node.js Readable stream
+//   const nodeReadableStream = Readable.fromWeb(file.stream());
+
+//   // Use pipeline to pipe the stream to the unzipper
+//   await pipelineAsync(
+//     nodeReadableStream,
+//     unzipper.Extract({ path: outputDir })  // Extract files to the specified folder
+//   );
+
+//   return outputDir;  // Return the path to the unzipped directory
+// }
+
+async function findSettingsFile(dir: string, filename: string): Promise<string | null> {
+  const files = await fs.readdir(dir, { withFileTypes: true });
+
+  for (const file of files) {
+    const filePath = path.join(dir, file.name);
+
+    if (file.isDirectory()) {
+      // Recursively search directories
+      const result = await findSettingsFile(filePath, filename);
+      if (result) return result;
+    } else if (file.name === filename) {
+      return filePath;  // Return the path if the file is found
+    }
+  }
+
+  return null;  // Return null if the file isn't found
+}
+
+async function modifyFiles(filePath: string) {
   try {
-
-    const settingsResult = await modifySettings()
-    // const startResult = await modifyStart()
+    const settingsResult = await modifySettings(filePath);
 
     // Return the results or message
     if (settingsResult.length > 0 && settingsResult[0].hasChanged) {
@@ -17,72 +70,7 @@ export async function modifyFile() {
       return "No changes made.";
     }
   } catch (error) {
-    // If the file cannot be accessed, or there was an error
     console.error('Error modifying file:', error);
     throw new Error('Failed to modify the file.');
   }
 }
-
- async function modifySettings() {
-      // __settings__.js
-      const filePath = path.join(process.cwd(), 'public/sample/__settings__.import.js');
-
-      // Check if the file exists and is accessible
-      await fs.access(filePath);
-  
-      // Set up replace-in-file options
-      const options = {
-        files: filePath,
-        from: [
-          /window\.ASSET_PREFIX\s*=\s*".*?"/g,  // Matches any ASSET_PREFIX assignment
-          /window\.SCRIPT_PREFIX\s*=\s*".*?"/g,  // Matches any SCRIPT_PREFIX assignment
-          /window\.SCENE_PATH\s*=\s*"(?:.*\/)?(\d+\.json)"/g,  // Captures SCENE_PATH's number.json
-          /'powerPreference'\s*:\s*".*?"/g  // Matches powerPreference's value
-        ],
-        to: [
-          'window.ASSET_PREFIX = "../../sample/"',      // Replacement for ASSET_PREFIX
-          'window.SCRIPT_PREFIX = "../../sample"',     // Replacement for SCRIPT_PREFIX
-          'window.SCENE_PATH = "../../sample/$1"',     // Prefix SCENE_PATH with "../../sample/"
-          '\'powerPreference\': "high-performance"'    // Replaces any powerPreference value with "high-performance"
-        ],
-      };
-  
-      // Perform the replacement
-   const results = await replaceInFile(options);
-  return results
-}
-
-// export async function modifyStart() {
-//   // Path to __start__.import.js
-//   const filePath = path.join(process.cwd(), 'public/sample/__start__.import.js');
-
-//   // Check if the file exists and is accessible
-//   await fs.access(filePath);
-
-//   // Set up replace-in-file options
-//   const options = {
-//     files: filePath,
-//     from: [
-//       /var\s+deviceTypes\s*=\s*deviceOptions\.preferWebGl2\s*===\s*false\s*\?\s*\[pc\.DEVICETYPE_WEBGL1,\s*pc\.DEVICETYPE_WEBGL2\]\s*:\s*deviceOptions\.deviceTypes;\s*deviceTypes\.push\(LEGACY_WEBGL\);/gs,
-//       /document\.head\.querySelector\('style'\)\.innerHTML\s*\+=\s*css;/g  // Matches the old querySelector for style
-//     ],
-//     to: [
-//       'window.ASSET_PREFIX = "../../sample/"',  // Replacement for ASSET_PREFIX
-//       `var deviceTypes = deviceOptions.preferWebGl2 === false ?
-//         [pc.DEVICETYPE_WEBGL1, pc.DEVICETYPE_WEBGL2] :
-//         deviceOptions.deviceTypes;
-//       if (!deviceTypes) {
-//         deviceTypes = [];
-//       }
-//       deviceTypes.push(LEGACY_WEBGL);`,  // Replacement for deviceTypes logic
-//       `document.getElementById('import-style').innerHTML += css;`  // Replace with getElementById for 'import-style'
-
-//     ],
-//   };
-
-//   // Perform the replacement
-//   const results = await replaceInFile(options);
-
-//   // Return the results or message
-//   return results;
-// }

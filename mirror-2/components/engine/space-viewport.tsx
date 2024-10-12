@@ -1,6 +1,6 @@
 "use client"
 import { cn } from "@/utils/cn";
-import { modifyFile } from "@/utils/pc-import.server";
+
 import Script from "next/script";
 import * as pcImport from 'playcanvas';
 import { useEffect, useRef, useState } from "react";
@@ -21,7 +21,7 @@ export default function SpaceViewport({ mode = 'play' }: { mode?: 'build' | 'pla
     const modifyAndLoadScripts = async () => {
       try {
         // First, modify the file on the server side
-        await modifyFile(); // Wait for the modification to complete
+        // await modifyFile(); // Wait for the modification to complete
 
         // Once the file is modified, allow the scripts to load
         setIsScriptReady(true);

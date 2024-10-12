@@ -1,6 +1,6 @@
 // listenerMiddlewares.ts
 import { createListenerMiddleware } from '@reduxjs/toolkit';
-import { updateEngineApp } from '@/state/engine/engine-old'; // Adjust path as needed
+// import { updateEngineApp } from '@/state/engine/engine-old'; // Adjust path as needed
 import { RootState } from '@/state/store'; // Adjust path as needed
 import { DatabaseEntity, entitiesApi } from '@/state/entities'; // Adjust path as needed
 
@@ -44,7 +44,7 @@ function createGeneralEntityListenerMiddleware(
 
       // Pass the optimistic changes to PlayCanvas
       console.log(`Optimistically updating ${generalEntityName}`, entities);
-      updateEngineApp(entities, { isOptimistic: true });
+      // updateEngineApp(entities, { isOptimistic: true });
     },
   });
 
@@ -61,7 +61,7 @@ function createGeneralEntityListenerMiddleware(
       const entities = getEntities(state);
 
       console.log(`Applying confirmed updates to ${generalEntityName}`, entities);
-      updateEngineApp(entities, { isOptimistic: false });
+      // updateEngineApp(entities, { isOptimistic: false });
     },
   });
 
@@ -77,7 +77,7 @@ function createGeneralEntityListenerMiddleware(
       const entities = getEntities(state);
 
       console.log(`Reverting updates for ${generalEntityName}`, entities);
-      updateEngineApp(entities, { isReverted: true });
+      // updateEngineApp(entities, { isReverted: true });
     },
   });
 
