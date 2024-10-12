@@ -24,7 +24,6 @@ export default function NewSpacePage() {
     }
     if (!started) {
       setStarted(true)
-      // debugger
       create();
     }
   }, [])

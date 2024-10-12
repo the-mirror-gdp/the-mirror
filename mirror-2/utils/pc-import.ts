@@ -33,8 +33,7 @@ export const usePCZipFileUpload = () => {
 
       const pcImportId = pcImportData.id; // Get the newly created pcImport ID
 
-      const assetPrefix = getSCRIPT_PREFIXForLoadingEngineApp(localUser.id, pcImportData.id)
-      const scriptPrefix = getASSET_PREFIXForLoadingEngineApp(localUser.id, pcImportData.id)
+
 
       // Step 2: Read the file as an ArrayBuffer
       const arrayBuffer = await file.arrayBuffer();
@@ -44,7 +43,7 @@ export const usePCZipFileUpload = () => {
       const zip = await JSZip.loadAsync(arrayBuffer);
 
       // Modify the files in the ZIP
-      await modifyZipFiles(zip, assetPrefix, scriptPrefix);
+      // await modifyZipFiles(zip, assetPrefix, scriptPrefix);
     
       // Upload the files to Supabase Storage
       await uploadZipToSupabase(zip, pcImportId);
@@ -60,18 +59,17 @@ export const usePCZipFileUpload = () => {
 };
 
 
-// Function to process the ZIP file
-// const processZipFile = async (arrayBuffer: ArrayBuffer, pcImportId: string, assetPrefix: string, scriptPrefix: string) => {
-// }
+// Function to modify files 
+export const modifySettingsFileFromSupabase = async (settingsFileUrl: string, assetPrefix: string, scriptPrefix: string, configFilenameUrl: string) => {
+  try {
+    // Fetch the settings file from the Supabase public URL
+    const response = await fetch(settingsFileUrl);
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch settings file from Supabase: ${response.statusText}`);
+    }
 
-// Function to modify files within the ZIP
-const modifyZipFiles = async (zip: JSZip, assetPrefix: string, scriptPrefix: string) => {
-  // Find and modify __settings__.import.js
-  const settingsFilePath = '__settings__.js';
-  const settingsFile = zip.file(settingsFilePath);
-
-  if (settingsFile) {
-    const content = await settingsFile.async('string');
+    const content = await response.text();
 
     // Perform replacements
     const modifiedContent = content
@@ -79,15 +77,20 @@ const modifyZipFiles = async (zip: JSZip, assetPrefix: string, scriptPrefix: str
       .replace(/window\.SCRIPT_PREFIX\s*=\s*".*?"/g, `window.SCRIPT_PREFIX = "${scriptPrefix}"`)
       .replace(/window\.SCENE_PATH\s*=\s*"(?:.*\/)?(\d+\.json)"/g, 'window.SCENE_PATH = "$1"')
       .replace(/'powerPreference'\s*:\s*".*?"/g, '\'powerPreference\': "high-performance"')
-      .replace(/window\.CONFIG_FILENAME\s*=\s*".*?"/g, `window.CONFIG_FILENAME = "${scriptPrefix}/config.json"`)
+      .replace(/window\.CONFIG_FILENAME\s*=\s*".*?"/g, `window.CONFIG_FILENAME = "${configFilenameUrl}"`);
 
-    // Update the file in the ZIP
-    zip.file(settingsFilePath, modifiedContent);
-  } else {
-    console.error('Settings file not found in the uploaded zip');
-    throw new Error('Settings file not found in the uploaded zip');
+    // Use or return the modified content (you can upload it back to Supabase or serve it as needed)
+    console.log('Modified content:', modifiedContent);
+
+    // If you need to save the modified file back to Supabase or another location, you can use the appropriate API.
+    return modifiedContent;
+    
+  } catch (error) {
+    console.error('Error modifying settings file:', error);
+    throw error;
   }
 };
+
 
 // Function to upload files to Supabase Storage
 const uploadZipToSupabase = async (zip: JSZip, pcImportId: string) => {
@@ -117,7 +120,6 @@ const uploadZipToSupabase = async (zip: JSZip, pcImportId: string) => {
 
       if (error) {
         console.error(`Failed to upload ${relativePath}:`, error);
-        debugger
         throw new Error(error.message);
       }
     }
