@@ -5,14 +5,14 @@ import AccountDropdownMenu from "@/components/ui/account-dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/hooks/hooks";
 import { AppLogoImageSmall } from "@/lib/theme-service";
-import { selectLocalUserState } from "@/state/local";
+import { selectLocalUser } from "@/state/local";
 import { Play } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export function TopNavbar() {
-  const localUserState = useAppSelector(selectLocalUserState)
+  const localUserState = useAppSelector(selectLocalUser)
   const [hasMounted, setHasMounted] = useState(false);
   const params = useParams<{ spaceId: string }>()
 

@@ -3,12 +3,12 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { signOut } from "@/hooks/auth";
 import { useAppSelector } from "@/hooks/hooks";
-import { selectLocalUserState } from "@/state/local";
+import { selectLocalUser } from "@/state/local";
 import { CircleUser } from "lucide-react";
 import Link from "next/link";
 
 export default function AccountDropdownMenu() {
-  const localUserState = useAppSelector(selectLocalUserState)
+  const localUserState = useAppSelector(selectLocalUser)
 
   return (<DropdownMenu>
     <DropdownMenuTrigger asChild>

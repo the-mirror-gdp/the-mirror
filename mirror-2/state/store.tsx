@@ -7,6 +7,7 @@ import { scenesApi } from '@/state/scenes'
 import { entitiesApi, listenerMiddlewareEntities } from '@/state/entities'
 import { assetsApi } from '@/state/assets'
 import { componentsApi } from '@/state/components'
+import { pcImportsApi } from '@/state/pc-imports'
 
 export const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ export const store = configureStore({
     [scenesApi.reducerPath]: scenesApi.reducer,
     [entitiesApi.reducerPath]: entitiesApi.reducer,
     [componentsApi.reducerPath]: componentsApi.reducer,
+    [pcImportsApi.reducerPath]: pcImportsApi.reducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
@@ -27,6 +29,7 @@ export const store = configureStore({
       .concat(scenesApi.middleware)
       .concat(entitiesApi.middleware)
       .concat(componentsApi.middleware)
+      .concat(pcImportsApi.middleware)
       .concat(listenerMiddlewareLocal.middleware)
       .concat(listenerMiddlewareSpaces.middleware)
       .concat(listenerMiddlewareEntities.middleware)

@@ -1,18 +1,19 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { FolderInput } from 'lucide-react';
-import { handlePCZipFileUpload } from '@/utils/pc-import';
+import { usePCZipFileUpload } from '@/utils/pc-import';
+
 
 export default function Settings() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [uploading, setUploading] = useState(false);
+  const { uploading, handlePCZipFileUpload } = usePCZipFileUpload(); // Use the hook
 
   const handleFileInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      await handlePCZipFileUpload(file, setUploading);
+      await handlePCZipFileUpload(file); // Call the hook function
     }
   };
 
