@@ -1,3 +1,4 @@
+"use client"
 import EntityTreeItem from '@/components/entity-tree/tree-item';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { useBatchUpdateEntitiesMutation, useGetAllEntitiesQuery } from '@/state/entities';
