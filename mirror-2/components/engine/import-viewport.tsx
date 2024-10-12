@@ -12,6 +12,8 @@ import { useEffect, useRef, useState } from "react";
 
 export default function ImportViewportAndWillBeV2({ mode = 'play' }: { mode?: 'build' | 'play' }) {
   const [isScriptReady, setIsScriptReady] = useState(false);
+  const [settingsLoaded, setSettingsLoaded] = useState(false);
+  const [modulesLoaded, setModulesLoaded] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const startScriptUrl = mode === 'play' ? "/sample/__start-play__.js" : "/sample/__start-build__.js"
   useEffect(() => {
@@ -39,10 +41,10 @@ export default function ImportViewportAndWillBeV2({ mode = 'play' }: { mode?: 'b
     <>
       {isScriptReady && (
         <>
-          <Script src="/sample/__settings__.import.js" strategy="lazyOnload" />
-          <Script src="/sample/__modules__.import.js" strategy="lazyOnload" />
+          <Script src="/sample/__settings__.import.js" strategy="afterInteractive" onLoad={() => setSettingsLoaded(true)} />
+          <Script src="/sample/__modules__.import.js" strategy="afterInteractive" onLoad={() => setModulesLoaded(true)} />
           {/* This is OUR start file, not the imported one (for engine compatability reasons; we use the latest and someone might import an older file) */}
-          <Script src={startScriptUrl} strategy="lazyOnload" />
+          {settingsLoaded && modulesLoaded && <Script src={startScriptUrl} strategy="lazyOnload" />}
           <style id="import-style"></style>
         </>
       )}

@@ -294,19 +294,22 @@ function initApp(device) {
       pc.GSplatHandler,
     ].filter(Boolean);
 
+    if (window.INPUT_SETTINGS === undefined) {
+      debugger
+    }
     createOptions.elementInput = new pc.ElementInput(canvas, {
-      useMouse: INPUT_SETTINGS.useMouse,
-      useTouch: INPUT_SETTINGS.useTouch,
+      useMouse: window.INPUT_SETTINGS.useMouse,
+      useTouch: window.INPUT_SETTINGS.useTouch,
     });
-    createOptions.keyboard = INPUT_SETTINGS.useKeyboard
+    createOptions.keyboard = window.INPUT_SETTINGS.useKeyboard
       ? new pc.Keyboard(window)
       : null;
-    createOptions.mouse = INPUT_SETTINGS.useMouse ? new pc.Mouse(canvas) : null;
-    createOptions.gamepads = INPUT_SETTINGS.useGamepads
+    createOptions.mouse = window.INPUT_SETTINGS.useMouse ? new pc.Mouse(canvas) : null;
+    createOptions.gamepads = window.INPUT_SETTINGS.useGamepads
       ? new pc.GamePads()
       : null;
     createOptions.touch =
-      INPUT_SETTINGS.useTouch && pc.platform.touch
+      window.INPUT_SETTINGS.useTouch && pc.platform.touch
         ? new pc.TouchDevice(canvas)
         : null;
     createOptions.assetPrefix = window.ASSET_PREFIX || '';
