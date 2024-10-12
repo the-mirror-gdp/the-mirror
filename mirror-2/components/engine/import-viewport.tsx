@@ -51,6 +51,7 @@ export default function ImportViewportAndWillBeV2({ mode = 'play' }: { mode?: 'b
         <canvas
           id="application-canvas"
           ref={canvasRef}
+          style={{ zIndex: -1 }}
           className="flex h-full w-full items-center justify-center shadow-sm"
         // id={CANVAS_ID}
         />
