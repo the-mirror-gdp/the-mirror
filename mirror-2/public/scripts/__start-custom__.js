@@ -1,9 +1,4 @@
-// Boilerplate from PC; it's recommended on docs to modify this, so ts-nocheck since it comes as JS file for initial boilerplate. https://developer.playcanvas.com/user-manual/publishing/web/communicating-webpage/
-// import * as pc from 'playcanvas'
-// import initSettings from './__settings__'
-// import loadModules from './__modules__'
-
-// initSettings()
+// Custom from the boilerplate from PC; it's recommended on docs to modify this, so ts-nocheck since it comes as JS file for initial boilerplate. https://developer.playcanvas.com/user-manual/publishing/web/communicating-webpage/
 
 // (function () {
 // Shared Lib
