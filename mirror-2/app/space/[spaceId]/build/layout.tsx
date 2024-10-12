@@ -27,7 +27,7 @@ export default function Layout({ children, params }: {
         </div>
 
         {/* Space viewport (main content) */}
-        <div className="flex-auto">
+        <div className="flex-auto" id="build-container">
           <ImportViewportAndWillBeV2 mode="build" />
         </div>
 

@@ -49,6 +49,7 @@ export default function ImportViewportAndWillBeV2({ mode = 'play' }: { mode?: 'b
       {/* <SpaceViewport /> */}
       <div style={{ width: '100%', height: '100%' }} >
         <canvas
+          id="application-canvas"
           ref={canvasRef}
           className="flex h-full w-full items-center justify-center shadow-sm"
         // id={CANVAS_ID}
