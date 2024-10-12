@@ -46,8 +46,14 @@ var pcBootstrap = {
 
     // Disable long-touch select on iOS devices
     canvas.style['-webkit-user-select'] = 'none';
+    canvas.className = "transition-all duration-1000 opacity-0"
+    // document.body.appendChild(canvas);
+    document.getElementById('direct-container').appendChild(canvas);
 
-    document.body.appendChild(canvas);
+    setTimeout(() => {
+      canvas.classList.add('opacity-100');  // This will smoothly transition to visible
+      canvas.classList.remove('opacity-0');  // This will smoothly transition to visible
+    }, 50);  // A slight delay to ensure the DOM is updated before applying the transition
 
     return canvas;
   },

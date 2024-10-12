@@ -1,5 +1,6 @@
 "use client"
 import SpaceViewport from "@/state/engine/space-viewport";
+import { cn } from "@/utils/cn";
 import { modifyFile } from "@/utils/pc-import.server";
 import Script from "next/script";
 import * as pcImport from 'playcanvas';
@@ -14,6 +15,7 @@ export default function ImportViewportAndWillBeV2({ mode = 'play' }: { mode?: 'b
   const [isScriptReady, setIsScriptReady] = useState(false);
   const [settingsLoaded, setSettingsLoaded] = useState(false);
   const [modulesLoaded, setModulesLoaded] = useState(false);
+  const [engineLoaded, setEngineLoaded] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const startScriptUrl = mode === 'play' ? "/sample/__start-play__.js" : "/sample/__start-build__.js"
   useEffect(() => {
@@ -44,19 +46,18 @@ export default function ImportViewportAndWillBeV2({ mode = 'play' }: { mode?: 'b
           <Script src="/sample/__settings__.import.js" strategy="afterInteractive" onLoad={() => setSettingsLoaded(true)} />
           <Script src="/sample/__modules__.import.js" strategy="afterInteractive" onLoad={() => setModulesLoaded(true)} />
           {/* This is OUR start file, not the imported one (for engine compatability reasons; we use the latest and someone might import an older file) */}
-          {settingsLoaded && modulesLoaded && <Script src={startScriptUrl} strategy="lazyOnload" />}
+          {settingsLoaded && modulesLoaded && <Script src={startScriptUrl} strategy="lazyOnload" onLoad={() => setEngineLoaded(true)} />}
           <style id="import-style"></style>
         </>
       )}
-      {/* <SpaceViewport /> */}
-      <div style={{ width: '100%', height: '100%' }} >
-        <canvas
+      {/* <div style={{ width: '100%', height: '100%' }} > */}
+      <div id="direct-container" className="transition-all duration-1000" >
+        {/* <canvas
           id="application-canvas"
           ref={canvasRef}
           style={{ zIndex: -1 }}
-          className="flex h-full w-full items-center justify-center shadow-sm"
-        // id={CANVAS_ID}
-        />
+          className={cn("flex h-full w-full items-center justify-center shadow-sm transition-all duration-1000")}
+        /> */}
       </div>
     </>
   );

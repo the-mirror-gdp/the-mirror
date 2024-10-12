@@ -28,7 +28,7 @@ export default function Layout({ children, params }: {
         </div>
 
         {/* Space viewport (main content) */}
-        <div className="flex-auto" id="build-container">
+        <div className="flex-auto transition-all duration-1000" id="build-container">
           <ImportViewportAndWillBeV2 mode="build" />
         </div>
 
