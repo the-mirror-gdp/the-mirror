@@ -77,6 +77,7 @@ var pcBootstrap = {
         canvas.clientWidth / canvas.clientHeight >=
         window.innerWidth / window.innerHeight
       ) {
+        // old line here for posterity
         // canvas.style.marginTop = Math.floor((window.innerHeight - canvas.clientHeight) / 2) + 'px';
         const canvasContainer = document.getElementById('build-container')
         canvas.style.marginTop = canvasContainer.offsetTop + 'px'
