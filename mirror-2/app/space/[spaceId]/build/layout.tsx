@@ -28,7 +28,7 @@ export default function Layout({ children, params }: {
 
         {/* Space viewport (main content) */}
         <div className="flex-auto transition-all duration-1000" id="build-container">
-          <SpaceViewport mode="build" pcImportId="bc088bf9-e1e2-4bf5-890f-7f3ece7fc297" />
+          <SpaceViewport mode="build" pcImportId="5da9a24a-56bd-4e31-b9b3-be9c46d6d6b1" />
         </div>
 
         {/* Instead of a div wrapping here, passing in className so that this component can be server compoonent; the Inspector has to use a hook for checking if entity selected */}

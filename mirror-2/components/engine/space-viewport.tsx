@@ -8,7 +8,7 @@ import { createSupabaseBrowserClient } from '@/utils/supabase/client';
 import { useAppSelector } from "@/hooks/hooks";
 import { selectLocalUser } from "@/state/local";
 import { useGetSinglePcImportQuery } from "@/state/pc-imports";
-import { getBrowserScriptTagUrlForLoadingScriptsFromStorage, getSCRIPT_PREFIXForLoadingEngineApp } from "@/utils/pc-import";
+import { getASSET_PREFIXForLoadingEngineApp, getBrowserScriptTagUrlForLoadingScriptsFromStorage, getSCRIPT_PREFIXForLoadingEngineApp, modifySettingsFileFromSupabase } from "@/utils/pc-import";
 
 
 interface SpaceViewportProps {
@@ -20,6 +20,7 @@ export default function SpaceViewport({ pcImportId, mode = 'play' }: SpaceViewpo
   const [isScriptReady, setIsScriptReady] = useState(false);
   const [engineLoaded, setEngineLoaded] = useState(false);
   const [settingsScriptUrl, setSettingsScriptUrl] = useState('');
+  const [modifiedSettingsFileText, setModifiedSettingsFileText] = useState('');
   const [modulesScriptUrl, setModulesScriptUrl] = useState('');
   const [importedConfigJsonUrl, setImportedConfigJsonUrl] = useState('');
   const [hasLoadedExternalFiles, setHasLoadedExternalFiles] = useState(false);
@@ -39,7 +40,7 @@ export default function SpaceViewport({ pcImportId, mode = 'play' }: SpaceViewpo
         try {
 
           // const urls = await constructAndDownloadUrls(pcImportFiles);
-          const pcImportPath = `${user?.id}/${pcImportId}`
+          const pcImportPath = `${user?.id}/${pcImport.id}`
 
           // Fetch the list of files from Supabase Storage
           // const { data: fileList, error: listError } = await supabase.storage
@@ -48,6 +49,8 @@ export default function SpaceViewport({ pcImportId, mode = 'play' }: SpaceViewpo
           //        // if (listError) {
           // //   throw new Error(`Error listing files: ${listError.message}`);
           // // }
+          const assetPrefix = getSCRIPT_PREFIXForLoadingEngineApp(user.id, pcImport.id)
+          const scriptPrefix = getASSET_PREFIXForLoadingEngineApp(user.id, pcImport.id)
 
           // get __settings__.js
           const { data: settingsFile } = supabase
@@ -56,17 +59,27 @@ export default function SpaceViewport({ pcImportId, mode = 'play' }: SpaceViewpo
             .getPublicUrl(pcImportPath + '/__settings__.js')
           setSettingsScriptUrl(settingsFile.publicUrl)
 
-          const { data: modulesFile } = supabase
-            .storage
-            .from('pc-imports')
-            .getPublicUrl(pcImportPath + '/__modules__.js')
-          setModulesScriptUrl(modulesFile.publicUrl)
-
           const { data: configFile } = supabase
             .storage
             .from('pc-imports')
             .getPublicUrl(pcImportPath + '/config.json')
           setImportedConfigJsonUrl(configFile.publicUrl)
+
+          const pcImportBaseUrl = settingsFile.publicUrl.replace('/__settings__.js', '/');
+
+          const modifiedSettingsContent = await modifySettingsFileFromSupabase(
+            settingsFile.publicUrl, // This is the URL you obtained from Supabase
+            pcImportBaseUrl,       // Your asset prefix
+            pcImportBaseUrl,
+            configFile.publicUrl
+          )
+          setModifiedSettingsFileText(modifiedSettingsContent)
+
+          const { data: modulesFile } = supabase
+            .storage
+            .from('pc-imports')
+            .getPublicUrl(pcImportPath + '/__modules__.js')
+          setModulesScriptUrl(modulesFile.publicUrl)
 
           setIsScriptReady(true);
           setHasLoadedExternalFiles(true);
@@ -75,7 +88,6 @@ export default function SpaceViewport({ pcImportId, mode = 'play' }: SpaceViewpo
           if (typeof window !== "undefined") {
             window['pc'] = pc; // Declare global PlayCanvas variable
             // window['CONFIG_FILENAME'] = `${configFile.publicUrl}`
-            debugger
           }
 
         } catch (error) {
@@ -95,10 +107,13 @@ export default function SpaceViewport({ pcImportId, mode = 'play' }: SpaceViewpo
         <>
 
           {/* Load all the dynamic scripts from the project folder */}
-          <Script src={settingsScriptUrl} strategy="afterInteractive" />
+          {/* <Script src={settingsScriptUrl} strategy="afterInteractive" /> */}
+          <Script id="modified-settings-script" strategy="afterInteractive">
+            {modifiedSettingsFileText}
+          </Script>
           <Script src={modulesScriptUrl} strategy="afterInteractive" />
           {/* This is OUR start file, not the imported one (for engine compatibility reasons) */}
-          <Script id="config-json-script" strategy="beforeInteractive">
+          {/* <Script id="config-json-script" strategy="afterInteractive">
             {`
             // Ensure this runs only on the client-side
           if (typeof window !== "undefined") {
@@ -106,7 +121,7 @@ export default function SpaceViewport({ pcImportId, mode = 'play' }: SpaceViewpo
             console.log('set config', window['CONFIG_FILENAME'])
           }
             `}
-          </Script>
+          </Script> */}
           <Script src={startScriptPath} strategy="lazyOnload" onLoad={() => setEngineLoaded(true)} />
           <style id="import-style"></style>
         </>
@@ -122,4 +137,3 @@ export default function SpaceViewport({ pcImportId, mode = 'play' }: SpaceViewpo
     </>
   );
 }
-
