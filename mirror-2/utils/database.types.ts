@@ -180,6 +180,38 @@ export type Database = {
           },
         ]
       }
+      pc_imports: {
+        Row: {
+          created_at: string
+          display_name: string
+          id: string
+          owner_user_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_name: string
+          id?: string
+          owner_user_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string
+          id?: string
+          owner_user_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pc_imports_owner_user_id_fkey"
+            columns: ["owner_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       scenes: {
         Row: {
           created_at: string

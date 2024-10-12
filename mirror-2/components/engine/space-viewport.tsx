@@ -1,63 +1,125 @@
-"use client"
+'use client';
+
 import { cn } from "@/utils/cn";
-
 import Script from "next/script";
-import * as pcImport from 'playcanvas';
+import * as pc from 'playcanvas';
 import { useEffect, useRef, useState } from "react";
+import { createSupabaseBrowserClient } from '@/utils/supabase/client';
+import { useAppSelector } from "@/hooks/hooks";
+import { selectLocalUser } from "@/state/local";
+import { useGetSinglePcImportQuery } from "@/state/pc-imports";
+import { getBrowserScriptTagUrlForLoadingScriptsFromStorage, getSCRIPT_PREFIXForLoadingEngineApp } from "@/utils/pc-import";
 
-/**
- * Note: it may seem odd to use a <Script/> tag for importing out own __start-build__.js file, but the intent is for this to also be a forcing function to maintain compatability with imported PlayCanvas projects, so it's cleaner for the "pathway" to be the same/as close as possible.
- * The main difference between the -play and -build scripts is that the build mode script adjusts the canvas size to fit within the editor.
- */
 
-export default function SpaceViewport({ mode = 'play' }: { mode?: 'build' | 'play' }) {
+interface SpaceViewportProps {
+  pcImportId: string;
+  mode?: 'build' | 'play'; // Optional mode prop with default value 'play'
+}
+
+export default function SpaceViewport({ pcImportId, mode = 'play' }: SpaceViewportProps) {
   const [isScriptReady, setIsScriptReady] = useState(false);
-  const [settingsLoaded, setSettingsLoaded] = useState(false);
-  const [modulesLoaded, setModulesLoaded] = useState(false);
   const [engineLoaded, setEngineLoaded] = useState(false);
+  const [settingsScriptUrl, setSettingsScriptUrl] = useState('');
+  const [modulesScriptUrl, setModulesScriptUrl] = useState('');
+  const [importedConfigJsonUrl, setImportedConfigJsonUrl] = useState('');
+  const [hasLoadedExternalFiles, setHasLoadedExternalFiles] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const startScriptUrl = "/scripts/__start-custom__.js"
+  const user = useAppSelector(selectLocalUser);
+
+  const startScriptPath = `/scripts/__start-custom__.js`;
+  const supabase = createSupabaseBrowserClient();
+
+  // Use RTK Query to fetch the list of filenames related to the pcImportId
+  const { data: pcImport, error: pcImportError } = useGetSinglePcImportQuery(pcImportId);
+
   useEffect(() => {
-    const modifyAndLoadScripts = async () => {
-      try {
-        // First, modify the file on the server side
-        // await modifyFile(); // Wait for the modification to complete
+    const loadScripts = async () => {
 
-        // Once the file is modified, allow the scripts to load
-        setIsScriptReady(true);
+      if (pcImport && !pcImportError && user) {
+        try {
 
-        // Ensure this runs only on the client-side
-        if (typeof window !== "undefined") {
-          window['pc'] = pcImport;  // Declare global PlayCanvas variable
+          // const urls = await constructAndDownloadUrls(pcImportFiles);
+          const pcImportPath = `${user?.id}/${pcImportId}`
+
+          // Fetch the list of files from Supabase Storage
+          // const { data: fileList, error: listError } = await supabase.storage
+          //   .from('pc-imports')
+          //   .list(pcImportPath);
+          //        // if (listError) {
+          // //   throw new Error(`Error listing files: ${listError.message}`);
+          // // }
+
+          // get __settings__.js
+          const { data: settingsFile } = supabase
+            .storage
+            .from('pc-imports')
+            .getPublicUrl(pcImportPath + '/__settings__.js')
+          setSettingsScriptUrl(settingsFile.publicUrl)
+
+          const { data: modulesFile } = supabase
+            .storage
+            .from('pc-imports')
+            .getPublicUrl(pcImportPath + '/__modules__.js')
+          setModulesScriptUrl(modulesFile.publicUrl)
+
+          const { data: configFile } = supabase
+            .storage
+            .from('pc-imports')
+            .getPublicUrl(pcImportPath + '/config.json')
+          setImportedConfigJsonUrl(configFile.publicUrl)
+
+          setIsScriptReady(true);
+          setHasLoadedExternalFiles(true);
+
+          // // Ensure this runs only on the client-side
+          if (typeof window !== "undefined") {
+            window['pc'] = pc; // Declare global PlayCanvas variable
+            // window['CONFIG_FILENAME'] = `${configFile.publicUrl}`
+            debugger
+          }
+
+        } catch (error) {
+          console.error("Error loading external files:", error);
         }
-      } catch (error) {
-        console.error("Error modifying the file:", error);
       }
     };
 
-    modifyAndLoadScripts();
-  }, []);
+    if (user?.id && pcImportId && !hasLoadedExternalFiles && pcImport) {
+      loadScripts();
+    }
+  }, [user, pcImportId, pcImport, pcImportError]);
 
   return (
     <>
-      {isScriptReady && (
+      {isScriptReady && settingsScriptUrl && modulesScriptUrl && (
         <>
-          <Script src="/sample/__settings__.import.js" strategy="afterInteractive" onLoad={() => setSettingsLoaded(true)} />
-          <Script src="/sample/__modules__.import.js" strategy="afterInteractive" onLoad={() => setModulesLoaded(true)} />
-          {/* This is OUR start file, not the imported one (for engine compatability reasons; we use the latest and someone might import an older file) */}
-          {settingsLoaded && modulesLoaded && <Script src={startScriptUrl} strategy="lazyOnload" onLoad={() => setEngineLoaded(true)} />}
+
+          {/* Load all the dynamic scripts from the project folder */}
+          <Script src={settingsScriptUrl} strategy="afterInteractive" />
+          <Script src={modulesScriptUrl} strategy="afterInteractive" />
+          {/* This is OUR start file, not the imported one (for engine compatibility reasons) */}
+          <Script id="config-json-script" strategy="beforeInteractive">
+            {`
+            // Ensure this runs only on the client-side
+          if (typeof window !== "undefined") {
+            window['CONFIG_FILENAME'] = \`${importedConfigJsonUrl}\`
+            console.log('set config', window['CONFIG_FILENAME'])
+          }
+            `}
+          </Script>
+          <Script src={startScriptPath} strategy="lazyOnload" onLoad={() => setEngineLoaded(true)} />
           <style id="import-style"></style>
         </>
       )}
-      <div id="direct-container" >
-        {/* Leaving here for posterity temporarily. With the build loading scripts, it's appended directly to the direct-container via vanilla JS via ID. */}
-        {/* <canvas
+      <div id="direct-container">
+        <canvas
           id="application-canvas"
           ref={canvasRef}
           style={{ zIndex: -1 }}
           className={cn("flex h-full w-full items-center justify-center shadow-sm transition-all duration-1000")}
-        /> */}
+        />
       </div>
     </>
   );
 }
+

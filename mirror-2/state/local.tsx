@@ -129,7 +129,7 @@ listenerMiddlewareLocal.startListening({
 // Selectors
 export const selectUiSoundsCanPlay = (state: RootState) => state.local.uiSoundsCanPlay;
 export const selectControlBarCurrentView = (state: RootState) => state.local.controlBarCurrentView;
-export const selectLocalUserState = (state: RootState) => state.local.user;
+export const selectLocalUser = (state: RootState) => state.local.user;
 export const getCurrentScene = (state: RootState): DatabaseScene | undefined => {
   return state.local.currentScene;
 };

@@ -52,7 +52,7 @@ values
   ('assets', 'assets', true);
 
 
-create policy "User can insert their own objects"
+create policy "User can insert their own assets"
 on storage.objects
 for insert
 to authenticated
@@ -69,7 +69,7 @@ using (
     bucket_id = 'assets'
 );
 
-create policy "User can update their own objects"
+create policy "User can update their own assets"
 on storage.objects
 for update
 to authenticated
@@ -78,7 +78,7 @@ using (
     owner_id = (select auth.uid()::text)  -- Ensure the user owns the object they want to update
 );
 
-create policy "User can delete their own objects"
+create policy "User can delete their own assets"
 on storage.objects
 for delete
 to authenticated
