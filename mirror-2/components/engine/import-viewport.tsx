@@ -5,10 +5,15 @@ import Script from "next/script";
 import * as pcImport from 'playcanvas';
 import { useEffect, useRef, useState } from "react";
 
+/**
+ * Note: it may seem odd to use a <Script/> tag for importing out own __start-build__.js file, but the intent is for this to also be a forcing function to maintain compatability with imported PlayCanvas projects, so it's cleaner for the "pathway" to be the same/as close as possible.
+ * The main difference between the -play and -build scripts is that the build mode script adjusts the canvas size to fit within the editor.
+ */
+
 export default function ImportViewportAndWillBeV2({ mode = 'play' }: { mode?: 'build' | 'play' }) {
   const [isScriptReady, setIsScriptReady] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const startScriptUrl = mode === 'play' ? "/sample/__start-play__.js" : "/sample/__start-play__.js"
+  const startScriptUrl = mode === 'play' ? "/sample/__start-play__.js" : "/sample/__start-build__.js"
   useEffect(() => {
     const modifyAndLoadScripts = async () => {
       try {
