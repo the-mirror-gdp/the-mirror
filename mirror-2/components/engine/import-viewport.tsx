@@ -1,5 +1,4 @@
 "use client"
-import SpaceViewport from "@/state/engine/space-viewport";
 import { cn } from "@/utils/cn";
 import { modifyFile } from "@/utils/pc-import.server";
 import Script from "next/script";
