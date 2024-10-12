@@ -50,8 +50,8 @@ export default function ImportViewportAndWillBeV2({ mode = 'play' }: { mode?: 'b
           <style id="import-style"></style>
         </>
       )}
-      {/* <div style={{ width: '100%', height: '100%' }} > */}
-      <div id="direct-container" className="transition-all duration-1000" >
+      <div id="direct-container" >
+        {/* Leaving here for posterity temporarily. With the build loading scripts, it's appended directly to the direct-container via vanilla JS via ID. */}
         {/* <canvas
           id="application-canvas"
           ref={canvasRef}
