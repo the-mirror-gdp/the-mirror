@@ -377,9 +377,12 @@ function configure() {
 
           app.start();
 
-          // setTimeout(() => {
-          setFillMode('none')
-          // }, 2000);
+          if (window.location.href.includes("build")) {
+            setFillMode(pc.FILLMODE_NONE)
+          } else if (window.location.href.includes("play")) {
+            setFillMode(pc.FILLMODE_FILL_WINDOW)
+          }
+
         });
       });
     });
@@ -418,19 +421,19 @@ mainInit();
 function setFillMode(mode) {
   const canvas = app.graphicsDevice.canvas;
   // if (this.app.keyboard.wasPressed(pc.KEY_1)) {
-  if (mode === 'fill') {
+  if (mode === pc.FILLMODE_FILL_WINDOW) {
     updateCanvas(pc.FILLMODE_FILL_WINDOW);
   }
 
   // if (this.app.keyboard.wasPressed(pc.KEY_2)) {
   // Set the aspect ratio 
-  if (mode === 'keep-aspect') {
+  if (mode === pc.FILLMODE_KEEP_ASPECT) {
     canvas.width = 1280;
     canvas.height = 720;
     updateCanvas(pc.FILLMODE_KEEP_ASPECT);
   }
 
-  if (mode === 'none') {
+  if (mode === pc.FILLMODE_NONE) {
     canvas.width = 1000;
     canvas.height = 500;
     updateCanvas(pc.FILLMODE_NONE);
