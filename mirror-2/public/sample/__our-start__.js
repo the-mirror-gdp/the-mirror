@@ -1,13 +1,14 @@
 // Boilerplate from PC; it's recommended on docs to modify this, so ts-nocheck since it comes as JS file for initial boilerplate. https://developer.playcanvas.com/user-manual/publishing/web/communicating-webpage/
-import * as pc from 'playcanvas'
+// import * as pc from 'playcanvas'
 // import initSettings from './__settings__'
 // import loadModules from './__modules__'
 
-initSettings()
+// initSettings()
 
 // (function () {
 // Shared Lib
-export var CANVAS_ID = 'application-canvas';
+// export var CANVAS_ID = 'application-canvas';
+var CANVAS_ID = 'application-canvas';
 
 // Needed as we will have edge cases for particular versions of iOS
 // returns null if not iOS
@@ -123,7 +124,8 @@ var LTC_MAT_2 = [];
 
 // varants
 var canvas = pcBootstrap.createCanvas();
-export var app = new pc.AppBase(canvas);
+// export var app = new pc.AppBase(canvas);
+var app = new pc.AppBase(canvas);
 
 function initCSS() {
   if (document.head.querySelector) {
@@ -136,7 +138,8 @@ function initCSS() {
                     margin: 0 auto;
                 }
             }`;
-    document.head.querySelector('style').innerHTML += css;
+    document.getElementById('import-style').innerHTML += css;  // Replace with getElementById for 'import-style'
+
   }
 
   // Configure resolution and resize event
@@ -354,7 +357,7 @@ function configure() {
   });
 }
 
-export default function mainInit() {
+function mainInit() {
   createGraphicsDevice((device) => {
     if (!device) {
       return;
