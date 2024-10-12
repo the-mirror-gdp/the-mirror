@@ -1,4 +1,4 @@
-import { SyncedInput } from "@/components/ui/synced-inputs/synced-text-input";
+import { SyncedInput } from "@/components/ui/synced-inputs/synced-input";
 import { Input } from "@/components/ui/input";
 import { useGetSingleEntityQuery, useUpdateEntityMutation } from "@/state/entities";
 import { cn } from "@/utils/cn";

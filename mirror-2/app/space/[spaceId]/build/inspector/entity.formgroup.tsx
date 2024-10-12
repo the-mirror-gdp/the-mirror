@@ -2,7 +2,7 @@
 import { DatabaseEntity, useGetSingleEntityQuery, useUpdateEntityMutation } from "@/state/entities";
 import { Separator } from "@/components/ui/separator";
 import SyncedVector3Input from "@/components/ui/synced-inputs/synced-vector3-input";
-import { SyncedInput } from "@/components/ui/synced-inputs/synced-text-input";
+import { SyncedInput } from "@/components/ui/synced-inputs/synced-input";
 import { cn } from "@/lib/utils";
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
