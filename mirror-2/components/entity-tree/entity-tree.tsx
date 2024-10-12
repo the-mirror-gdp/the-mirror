@@ -216,7 +216,9 @@ const EntityTree: React.FC = () => {
               parent_id: info.node['id'] // should be info.node here, which is the node the dragNode is getting dropped under, so we want the ID of that node (note: different from getting the parent_id of it, below)
             })
           }
-          entitiesUpdateArray.push(updateData)
+          if (!entitiesUpdateArray.some(entity => entity.id === updateData.id)) {
+            entitiesUpdateArray.push(updateData)
+          }
         })
       });
 
@@ -230,7 +232,9 @@ const EntityTree: React.FC = () => {
               parent_id: info.node['id'] // should be info.node here, which is the node the dragNode is getting dropped under, so we want the ID of that node (note: different from getting the parent_id of it, below)
             })
           }
-          entitiesUpdateArray.push(updateData)
+          if (!entitiesUpdateArray.some(entity => entity.id === updateData.id)) {
+            entitiesUpdateArray.push(updateData)
+          }
         })
       }
 
@@ -266,7 +270,9 @@ const EntityTree: React.FC = () => {
             parent_id: info.node['parent_id'] // should be info.node here, which is the node the dragNode is getting dropped under, so we want the parent_id of THAT node
           })
         }
-        entitiesUpdateArray.push(updateData)
+        if (!entitiesUpdateArray.some(entity => entity.id === updateData.id)) {
+          entitiesUpdateArray.push(updateData)
+        }
       })
 
       batchUpdateEntity({
