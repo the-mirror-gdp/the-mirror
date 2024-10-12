@@ -2,8 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useParams } from "next/navigation";
-import * as pc from 'playcanvas'
-import mainInit, { CANVAS_ID } from './__start__'
+
 
 export default function SpaceViewport() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -11,7 +10,7 @@ export default function SpaceViewport() {
   useEffect(() => {
     if (typeof window !== undefined) {
 
-      app = mainInit()
+      // app = mainInit()
 
       const canvas = canvasRef.current;
       if (canvas) {
@@ -75,7 +74,7 @@ export default function SpaceViewport() {
       <canvas
         ref={canvasRef}
         className="flex h-full w-full items-center justify-center shadow-sm"
-        id={CANVAS_ID}
+      // id={CANVAS_ID}
       />
     </div>
   );
