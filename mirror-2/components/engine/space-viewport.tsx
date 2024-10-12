@@ -42,16 +42,6 @@ export default function SpaceViewport({ pcImportId, mode = 'play' }: SpaceViewpo
           // const urls = await constructAndDownloadUrls(pcImportFiles);
           const pcImportPath = `${user?.id}/${pcImport.id}`
 
-          // Fetch the list of files from Supabase Storage
-          // const { data: fileList, error: listError } = await supabase.storage
-          //   .from('pc-imports')
-          //   .list(pcImportPath);
-          //        // if (listError) {
-          // //   throw new Error(`Error listing files: ${listError.message}`);
-          // // }
-          const assetPrefix = getSCRIPT_PREFIXForLoadingEngineApp(user.id, pcImport.id)
-          const scriptPrefix = getASSET_PREFIXForLoadingEngineApp(user.id, pcImport.id)
-
           // get __settings__.js
           const { data: settingsFile } = supabase
             .storage
@@ -87,12 +77,12 @@ export default function SpaceViewport({ pcImportId, mode = 'play' }: SpaceViewpo
           // // Ensure this runs only on the client-side
           if (typeof window !== "undefined") {
             window['pc'] = pc; // Declare global PlayCanvas variable
-            // window['CONFIG_FILENAME'] = `${configFile.publicUrl}`
           }
-
         } catch (error) {
           console.error("Error loading external files:", error);
         }
+      } else {
+        console.log('Did not retrieve pcImport yet')
       }
     };
 
@@ -107,21 +97,11 @@ export default function SpaceViewport({ pcImportId, mode = 'play' }: SpaceViewpo
         <>
 
           {/* Load all the dynamic scripts from the project folder */}
-          {/* <Script src={settingsScriptUrl} strategy="afterInteractive" /> */}
           <Script id="modified-settings-script" strategy="afterInteractive">
             {modifiedSettingsFileText}
           </Script>
           <Script src={modulesScriptUrl} strategy="afterInteractive" />
           {/* This is OUR start file, not the imported one (for engine compatibility reasons) */}
-          {/* <Script id="config-json-script" strategy="afterInteractive">
-            {`
-            // Ensure this runs only on the client-side
-          if (typeof window !== "undefined") {
-            window['CONFIG_FILENAME'] = \`${importedConfigJsonUrl}\`
-            console.log('set config', window['CONFIG_FILENAME'])
-          }
-            `}
-          </Script> */}
           <Script src={startScriptPath} strategy="lazyOnload" onLoad={() => setEngineLoaded(true)} />
           <style id="import-style"></style>
         </>
