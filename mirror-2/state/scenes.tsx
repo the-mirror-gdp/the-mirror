@@ -20,7 +20,7 @@ export const scenesApi = createApi({
     /**
      * Scenes
      */
-    createScene: builder.mutation<any, { name: string; space_id: string }>({
+    createScene: builder.mutation<any, { name: string; space_id: number }>({
       queryFn: async ({ name, space_id }, { dispatch }) => {
         const supabase = createSupabaseBrowserClient()
         const {
@@ -97,7 +97,7 @@ export const scenesApi = createApi({
     /**
      * Get a single Scene by its ID
      */
-    getSingleScene: builder.query<any, string>({
+    getSingleScene: builder.query<any, number>({
       queryFn: async (sceneId) => {
         const supabase = createSupabaseBrowserClient()
 
@@ -120,7 +120,7 @@ export const scenesApi = createApi({
     /**
      * Get all Scenes for a given space
      */
-    getAllScenes: builder.query<any, string>({
+    getAllScenes: builder.query<any, number>({
       queryFn: async (spaceId) => {
         const supabase = createSupabaseBrowserClient()
 
@@ -149,7 +149,7 @@ export const scenesApi = createApi({
     /**
      * Update a Scene by its ID
      */
-    updateScene: builder.mutation<any, { id: string; name?: string }>({
+    updateScene: builder.mutation<any, { id: number; name?: string }>({
       queryFn: async ({ id: sceneId, name }) => {
         const supabase = createSupabaseBrowserClient()
 
@@ -172,7 +172,7 @@ export const scenesApi = createApi({
     /**
      * Delete a Scene by its ID
      */
-    deleteScene: builder.mutation<any, string>({
+    deleteScene: builder.mutation<any, number>({
       queryFn: async (sceneId) => {
         const supabase = createSupabaseBrowserClient()
 

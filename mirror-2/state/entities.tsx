@@ -36,7 +36,7 @@ export const entitiesApi = createApi({
       any,
       {
         name: string
-        scene_id: string
+        scene_id: number
         parent_id?: string
         order_under_parent?: number
         isRootEntity?: boolean
@@ -184,7 +184,7 @@ export const entitiesApi = createApi({
         enabled?: boolean
         parent_id?: string
         order_under_parent?: number
-        scene_id?: string
+        scene_id?: number
         local_position?: [number, number, number] // Using array for vector3
         local_scale?: [number, number, number] // Using array for scale
         local_rotation?: [number, number, number] // Using array for rotation (Euler angles or quaternion)
@@ -305,7 +305,7 @@ export const entitiesApi = createApi({
         entities: {
           id: string
           name?: string
-          scene_id?: string
+          scene_id?: number
           parent_id?: string
           order_under_parent?: number
         }[]
@@ -369,7 +369,7 @@ export const entitiesApi = createApi({
       invalidatesTags: [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }] // Invalidates the cache
     }),
 
-    deleteEntity: builder.mutation<any, string>({
+    deleteEntity: builder.mutation<any, number>({
       queryFn: async (entityId) => {
         const supabase = createSupabaseBrowserClient()
 

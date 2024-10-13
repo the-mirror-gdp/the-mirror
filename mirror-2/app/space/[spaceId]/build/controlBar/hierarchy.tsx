@@ -12,8 +12,7 @@ import { H2 } from '@/components/ui/text/h2';
 import { useEffect, useState } from 'react';
 
 export default function Hierarchy() {
-  const currentScene = useAppSelector(getCurrentScene);
-  const params = useParams<{ spaceId: string }>();
+  const currentScene = useAppSelector(getCurrentScene);  
   const [createEntity] = useCreateEntityMutation();
   const [isClient, setIsClient] = useState(false);
 

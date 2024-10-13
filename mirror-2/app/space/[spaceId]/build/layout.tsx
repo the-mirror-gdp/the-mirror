@@ -8,7 +8,7 @@ import SpaceViewport from "@/components/engine/space-viewport"
 export default function Layout({ children, params }: {
   children: React.ReactNode,
   spaceViewport: React.ReactNode,
-  params: { spaceId: string }
+  params: { spaceId: number }
 }) {
 
   return (

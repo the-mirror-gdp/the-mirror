@@ -10,15 +10,16 @@ import { z } from 'zod'; // Import zod for validation
 import { SyncedInput } from '@/components/ui/synced-inputs/synced-input';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { getCurrentScene, setControlBarCurrentView, setCurrentScene } from '@/state/local';
-import { useCreateSceneMutation, useDeleteSceneMutation, useGetAllScenesQuery, useGetSingleSceneQuery, useUpdateSceneMutation } from '@/state/scenes';
+import { DatabaseScene, useCreateSceneMutation, useDeleteSceneMutation, useGetAllScenesQuery, useGetSingleSceneQuery, useUpdateSceneMutation } from '@/state/scenes';
 import { cn } from '@/utils/cn';
 import { generateSceneName } from '@/actions/name-generator';
 import { Input } from '@/components/ui/input';
 
 export default function Scenes() {
   const params = useParams<{ spaceId: string }>()
+  const spaceId: number = parseInt(params.spaceId, 10) // Use parseInt for safer conversion  
 
-  const { data: scenes } = useGetAllScenesQuery(params.spaceId);
+  const { data: scenes } = useGetAllScenesQuery(spaceId);
   const [createScene, { data: createdScene }] = useCreateSceneMutation();
   const [deleteScene] = useDeleteSceneMutation();
   const [updateScene] = useUpdateSceneMutation();
@@ -34,7 +35,7 @@ export default function Scenes() {
     <>
       {/* Create Scene Button */}
       <Button className="w-full my-4" type="button" onClick={async () => {
-        const result = await createScene({ name: await generateSceneName(), space_id: params.spaceId });
+        const result = await createScene({ name: await generateSceneName(), space_id: spaceId });
         if (result.data) {
           console.log("Scene created successfully:", result.data);
           await dispatch(setCurrentScene(result.data));
@@ -51,7 +52,7 @@ export default function Scenes() {
       <div className="flex-1 overflow-hidden">
         <ScrollArea className="">
           <div className="grid grid-cols-1 gap-4 pb-40">
-            {scenes?.map((scene) => (
+            {scenes?.map((scene: DatabaseScene) => (
               <div
                 key={scene.id}
                 className={cn("relative flex flex-col items-center shadow-md rounded-lg p-4 gap-4 border border-transparent hover:border-accent transition-all duration-100 cursor-pointer", { "border border-primary": currentScene?.id === scene.id })}
@@ -62,7 +63,7 @@ export default function Scenes() {
                 }}
               >
                 <img
-                  src={scene.image_url || "/dev/150.jpg"} // Fallback to a placeholder image if no image_url is present
+                  src={scene['image_url'] || "/dev/150.jpg"} // Fallback to a placeholder image if no image_url is present
                   alt={scene.name}
                   className="w-full h-32 object-cover rounded-lg"
                 />

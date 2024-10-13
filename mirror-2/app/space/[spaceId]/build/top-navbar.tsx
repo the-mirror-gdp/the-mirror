@@ -15,6 +15,7 @@ export function TopNavbar() {
   const localUserState = useAppSelector(selectLocalUser)
   const [hasMounted, setHasMounted] = useState(false);
   const params = useParams<{ spaceId: string }>()
+  const spaceId: number = parseInt(params.spaceId, 10) // Use parseInt for safer conversion  
 
   // Check if the component is fully mounted (client-side)
   useEffect(() => {

@@ -32,7 +32,7 @@ interface LocalState {
 
   // Property to track the entire tree for each scene
   expandedEntityIds: string[]
-  automaticallyExpandedSceneIds: string[] // used for checking whether we auto expanded or not for a scene's entity hierarchy
+  automaticallyExpandedSceneIds: number[] // used for checking whether we auto expanded or not for a scene's entity hierarchy
 }
 
 // Define the initial state using that type
@@ -46,9 +46,9 @@ const initialState: LocalState = {
   },
   currentScene: {
     created_at: '',
-    id: '',
+    id: 0,
     name: '',
-    space_id: '',
+    space_id: 0,
     updated_at: ''
   },
   expandedEntityIds: [],
@@ -115,7 +115,7 @@ export const localSlice = createSlice({
 
     insertAutomaticallyExpandedSceneIds: (
       state,
-      action: PayloadAction<{ sceneId: string }>
+      action: PayloadAction<{ sceneId: number }>
     ) => {
       const { sceneId } = action.payload
 
