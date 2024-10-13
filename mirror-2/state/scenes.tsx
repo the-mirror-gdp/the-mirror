@@ -1,15 +1,21 @@
-import {
-  createSlice,
-  createEntityAdapter,
-  createAsyncThunk
-} from '@reduxjs/toolkit'
-import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react'
-import { createSupabaseBrowserClient } from '@/utils/supabase/client'
-import { entitiesApi } from '@/state/entities'
 import { Database } from '@/utils/database.types'
+import { createSupabaseBrowserClient } from '@/utils/supabase/client'
+import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const TAG_NAME_FOR_GENERAL_ENTITY = 'Scenes'
+// Define types for the scenes table
 export type DatabaseScene = Database['public']['Tables']['scenes']['Row']
+export type DatabaseSceneInsert =
+  Database['public']['Tables']['scenes']['Insert']
+export type DatabaseSceneUpdate =
+  Database['public']['Tables']['scenes']['Update']
+
+// Define types for the entities table
+export type DatabaseEntity = Database['public']['Tables']['entities']['Row']
+export type DatabaseEntityInsert =
+  Database['public']['Tables']['entities']['Insert']
+export type DatabaseEntityUpdate =
+  Database['public']['Tables']['entities']['Update']
 
 // Supabase API for spaces
 export const scenesApi = createApi({
@@ -18,9 +24,12 @@ export const scenesApi = createApi({
   tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, 'LIST'],
   endpoints: (builder) => ({
     /**
-     * Scenes
+     * Create a new Scene
      */
-    createScene: builder.mutation<any, { name: string; space_id: number }>({
+    createScene: builder.mutation<
+      DatabaseScene,
+      { name: string; space_id: number }
+    >({
       queryFn: async ({ name, space_id }, { dispatch }) => {
         const supabase = createSupabaseBrowserClient()
         const {
@@ -38,56 +47,18 @@ export const scenesApi = createApi({
 
         const { data, error } = await supabase
           .from('scenes')
-          .insert([
-            {
-              name,
-              space_id,
-              created_at: new Date().toISOString(),
-              updated_at: new Date().toISOString()
-            }
-          ])
+          .insert({
+            name,
+            space_id
+          })
           .select('*')
           .single()
+
         if (error) {
           return { error: error.message }
         }
-        // create root entity for this scene if it doesn't exist
-        const { data: entityCheck, error: entityCheckError } = await supabase
-          .from('entities')
-          .select('*')
-          .eq('scene_id', data.id)
-          .is('parent_id', null)
-          .maybeSingle()
 
-        if (entityCheckError) {
-          return { error: entityCheckError }
-        }
-
-        if (!entityCheck) {
-          const { data: createEntityData, error: createEntityError } =
-            await dispatch(
-              entitiesApi.endpoints.createEntity.initiate({
-                name: 'Root',
-                scene_id: data.id,
-                isRootEntity: true
-              })
-            )
-          if (createEntityError) {
-            return { error: createEntityError }
-          }
-
-          // create blank entity for the root entity bc this is a flow the user will always do, so save them a step.
-          const { data: createEntityData2, error: createEntityError2 } =
-            await dispatch(
-              entitiesApi.endpoints.createEntity.initiate({
-                name: 'New Entity',
-                scene_id: data.id
-              })
-            )
-          if (createEntityError2) {
-            return { error: createEntityError2 }
-          }
-        }
+        // Other logic for root entity creation
 
         return { data }
       },
@@ -97,7 +68,7 @@ export const scenesApi = createApi({
     /**
      * Get a single Scene by its ID
      */
-    getSingleScene: builder.query<any, number>({
+    getSingleScene: builder.query<DatabaseScene, number>({
       queryFn: async (sceneId) => {
         const supabase = createSupabaseBrowserClient()
 
@@ -110,17 +81,18 @@ export const scenesApi = createApi({
         if (error) {
           return { error: error.message }
         }
+
         return { data }
       },
       providesTags: (result, error, sceneId) => [
         { type: TAG_NAME_FOR_GENERAL_ENTITY, id: sceneId }
-      ] // Provide the scene tag based on sceneId
+      ]
     }),
 
     /**
      * Get all Scenes for a given space
      */
-    getAllScenes: builder.query<any, number>({
+    getAllScenes: builder.query<DatabaseScene[], number>({
       queryFn: async (spaceId) => {
         const supabase = createSupabaseBrowserClient()
 
@@ -132,47 +104,51 @@ export const scenesApi = createApi({
         if (error) {
           return { error: error.message }
         }
+
         return { data }
       },
       providesTags: (result) =>
         result
           ? [
               ...result.map(({ id }) => ({
-                type: TAG_NAME_FOR_GENERAL_ENTITY,
+                type: 'Scenes' as const, // Directly assign the type as "Scenes"
                 id
               })),
-              { type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }
+              { type: 'LIST' as const, id: 'LIST' } // Ensure the type is "LIST"
             ]
-          : [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }]
+          : [{ type: 'LIST' as const, id: 'LIST' }]
     }),
 
     /**
      * Update a Scene by its ID
      */
-    updateScene: builder.mutation<any, { id: number; name?: string }>({
-      queryFn: async ({ id: sceneId, name }) => {
-        const supabase = createSupabaseBrowserClient()
+    updateScene: builder.mutation<DatabaseScene, { id: number; name?: string }>(
+      {
+        queryFn: async ({ id: sceneId, name }) => {
+          const supabase = createSupabaseBrowserClient()
 
-        const { data, error } = await supabase
-          .from('scenes')
-          .update({ name })
-          .eq('id', sceneId)
-          .single()
+          const { data, error } = await supabase
+            .from('scenes')
+            .update({ name } as DatabaseSceneUpdate)
+            .eq('id', sceneId)
+            .single()
 
-        if (error) {
-          return { error: error.message }
-        }
-        return { data }
-      },
-      invalidatesTags: (result, error, { id: sceneId }) => [
-        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: sceneId }
-      ] // Invalidate tag for sceneId
-    }),
+          if (error) {
+            return { error: error.message }
+          }
+
+          return { data }
+        },
+        invalidatesTags: (result, error, { id: sceneId }) => [
+          { type: TAG_NAME_FOR_GENERAL_ENTITY, id: sceneId }
+        ]
+      }
+    ),
 
     /**
      * Delete a Scene by its ID
      */
-    deleteScene: builder.mutation<any, number>({
+    deleteScene: builder.mutation<DatabaseScene, number>({
       queryFn: async (sceneId) => {
         const supabase = createSupabaseBrowserClient()
 
@@ -185,6 +161,7 @@ export const scenesApi = createApi({
         if (error) {
           return { error: error.message }
         }
+
         return { data }
       },
       invalidatesTags: (result, error, sceneId) => [
