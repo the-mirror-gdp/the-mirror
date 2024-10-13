@@ -1,47 +1,58 @@
-"use client"
-import { DatabaseEntity } from '@/state/entities';
-import { DatabaseScene } from '@/state/scenes';
-import { RootState } from '@/state/store';
-import { setAnalyticsUserId } from '@/utils/analytics/analytics';
-import type { PayloadAction } from '@reduxjs/toolkit';
-import { createListenerMiddleware, createSlice } from '@reduxjs/toolkit';
+'use client'
+import { DatabaseEntity } from '@/state/entities'
+import { DatabaseScene } from '@/state/scenes'
+import { RootState } from '@/state/store'
+import { setAnalyticsUserId } from '@/utils/analytics/analytics'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { createListenerMiddleware, createSlice } from '@reduxjs/toolkit'
 
-export type ControlBarView = "assets" | "hierarchy" | "scenes" | "code" | "database" | "versions" | "settings";
+export type ControlBarView =
+  | 'assets'
+  | 'hierarchy'
+  | 'scenes'
+  | 'code'
+  | 'database'
+  | 'versions'
+  | 'settings'
 
 interface LocalUserState {
-  id: string,
-  email?: string,
-  is_anonymous?: boolean,
+  id: string
+  email?: string
+  is_anonymous?: boolean
 }
 
 interface LocalState {
-  uiSoundsCanPlay: boolean;
-  controlBarCurrentView: ControlBarView;
-  user?: LocalUserState;
+  uiSoundsCanPlay: boolean
+  controlBarCurrentView: ControlBarView
+  user?: LocalUserState
 
   // Viewport et al.
-  currentScene?: DatabaseScene;
-  currentEntity?: DatabaseEntity;
+  currentScene?: DatabaseScene
+  currentEntity?: DatabaseEntity
 
   // Property to track the entire tree for each scene
-  expandedEntityIds: string[];
+  expandedEntityIds: string[]
   automaticallyExpandedSceneIds: string[] // used for checking whether we auto expanded or not for a scene's entity hierarchy
 }
 
 // Define the initial state using that type
 const initialState: LocalState = {
   uiSoundsCanPlay: true,
-  controlBarCurrentView: "hierarchy",
+  controlBarCurrentView: 'hierarchy',
   user: {
-    email: "",
-    id: "",
+    email: '',
+    id: '',
     is_anonymous: false
   },
   currentScene: {
-    created_at: '', id: '', name: '', space_id: '', updated_at: ''
+    created_at: '',
+    id: '',
+    name: '',
+    space_id: '',
+    updated_at: ''
   },
   expandedEntityIds: [],
-  automaticallyExpandedSceneIds: [],
+  automaticallyExpandedSceneIds: []
 }
 
 export const localSlice = createSlice({
@@ -49,58 +60,74 @@ export const localSlice = createSlice({
   initialState,
   reducers: {
     turnOffUiSounds: (state) => {
-      state.uiSoundsCanPlay = false;
+      state.uiSoundsCanPlay = false
     },
     turnOnUiSounds: (state) => {
-      state.uiSoundsCanPlay = true;
+      state.uiSoundsCanPlay = true
     },
-    setControlBarCurrentView: (state, action: PayloadAction<ControlBarView>) => {
-      state.controlBarCurrentView = action.payload;
+    setControlBarCurrentView: (
+      state,
+      action: PayloadAction<ControlBarView>
+    ) => {
+      state.controlBarCurrentView = action.payload
     },
     updateLocalUserState: (state, action: PayloadAction<LocalUserState>) => {
-      state.user = action.payload;
+      state.user = action.payload
     },
     clearLocalUserState: (state) => {
-      state.user = undefined;
+      state.user = undefined
     },
     setCurrentScene: (state, action: PayloadAction<DatabaseScene>) => {
-      state.currentScene = action.payload;
+      state.currentScene = action.payload
     },
     setCurrentEntity: (state, action: PayloadAction<DatabaseEntity>) => {
-      state.currentEntity = action.payload;
+      state.currentEntity = action.payload
     },
     clearCurrentEntity: (state) => {
       state.currentScene = undefined
     },
-    setExpandedEntityIds: (state, action: PayloadAction<{ entityIds: string[] }>) => {
-      const { entityIds } = action.payload;
+    setExpandedEntityIds: (
+      state,
+      action: PayloadAction<{ entityIds: string[] }>
+    ) => {
+      const { entityIds } = action.payload
 
       // update, ensuring no duplicate IDs
       state.expandedEntityIds = entityIds.filter(function (x, i, a) {
-        return a.indexOf(x) == i;
-      });
+        return a.indexOf(x) == i
+      })
     },
 
-    addExpandedEntityIds: (state, action: PayloadAction<{ entityIds: string[] }>) => {
-      const { entityIds } = action.payload;
+    addExpandedEntityIds: (
+      state,
+      action: PayloadAction<{ entityIds: string[] }>
+    ) => {
+      const { entityIds } = action.payload
 
       // add new IDs, ensuring no duplicate IDs
-      state.expandedEntityIds = [...state.expandedEntityIds, ...entityIds].filter(function (x, i, a) {
-        return a.indexOf(x) == i;
-      });
+      state.expandedEntityIds = [
+        ...state.expandedEntityIds,
+        ...entityIds
+      ].filter(function (x, i, a) {
+        return a.indexOf(x) == i
+      })
     },
 
-    insertAutomaticallyExpandedSceneIds: (state, action: PayloadAction<{ sceneId: string }>) => {
-      const { sceneId } = action.payload;
+    insertAutomaticallyExpandedSceneIds: (
+      state,
+      action: PayloadAction<{ sceneId: string }>
+    ) => {
+      const { sceneId } = action.payload
 
       state.automaticallyExpandedSceneIds.push(sceneId)
       // update, ensuring no duplicate IDs
-      state.automaticallyExpandedSceneIds = state.automaticallyExpandedSceneIds.filter(function (x, i, a) {
-        return a.indexOf(x) == i;
-      });
-    },
-  },
-});
+      state.automaticallyExpandedSceneIds =
+        state.automaticallyExpandedSceneIds.filter(function (x, i, a) {
+          return a.indexOf(x) == i
+        })
+    }
+  }
+})
 
 export const {
   turnOffUiSounds,
@@ -114,7 +141,7 @@ export const {
   setExpandedEntityIds,
   addExpandedEntityIds,
   insertAutomaticallyExpandedSceneIds
-} = localSlice.actions;
+} = localSlice.actions
 
 // Middleware
 export const listenerMiddlewareLocal = createListenerMiddleware()
@@ -125,18 +152,25 @@ listenerMiddlewareLocal.startListening({
   }
 })
 
-
 // Selectors
-export const selectUiSoundsCanPlay = (state: RootState) => state.local.uiSoundsCanPlay;
-export const selectControlBarCurrentView = (state: RootState) => state.local.controlBarCurrentView;
-export const selectLocalUser = (state: RootState) => state.local.user;
-export const getCurrentScene = (state: RootState): DatabaseScene | undefined => {
-  return state.local.currentScene;
-};
-export const getCurrentEntity = (state: RootState): DatabaseEntity | undefined => {
-  return state.local.currentEntity;
-};
-export const selectExpandedEntityIds = (state: RootState) => state.local.expandedEntityIds;
-export const selectAutomaticallyExpandedSceneIds = (state: RootState) => state.local.automaticallyExpandedSceneIds;
+export const selectUiSoundsCanPlay = (state: RootState) =>
+  state.local.uiSoundsCanPlay
+export const selectControlBarCurrentView = (state: RootState) =>
+  state.local.controlBarCurrentView
+export const selectLocalUser = (state: RootState) => state.local.user
+export const getCurrentScene = (
+  state: RootState
+): DatabaseScene | undefined => {
+  return state.local.currentScene
+}
+export const getCurrentEntity = (
+  state: RootState
+): DatabaseEntity | undefined => {
+  return state.local.currentEntity
+}
+export const selectExpandedEntityIds = (state: RootState) =>
+  state.local.expandedEntityIds
+export const selectAutomaticallyExpandedSceneIds = (state: RootState) =>
+  state.local.automaticallyExpandedSceneIds
 
-export default localSlice.reducer;
+export default localSlice.reducer

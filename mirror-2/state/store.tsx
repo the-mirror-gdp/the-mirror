@@ -1,4 +1,4 @@
-"use client"
+'use client'
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query/react'
 import { listenerMiddlewareLocal, localSlice } from '@/state/local'
@@ -18,7 +18,7 @@ export const store = configureStore({
     [scenesApi.reducerPath]: scenesApi.reducer,
     [entitiesApi.reducerPath]: entitiesApi.reducer,
     [componentsApi.reducerPath]: componentsApi.reducer,
-    [pcImportsApi.reducerPath]: pcImportsApi.reducer,
+    [pcImportsApi.reducerPath]: pcImportsApi.reducer
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.

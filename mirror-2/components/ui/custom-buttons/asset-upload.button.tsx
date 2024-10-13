@@ -1,12 +1,14 @@
-import { Button } from "@/components/ui/button";
-import { useGetFileUpload } from "@/hooks/file-upload";
-import { FileUp } from "lucide-react";
-import { useDropzone } from "react-dropzone";
+import { Button } from '@/components/ui/button'
+import { useGetFileUpload } from '@/hooks/file-upload'
+import { FileUp } from 'lucide-react'
+import { useDropzone } from 'react-dropzone'
 
 export default function AssetUploadButton() {
   const onDrop = useGetFileUpload()
   // file dropzone
-  const { getRootProps, getInputProps, open, acceptedFiles } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, open, acceptedFiles } = useDropzone({
+    onDrop
+  })
 
   return (
     <>

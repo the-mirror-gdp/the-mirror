@@ -1,25 +1,39 @@
-"use client";
-import { Input } from "@/components/ui/input";
-import { AxisLabelCharacter } from "@/components/ui/text/axis-label-character";
-import { cn } from "@/lib/utils";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { DatabaseEntity, useGetSingleEntityQuery, useUpdateEntityMutation } from "@/state/entities"; // Import entities
-import { z } from "zod"; // Import zod for validation
-import { useEffect } from "react";
-import { Separator } from "@/components/ui/separator";
+'use client'
+import { Input } from '@/components/ui/input'
+import { AxisLabelCharacter } from '@/components/ui/text/axis-label-character'
+import { cn } from '@/lib/utils'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage
+} from '@/components/ui/form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import {
+  DatabaseEntity,
+  useGetSingleEntityQuery,
+  useUpdateEntityMutation
+} from '@/state/entities' // Import entities
+import { z } from 'zod' // Import zod for validation
+import { useEffect } from 'react'
+import { Separator } from '@/components/ui/separator'
 
 interface SyncedVector3InputProps {
-  label: string;
-  entity: DatabaseEntity;
-  dbColumnNameSnakeCase: keyof DatabaseEntity;
-  defaultValues: [number, number, number]; // Array of default values [x, y, z]
-  useGetSingleGenericEntityQuery: (id: string) => { isLoading: boolean; isSuccess: boolean; data?: DatabaseEntity };
+  label: string
+  entity: DatabaseEntity
+  dbColumnNameSnakeCase: keyof DatabaseEntity
+  defaultValues: [number, number, number] // Array of default values [x, y, z]
+  useGetSingleGenericEntityQuery: (id: string) => {
+    isLoading: boolean
+    isSuccess: boolean
+    data?: DatabaseEntity
+  }
   useUpdateGenericEntityMutation: () => readonly [
     (args: Partial<DatabaseEntity> & { id: string }) => Promise<any>, // Mutation expects `id` to be required
     { isLoading: boolean; isSuccess: boolean }
-  ];
+  ]
   /**
    * Use if the update query needs to send existing info for full overwrites, such as with batch updates
    */
@@ -39,8 +53,8 @@ export default function SyncedVector3Input({
   const formSchema = z.object({
     x: z.coerce.number().finite().safe(),
     y: z.coerce.number().finite().safe(),
-    z: z.coerce.number().finite().safe(),
-  });
+    z: z.coerce.number().finite().safe()
+  })
 
   // Initialize the form with react-hook-form
   const form = useForm({
@@ -48,66 +62,96 @@ export default function SyncedVector3Input({
     defaultValues: {
       x: defaultValues[0],
       y: defaultValues[1],
-      z: defaultValues[2],
+      z: defaultValues[2]
     },
-    mode: "onBlur", // Trigger form submission on blur
-  });
+    mode: 'onBlur' // Trigger form submission on blur
+  })
 
   // Mutation to update the entity in the database
-  const [updateGenericEntity] = useUpdateGenericEntityMutation();
-  const { isLoading, isSuccess, data: fetchedGenericEntity } = useGetSingleGenericEntityQuery(entity.id);
+  const [updateGenericEntity] = useUpdateGenericEntityMutation()
+  const {
+    isLoading,
+    isSuccess,
+    data: fetchedGenericEntity
+  } = useGetSingleGenericEntityQuery(entity.id)
 
   // Update form with fetched values
   useEffect(() => {
-    if (isSuccess && fetchedGenericEntity && fetchedGenericEntity[dbColumnNameSnakeCase]) {
-      const values = fetchedGenericEntity[dbColumnNameSnakeCase] as [number, number, number];
+    if (
+      isSuccess &&
+      fetchedGenericEntity &&
+      fetchedGenericEntity[dbColumnNameSnakeCase]
+    ) {
+      const values = fetchedGenericEntity[dbColumnNameSnakeCase] as [
+        number,
+        number,
+        number
+      ]
       form.reset({
         x: values[0] ?? defaultValues[0],
         y: values[1] ?? defaultValues[1],
-        z: values[2] ?? defaultValues[2],
-      });
+        z: values[2] ?? defaultValues[2]
+      })
     }
-  }, [fetchedGenericEntity, isSuccess, form, dbColumnNameSnakeCase, defaultValues]);
+  }, [
+    fetchedGenericEntity,
+    isSuccess,
+    form,
+    dbColumnNameSnakeCase,
+    defaultValues
+  ])
 
   // Handle form submission
   async function onSubmit(values: any) {
-    const newValues = [values.x, values.y, values.z];
+    const newValues = [values.x, values.y, values.z]
 
     // Only update if values have changed
-    const existingValues = entity[dbColumnNameSnakeCase] as [number, number, number] | null;
+    const existingValues = entity[dbColumnNameSnakeCase] as
+      | [number, number, number]
+      | null
     if (
       existingValues &&
       newValues[0] === existingValues[0] &&
       newValues[1] === existingValues[1] &&
       newValues[2] === existingValues[2]
     ) {
-      return;
+      return
     }
 
     // Submit the updated vector to the database
     await updateGenericEntity({
       id: entity.id,
       ...propertiesToIncludeInUpdate,
-      [dbColumnNameSnakeCase]: newValues, // Update the entire array in the DB
-    });
+      [dbColumnNameSnakeCase]: newValues // Update the entire array in the DB
+    })
   }
 
   return (
     <>
       <div className="text-white mt-1">{label}</div>
       <Form {...form}>
-        <form className="flex space-x-2" onBlur={form.handleSubmit(onSubmit)}> {/* Submit on blur */}
+        <form className="flex space-x-2" onBlur={form.handleSubmit(onSubmit)}>
+          {' '}
+          {/* Submit on blur */}
           <AxisInput axis="x" field="x" form={form} />
           <AxisInput axis="y" field="y" form={form} />
           <AxisInput axis="z" field="z" form={form} />
         </form>
       </Form>
     </>
-  );
+  )
 }
 
 // AxisInput Component for each axis (x, y, z)
-function AxisInput({ axis, field, form }: { axis: 'x' | 'y' | 'z'; field: string; form: any }) {
+function AxisInput({
+  axis,
+  field,
+  form
+}: {
+  axis: 'x' | 'y' | 'z'
+  field: string
+  form: any
+}) {
   return (
     <div className="flex items-center space-x-2">
       <AxisLabelCharacter axis={axis} className="my-auto mr-3" />
@@ -120,7 +164,9 @@ function AxisInput({ axis, field, form }: { axis: 'x' | 'y' | 'z'; field: string
               <Input
                 type="number"
                 autoComplete="off"
-                className={cn("dark:bg-transparent px-1 py-0 pb-1 border-none shadow-none text-lg text-white")}
+                className={cn(
+                  'dark:bg-transparent px-1 py-0 pb-1 border-none shadow-none text-lg text-white'
+                )}
                 {...field}
               />
             </FormControl>
@@ -129,5 +175,5 @@ function AxisInput({ axis, field, form }: { axis: 'x' | 'y' | 'z'; field: string
         )}
       />
     </div>
-  );
+  )
 }
