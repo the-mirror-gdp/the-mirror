@@ -8,7 +8,7 @@ import { createSupabaseBrowserClient } from '@/utils/supabase/client'
 import { Database } from '@/utils/database.types'
 
 export const ASSETS_BUCKET_USERS_FOLDER = 'users' // used for the assets bucket
-export const ASSETS_BUCKET_VERSIONED_ASSETS_FOLDER = 'versioned' // generally immutable, used for space_versions (published Spaces/games)
+export const ASSETS_BUCKET_VERSIONED_ASSETS_FOLDER = 'versioned' // generally immutable, used for space_packs (published Spaces/games)
 const TABLE_NAME = 'assets'
 
 export interface CreateAssetMutation {

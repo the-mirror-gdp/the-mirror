@@ -88,12 +88,12 @@ BEGIN
         (floor(random() * 9007199254740991 + 500000000)::BIGINT, format('Space %s', i), 'This is a placeholder description for the space.', public_page_image_urls, user_ids[((i - 1) % 15) + 1], user_ids[((i - 1) % 15) + 1], now(), now())
       RETURNING id INTO space_id;  
 
-      -- Insert 3 space_versions for each space
+      -- Insert 3 space_packs for each space
       FOR v IN 1..3 LOOP
-        INSERT INTO public.space_versions
-          (id, name, space_id, created_at, updated_at)
+        INSERT INTO public.space_packs
+          (id, space_id, data, created_at, updated_at)
         VALUES
-          (gen_random_uuid(), format('Version %s-%s', i, v), space_id, now(), now());
+          (floor(random() * 9007199254740991 + 500000000)::BIGINT,space_id, '{}'::jsonb, now(), now());
       END LOOP;
 
       -- Insert 3 scenes for each space
