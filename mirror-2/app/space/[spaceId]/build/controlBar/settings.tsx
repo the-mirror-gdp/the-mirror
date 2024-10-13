@@ -3,12 +3,15 @@
 import { useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { FolderInput } from 'lucide-react';
-import { usePCZipFileUpload } from '@/utils/pc-import';
+import { useSpacePackZipFileUpload } from '@/utils/space-pack';
+import { useParams } from 'next/navigation';
 
 
 export default function Settings() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const { uploading, handlePCZipFileUpload } = usePCZipFileUpload(); // Use the hook
+  const params = useParams<{ spaceId: string }>()
+  const spaceId: number = parseInt(params.spaceId, 10) // Use parseInt for safer conversion
+  const { uploading, handlePCZipFileUpload } = useSpacePackZipFileUpload(spaceId); // Use the hook
 
   const handleFileInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

@@ -7,21 +7,25 @@ import { useEffect, useRef, useState } from 'react'
 import { createSupabaseBrowserClient } from '@/utils/supabase/client'
 import { useAppSelector } from '@/hooks/hooks'
 import { selectLocalUser } from '@/state/local'
-import { useGetSinglePcImportQuery } from '@/state/pc-imports'
+
 import {
   getASSET_PREFIXForLoadingEngineApp,
   getBrowserScriptTagUrlForLoadingScriptsFromStorage,
   getSCRIPT_PREFIXForLoadingEngineApp,
   modifySettingsFileFromSupabase
-} from '@/utils/pc-import'
+} from '@/utils/space-pack'
+import {
+  SPACE_PACKS_BUCKET_NAME,
+  useGetSingleSpacePackQuery
+} from '@/state/space_packs'
 
 interface SpaceViewportProps {
-  pcImportId: string
+  spacePackId: number
   mode?: 'build' | 'play' // Optional mode prop with default value 'play'
 }
 
 export default function SpaceViewport({
-  pcImportId,
+  spacePackId: spacePackId,
   mode = 'play'
 }: SpaceViewportProps) {
   const [isScriptReady, setIsScriptReady] = useState(false)
@@ -37,44 +41,43 @@ export default function SpaceViewport({
   const startScriptPath = `/scripts/__start-custom__.js`
   const supabase = createSupabaseBrowserClient()
 
-  // Use RTK Query to fetch the list of filenames related to the pcImportId
-  const { data: pcImport, error: pcImportError } =
-    useGetSinglePcImportQuery(pcImportId)
+  // Use RTK Query to fetch the list of filenames related to the spacePackId
+  const { data: spacePack, error: spacePackImportError } =
+    useGetSingleSpacePackQuery(spacePackId)
 
   useEffect(() => {
     const loadScripts = async () => {
-      if (pcImport && !pcImportError && user) {
+      if (spacePack && !spacePackImportError && user) {
         try {
-          // const urls = await constructAndDownloadUrls(pcImportFiles);
-          const pcImportPath = `${user?.id}/${pcImport.id}`
+          const spacePackImportPath = `${user?.id}/${spacePack.id}`
 
           // get __settings__.js
           const { data: settingsFile } = supabase.storage
-            .from('pc-imports')
-            .getPublicUrl(pcImportPath + '/__settings__.js')
+            .from(SPACE_PACKS_BUCKET_NAME)
+            .getPublicUrl(spacePackImportPath + '/__settings__.js')
           setSettingsScriptUrl(settingsFile.publicUrl)
 
           const { data: configFile } = supabase.storage
-            .from('pc-imports')
-            .getPublicUrl(pcImportPath + '/config.json')
+            .from(SPACE_PACKS_BUCKET_NAME)
+            .getPublicUrl(spacePackImportPath + '/config.json')
           setImportedConfigJsonUrl(configFile.publicUrl)
 
-          const pcImportBaseUrl = settingsFile.publicUrl.replace(
+          const spacePackBaseUrl = settingsFile.publicUrl.replace(
             '/__settings__.js',
             '/'
           )
 
           const modifiedSettingsContent = await modifySettingsFileFromSupabase(
             settingsFile.publicUrl, // This is the URL you obtained from Supabase
-            pcImportBaseUrl, // Your asset prefix
-            pcImportBaseUrl,
+            spacePackBaseUrl, // Your asset prefix
+            spacePackBaseUrl,
             configFile.publicUrl
           )
           setModifiedSettingsFileText(modifiedSettingsContent)
 
           const { data: modulesFile } = supabase.storage
-            .from('pc-imports')
-            .getPublicUrl(pcImportPath + '/__modules__.js')
+            .from(SPACE_PACKS_BUCKET_NAME)
+            .getPublicUrl(spacePackImportPath + '/__modules__.js')
           setModulesScriptUrl(modulesFile.publicUrl)
 
           setIsScriptReady(true)
@@ -88,14 +91,14 @@ export default function SpaceViewport({
           console.error('Error loading external files:', error)
         }
       } else {
-        console.log('Did not retrieve pcImport yet')
+        console.log('Did not retrieve spacePack yet')
       }
     }
 
-    if (user?.id && pcImportId && !hasLoadedExternalFiles && pcImport) {
+    if (user?.id && spacePackId && !hasLoadedExternalFiles && spacePack) {
       loadScripts()
     }
-  }, [user, pcImportId, pcImport, pcImportError])
+  }, [user, spacePackId, spacePack, spacePackImportError])
 
   return (
     <>

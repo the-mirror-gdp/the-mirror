@@ -7,7 +7,7 @@ export default function PlayPage() {
     <>
       <SpaceViewport
         mode="play"
-        pcImportId="8aef42cc-d6df-43da-89b9-c935a26306fa"
+        spacePackId="8aef42cc-d6df-43da-89b9-c935a26306fa"
       />
     </>
   )

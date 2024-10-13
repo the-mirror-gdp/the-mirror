@@ -3,25 +3,28 @@ import JSZip from 'jszip'
 import { useState } from 'react'
 import { createSupabaseBrowserClient } from '@/utils/supabase/client'
 import { snakeCase } from 'change-case'
-import { useCreatePcImportMutation } from '@/state/pc-imports'
 import { useAppSelector } from '@/hooks/hooks'
 import { selectLocalUser } from '@/state/local'
+import {
+  SPACE_PACKS_BUCKET_NAME,
+  useCreateSpacePackMutation
+} from '@/state/space_packs'
 
 /**
- * Important: When we importing a PC app, it's stored in an IMMUTABLE form intentionally; with different engine versions and settings, we'll need to patch our __start-custom__.js to handle different cases depending on what the importing app was built on. We don't want to modify the imported files; that's done at runtime for future compatability and not having to run migrations.
+ * Important: When we importing an app, it's stored in an IMMUTABLE form intentionally; with different engine versions and settings, we'll need to patch our __start-custom__.js to handle different cases depending on what the importing app was built on. We don't want to modify the imported files; that's done at runtime for future compatability and not having to run migrations.
  * Further, we can still optimize this with running the imports server-side with NextJS, but not a priority right now since it's fast.
  */
 
 // Create the Supabase client
 const supabase = createSupabaseBrowserClient()
 
-export const usePCZipFileUpload = () => {
+export const useSpacePackZipFileUpload = (spaceId: number) => {
   const [uploading, setUploading] = useState(false) // State to manage the upload progress
-  const [createPcImport, { data: createdPcImport }] =
-    useCreatePcImportMutation() // Mutation for creating pcImport
+  const [createSpacePack, { data: createdSpacePack }] =
+    useCreateSpacePackMutation() // Mutation for creating spacePack
   const localUser = useAppSelector(selectLocalUser)
 
-  const handlePCZipFileUpload = async (file: File) => {
+  const handleSpacePackZipFileUpload = async (file: File) => {
     try {
       if (!localUser) {
         throw new Error('User not logged in')
@@ -29,29 +32,31 @@ export const usePCZipFileUpload = () => {
 
       setUploading(true)
 
-      // Step 1: Create a pcImport in the database
-      const pcImportData = await createPcImport({
-        displayName: file.name
+      // Step 1: Create a spacePack in the database
+      const spacePackData = await createSpacePack({
+        display_name: file.name,
+        data: {},
+        space_id: spaceId
       }).unwrap()
 
-      if (!pcImportData?.id) {
-        throw new Error('Failed to retrieve pcImport ID')
+      if (!spacePackData?.id) {
+        throw new Error('Failed to retrieve spacePack ID')
       }
 
-      const pcImportId = pcImportData.id // Get the newly created pcImport ID
+      const spacePackId = spacePackData.id // Get the newly created spacePack ID
 
       // Step 2: Read the file as an ArrayBuffer
       const arrayBuffer = await file.arrayBuffer()
 
-      // Step 3: Proceed with unzipping and processing the file using the pcImportId
-      // await processZipFile(arrayBuffer, pcImportId, assetPrefix, scriptPrefix);
+      // Step 3: Proceed with unzipping and processing the file using the spacePackId
+      // await processZipFile(arrayBuffer, spacePackId, assetPrefix, scriptPrefix);
       const zip = await JSZip.loadAsync(arrayBuffer)
 
       // Modify the files in the ZIP
       // await modifyZipFiles(zip, assetPrefix, scriptPrefix);
 
       // Upload the files to Supabase Storage
-      await uploadZipToSupabase(zip, pcImportId)
+      await uploadZipToSupabase(zip, spacePackId)
 
       setUploading(false)
     } catch (error) {
@@ -60,7 +65,7 @@ export const usePCZipFileUpload = () => {
     }
   }
 
-  return { uploading, handlePCZipFileUpload }
+  return { uploading, handlePCZipFileUpload: handleSpacePackZipFileUpload }
 }
 
 // Function to modify files
@@ -117,7 +122,7 @@ export const modifySettingsFileFromSupabase = async (
 }
 
 // Function to upload files to Supabase Storage
-const uploadZipToSupabase = async (zip: JSZip, pcImportId: string) => {
+const uploadZipToSupabase = async (zip: JSZip, spacePackId: number) => {
   // Get the authenticated user
   const {
     data: { user }
@@ -137,9 +142,9 @@ const uploadZipToSupabase = async (zip: JSZip, pcImportId: string) => {
   for (const { relativePath, file } of files) {
     if (!file.dir) {
       const fileData = await file.async('blob')
-      const path = `${user.id}/${pcImportId}/${relativePath}`
+      const path = `${user.id}/${spacePackId}/${relativePath}`
       const { error } = await supabase.storage
-        .from('pc-imports')
+        .from(SPACE_PACKS_BUCKET_NAME)
         .upload(path, fileData, {
           upsert: true
         })
@@ -154,21 +159,21 @@ const uploadZipToSupabase = async (zip: JSZip, pcImportId: string) => {
 
 export function getASSET_PREFIXForLoadingEngineApp(
   userId: string,
-  pcImportId: string
+  spacePackId: string
 ) {
-  return `${userId}/${pcImportId}`
+  return `${userId}/${spacePackId}`
 }
 
 export function getSCRIPT_PREFIXForLoadingEngineApp(
   userId: string,
-  pcImportId: string
+  spacePackId: string
 ) {
-  return `${userId}/${pcImportId}/`
+  return `${userId}/${spacePackId}/`
 }
 
 export function getBrowserScriptTagUrlForLoadingScriptsFromStorage(
   userId: string,
-  pcImportId: string
+  spacePackId: string
 ) {
-  return `/${userId}/${pcImportId}`
+  return `/${userId}/${spacePackId}`
 }
