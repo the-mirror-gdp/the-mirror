@@ -4,7 +4,7 @@ CREATE TABLE entities (
   enabled boolean NOT NULL DEFAULT true,
   parent_id uuid REFERENCES entities(id) ON DELETE CASCADE,
   order_under_parent int,
-  scene_id uuid REFERENCES scenes ON DELETE CASCADE NOT NULL, -- delete entity if scene is deleted
+  scene_id BIGINT REFERENCES scenes ON DELETE CASCADE NOT NULL, -- delete entity if scene is deleted
   local_position float8[] NOT NULL DEFAULT ARRAY[0, 0, 0], -- storing position as an array of 3 floats
   -- Future: store position (global as PointZ for large querying)
   local_scale float8[] NOT NULL DEFAULT ARRAY[1.0, 1.0, 1.0], -- storing scale as an array of 3 floats
