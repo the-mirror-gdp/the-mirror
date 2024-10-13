@@ -22,6 +22,7 @@ $$ LANGUAGE plpgsql;
 create table space_packs (
   id BIGINT PRIMARY KEY DEFAULT (floor(random() * 9007198754740991 + 500000000)::BIGINT), -- unique number instead of uuid since spaces also use a number id. set a floor above 500000000. 9007198754740991 is below the MAX_SAFE_INTEGER for js
   space_id BIGINT references spaces not null,
+  display_name text,
   -- TODO add JSON schema validation
   data jsonb not null,
   created_at timestamp with time zone not null default now(),
@@ -85,4 +86,47 @@ using (
     where spaces.id = space_packs.space_id
     and spaces.owner_user_id = auth.uid()
   )
+);
+
+
+-- Storage
+insert into
+  storage.buckets (id, name, public)
+values
+  ('space-packs', 'space-packs', true);
+
+
+create policy "User can insert their own space-packs"
+on storage.objects
+for insert
+to authenticated
+with check (
+    bucket_id = 'space-packs' and
+    owner_id = (select auth.uid()::text)  -- Ensure the owner is the current authenticated user
+);
+
+create policy "Anyone can read space-packs"
+on storage.objects
+for select
+to authenticated
+using (
+    bucket_id = 'space-packs'
+);
+
+create policy "User can update their own space-packs"
+on storage.objects
+for update
+to authenticated
+using (
+    bucket_id = 'space-packs' and
+    owner_id = (select auth.uid()::text)  -- Ensure the user owns the object they want to update
+);
+
+create policy "User can delete their own space-packs"
+on storage.objects
+for delete
+to authenticated
+using (
+    bucket_id = 'space-packs' and
+    owner_id = (select auth.uid()::text)  -- Ensure the user owns the object they want to delete
 );

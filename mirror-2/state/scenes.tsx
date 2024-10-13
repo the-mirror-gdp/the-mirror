@@ -177,7 +177,7 @@ export const scenesApi = createApi({
 export const listenerMiddlewarePcImports = createListenerMiddleware()
 listenerMiddlewarePcImports.startListening({
   matcher: isAnyOf(
-    scenesApi.endpoints.createScene.matchFulfilled // Match fulfilled action of the createPcImport mutation
+    scenesApi.endpoints.createScene.matchFulfilled // Match fulfilled action of the mutation
   ),
   effect: async (action, listenerApi) => {
     sendAnalyticsEvent('Create Scene')

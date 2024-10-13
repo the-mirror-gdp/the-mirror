@@ -11,6 +11,7 @@ export type DatabaseSpacePackUpdate =
   Database['public']['Tables']['space_packs']['Update']
 
 export const TAG_NAME_FOR_SPACE_PACK: string = 'SpacePacks'
+export const SPACE_PACKS_BUCKET_NAME: string = 'space-packs'
 
 export const spacePacksApi = createApi({
   reducerPath: 'spacePacksApi',
@@ -24,13 +25,14 @@ export const spacePacksApi = createApi({
       DatabaseSpacePack,
       DatabaseSpacePackInsert
     >({
-      queryFn: async ({ space_id, data }) => {
+      queryFn: async ({ space_id, display_name, data }) => {
         const supabase = createSupabaseBrowserClient()
 
         const { data: insertedData, error } = await supabase
           .from('space_packs')
           .insert({
             space_id,
+            display_name,
             data
           } as DatabaseSpacePackInsert)
           .select('*')
