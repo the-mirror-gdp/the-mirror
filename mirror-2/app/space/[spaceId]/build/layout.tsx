@@ -32,7 +32,7 @@ export default function Layout({ children, params }: {
         </div>
 
         {/* Instead of a div wrapping here, passing in className so that this component can be server compoonent; the Inspector has to use a hook for checking if entity selected */}
-        <Inspector className="flex-initial min-w-96" />
+        <Inspector className="flex-initial w-72" />
 
 
         {/* Children for additional content */}

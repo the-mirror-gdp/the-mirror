@@ -80,6 +80,7 @@ var pcBootstrap = {
         // canvas.style.marginTop = Math.floor((window.innerHeight - canvas.clientHeight) / 2) + 'px';
         const canvasContainer = document.getElementById('build-container')
         canvas.style.marginTop = canvasContainer.offsetTop + 'px'
+        canvas.style.marginLeft = canvasContainer.offsetLeft + 'px'
 
       } else {
         canvas.style.marginTop = '';
