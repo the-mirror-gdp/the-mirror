@@ -14,8 +14,10 @@ import dynamic from "next/dynamic"
 export default function Page() {
   const currentScene = useAppSelector(getCurrentScene);
   const params = useParams<{ spaceId: string }>()
-  const { data: space, error } = useGetSingleSpaceQuery(params.spaceId)
-  const { data: scenes, isLoading: isScenesLoading } = useGetAllScenesQuery(params.spaceId)
+  const spaceId: number = parseInt(params.spaceId, 10) // Use parseInt for safer conversion
+
+  const { data: space, error } = useGetSingleSpaceQuery(spaceId)
+  const { data: scenes, isLoading: isScenesLoading } = useGetAllScenesQuery(spaceId)
 
   // after successful query, update the current scene to the first in the space.scenes array
   const dispatch = useAppDispatch();

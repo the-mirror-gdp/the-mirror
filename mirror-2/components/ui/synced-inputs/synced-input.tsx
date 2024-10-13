@@ -15,19 +15,20 @@ import clsx from 'clsx' // Utility to merge class names
 import { cn } from '@/lib/utils'
 
 interface SyncedInputProps<T> {
-  id: string
+  id: any // TODO fix to string | number; not worth debugging the TS right now
   generalEntity: any
   fieldName: keyof T
   formSchema: ZodSchema
   defaultValue: any
-  useGenericGetEntityQuery: (id: string) => {
+  useGenericGetEntityQuery: (id: any) => {
+    // TODO fix to string | number for id
     data?: T
     isLoading: boolean
     isSuccess: boolean
     error?: any
   }
   useGenericUpdateEntityMutation: () => readonly [
-    (args: { id: string; [fieldName: string]: any }) => any, // The mutation trigger function
+    (args: { id: any; [fieldName: string]: any }) => any, // TODO fix to string | number for id; not worth debugging the TS right now
     { isLoading: boolean; isSuccess: boolean; error?: any }
   ]
   className?: string // Optional className prop
@@ -39,7 +40,7 @@ interface SyncedInputProps<T> {
 }
 
 export function SyncedInput<T>({
-  id: generalEntityId,
+  id: generalEntityIdInput,
   generalEntity,
   fieldName,
   formSchema,
@@ -53,6 +54,11 @@ export function SyncedInput<T>({
   convertSubmissionToNumber = false, // Default to false
   triggerOnChange = false // triggers the form component on change. Use for booleans
 }: SyncedInputProps<T>) {
+  const generalEntityId: any =
+    typeof generalEntityIdInput === 'string'
+      ? parseInt(generalEntityIdInput, 10)
+      : generalEntityIdInput // TODO fix to string | number; not worth debugging the TS right now
+
   const {
     data: entity,
     isLoading,

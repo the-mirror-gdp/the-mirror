@@ -123,14 +123,15 @@ const EntityTree: React.FC = () => {
   const dispatch = useAppDispatch()
 
   const params = useParams<{ spaceId: string }>()
+  const spaceId: number = parseInt(params.spaceId, 10) // Use parseInt for safer conversion
+
   const currentScene = useAppSelector(getCurrentScene)
   const automaticallyExpandedSceneIds = useAppSelector(
     selectAutomaticallyExpandedSceneIds
   )
   const expandedEntityIds = useAppSelector(selectExpandedEntityIds)
-  const { data: scenes, isLoading: isScenesLoading } = useGetAllScenesQuery(
-    params.spaceId
-  )
+  const { data: scenes, isLoading: isScenesLoading } =
+    useGetAllScenesQuery(spaceId)
   const { data: entities, isFetching: isEntitiesFetching } =
     useGetAllEntitiesQuery(
       currentScene?.id ||

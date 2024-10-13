@@ -21,12 +21,14 @@ const formSchema = z.object({
 
 export function EditableSpaceName() {
   const params = useParams<{ spaceId: string }>()
+  const spaceId: number = parseInt(params.spaceId, 10) // Use parseInt for safer conversion
+
   const {
     data: space,
     isLoading,
     isSuccess,
     error
-  } = useGetSingleSpaceQuery(params.spaceId)
+  } = useGetSingleSpaceQuery(spaceId)
   const [updateSpace] = useUpdateSpaceMutation()
 
   // define the form
