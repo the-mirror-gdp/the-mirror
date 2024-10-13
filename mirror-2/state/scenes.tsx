@@ -1,5 +1,7 @@
+import { sendAnalyticsEvent } from '@/utils/analytics/analytics'
 import { Database } from '@/utils/database.types'
 import { createSupabaseBrowserClient } from '@/utils/supabase/client'
+import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit'
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const TAG_NAME_FOR_GENERAL_ENTITY = 'Scenes'
@@ -169,6 +171,17 @@ export const scenesApi = createApi({
       ]
     })
   })
+})
+
+// Middleware for analytics or other side-effects
+export const listenerMiddlewarePcImports = createListenerMiddleware()
+listenerMiddlewarePcImports.startListening({
+  matcher: isAnyOf(
+    scenesApi.endpoints.createScene.matchFulfilled // Match fulfilled action of the createPcImport mutation
+  ),
+  effect: async (action, listenerApi) => {
+    sendAnalyticsEvent('Create Scene')
+  }
 })
 
 // Export the API hooks
