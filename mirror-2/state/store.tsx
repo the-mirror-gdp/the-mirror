@@ -6,7 +6,7 @@ import { listenerMiddlewareSpaces, spacesApi } from '@/state/spaces'
 import { scenesApi } from '@/state/scenes'
 import { entitiesApi, listenerMiddlewareEntities } from '@/state/entities'
 import { assetsApi } from '@/state/assets'
-import { spacePacksApi } from '@/state/space_packs'
+import { spacePacksApi } from '@/state/space-packs'
 
 export const store = configureStore({
   reducer: {
