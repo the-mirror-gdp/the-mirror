@@ -1,24 +1,22 @@
-import Image from "next/image"
+import Image from 'next/image'
 
-import { AlbumArtwork } from "./components/album-artwork"
-import { Menu } from "./components/menu"
-import { PodcastEmptyPlaceholder } from "./components/podcast-empty-placeholder"
-import { Sidebar } from "./components/sidebar"
-import { listenNowAlbums, madeForYouAlbums } from "./data/albums"
-import { playlists } from "./data/playlists"
-import { PlusCircleIcon } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Separator } from "@/components/ui/separator"
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import Link from "next/link"
-import { appDescription, appName } from "@/lib/theme-service"
-import { Metadata } from "next"
-import AccountDropdownMenu from "@/components/ui/account-dropdown-menu"
-
+import { AlbumArtwork } from './components/album-artwork'
+import { Menu } from './components/menu'
+import { PodcastEmptyPlaceholder } from './components/podcast-empty-placeholder'
+import { Sidebar } from './components/sidebar'
+import { listenNowAlbums, madeForYouAlbums } from './data/albums'
+import { playlists } from './data/playlists'
+import { PlusCircleIcon } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Separator } from '@/components/ui/separator'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import Link from 'next/link'
+import { appDescription, appName } from '@/lib/theme-service'
+import { Metadata } from 'next'
+import AccountDropdownMenu from '@/components/ui/account-dropdown-menu'
 
 export default function MusicPage() {
-
   return (
     <>
       <div className="md:hidden">
@@ -46,8 +44,7 @@ export default function MusicPage() {
               <div className="col-span-3 lg:col-span-4">
                 <div className="h-full px-4 py-6 lg:px-8">
                   <Tabs defaultValue="music" className="h-full space-y-6">
-                    <div className="space-between flex items-center">
-                    </div>
+                    <div className="space-between flex items-center"></div>
                     <TabsContent
                       value="music"
                       className="border-none p-0 outline-none"
@@ -63,9 +60,11 @@ export default function MusicPage() {
                         </div>
                         <div className="ml-auto mr-4">
                           <Button className="w-full" asChild>
-                            <Link href="/space/new" className="w-full p-3"><PlusCircleIcon className="mr-2" />Create a Space</Link>
+                            <Link href="/space/new" className="w-full p-3">
+                              <PlusCircleIcon className="mr-2" />
+                              Create a Space
+                            </Link>
                           </Button>
-
                         </div>
                         <AccountDropdownMenu />
                       </div>

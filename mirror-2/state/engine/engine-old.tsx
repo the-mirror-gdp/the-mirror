@@ -1,6 +1,6 @@
 // engine.ts
-import * as pc from 'playcanvas';
-import { Entity } from 'playcanvas';
+import * as pc from 'playcanvas'
+import { Entity } from 'playcanvas'
 
 // Singleton PlayCanvas instance manager
 // let playCanvasApp: pc.Application | null = null;

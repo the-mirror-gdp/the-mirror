@@ -17,13 +17,13 @@
  * [Full Setup Instructions](https://data.amplitude.com/the-mirror/default/implementation/web)
  */
 
-import * as amplitude from '@amplitude/analytics-browser';
+import * as amplitude from '@amplitude/analytics-browser'
 
-export type Environment = 'default';
+export type Environment = 'default'
 
 export const ApiKey: Record<Environment, string> = {
   default: '4a9417393c890dc8498e1a3a93a92424'
-};
+}
 
 /**
  * Default Amplitude configuration options. Contains tracking plan information.
@@ -41,19 +41,31 @@ export const DefaultConfiguration: BrowserOptions = {
       sourceVersion: '2.0.0'
     }
   }
-};
+}
 
-export interface LoadOptionsBase { disabled?: boolean }
+export interface LoadOptionsBase {
+  disabled?: boolean
+}
 
-export type LoadOptionsWithEnvironment = LoadOptionsBase & { environment: Environment; client?: { configuration?: BrowserOptions; }; };
-export type LoadOptionsWithApiKey = LoadOptionsBase & { client: { apiKey: string; configuration?: BrowserOptions; } };
-export type LoadOptionsWithClientInstance = LoadOptionsBase & { client: { instance: BrowserClient; } };
+export type LoadOptionsWithEnvironment = LoadOptionsBase & {
+  environment: Environment
+  client?: { configuration?: BrowserOptions }
+}
+export type LoadOptionsWithApiKey = LoadOptionsBase & {
+  client: { apiKey: string; configuration?: BrowserOptions }
+}
+export type LoadOptionsWithClientInstance = LoadOptionsBase & {
+  client: { instance: BrowserClient }
+}
 
-export type LoadOptions = LoadOptionsWithEnvironment | LoadOptionsWithApiKey | LoadOptionsWithClientInstance;
+export type LoadOptions =
+  | LoadOptionsWithEnvironment
+  | LoadOptionsWithApiKey
+  | LoadOptionsWithClientInstance
 
-export type PromiseResult<T> = { promise: Promise<T | void> };
+export type PromiseResult<T> = { promise: Promise<T | void> }
 
-const getVoidPromiseResult = () => ({ promise: Promise.resolve() });
+const getVoidPromiseResult = () => ({ promise: Promise.resolve() })
 
 // prettier-ignore
 export class Ampli {
@@ -162,15 +174,15 @@ export class Ampli {
 
 }
 
-export const ampli = new Ampli();
+export const ampli = new Ampli()
 
 // BASE TYPES
-type BrowserOptions = amplitude.Types.BrowserOptions;
+type BrowserOptions = amplitude.Types.BrowserOptions
 
-export type BrowserClient = amplitude.Types.BrowserClient;
-export type BaseEvent = amplitude.Types.BaseEvent;
-export type IdentifyEvent = amplitude.Types.IdentifyEvent;
-export type GroupEvent = amplitude.Types.GroupIdentifyEvent;
-export type Event = amplitude.Types.Event;
-export type EventOptions = amplitude.Types.EventOptions;
-export type Result = amplitude.Types.Result;
+export type BrowserClient = amplitude.Types.BrowserClient
+export type BaseEvent = amplitude.Types.BaseEvent
+export type IdentifyEvent = amplitude.Types.IdentifyEvent
+export type GroupEvent = amplitude.Types.GroupIdentifyEvent
+export type Event = amplitude.Types.Event
+export type EventOptions = amplitude.Types.EventOptions
+export type Result = amplitude.Types.Result

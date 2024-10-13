@@ -1,26 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
+import React, { useEffect, useState } from 'react'
+import Image from 'next/image'
 
 interface AssetThumbnailProps {
-  imageUrl: string;
-  name: string;
-  size?: number;
+  imageUrl: string
+  name: string
+  size?: number
 }
 
-const AssetThumbnail: React.FC<AssetThumbnailProps> = ({ imageUrl, name, size = 64 }) => {
+const AssetThumbnail: React.FC<AssetThumbnailProps> = ({
+  imageUrl,
+  name,
+  size = 64
+}) => {
   // Primarily used for dev since haven't uploaded storage on seed data
-  const [devImgSrc, setDevImgSrc] = useState(imageUrl);
+  const [devImgSrc, setDevImgSrc] = useState(imageUrl)
 
   useEffect(() => {
     if (process.env.NODE_ENV === 'development') {
-      setDevImgSrc("/dev/150.jpg");
+      setDevImgSrc('/dev/150.jpg')
     }
-  }, []);
+  }, [])
 
   return (
-    <div
-      className="text-center cursor-pointer transition-all duration-100 ease-in-out hover:border-primary border border-transparent rounded-lg p-2"
-    >
+    <div className="text-center cursor-pointer transition-all duration-100 ease-in-out hover:border-primary border border-transparent rounded-lg p-2">
       <Image
         src={imageUrl || devImgSrc}
         alt={name}
@@ -30,7 +32,7 @@ const AssetThumbnail: React.FC<AssetThumbnailProps> = ({ imageUrl, name, size = 
       />
       <p>{name}</p>
     </div>
-  );
-};
+  )
+}
 
-export default AssetThumbnail;
+export default AssetThumbnail

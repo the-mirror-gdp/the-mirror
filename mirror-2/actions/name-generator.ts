@@ -1,11 +1,15 @@
-"use server"
-import { uniqueNamesGenerator, Config, adjectives, colors, animals } from 'unique-names-generator';
-
+'use server'
+import {
+  uniqueNamesGenerator,
+  Config,
+  adjectives,
+  colors,
+  animals
+} from 'unique-names-generator'
 
 const randomName: string = uniqueNamesGenerator({
   dictionaries: [adjectives, animals]
-});
-
+})
 
 export async function generateSpaceName() {
   const customConfig: Config = {
@@ -13,11 +17,10 @@ export async function generateSpaceName() {
     separator: ' ',
     length: 2,
     style: 'capital'
-  };
-  
-return uniqueNamesGenerator(customConfig); 
-}
+  }
 
+  return uniqueNamesGenerator(customConfig)
+}
 
 export async function generateSceneName() {
   const customConfig: Config = {
@@ -25,8 +28,7 @@ export async function generateSceneName() {
     separator: ' ',
     length: 1,
     style: 'capital'
-  };
-  
-  return uniqueNamesGenerator(customConfig); 
   }
-  
+
+  return uniqueNamesGenerator(customConfig)
+}

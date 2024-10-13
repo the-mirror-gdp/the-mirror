@@ -1,8 +1,8 @@
-"use client"
-import packageJson from '../../package.json';
-import { ampli } from '@/src/ampli';
-import { sessionReplayPlugin } from '@amplitude/plugin-session-replay-browser';
-import { useEffect } from 'react';
+'use client'
+import packageJson from '../../package.json'
+import { ampli } from '@/src/ampli'
+import { sessionReplayPlugin } from '@amplitude/plugin-session-replay-browser'
+import { useEffect } from 'react'
 
 if (typeof window !== 'undefined') {
   window['analyticsInitialized'] = false
@@ -15,7 +15,6 @@ export function sendAnalyticsEvent(event: any) {
       event_type: event,
       app_version: packageJson.version
     })
-
   }
 }
 
@@ -25,23 +24,24 @@ export function setAnalyticsUserId(userId: string) {
   }
 }
 
-
 export default function AnalyticsInitializer() {
   useEffect(() => {
     // Ensure we are in the browser and analytics has not been initialized
     if (typeof window !== 'undefined' && !window['analyticsInitialized']) {
       if (!process.env.NEXT_PUBLIC_AMPLITUDE_PUBLIC_KEY) {
-        throw new Error("Missing analytics key");
+        throw new Error('Missing analytics key')
       }
 
-      ampli.load({ client: { apiKey: process.env.NEXT_PUBLIC_AMPLITUDE_PUBLIC_KEY } });
-      ampli.client.add(sessionReplayPlugin());
+      ampli.load({
+        client: { apiKey: process.env.NEXT_PUBLIC_AMPLITUDE_PUBLIC_KEY }
+      })
+      ampli.client.add(sessionReplayPlugin())
 
-      console.log('Analytics: Initializing');
+      console.log('Analytics: Initializing')
 
-      window['analyticsInitialized'] = true;
+      window['analyticsInitialized'] = true
     }
-  }, []);
+  }, [])
 
-  return null; // No UI component to render
+  return null // No UI component to render
 }

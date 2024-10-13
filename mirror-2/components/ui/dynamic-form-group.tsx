@@ -1,52 +1,69 @@
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
-import { useForm, Controller } from "react-hook-form";
+import { Checkbox } from '@/components/ui/checkbox'
+import { Input } from '@/components/ui/input'
+import { Select } from '@/components/ui/select'
+import { useForm, Controller } from 'react-hook-form'
 
 // Define the types for the form data configuration
 interface FormFieldConfig {
-  type: "text" | "boolean" | "multiselect" | "vector3" | "dropdown";
-  label: string;
-  value: any;
-  options?: string[]; // for dropdown and multiselect
+  type: 'text' | 'boolean' | 'multiselect' | 'vector3' | 'dropdown'
+  label: string
+  value: any
+  options?: string[] // for dropdown and multiselect
 }
 
 // Sample data input could look like this
 const dbItem: Record<string, FormFieldConfig> = {
-  name: { type: "text", label: "Name", value: "Example" },
-  active: { type: "boolean", label: "Active", value: true },
-  categories: { type: "multiselect", label: "Categories", options: ["Category1", "Category2"], value: [] },
-  position: { type: "vector3", label: "Position", value: { x: 0, y: 0, z: 0 } },
-  status: { type: "dropdown", label: "Status", options: ["Pending", "Completed"], value: "Pending" },
-};
-
-interface DynamicFormGroupProps {
-  formData?: Record<string, FormFieldConfig>;
+  name: { type: 'text', label: 'Name', value: 'Example' },
+  active: { type: 'boolean', label: 'Active', value: true },
+  categories: {
+    type: 'multiselect',
+    label: 'Categories',
+    options: ['Category1', 'Category2'],
+    value: []
+  },
+  position: { type: 'vector3', label: 'Position', value: { x: 0, y: 0, z: 0 } },
+  status: {
+    type: 'dropdown',
+    label: 'Status',
+    options: ['Pending', 'Completed'],
+    value: 'Pending'
+  }
 }
 
-export default function DynamicFormGroup({ formData = dbItem }: DynamicFormGroupProps) {
+interface DynamicFormGroupProps {
+  formData?: Record<string, FormFieldConfig>
+}
+
+export default function DynamicFormGroup({
+  formData = dbItem
+}: DynamicFormGroupProps) {
   const { control, handleSubmit } = useForm({
-    defaultValues: Object.keys(formData).reduce((acc, key) => {
-      acc[key] = formData[key].value;
-      return acc;
-    }, {} as Record<string, any>),
-  });
+    defaultValues: Object.keys(formData).reduce(
+      (acc, key) => {
+        acc[key] = formData[key].value
+        return acc
+      },
+      {} as Record<string, any>
+    )
+  })
 
   const onSubmit = (data: any) => {
-    console.log(data); // Submit the form data
-  };
+    console.log(data) // Submit the form data
+  }
 
   const renderField = (name: string, config: FormFieldConfig) => {
     switch (config.type) {
-      case "text":
+      case 'text':
         return (
           <Controller
             name={name}
             control={control}
-            render={({ field }) => <Input placeholder={config.label} {...field} />}
+            render={({ field }) => (
+              <Input placeholder={config.label} {...field} />
+            )}
           />
-        );
-      case "boolean":
+        )
+      case 'boolean':
         return (
           <Controller
             name={name}
@@ -57,7 +74,7 @@ export default function DynamicFormGroup({ formData = dbItem }: DynamicFormGroup
               </Checkbox>
             )}
           />
-        );
+        )
       // case "multiselect":
       //   return (
       //     <Controller
@@ -78,7 +95,7 @@ export default function DynamicFormGroup({ formData = dbItem }: DynamicFormGroup
       //       )}
       //     />
       //   );
-      case "vector3":
+      case 'vector3':
         return (
           <div>
             <label>{config.label}</label>
@@ -86,22 +103,28 @@ export default function DynamicFormGroup({ formData = dbItem }: DynamicFormGroup
               <Controller
                 name={`${name}.x`}
                 control={control}
-                render={({ field }) => <Input type="number" placeholder="X" {...field} />}
+                render={({ field }) => (
+                  <Input type="number" placeholder="X" {...field} />
+                )}
               />
               <Controller
                 name={`${name}.y`}
                 control={control}
-                render={({ field }) => <Input type="number" placeholder="Y" {...field} />}
+                render={({ field }) => (
+                  <Input type="number" placeholder="Y" {...field} />
+                )}
               />
               <Controller
                 name={`${name}.z`}
                 control={control}
-                render={({ field }) => <Input type="number" placeholder="Z" {...field} />}
+                render={({ field }) => (
+                  <Input type="number" placeholder="Z" {...field} />
+                )}
               />
             </div>
           </div>
-        );
-      case "dropdown":
+        )
+      case 'dropdown':
         return (
           <Controller
             name={name}
@@ -116,11 +139,11 @@ export default function DynamicFormGroup({ formData = dbItem }: DynamicFormGroup
               </Select>
             )}
           />
-        );
+        )
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -129,7 +152,9 @@ export default function DynamicFormGroup({ formData = dbItem }: DynamicFormGroup
           {renderField(key, formData[key])}
         </div>
       ))}
-      <button type="submit" className="btn btn-primary">Submit</button>
+      <button type="submit" className="btn btn-primary">
+        Submit
+      </button>
     </form>
-  );
+  )
 }

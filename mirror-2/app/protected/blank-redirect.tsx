@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import { useRedirectToHomeIfSignedIn } from "@/hooks/auth"
+import { useRedirectToHomeIfSignedIn } from '@/hooks/auth'
 
 export function BlankRedirect() {
   useRedirectToHomeIfSignedIn()
