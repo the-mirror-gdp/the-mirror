@@ -17,7 +17,7 @@ import {
 import {
   SPACE_PACKS_BUCKET_NAME,
   useGetSingleSpacePackQuery
-} from '@/state/space_packs'
+} from '@/state/space-packs'
 
 interface SpaceViewportProps {
   spacePackId: number

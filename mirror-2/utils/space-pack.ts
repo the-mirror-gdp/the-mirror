@@ -8,7 +8,7 @@ import { selectLocalUser } from '@/state/local'
 import {
   SPACE_PACKS_BUCKET_NAME,
   useCreateSpacePackMutation
-} from '@/state/space_packs'
+} from '@/state/space-packs'
 
 /**
  * Important: When we importing an app, it's stored in an IMMUTABLE form intentionally; with different engine versions and settings, we'll need to patch our __start-custom__.js to handle different cases depending on what the importing app was built on. We don't want to modify the imported files; that's done at runtime for future compatability and not having to run migrations.
