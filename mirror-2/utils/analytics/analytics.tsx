@@ -15,7 +15,11 @@ export enum AnalyticsEvent {
    * Scenes
    */
   CreateSceneAPISuccess = 'Create Scene API Success',
+  CreateSceneAPIFailure = 'Create Scene API Failure',
+  UpdateSceneAPISuccess = 'Update Scene API Success',
+  UpdateSceneAPIFailure = 'Update Scene API Failure',
   DeleteSceneAPISuccess = 'Delete Scene API Success',
+  DeleteSceneAPIFailure = 'Delete Scene API Failure',
 
   /**
    * Entity
