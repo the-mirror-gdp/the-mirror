@@ -1,4 +1,8 @@
-import { sendAnalyticsEvent } from '@/utils/analytics/analytics'
+import {
+  AnalyticsEvent,
+  AnalyticsEvents,
+  sendAnalyticsEvent
+} from '@/utils/analytics/analytics'
 import { Database } from '@/utils/database.types'
 import { createSupabaseBrowserClient } from '@/utils/supabase/client'
 import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit'
@@ -180,7 +184,7 @@ listenerMiddlewarePcImports.startListening({
     scenesApi.endpoints.createScene.matchFulfilled // Match fulfilled action of the mutation
   ),
   effect: async (action, listenerApi) => {
-    sendAnalyticsEvent('Create Scene')
+    sendAnalyticsEvent(AnalyticsEvent.CreateScene)
   }
 })
 
