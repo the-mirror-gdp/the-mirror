@@ -7,6 +7,13 @@ import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react'
 import { createSupabaseBrowserClient } from '@/utils/supabase/client'
 import { Database } from '@/utils/database.types'
 
+export type DatabaseAsset = Database['public']['Tables']['assets']['Row']
+export type DatabaseAssetInsert =
+  Database['public']['Tables']['assets']['Insert']
+export type DatabaseAssetUpdate =
+  Database['public']['Tables']['assets']['Update']
+export type AssetId = number & { __brand: 'AssetId' }
+
 export const ASSETS_BUCKET_USERS_FOLDER = 'users' // used for the assets bucket
 export const ASSETS_BUCKET_VERSIONED_ASSETS_FOLDER = 'versioned' // generally immutable, used for space_packs (published Spaces/games)
 const TABLE_NAME = 'assets'

@@ -12,12 +12,8 @@ export type DatabaseSceneInsert =
 export type DatabaseSceneUpdate =
   Database['public']['Tables']['scenes']['Update']
 
-// Define types for the entities table
-export type DatabaseEntity = Database['public']['Tables']['entities']['Row']
-export type DatabaseEntityInsert =
-  Database['public']['Tables']['entities']['Insert']
-export type DatabaseEntityUpdate =
-  Database['public']['Tables']['entities']['Update']
+// trying out branding, but might remove if it causes unnecessary pains
+export type SceneId = number & { __brand: 'SceneId' }
 
 // Supabase API for spaces
 export const scenesApi = createApi({
@@ -71,7 +67,7 @@ export const scenesApi = createApi({
      * Get a single Scene by its ID
      */
     getSingleScene: builder.query<DatabaseScene, number>({
-      queryFn: async (sceneId) => {
+      queryFn: async (sceneId: SceneId) => {
         const supabase = createSupabaseBrowserClient()
 
         const { data, error } = await supabase
@@ -124,33 +120,34 @@ export const scenesApi = createApi({
     /**
      * Update a Scene by its ID
      */
-    updateScene: builder.mutation<DatabaseScene, { id: number; name?: string }>(
-      {
-        queryFn: async ({ id: sceneId, name }) => {
-          const supabase = createSupabaseBrowserClient()
+    updateScene: builder.mutation<
+      DatabaseScene,
+      { id: SceneId; name?: string }
+    >({
+      queryFn: async ({ id: sceneId, name }) => {
+        const supabase = createSupabaseBrowserClient()
 
-          const { data, error } = await supabase
-            .from('scenes')
-            .update({ name } as DatabaseSceneUpdate)
-            .eq('id', sceneId)
-            .single()
+        const { data, error } = await supabase
+          .from('scenes')
+          .update({ name } as DatabaseSceneUpdate)
+          .eq('id', sceneId)
+          .single()
 
-          if (error) {
-            return { error: error.message }
-          }
+        if (error) {
+          return { error: error.message }
+        }
 
-          return { data }
-        },
-        invalidatesTags: (result, error, { id: sceneId }) => [
-          { type: TAG_NAME_FOR_GENERAL_ENTITY, id: sceneId }
-        ]
-      }
-    ),
+        return { data }
+      },
+      invalidatesTags: (result, error, { id: sceneId }) => [
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: sceneId }
+      ]
+    }),
 
     /**
      * Delete a Scene by its ID
      */
-    deleteScene: builder.mutation<DatabaseScene, number>({
+    deleteScene: builder.mutation<DatabaseScene, SceneId>({
       queryFn: async (sceneId) => {
         const supabase = createSupabaseBrowserClient()
 

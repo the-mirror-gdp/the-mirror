@@ -19,7 +19,12 @@ import {
 } from '@/state/engine/middleware'
 import { Database } from '@/utils/database.types'
 
+// Define types for the entities table
 export type DatabaseEntity = Database['public']['Tables']['entities']['Row']
+export type DatabaseEntityInsert =
+  Database['public']['Tables']['entities']['Insert']
+export type DatabaseEntityUpdate =
+  Database['public']['Tables']['entities']['Update']
 export const TAG_NAME_FOR_GENERAL_ENTITY = 'Entities'
 
 // Supabase API for spaces

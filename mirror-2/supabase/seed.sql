@@ -99,9 +99,9 @@ BEGIN
       -- Insert 3 scenes for each space
       FOR j IN 1..3 LOOP
         INSERT INTO public.scenes
-          (id, space_id, name, created_at, updated_at)
+          (id, space_id, name, created_at, updated_at, settings)
         VALUES
-          (floor(random() * 9007199254740991 + 500000000)::BIGINT, space_id, format('Scene %s-%s', i, j), now(), now())
+          (floor(random() * 9007199254740991 + 500000000)::BIGINT, space_id, format('Scene %s-%s', i, j), now(), now(), '{}'::jsonb)
         RETURNING id INTO scene_id;  
 
         -- Insert 20 entities for each scene
