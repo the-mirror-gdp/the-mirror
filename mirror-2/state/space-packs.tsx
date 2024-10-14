@@ -3,11 +3,7 @@ import { createSupabaseBrowserClient } from '@/utils/supabase/client'
 
 import { Database } from '@/utils/database.types'
 import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit'
-import {
-  sendAnalyticsEvent,
-  AnalyticsEvents,
-  AnalyticsEvent
-} from '@/utils/analytics/analytics'
+import { sendAnalyticsEvent, AnalyticsEvent } from '@/utils/analytics/analytics'
 // Define types for the space_packs table
 export type DatabaseSpacePack =
   Database['public']['Tables']['space_packs']['Row']
@@ -168,7 +164,7 @@ listenerMiddlewarePcImports.startListening({
     spacePacksApi.endpoints.createSpacePack.matchFulfilled // Match fulfilled action of the mutation
   ),
   effect: async (action, listenerApi) => {
-    sendAnalyticsEvent(AnalyticsEvent.CreateSpacePack)
+    sendAnalyticsEvent(AnalyticsEvent.CreateSpacePackAPISuccess)
   }
 })
 

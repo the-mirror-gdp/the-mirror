@@ -8,26 +8,26 @@ export enum AnalyticsEvent {
   /**
    * Spaces
    */
-  CreateSpace = 'Create Space',
-  DeleteSpace = 'Delete Space',
+  CreateSpaceAPISuccess = 'Create Space API Success',
+  DeleteSpaceAPISuccess = 'Delete Space API Success',
 
   /**
    * Scenes
    */
-  CreateScene = 'Create Scene',
-  DeleteScene = 'Delete Scene',
+  CreateSceneAPISuccess = 'Create Scene API Success',
+  DeleteSceneAPISuccess = 'Delete Scene API Success',
 
   /**
    * Entity
    */
-  CreateEntity = 'Create Entity',
-  DeleteEntity = 'Delete Entity',
+  CreateEntityAPISuccess = 'Create Entity API Success',
+  DeleteEntityAPISuccess = 'Delete Entity API Success',
 
   /**
    * Space Packs
    */
-  CreateSpacePack = 'Create Space Pack',
-  DeleteSpacePack = 'Delete Space Pack',
+  CreateSpacePackAPISuccess = 'Create Space Pack API Success',
+  DeleteSpacePackAPISuccess = 'Delete Space Pack API Success',
 
   /**
    * User
@@ -35,18 +35,6 @@ export enum AnalyticsEvent {
   UserLogin = 'User Login',
   UserLogout = 'User Logout'
 }
-
-export const AnalyticsEvents = {
-  spaces: {
-    create: 'Create Space'
-  },
-  scenes: {
-    create: 'Create Scene'
-  },
-  spacePacks: {
-    create: 'Create Space Pack'
-  }
-} as const
 
 if (typeof window !== 'undefined') {
   window['analyticsInitialized'] = false

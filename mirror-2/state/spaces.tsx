@@ -12,11 +12,7 @@ import {
 } from '@/state/entities'
 import { TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY } from '@/state/shared-cache-tags'
 import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit'
-import {
-  AnalyticsEvent,
-  AnalyticsEvents,
-  sendAnalyticsEvent
-} from '@/utils/analytics/analytics'
+import { AnalyticsEvent, sendAnalyticsEvent } from '@/utils/analytics/analytics'
 
 export const TAG_NAME_FOR_GENERAL_ENTITY = 'Spaces'
 
@@ -159,7 +155,7 @@ listenerMiddlewareSpaces.startListening({
     spacesApi.endpoints.createSpace.matchFulfilled // Match fulfilled action of the createSpace mutation
   ),
   effect: async (action, listenerApi) => {
-    sendAnalyticsEvent(AnalyticsEvent.CreateSpace)
+    sendAnalyticsEvent(AnalyticsEvent.CreateSpaceAPISuccess)
   }
 })
 
