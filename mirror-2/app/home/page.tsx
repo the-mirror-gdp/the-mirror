@@ -1,27 +1,21 @@
-import Image from "next/image"
+import Image from "next/image";
+import { Sidebar } from "./components/sidebar";
+import { listenNowAlbums, madeForYouAlbums } from "./data/albums";
+import { playlists } from "./data/playlists";
+import { Separator } from "@/components/ui/separator";
+import { appDescription, appName } from "@/lib/theme-service";
+import { Metadata } from "next";
+import AccountDropdownMenu from "@/components/ui/account-dropdown-menu";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 
-import { AlbumArtwork } from "./components/album-artwork"
-import { Menu } from "./components/menu"
-import { PodcastEmptyPlaceholder } from "./components/podcast-empty-placeholder"
-import { Sidebar } from "./components/sidebar"
-import { listenNowAlbums, madeForYouAlbums } from "./data/albums"
-import { playlists } from "./data/playlists"
-import { PlusCircleIcon } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Separator } from "@/components/ui/separator"
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import Link from "next/link"
-import { appDescription, appName } from "@/lib/theme-service"
-import { Metadata } from "next"
-import AccountDropdownMenu from "@/components/ui/account-dropdown-menu"
-
-
-export default function MusicPage() {
-
+export const metadata: Metadata = {
+  title: "The Mirror",
+  description: "",
+};
+export default function Home() {
   return (
     <>
-      <div className="md:hidden">
+      <div className="md:hidden hidden">
         <Image
           src="/examples/music-light.png"
           width={1280}
@@ -37,107 +31,108 @@ export default function MusicPage() {
           className="hidden dark:block"
         />
       </div>
-      <div className="hidden md:block">
-        {/* <Menu /> */}
-        <div className="border-none">
-          <div className="bg-background">
-            <div className="grid lg:grid-cols-5">
-              <Sidebar playlists={playlists} className="hidden lg:block" />
-              <div className="col-span-3 lg:col-span-4">
-                <div className="h-full px-4 py-6 lg:px-8">
-                  <Tabs defaultValue="music" className="h-full space-y-6">
-                    <div className="space-between flex items-center">
-                    </div>
-                    <TabsContent
-                      value="music"
-                      className="border-none p-0 outline-none"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="space-y-1">
-                          <h2 className="text-2xl font-semibold tracking-tight">
-                            The Next Era of The Mirror
-                          </h2>
-                          <p className="text-sm text-muted-foreground">
-                            Welcome, let's build.
-                          </p>
-                        </div>
-                        <div className="ml-auto mr-4">
-                          <Button className="w-full" asChild>
-                            <Link href="/space/new" className="w-full p-3"><PlusCircleIcon className="mr-2" />Create a Space</Link>
-                          </Button>
-
-                        </div>
-                        <AccountDropdownMenu />
-                      </div>
-                      <Separator className="my-4" />
-                      <div className="relative">
-                        <ScrollArea>
-                          <div className="flex space-x-4 pb-4">
-                            {listenNowAlbums.map((album) => (
-                              <AlbumArtwork
-                                key={album.name}
-                                album={album}
-                                className="w-[250px]"
-                                aspectRatio="portrait"
-                                width={250}
-                                height={330}
-                              />
-                            ))}
-                          </div>
-                          <ScrollBar orientation="horizontal" />
-                        </ScrollArea>
-                      </div>
-                      <div className="mt-6 space-y-1">
-                        <h2 className="text-2xl font-semibold tracking-tight">
-                          Play
-                        </h2>
-                        <p className="text-sm text-muted-foreground">
-                          Published Spaces from other builders.
-                        </p>
-                      </div>
-                      <Separator className="my-4" />
-                      <div className="relative">
-                        <ScrollArea>
-                          <div className="flex space-x-4 pb-4">
-                            {madeForYouAlbums.map((album) => (
-                              <AlbumArtwork
-                                key={album.name}
-                                album={album}
-                                className="w-[150px]"
-                                aspectRatio="square"
-                                width={150}
-                                height={150}
-                              />
-                            ))}
-                          </div>
-                          <ScrollBar orientation="horizontal" />
-                        </ScrollArea>
-                      </div>
-                    </TabsContent>
-                    <TabsContent
-                      value="podcasts"
-                      className="h-full flex-col border-none p-0 data-[state=active]:flex"
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="space-y-1">
-                          <h2 className="text-2xl font-semibold tracking-tight">
-                            New Episodes
-                          </h2>
-                          <p className="text-sm text-muted-foreground">
-                            Your favorite podcasts. Updated daily.
-                          </p>
-                        </div>
-                      </div>
-                      <Separator className="my-4" />
-                      <PodcastEmptyPlaceholder />
-                    </TabsContent>
-                  </Tabs>
-                </div>
+      <div className="bg-background flex">
+        <Sidebar
+          playlists={playlists}
+          className="hidden lg:block w "
+          style={{
+            width: "25%",
+          }}
+        />
+        <div className="py-6 px-6 w-full">
+          <div>
+            <div className="flex items-center justify-between">
+              <div className="space-y-1">
+                <h2 className="text-2xl font-semibold tracking-tight">
+                  Popular
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  Published Spaces from other builders.
+                </p>
               </div>
+              <AccountDropdownMenu />
+            </div>
+            <Separator className="my-4" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {madeForYouAlbums.slice(0, 4).map((album) => (
+                <Card
+                  className="rounded-none"
+                  style={{
+                    borderBottomLeftRadius: "0.75rem",
+                    borderBottomRightRadius: "0.75rem",
+                  }}
+                >
+                  <CardContent className="p-0">
+                    <Image
+                      src={album?.cover}
+                      width={250}
+                      height={250}
+                      alt={album?.name}
+                      style={{
+                        height: "250px",
+                        width: "100%",
+                      }}
+                    />
+                  </CardContent>
+                  <CardFooter>
+                    <div className="space-y-1 text-lg mt-4">
+                      <h3 className="font-medium leading-none">{album.name}</h3>
+                      <p className="text-xs text-muted-foreground">
+                        {album.artist}
+                      </p>
+                    </div>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          </div>
+          <div className="py-6">
+            <div className="flex items-center justify-between">
+              <div className="space-y-1">
+                <h2 className="text-2xl font-semibold tracking-tight">
+                  My Spaces
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  Spaces created by you.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-6">
+              {madeForYouAlbums.slice(0, 4).map((album) => (
+                <Card
+                  className="rounded-none"
+                  style={{
+                    borderBottomLeftRadius: "0.75rem",
+                    borderBottomRightRadius: "0.75rem",
+                  }}
+                >
+                  <CardContent className="p-0">
+                    <Image
+                      src={album?.cover}
+                      width={250}
+                      height={250}
+                      alt={album?.name}
+                      style={{
+                        height: "250px",
+                        width: "100%",
+                      }}
+                    />
+                  </CardContent>
+                  <CardFooter>
+                    <div className="space-y-1 text-lg mt-4">
+                      <h3 className="font-medium leading-none">{album.name}</h3>
+                      <p className="text-xs text-muted-foreground">
+                        {album.artist}
+                      </p>
+                    </div>
+                  </CardFooter>
+                </Card>
+              ))}
             </div>
           </div>
         </div>
       </div>
     </>
-  )
+  );
 }
