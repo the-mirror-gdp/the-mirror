@@ -5,11 +5,11 @@ import { generateSpaceName } from '@/actions/name-generator'
 import {
   scenesApi,
   TAG_NAME_FOR_GENERAL_ENTITY as SCENES_TAG_NAME_FOR_GENERAL_ENTITY
-} from '@/state/scenes'
+} from '@/state/api/scenes'
 import {
   TAG_NAME_FOR_GENERAL_ENTITY as ENTITIES_TAG_NAME_FOR_GENERAL_ENTITY,
   entitiesApi
-} from '@/state/entities'
+} from '@/state/api/entities'
 import { TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY } from '@/state/shared-cache-tags'
 import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit'
 import { AnalyticsEvent, sendAnalyticsEvent } from '@/utils/analytics/analytics'

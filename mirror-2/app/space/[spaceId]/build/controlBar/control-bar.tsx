@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useUiHoverSoundEffect } from "@/components/ui/ui-sounds";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
-import { ControlBarView, selectControlBarCurrentView, selectUiSoundsCanPlay, setControlBarCurrentView, turnOffUiSounds, turnOnUiSounds } from "@/state/local";
+import { ControlBarView, selectControlBarCurrentView, selectUiSoundsCanPlay, setControlBarCurrentView, turnOffUiSounds, turnOnUiSounds } from "@/state/local.state";
 import { Box, Clapperboard, Code2, Database, GitBranch, ListTree, Settings, Volume2, VolumeOff } from "lucide-react";
 
 export default function ControlBar() {

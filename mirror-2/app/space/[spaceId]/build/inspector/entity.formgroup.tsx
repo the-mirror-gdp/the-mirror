@@ -1,5 +1,5 @@
 "use client";
-import { DatabaseEntity, useGetSingleEntityQuery, useUpdateEntityMutation } from "@/state/entities";
+import { DatabaseEntity, useGetSingleEntityQuery, useUpdateEntityMutation } from "@/state/api/entities";
 import { Separator } from "@/components/ui/separator";
 import SyncedVector3Input from "@/components/ui/synced-inputs/synced-vector3-input";
 import { SyncedInput } from "@/components/ui/synced-inputs/synced-input";

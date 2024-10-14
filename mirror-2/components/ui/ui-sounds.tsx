@@ -1,7 +1,7 @@
 // Separate hooks to manage UI audio with state so that the UI components are agnostic to it
 'use client'
 import { useAppSelector } from '@/hooks/hooks'
-import { selectUiSoundsCanPlay } from '@/state/local'
+import { selectUiSoundsCanPlay } from '@/state/local.state'
 import { useEffect, useState } from 'react'
 import useSound from 'use-sound'
 

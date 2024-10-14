@@ -1,6 +1,6 @@
 'use client'
-import { DatabaseEntity } from '@/state/entities'
-import { DatabaseScene } from '@/state/scenes'
+import { DatabaseEntity } from '@/state/api/entities'
+import { DatabaseScene } from '@/state/api/scenes'
 import { RootState } from '@/state/store'
 import { setAnalyticsUserId } from '@/utils/analytics/analytics'
 import type { PayloadAction } from '@reduxjs/toolkit'

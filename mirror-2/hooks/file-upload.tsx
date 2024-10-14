@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
 import { Database } from '@/utils/database.types'
-import { useCreateAssetMutation } from '@/state/assets'
+import { useCreateAssetMutation } from '@/state/api/assets'
 
 export function useGetFileUpload() {
   // Get the mutation hook

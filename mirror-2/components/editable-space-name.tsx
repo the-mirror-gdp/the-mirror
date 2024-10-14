@@ -8,7 +8,10 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useGetSingleSpaceQuery, useUpdateSpaceMutation } from '@/state/spaces'
+import {
+  useGetSingleSpaceQuery,
+  useUpdateSpaceMutation
+} from '@/state/api/spaces'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useParams } from 'next/navigation'
 import { useEffect } from 'react'

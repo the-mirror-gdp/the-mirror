@@ -1,12 +1,12 @@
 'use client'
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query/react'
-import { listenerMiddlewareLocal, localSlice } from '@/state/local'
-import { listenerMiddlewareSpaces, spacesApi } from '@/state/spaces'
-import { scenesApi } from '@/state/scenes'
-import { entitiesApi, listenerMiddlewareEntities } from '@/state/entities'
-import { assetsApi } from '@/state/assets'
-import { spacePacksApi } from '@/state/space-packs'
+import { listenerMiddlewareLocal, localSlice } from '@/state/local.state'
+import { listenerMiddlewareSpaces, spacesApi } from '@/state/api/spaces'
+import { scenesApi } from '@/state/api/scenes'
+import { entitiesApi, listenerMiddlewareEntities } from '@/state/api/entities'
+import { assetsApi } from '@/state/api/assets'
+import { spacePacksApi } from '@/state/api/space-packs'
 
 export const store = configureStore({
   reducer: {

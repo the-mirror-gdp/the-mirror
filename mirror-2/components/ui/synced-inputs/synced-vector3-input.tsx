@@ -15,7 +15,7 @@ import {
   DatabaseEntity,
   useGetSingleEntityQuery,
   useUpdateEntityMutation
-} from '@/state/entities' // Import entities
+} from '@/state/api/entities' // Import entities
 import { z } from 'zod' // Import zod for validation
 import { useEffect } from 'react'
 import { Separator } from '@/components/ui/separator'

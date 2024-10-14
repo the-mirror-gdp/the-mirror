@@ -10,7 +10,7 @@ import { SkeletonCard } from "@/app/space/[spaceId]/build/controlBar/skeleton-ca
 import Versions from "@/app/space/[spaceId]/build/controlBar/versions";
 import { useGetFileUpload } from "@/hooks/file-upload";
 import { useAppSelector } from "@/hooks/hooks";
-import { selectControlBarCurrentView } from "@/state/local";
+import { selectControlBarCurrentView } from "@/state/local.state";
 import { Suspense } from "react";
 import { useDropzone } from "react-dropzone";
 
