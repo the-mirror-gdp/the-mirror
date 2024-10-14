@@ -108,6 +108,17 @@ interface SpacePackState {
     branch_id: string
     id: number
   }[]
+  manifestFile: {
+    short_name: string
+    name: string
+    start_url: string
+    display: string
+    icons: {
+      src: string
+      sizes: string
+      type: string
+    }[]
+  }
 }
 
 // Define the initial state using that type
@@ -177,7 +188,14 @@ const initialState: SpacePackState = {
       branch_id: '',
       id: 0
     }
-  ]
+  ],
+  manifestFile: {
+    short_name: '',
+    name: '',
+    start_url: '',
+    display: '',
+    icons: []
+  }
 }
 
 export const spacePackSlice = createSlice({
