@@ -1,9 +1,8 @@
 // Custom from the boilerplate from PC; it's recommended on docs to modify this, so ts-nocheck since it comes as JS file for initial boilerplate. https://developer.playcanvas.com/user-manual/publishing/web/communicating-webpage/
+import * as pc from 'playcanvas'
 
-// (function () {
 // Shared Lib
-// export var CANVAS_ID = 'application-canvas';
-var CANVAS_ID = 'application-canvas';
+export var CANVAS_ID = 'application-canvas';
 
 // Needed as we will have edge cases for particular versions of iOS
 // returns null if not iOS
@@ -137,9 +136,8 @@ var LTC_MAT_1 = [];
 var LTC_MAT_2 = [];
 
 // varants
-var canvas = pcBootstrap.createCanvas();
-// export var app = new pc.AppBase(canvas);
-var app = new pc.AppBase(canvas);
+var app;
+var canvas;
 
 function initCSS() {
   if (document.head.querySelector) {
@@ -234,7 +232,12 @@ function createGraphicsDevice(callback) {
   }
 }
 
-function initApp(device) {
+function initApp(device, inputSettings = {
+  useKeyboard: true,
+  useMouse: true,
+  useGamepads: false,
+  useTouch: true
+}) {
   try {
     var createOptions = new pc.AppOptions();
     createOptions.graphicsDevice = device;
@@ -296,22 +299,19 @@ function initApp(device) {
       pc.GSplatHandler,
     ].filter(Boolean);
 
-    if (window.INPUT_SETTINGS === undefined) {
-      debugger
-    }
     createOptions.elementInput = new pc.ElementInput(canvas, {
-      useMouse: window.INPUT_SETTINGS.useMouse,
-      useTouch: window.INPUT_SETTINGS.useTouch,
+      useMouse: inputSettings.useMouse,
+      useTouch: inputSettings.useTouch,
     });
-    createOptions.keyboard = window.INPUT_SETTINGS.useKeyboard
+    createOptions.keyboard = inputSettings.useKeyboard
       ? new pc.Keyboard(window)
       : null;
-    createOptions.mouse = window.INPUT_SETTINGS.useMouse ? new pc.Mouse(canvas) : null;
-    createOptions.gamepads = window.INPUT_SETTINGS.useGamepads
+    createOptions.mouse = inputSettings.useMouse ? new pc.Mouse(canvas) : null;
+    createOptions.gamepads = inputSettings.useGamepads
       ? new pc.GamePads()
       : null;
     createOptions.touch =
-      window.INPUT_SETTINGS.useTouch && pc.platform.touch
+      inputSettings.useTouch && pc.platform.touch
         ? new pc.TouchDevice(canvas)
         : null;
     createOptions.assetPrefix = window.ASSET_PREFIX || '';
@@ -336,7 +336,298 @@ function initApp(device) {
  * This retrieves the 3 properties in config.json: { application_properties, scenes, assets } THEN calls app.scenes.loadScene and app.start()
  */
 function configureAndStart() {
-  app.configure(window.CONFIG_FILENAME, (err) => {
+
+  // app.configure(window.CONFIG_FILENAME, (err) => {
+
+  // const props = response.application_properties;
+  const props = {
+    "i18nAssets": [],
+    "useTouch": true,
+    "layerOrder": [
+      {
+        "layer": 0,
+        "enabled": true,
+        "transparent": false
+      },
+      {
+        "layer": 1,
+        "enabled": true,
+        "transparent": false
+      },
+      {
+        "layer": 2,
+        "enabled": true,
+        "transparent": false
+      },
+      {
+        "layer": 0,
+        "enabled": true,
+        "transparent": true
+      },
+      {
+        "layer": 3,
+        "enabled": true,
+        "transparent": false
+      },
+      {
+        "layer": 3,
+        "enabled": true,
+        "transparent": true
+      },
+      {
+        "layer": 4,
+        "enabled": true,
+        "transparent": true
+      }
+    ],
+    "externalScripts": [],
+    "height": 720,
+    "vr": false,
+    "useModelV2": false,
+    "antiAlias": true,
+    "layers": {
+      "0": {
+        "transparentSortMode": 3,
+        "opaqueSortMode": 2,
+        "name": "World"
+      },
+      "1": {
+        "transparentSortMode": 3,
+        "opaqueSortMode": 2,
+        "name": "Depth"
+      },
+      "2": {
+        "transparentSortMode": 3,
+        "opaqueSortMode": 0,
+        "name": "Skybox"
+      },
+      "3": {
+        "transparentSortMode": 3,
+        "opaqueSortMode": 0,
+        "name": "Immediate"
+      },
+      "4": {
+        "transparentSortMode": 1,
+        "opaqueSortMode": 1,
+        "name": "UI"
+      }
+    },
+    "width": 1280,
+    "useDevicePixelRatio": true,
+    "useKeyboard": true,
+    "maxAssetRetries": 5,
+    "powerPreference": "high-performance",
+    "batchGroups": [],
+    "preserveDrawingBuffer": false,
+    "useLegacyScripts": false,
+    "enableSharedArrayBuffer": false,
+    "fillMode": "FILL_WINDOW",
+    "scripts": [],
+    "useMouse": true,
+    "use3dPhysics": false,
+    "transparentCanvas": false,
+    "resolutionMode": "AUTO",
+    "loadingScreenScript": null,
+    "preferWebGl2": true,
+    "useGamepads": false,
+    "deviceTypes": [
+      "webgl2",
+      "webgl1"
+    ],
+    "libraries": []
+  }
+  // const scenes = response.scenes;
+  const scenes = [
+    {
+      "name": "Untitled",
+      "url": "2090341.json"
+    }
+  ]
+  // const assets = response.assets;
+  const assets = {
+    "199423271": {
+      "name": "sky",
+      "type": "cubemap",
+      "file": {
+        "filename": "sky.png",
+        "size": 147883,
+        "hash": "9a07d61f34e67a5e96fb6e579ce5c813",
+        "url": "files/assets/199423271/1/sky.png"
+      },
+      "data": {
+        "name": "New Cubemap",
+        "textures": [
+          199423276,
+          199423275,
+          199423274,
+          199423272,
+          199423273,
+          199423277
+        ],
+        "minFilter": 5,
+        "magFilter": 1,
+        "anisotropy": 1,
+        "rgbm": true
+      },
+      "preload": true,
+      "tags": [],
+      "i18n": {},
+      "id": "199423271"
+    },
+    "199423272": {
+      "name": "sky_negy.png",
+      "type": "texture",
+      "file": {
+        "filename": "sky_negy.png",
+        "hash": "ff5cfefbc0d5d485bf9a0b9a31b25810",
+        "size": 152642,
+        "variants": {},
+        "url": "files/assets/199423272/1/sky_negy.png"
+      },
+      "data": {
+        "addressu": "repeat",
+        "addressv": "repeat",
+        "minfilter": "linear_mip_linear",
+        "magfilter": "linear",
+        "anisotropy": 1,
+        "rgbm": true,
+        "mipmaps": true
+      },
+      "preload": true,
+      "tags": [],
+      "i18n": {},
+      "id": "199423272"
+    },
+    "199423273": {
+      "name": "sky_posz.png",
+      "type": "texture",
+      "file": {
+        "filename": "sky_posz.png",
+        "hash": "53a9aab04b23a2e8f7be2d99115ca09d",
+        "size": 198593,
+        "variants": {},
+        "url": "files/assets/199423273/1/sky_posz.png"
+      },
+      "data": {
+        "addressu": "repeat",
+        "addressv": "repeat",
+        "minfilter": "linear_mip_linear",
+        "magfilter": "linear",
+        "anisotropy": 1,
+        "rgbm": true,
+        "mipmaps": true
+      },
+      "preload": true,
+      "tags": [],
+      "i18n": {},
+      "id": "199423273"
+    },
+    "199423274": {
+      "name": "sky_posy.png",
+      "type": "texture",
+      "file": {
+        "filename": "sky_posy.png",
+        "hash": "f11af8966b2e0fe99e343108d777403d",
+        "size": 170046,
+        "variants": {},
+        "url": "files/assets/199423274/1/sky_posy.png"
+      },
+      "data": {
+        "addressu": "repeat",
+        "addressv": "repeat",
+        "minfilter": "linear_mip_linear",
+        "magfilter": "linear",
+        "anisotropy": 1,
+        "rgbm": true,
+        "mipmaps": true
+      },
+      "preload": true,
+      "tags": [],
+      "i18n": {},
+      "id": "199423274"
+    },
+    "199423275": {
+      "name": "sky_negx.png",
+      "type": "texture",
+      "file": {
+        "filename": "sky_negx.png",
+        "hash": "34f64e48aa3125598094e24eeb02d574",
+        "size": 155167,
+        "variants": {},
+        "url": "files/assets/199423275/1/sky_negx.png"
+      },
+      "data": {
+        "addressu": "repeat",
+        "addressv": "repeat",
+        "minfilter": "linear_mip_linear",
+        "magfilter": "linear",
+        "anisotropy": 1,
+        "rgbm": true,
+        "mipmaps": true
+      },
+      "preload": true,
+      "tags": [],
+      "i18n": {},
+      "id": "199423275"
+    },
+    "199423276": {
+      "name": "sky_posx.png",
+      "type": "texture",
+      "file": {
+        "filename": "sky_posx.png",
+        "hash": "bb45a6c2eed8c3763777eaed6f44527f",
+        "size": 172680,
+        "variants": {},
+        "url": "files/assets/199423276/1/sky_posx.png"
+      },
+      "data": {
+        "addressu": "repeat",
+        "addressv": "repeat",
+        "minfilter": "linear_mip_linear",
+        "magfilter": "linear",
+        "anisotropy": 1,
+        "rgbm": true,
+        "mipmaps": true
+      },
+      "preload": true,
+      "tags": [],
+      "i18n": {},
+      "id": "199423276"
+    },
+    "199423277": {
+      "name": "sky_negz.png",
+      "type": "texture",
+      "file": {
+        "filename": "sky_negz.png",
+        "hash": "2be10e522c5e12bc0b791b48181895b9",
+        "size": 147065,
+        "variants": {},
+        "url": "files/assets/199423277/1/sky_negz.png"
+      },
+      "data": {
+        "addressu": "repeat",
+        "addressv": "repeat",
+        "minfilter": "linear_mip_linear",
+        "magfilter": "linear",
+        "anisotropy": 1,
+        "rgbm": true,
+        "mipmaps": true
+      },
+      "preload": true,
+      "tags": [],
+      "i18n": {},
+      "id": "199423277"
+    }
+  }
+
+  // this inits a ton of (good?) settings from application_properties; keep this for now
+  app._parseApplicationProperties(props, (err) => {
+    // app._parseScenes(scenes);
+    // app._parseAssets(assets);
+    if (err) {
+      throw new Error(err)
+    }
+
     if (err) {
       console.error(err);
       return;
@@ -367,28 +658,34 @@ function configureAndStart() {
         false
       );
 
-      app.preload(() => {
-        app.scenes.loadScene(window.SCENE_PATH, (err) => {
-          if (err) {
-            console.error(err);
-            return;
-          }
+      // TODO add preloading after setting up assets
+      // app.preload(() => {
+      // TODO add in first scene loading
+      // app.scenes.loadScene(window.SCENE_PATH, (err) => {
+      // if (err) {
+      //   console.error(err);
+      //   return;
+      // }
 
-          app.start();
+      app.start();
 
-          if (window.location.href.includes("build")) {
-            setFillMode(pc.FILLMODE_NONE)
-          } else if (window.location.href.includes("play")) {
-            setFillMode(pc.FILLMODE_FILL_WINDOW)
-          }
+      if (window.location.href.includes("build")) {
+        setFillMode(pc.FILLMODE_NONE)
+      } else if (window.location.href.includes("play")) {
+        setFillMode(pc.FILLMODE_FILL_WINDOW)
+      }
 
-        });
-      });
+      // });
+      // });
     });
   });
 }
 
-function mainInit() {
+function initEngine() {
+  // NOTE: I moved this out of the initial execution of the file to avoid a race condition. There may be a way to speed up loading though to bootstrap most things on page load. The issue was that the document.getElementById to append the canvas was failing because the viewport wasn't loaded yet.
+  canvas = pcBootstrap.createCanvas();
+  app = new pc.AppBase(canvas);
+
   createGraphicsDevice((device) => {
     if (!device) {
       return;
@@ -398,7 +695,7 @@ function mainInit() {
       return;
     }
 
-    if (window.PRELOAD_MODULES.length) {
+    if (window && window.PRELOAD_MODULES && window.PRELOAD_MODULES.length) {
       loadModules(window.PRELOAD_MODULES, window.ASSET_PREFIX, () => {
         configureAndStart(() => {
           console.timeEnd('start');
@@ -408,11 +705,9 @@ function mainInit() {
       configureAndStart();
     }
   });
-  console.log('Completed engine mainInit()')
+  console.log('Completed initEngine()')
   return app
 }
-mainInit();
-// })(); // Add scope to avoid polluting window scope
 
 
 
@@ -461,3 +756,5 @@ function updateCanvas(fillMode) {
     canvas.style.marginTop = '';
   }
 };
+
+export default initEngine
