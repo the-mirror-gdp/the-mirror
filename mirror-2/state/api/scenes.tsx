@@ -170,14 +170,39 @@ export const scenesApi = createApi({
   })
 })
 
-// Middleware for analytics or other side-effects
+// Middleware
 export const listenerMiddlewarePcImports = createListenerMiddleware()
+
 listenerMiddlewarePcImports.startListening({
   matcher: isAnyOf(
-    scenesApi.endpoints.createScene.matchFulfilled // Match fulfilled action of the mutation
+    scenesApi.endpoints.createScene.matchFulfilled,
+    scenesApi.endpoints.createScene.matchRejected,
+    scenesApi.endpoints.updateScene.matchFulfilled,
+    scenesApi.endpoints.updateScene.matchRejected,
+    scenesApi.endpoints.deleteScene.matchFulfilled,
+    scenesApi.endpoints.deleteScene.matchRejected
   ),
   effect: async (action, listenerApi) => {
-    sendAnalyticsEvent(AnalyticsEvent.CreateSceneAPISuccess)
+    // Handle create scene success or failure
+    if (scenesApi.endpoints.createScene.matchFulfilled(action)) {
+      sendAnalyticsEvent(AnalyticsEvent.CreateSceneAPISuccess)
+    } else if (scenesApi.endpoints.createScene.matchRejected(action)) {
+      sendAnalyticsEvent(AnalyticsEvent.CreateSceneAPIFailure)
+    }
+
+    // Handle update scene success or failure
+    else if (scenesApi.endpoints.updateScene.matchFulfilled(action)) {
+      sendAnalyticsEvent(AnalyticsEvent.UpdateSceneAPISuccess)
+    } else if (scenesApi.endpoints.updateScene.matchRejected(action)) {
+      sendAnalyticsEvent(AnalyticsEvent.UpdateSceneAPIFailure)
+    }
+
+    // Handle delete scene success or failure
+    else if (scenesApi.endpoints.deleteScene.matchFulfilled(action)) {
+      sendAnalyticsEvent(AnalyticsEvent.DeleteSceneAPISuccess)
+    } else if (scenesApi.endpoints.deleteScene.matchRejected(action)) {
+      sendAnalyticsEvent(AnalyticsEvent.DeleteSceneAPIFailure)
+    }
   }
 })
 
