@@ -13,7 +13,7 @@ import {
   selectExpandedEntityIds,
   setCurrentEntity,
   setExpandedEntityIds
-} from '@/state/local.state'
+} from '@/state/local.slice'
 import { useGetAllScenesQuery } from '@/state/api/scenes'
 import { skipToken } from '@reduxjs/toolkit/query'
 import type { TreeDataNode, TreeProps } from 'antd'

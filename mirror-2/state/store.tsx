@@ -1,17 +1,19 @@
 'use client'
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query/react'
-import { listenerMiddlewareLocal, localSlice } from '@/state/local.state'
+import { listenerMiddlewareLocal, localSlice } from '@/state/local.slice'
 import { listenerMiddlewareSpaces, spacesApi } from '@/state/api/spaces'
 import { scenesApi } from '@/state/api/scenes'
 import { entitiesApi, listenerMiddlewareEntities } from '@/state/api/entities'
 import { assetsApi } from '@/state/api/assets'
 import { spacePacksApi } from '@/state/api/space-packs'
+import { spacePackSlice } from '@/state/space-pack.slice'
 
 export const store = configureStore({
   reducer: {
     // Add the generated reducer as a specific top-level slice
     [localSlice.reducerPath]: localSlice.reducer,
+    [spacePackSlice.reducerPath]: spacePackSlice.reducer,
     [assetsApi.reducerPath]: assetsApi.reducer,
     [spacesApi.reducerPath]: spacesApi.reducer,
     [scenesApi.reducerPath]: scenesApi.reducer,

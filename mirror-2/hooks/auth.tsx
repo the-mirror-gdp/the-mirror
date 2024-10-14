@@ -1,6 +1,6 @@
 'use client'
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks'
-import { updateLocalUserState, clearLocalUserState } from '@/state/local.state'
+import { updateLocalUserState, clearLocalUserState } from '@/state/local.slice'
 import { store } from '@/state/store'
 import { createSupabaseBrowserClient } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'

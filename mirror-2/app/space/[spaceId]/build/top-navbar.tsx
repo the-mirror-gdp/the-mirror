@@ -5,7 +5,7 @@ import AccountDropdownMenu from "@/components/ui/account-dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/hooks/hooks";
 import { AppLogoImageSmall } from "@/lib/theme-service";
-import { selectLocalUser } from "@/state/local.state";
+import { selectLocalUser } from "@/state/local.slice";
 import { Play } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";

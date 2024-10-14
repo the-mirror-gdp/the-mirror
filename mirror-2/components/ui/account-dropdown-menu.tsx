@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { signOut } from '@/hooks/auth'
 import { useAppSelector } from '@/hooks/hooks'
-import { selectLocalUser } from '@/state/local.state'
+import { selectLocalUser } from '@/state/local.slice'
 import { CircleUser } from 'lucide-react'
 import Link from 'next/link'
 
