@@ -2,7 +2,7 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit'
 // import { updateEngineApp } from '@/state/engine/engine-old'; // Adjust path as needed
 import { RootState } from '@/state/store' // Adjust path as needed
-import { DatabaseEntity, entitiesApi } from '@/state/entities' // Adjust path as needed
+import { DatabaseEntity, entitiesApi } from '@/state/api/entities' // Adjust path as needed
 
 // Selector to aggregate all entities from getAllEntities queries
 export const selectAllEntities = (state: RootState): DatabaseEntity[] => {

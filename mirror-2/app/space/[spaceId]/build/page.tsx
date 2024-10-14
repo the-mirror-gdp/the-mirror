@@ -1,9 +1,9 @@
 "use client"
 
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks"
-import { getCurrentScene, setCurrentScene } from "@/state/local"
-import { useGetAllScenesQuery } from "@/state/scenes"
-import { useGetSingleSpaceQuery } from "@/state/spaces"
+import { getCurrentScene, setCurrentScene } from "@/state/local.state"
+import { useGetAllScenesQuery } from "@/state/api/scenes"
+import { useGetSingleSpaceQuery } from "@/state/api/spaces"
 
 import { useParams } from "next/navigation"
 import { useEffect } from "react"

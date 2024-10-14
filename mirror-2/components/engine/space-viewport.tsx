@@ -6,7 +6,7 @@ import * as pc from 'playcanvas'
 import { useEffect, useRef, useState } from 'react'
 import { createSupabaseBrowserClient } from '@/utils/supabase/client'
 import { useAppSelector } from '@/hooks/hooks'
-import { selectLocalUser } from '@/state/local'
+import { selectLocalUser } from '@/state/local.state'
 
 import {
   getASSET_PREFIXForLoadingEngineApp,
@@ -17,7 +17,7 @@ import {
 import {
   SPACE_PACKS_BUCKET_NAME,
   useGetSingleSpacePackQuery
-} from '@/state/space-packs'
+} from '@/state/api/space-packs'
 
 interface SpaceViewportProps {
   spacePackId: number

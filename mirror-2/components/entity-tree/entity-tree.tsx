@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks/hooks'
 import {
   useBatchUpdateEntitiesMutation,
   useGetAllEntitiesQuery
-} from '@/state/entities'
+} from '@/state/api/entities'
 import {
   addExpandedEntityIds,
   getCurrentScene,
@@ -13,8 +13,8 @@ import {
   selectExpandedEntityIds,
   setCurrentEntity,
   setExpandedEntityIds
-} from '@/state/local'
-import { useGetAllScenesQuery } from '@/state/scenes'
+} from '@/state/local.state'
+import { useGetAllScenesQuery } from '@/state/api/scenes'
 import { skipToken } from '@reduxjs/toolkit/query'
 import type { TreeDataNode, TreeProps } from 'antd'
 import { ConfigProvider, Tree } from 'antd'

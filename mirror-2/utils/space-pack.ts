@@ -4,11 +4,11 @@ import { useState } from 'react'
 import { createSupabaseBrowserClient } from '@/utils/supabase/client'
 import { snakeCase } from 'change-case'
 import { useAppSelector } from '@/hooks/hooks'
-import { selectLocalUser } from '@/state/local'
+import { selectLocalUser } from '@/state/local.state'
 import {
   SPACE_PACKS_BUCKET_NAME,
   useCreateSpacePackMutation
-} from '@/state/space-packs'
+} from '@/state/api/space-packs'
 
 /**
  * Important: When we importing an app, it's stored in an IMMUTABLE form intentionally; with different engine versions and settings, we'll need to patch our __start-custom__.js to handle different cases depending on what the importing app was built on. We don't want to modify the imported files; that's done at runtime for future compatability and not having to run migrations.

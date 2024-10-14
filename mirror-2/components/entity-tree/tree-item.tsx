@@ -3,7 +3,7 @@ import { Input } from '@/components/ui/input'
 import {
   useGetSingleEntityQuery,
   useUpdateEntityMutation
-} from '@/state/entities'
+} from '@/state/api/entities'
 import { cn } from '@/utils/cn'
 import { useState } from 'react'
 import { z } from 'zod'
@@ -19,11 +19,9 @@ export default function EntityTreeItem({ nodeData }) {
           className={'p-0 m-0 bg-transparent cursor-pointer duration-0'}
           fieldName="name"
           formSchema={z.object({
-            name: z
-              .string()
-              .min(1, {
-                message: 'Entity name must be at least 1 character long'
-              })
+            name: z.string().min(1, {
+              message: 'Entity name must be at least 1 character long'
+            })
           })}
           useGenericGetEntityQuery={useGetSingleEntityQuery}
           useGenericUpdateEntityMutation={useUpdateEntityMutation}
