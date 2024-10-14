@@ -21,7 +21,7 @@ interface LocalUserState {
   is_anonymous?: boolean
 }
 
-interface LocalState {
+interface LocalSlice {
   uiSoundsCanPlay: boolean
   controlBarCurrentView: ControlBarView
   user?: LocalUserState
@@ -36,7 +36,7 @@ interface LocalState {
 }
 
 // Define the initial state using that type
-const initialState: LocalState = {
+const initialState: LocalSlice = {
   uiSoundsCanPlay: true,
   controlBarCurrentView: 'hierarchy',
   user: {

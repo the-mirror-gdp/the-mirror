@@ -1,1 +1,28 @@
-{"short_name":"Blank Project 2","name":"Blank Project 2","start_url":"","display":"fullscreen","icons":[{"src":"thumbs/180.jpg","sizes":"180x180","type":"image/jpeg"},{"src":"thumbs/360.jpg","sizes":"360x360","type":"image/jpeg"},{"src":"thumbs/540.jpg","sizes":"540x540","type":"image/jpeg"},{"src":"thumbs/720.jpg","sizes":"720x720","type":"image/jpeg"}]}
+{
+  "short_name": "Blank Project 2",
+  "name": "Blank Project 2",
+  "start_url": "",
+  "display": "fullscreen",
+  "icons": [
+    {
+      "src": "thumbs/180.jpg",
+      "sizes": "180x180",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "thumbs/360.jpg",
+      "sizes": "360x360",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "thumbs/540.jpg",
+      "sizes": "540x540",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "thumbs/720.jpg",
+      "sizes": "720x720",
+      "type": "image/jpeg"
+    }
+  ]
+}

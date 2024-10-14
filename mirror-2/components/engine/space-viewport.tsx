@@ -6,7 +6,7 @@ import * as pc from 'playcanvas'
 import { useEffect, useRef, useState } from 'react'
 import { createSupabaseBrowserClient } from '@/utils/supabase/client'
 import { useAppSelector } from '@/hooks/hooks'
-import { selectLocalUser } from '@/state/local.state'
+import { selectLocalUser } from '@/state/local.slice'
 
 import {
   getASSET_PREFIXForLoadingEngineApp,

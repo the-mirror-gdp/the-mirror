@@ -1,7 +1,7 @@
 "use client"
 
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks"
-import { getCurrentScene, setCurrentScene } from "@/state/local.state"
+import { getCurrentScene, setCurrentScene } from "@/state/local.slice"
 import { useGetAllScenesQuery } from "@/state/api/scenes"
 import { useGetSingleSpaceQuery } from "@/state/api/spaces"
 

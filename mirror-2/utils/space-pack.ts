@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { createSupabaseBrowserClient } from '@/utils/supabase/client'
 import { snakeCase } from 'change-case'
 import { useAppSelector } from '@/hooks/hooks'
-import { selectLocalUser } from '@/state/local.state'
+import { selectLocalUser } from '@/state/local.slice'
 import {
   SPACE_PACKS_BUCKET_NAME,
   useCreateSpacePackMutation
