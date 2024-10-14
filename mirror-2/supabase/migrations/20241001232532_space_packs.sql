@@ -1,6 +1,6 @@
 -- space_packs are an IMMUTABLE version of a space, used for exporting/importing, publishing a Space, etc.
 
-create extension pg_jsonschema with schema extensions;
+CREATE EXTENSION IF NOT EXISTS pg_jsonschema WITH SCHEMA extensions;
 
 CREATE OR REPLACE FUNCTION generate_unique_id_space_packs()
 RETURNS TRIGGER AS $$

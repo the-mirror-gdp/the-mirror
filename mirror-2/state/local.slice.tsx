@@ -49,7 +49,8 @@ const initialState: LocalSlice = {
     id: 0,
     name: '',
     space_id: 0,
-    updated_at: ''
+    updated_at: '',
+    settings: {}
   },
   expandedEntityIds: [],
   automaticallyExpandedSceneIds: []

@@ -1,5 +1,7 @@
 'use client'
+import * as pc from 'playcanvas'
 import { AssetId, DatabaseAsset } from '@/state/api/assets'
+import { setCurrentScene } from '@/state/local.slice'
 import { RootState } from '@/state/store'
 import { createListenerMiddleware, createSlice } from '@reduxjs/toolkit'
 
@@ -202,20 +204,104 @@ export const spacePackSlice = createSlice({
   name: 'spacePacks',
   initialState,
   reducers: {
-    turnOffUiSounds: (state) => {
-      state.uiSoundsCanPlay = false
+    updateSceneSettings: (state, action) => {
+      const { sceneId, settingKey, settingValue } = action.payload
+
+      // Find the scene by ID
+      // is this correct?? Seems like we should grab it from the scenesApi
+      // const scene = state.sceneFiles.find((scene) => scene.id === sceneId)
+
+      // if (scene) {
+      //   // Update the appropriate setting in the scene
+      //   if (settingKey in scene.settings) {
+      //     // If it's a known top-level setting like 'physics' or 'render'
+      //     scene.settings[settingKey] = settingValue
+      //   } else if (settingKey in scene.settings.render) {
+      //     // For nested settings, like render settings
+      //     scene.settings.render[settingKey] = settingValue
+      //   } else if (settingKey in scene.settings.physics) {
+      //     // For nested physics settings
+      //     scene.settings.physics[settingKey] = settingValue
+      //   }
+      // }
+    },
+    updateSceneName: (state, action) => {
+      // first, update config.json.scenes
+      // second, update the <sceneId>.json.name
+      // finally, trigger engine updates with this
+    },
+    updateManifestFile: (state, action) => {
+      state.manifestFile = action.payload
     }
   }
 })
 
-export const { turnOffUiSounds } = spacePackSlice.actions
+export const { updateManifestFile, updateSceneSettings } =
+  spacePackSlice.actions
 
 // Middleware
-export const listenerMiddlewareLocal = createListenerMiddleware()
-listenerMiddlewareLocal.startListening({
-  actionCreator: turnOffUiSounds,
+export const listenerMiddlewareSpacePack = createListenerMiddleware()
+
+listenerMiddlewareSpacePack.startListening({
+  actionCreator: updateSceneSettings,
   effect: async (action, listenerApi) => {
-    // setAnalyticsUserId(action.payload.id)
+    const { sceneId, settingKey, settingValue } = action.payload
+
+    // Assuming `pc` is the PlayCanvas namespace
+    // and `app` is the PlayCanvas app instance
+
+    const app = pc.app
+    if (!app) {
+      throw new Error('Space app reference not found')
+    }
+
+    // Get the active scene
+    const scene = app.root.findByName('SceneName') // Replace 'SceneName' with actual scene
+    console.log('not implemented, doing scene change first')
+    // if (scene) {
+    //   switch (settingKey) {
+    //     case 'fog_end':
+    //       app.scene.fogEnd = settingValue // Update fog_end value
+    //       break
+    //     case 'gravity':
+    //       app.systems.rigidbody.gravity.set(
+    //         settingValue[0],
+    //         settingValue[1],
+    //         settingValue[2]
+    //       ) // Update gravity
+    //       break
+    //     case 'fog_color':
+    //       app.scene.fogColor.set(
+    //         settingValue[0],
+    //         settingValue[1],
+    //         settingValue[2]
+    //       ) // Update fog color
+    //       break
+    //     // Add other cases for settings that you need to update
+    //     default:
+    //       console.warn(`Unknown setting key: ${settingKey}`)
+    //   }
+
+    //   // Trigger a scene update if necessary
+    //   app.scene.update() // Make sure the scene is refreshed
+    // }
+  }
+})
+
+listenerMiddlewareSpacePack.startListening({
+  actionCreator: setCurrentScene,
+  effect: async (action, listenerApi) => {
+    const { id: sceneId, name } = action.payload
+    const app = window.pc.app
+    if (!app) {
+      throw new Error('Space app reference not found')
+    }
+    // TODO change to find by url to avoid name collision
+    const scene = app.root.findByName(name)
+    if (!scene) {
+      throw new Error('Scene not found')
+    }
+    app.scenes.changeScene(scene.name)
   }
 })
 

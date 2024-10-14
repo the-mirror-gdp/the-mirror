@@ -18,6 +18,7 @@ import {
   selectAllEntities
 } from '@/state/engine/middleware'
 import { Database } from '@/utils/database.types'
+import { SceneId } from '@/state/api/scenes'
 
 // Define types for the entities table
 export type DatabaseEntity = Database['public']['Tables']['entities']['Row']
@@ -131,7 +132,7 @@ export const entitiesApi = createApi({
       invalidatesTags: [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }]
     }),
 
-    getAllEntities: builder.query<any, string>({
+    getAllEntities: builder.query<any, SceneId>({
       queryFn: async (sceneId) => {
         const supabase = createSupabaseBrowserClient()
 
