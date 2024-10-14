@@ -14,6 +14,12 @@ import { TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY } from '@/state/shared-cache-tags'
 import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit'
 import { AnalyticsEvent, sendAnalyticsEvent } from '@/utils/analytics/analytics'
 
+export type DatabaseSpace = Database['public']['Tables']['spaces']['Row']
+export type DatabaseSpaceInsert =
+  Database['public']['Tables']['spaces']['Insert']
+export type DatabaseSpaceUpdate =
+  Database['public']['Tables']['spaces']['Update']
+
 export const TAG_NAME_FOR_GENERAL_ENTITY = 'Spaces'
 
 // Supabase API for spaces

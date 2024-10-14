@@ -182,6 +182,7 @@ export type Database = {
           created_at: string
           id: number
           name: string
+          settings: Json
           space_id: number
           updated_at: string
         }
@@ -189,6 +190,7 @@ export type Database = {
           created_at?: string
           id?: number
           name: string
+          settings: Json
           space_id: number
           updated_at?: string
         }
@@ -196,6 +198,7 @@ export type Database = {
           created_at?: string
           id?: number
           name?: string
+          settings?: Json
           space_id?: number
           updated_at?: string
         }
