@@ -132,13 +132,15 @@ const EntityTree: React.FC = () => {
   const expandedEntityIds = useAppSelector(selectExpandedEntityIds)
   const { data: scenes, isLoading: isScenesLoading } =
     useGetAllScenesQuery(spaceId)
+
+  // Handle individual scene ID
+  const currentSceneId = currentScene?.id
+  // Handle multiple scene IDs
+  const firstSceneId = scenes && scenes.length > 0 ? scenes[0].id : undefined
+  // Use the appropriate ID or skipToken
+  const entityQueryArg = currentSceneId || firstSceneId || skipToken
   const { data: entities, isFetching: isEntitiesFetching } =
-    useGetAllEntitiesQuery(
-      currentScene?.id ||
-        (scenes && scenes.length > 0
-          ? scenes.map((scene) => scene.id)
-          : skipToken) // Conditional query
-    )
+    useGetAllEntitiesQuery(entityQueryArg)
 
   const [batchUpdateEntity] = useBatchUpdateEntitiesMutation()
 

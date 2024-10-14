@@ -25,7 +25,7 @@ interface SpaceViewportProps {
 }
 
 export default function SpaceViewport({
-  spacePackId: spacePackId,
+  spacePackId,
   mode = 'play'
 }: SpaceViewportProps) {
   const [isScriptReady, setIsScriptReady] = useState(false)
@@ -40,6 +40,13 @@ export default function SpaceViewport({
 
   const startScriptPath = `/scripts/__start-custom__.js`
   const supabase = createSupabaseBrowserClient()
+
+  useEffect(() => {
+    // // Ensure this runs only on the client-side
+    if (typeof window !== 'undefined' && !window['pc']) {
+      window['pc'] = pc // Declare global PlayCanvas variable
+    }
+  }, [])
 
   // Use RTK Query to fetch the list of filenames related to the spacePackId
   const { data: spacePack, error: spacePackImportError } =
@@ -83,10 +90,10 @@ export default function SpaceViewport({
           setIsScriptReady(true)
           setHasLoadedExternalFiles(true)
 
-          // // Ensure this runs only on the client-side
-          if (typeof window !== 'undefined') {
-            window['pc'] = pc // Declare global PlayCanvas variable
-          }
+          // // // Ensure this runs only on the client-side
+          // if (typeof window !== 'undefined') {
+          //   window['pc'] = pc // Declare global PlayCanvas variable
+          // }
         } catch (error) {
           console.error('Error loading external files:', error)
         }

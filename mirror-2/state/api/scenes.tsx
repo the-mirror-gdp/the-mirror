@@ -12,8 +12,7 @@ export type DatabaseSceneInsert =
 export type DatabaseSceneUpdate =
   Database['public']['Tables']['scenes']['Update']
 
-// trying out branding, but might remove if it causes unnecessary pains
-export type SceneId = number & { __brand: 'SceneId' }
+export type SceneId = number
 
 // Supabase API for spaces
 export const scenesApi = createApi({
@@ -47,7 +46,8 @@ export const scenesApi = createApi({
           .from('scenes')
           .insert({
             name,
-            space_id
+            space_id,
+            settings: {}
           })
           .select('*')
           .single()
