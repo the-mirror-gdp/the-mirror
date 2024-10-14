@@ -332,7 +332,10 @@ function initApp(device) {
   }
 }
 
-function configure() {
+/**
+ * This retrieves the 3 properties in config.json: { application_properties, scenes, assets } THEN calls app.scenes.loadScene and app.start()
+ */
+function configureAndStart() {
   app.configure(window.CONFIG_FILENAME, (err) => {
     if (err) {
       console.error(err);
@@ -397,12 +400,12 @@ function mainInit() {
 
     if (window.PRELOAD_MODULES.length) {
       loadModules(window.PRELOAD_MODULES, window.ASSET_PREFIX, () => {
-        configure(() => {
+        configureAndStart(() => {
           console.timeEnd('start');
         });
       });
     } else {
-      configure();
+      configureAndStart();
     }
   });
   console.log('Completed engine mainInit()')
