@@ -40,7 +40,7 @@ interface SyncedInputProps<T> {
 }
 
 export function SyncedInput<T>({
-  id: generalEntityIdInput,
+  id,
   generalEntity,
   fieldName,
   formSchema,
@@ -54,23 +54,25 @@ export function SyncedInput<T>({
   convertSubmissionToNumber = false, // Default to false
   triggerOnChange = false // triggers the form component on change. Use for booleans
 }: SyncedInputProps<T>) {
-  const generalEntityId: any =
-    typeof generalEntityIdInput === 'string'
-      ? parseInt(generalEntityIdInput, 10)
-      : generalEntityIdInput // TODO fix to string | number; not worth debugging the TS right now
+  // const generalEntityId: any =
+  //   typeof generalEntityIdInput === 'string'
+  //     ? parseInt(generalEntityIdInput, 10)
+  //     : generalEntityIdInput // TODO fix to string | number; not worth debugging the TS right now
 
   const {
-    data: entity,
+    data: genericEntity,
     isLoading,
     isSuccess
-  } = useGenericGetEntityQuery(generalEntityId)
+  } = useGenericGetEntityQuery(id)
 
   const [
     updateGeneralEntity,
     { isLoading: isUpdating, isSuccess: isUpdated, error }
   ] = useGenericUpdateEntityMutation()
   let defaultValueToSet =
-    entity?.[fieldName] !== undefined ? entity[fieldName] : defaultValue
+    genericEntity?.[fieldName] !== undefined
+      ? genericEntity[fieldName]
+      : defaultValue
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -92,8 +94,8 @@ export function SyncedInput<T>({
     }
 
     // Check if the value has actually changed
-    if (entity && isSuccess) {
-      const entityValue = entity[fieldName]
+    if (genericEntity && isSuccess) {
+      const entityValue = genericEntity[fieldName]
       const formValue = values[fieldName]
       if (entityValue === formValue) {
         return
@@ -103,7 +105,7 @@ export function SyncedInput<T>({
       onSubmitFn()
     }
     await updateGeneralEntity({
-      id: generalEntityId,
+      id,
       ...generalEntity,
       [fieldName]: values[fieldName]
     })
@@ -111,15 +113,17 @@ export function SyncedInput<T>({
 
   // Reset the form when the entity data is successfully fetched
   useEffect(() => {
-    if (entity && isSuccess) {
+    if (genericEntity && isSuccess) {
       defaultValueToSet =
-        entity?.[fieldName] !== undefined ? entity[fieldName] : defaultValue
+        genericEntity?.[fieldName] !== undefined
+          ? genericEntity[fieldName]
+          : defaultValue
 
       form.reset({
         [fieldName]: defaultValueToSet
       })
     }
-  }, [entity, isSuccess, form])
+  }, [genericEntity, isSuccess, form])
 
   const handleChange = async () => {
     const isValid = await form.trigger(fieldName as string) // Manually trigger validation
