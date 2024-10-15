@@ -1,9 +1,9 @@
 import React from "react";
-import { madeForYouAlbums } from "../home/data/albums";
+import { madeForYouAlbums } from "../../home/data/albums";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
-import { Sidebar } from "../home/components/sidebar";
-import { playlists } from "../home/data/playlists";
+import { Sidebar } from "../../home/components/sidebar";
+import { playlists } from "../../home/data/playlists";
 import { Separator } from "@/components/ui/separator";
 import { PlusCircleIcon } from "lucide-react";
 import { Metadata } from "next";

@@ -1,20 +1,23 @@
+"use client";
 import React from "react";
-import { listenNowAlbums, madeForYouAlbums } from "../home/data/albums";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
-import { Sidebar } from "../home/components/sidebar";
-import { playlists } from "../home/data/playlists";
+import { Sidebar } from "../../home/components/sidebar";
+import { playlists } from "../../home/data/playlists";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PlusCircleIcon } from "lucide-react";
-import { Metadata } from "next";
+import { useGetSpacesByUserIdQuery } from "@/state/spaces";
+import { useRedirectToLoginIfNotSignedIn } from "@/hooks/auth";
 
-export const metadata: Metadata = {
-  title: "My Spaces",
-  description: "",
-};
+const dummyImg =
+  "https://images.unsplash.com/photo-1615247001958-f4bc92fa6a4a?w=300&dpr=2&q=80";
+
 const MySpaces = () => {
+  useRedirectToLoginIfNotSignedIn();
+  const { data: spaces, error } = useGetSpacesByUserIdQuery("");
+
   return (
     <div className="bg-background flex">
       <Sidebar
@@ -40,7 +43,7 @@ const MySpaces = () => {
         </div>
         <Separator className="my-4" />
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {madeForYouAlbums?.map((album) => (
+          {spaces?.map((space) => (
             <Card
               className="rounded-none"
               style={{
@@ -50,10 +53,10 @@ const MySpaces = () => {
             >
               <CardContent className="p-0">
                 <Image
-                  src={album?.cover}
+                  src={dummyImg}
                   width={250}
                   height={250}
-                  alt={album?.name}
+                  alt={space?.name}
                   style={{
                     height: "250px",
                     width: "100%",
@@ -62,9 +65,9 @@ const MySpaces = () => {
               </CardContent>
               <CardFooter>
                 <div className="space-y-1 text-lg mt-4">
-                  <h3 className="font-medium leading-none">{album.name}</h3>
+                  <h3 className="font-medium leading-none">{space?.name}</h3>
                   <p className="text-xs text-muted-foreground">
-                    {album.artist}
+                    Created At {space?.created_at.split("T")[0]}
                   </p>
                 </div>
               </CardFooter>

@@ -43,7 +43,7 @@ export function Sidebar({ className, playlists, style }: SidebarProps) {
               className="w-full justify-start"
               asChild
             >
-              <Link href="/my-spaces" className="w-full p-3">
+              <Link href="/my/spaces" className="w-full p-3">
                 <Axis3D className="mr-2" />
                 My Spaces
               </Link>
@@ -53,7 +53,7 @@ export function Sidebar({ className, playlists, style }: SidebarProps) {
               className="w-full justify-start"
               asChild
             >
-              <Link href="/my-assets" className="w-full p-3">
+              <Link href="/my/assets" className="w-full p-3">
                 <Axis3D className="mr-2" />
                 My Assets
               </Link>

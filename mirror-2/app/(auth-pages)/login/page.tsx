@@ -1,8 +1,14 @@
-"use client"
+"use client";
 import { loginAction } from "@/actions/auth";
 import { FormMessage, Message } from "@/components/form-message";
 import { SubmitButton } from "@/components/submit-button";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRedirectToHomeIfSignedIn } from "@/hooks/auth";
@@ -11,9 +17,9 @@ import Link from "next/link";
 import { useRef } from "react";
 
 export default function Login({ searchParams }: { searchParams: Message }) {
-  useRedirectToHomeIfSignedIn()
+  useRedirectToHomeIfSignedIn();
 
-  const isDevelopment = process.env.NODE_ENV === 'development';
+  const isDevelopment = process.env.NODE_ENV === "development";
 
   // References for email and password fields
   const emailRef = useRef<HTMLInputElement>(null);
@@ -23,7 +29,7 @@ export default function Login({ searchParams }: { searchParams: Message }) {
   const handleDevLoginWithUser = (userEmail: string) => {
     if (emailRef.current && passwordRef.current) {
       emailRef.current.value = userEmail;
-      passwordRef.current.value = 'password';  // Default password for all dev users
+      passwordRef.current.value = "password"; // Default password for all dev users
     }
 
     // Simulate form submission by calling formAction
@@ -45,21 +51,41 @@ export default function Login({ searchParams }: { searchParams: Message }) {
         <CardContent className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
-            <Input ref={emailRef} id="email" type="email" name="email" placeholder="m@example.com" required />
+            <Input
+              ref={emailRef}
+              id="email"
+              type="email"
+              name="email"
+              placeholder="m@example.com"
+              required
+            />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
-            <Input ref={passwordRef} id="password" type="password" name="password" required />
+            <Input
+              ref={passwordRef}
+              id="password"
+              type="password"
+              name="password"
+              required
+            />
           </div>
         </CardContent>
         <CardFooter className="grid grid-cols-1 gap-5">
-          <SubmitButton className="w-full" pendingText="Signing In..." formAction={loginAction}>
+          <SubmitButton
+            className="w-full"
+            pendingText="Signing In..."
+            formAction={loginAction}
+          >
             Login
           </SubmitButton>
           <FormMessage message={searchParams} />
           <p className="text-sm text-muted-foreground">
             Don't have an account?{" "}
-            <Link className="text-foreground font-medium underline" href="/create-account">
+            <Link
+              className="text-foreground font-medium underline"
+              href="/create-account"
+            >
               Create Account
             </Link>
           </p>
@@ -70,21 +96,21 @@ export default function Login({ searchParams }: { searchParams: Message }) {
               <button
                 type="button"
                 className="bg-gray-900 p-2 rounded-md"
-                onClick={() => handleDevLoginWithUser('user1@example.com')}
+                onClick={() => handleDevLoginWithUser("user1@example.com")}
               >
                 Dev Login with User 1
               </button>
               <button
                 type="button"
                 className="bg-gray-900 p-2 rounded-md"
-                onClick={() => handleDevLoginWithUser('user2@example.com')}
+                onClick={() => handleDevLoginWithUser("user2@example.com")}
               >
                 Dev Login with User 2
               </button>
               <button
                 type="button"
                 className="bg-gray-900 p-2 rounded-md"
-                onClick={() => handleDevLoginWithUser('user3@example.com')}
+                onClick={() => handleDevLoginWithUser("user3@example.com")}
               >
                 Dev Login with User 3
               </button>

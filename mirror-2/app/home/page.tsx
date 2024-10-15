@@ -1,18 +1,20 @@
+"use client";
 import Image from "next/image";
 import { Sidebar } from "./components/sidebar";
 import { listenNowAlbums, madeForYouAlbums } from "./data/albums";
 import { playlists } from "./data/playlists";
 import { Separator } from "@/components/ui/separator";
 import { appDescription, appName } from "@/lib/theme-service";
-import { Metadata } from "next";
 import AccountDropdownMenu from "@/components/ui/account-dropdown-menu";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { useGetSpacesByUserIdQuery } from "@/state/spaces";
 
-export const metadata: Metadata = {
-  title: "The Mirror",
-  description: "",
-};
+const dummyImg =
+  "https://images.unsplash.com/photo-1513745405825-efaf9a49315f?w=300&dpr=2&q=80";
+
 export default function Home() {
+  const { data: spaces, error } = useGetSpacesByUserIdQuery("");
+
   return (
     <>
       <div className="md:hidden hidden">
@@ -99,7 +101,7 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-6">
-              {madeForYouAlbums.slice(0, 4).map((album) => (
+              {spaces?.slice(0, 4).map((space) => (
                 <Card
                   className="rounded-none"
                   style={{
@@ -109,10 +111,10 @@ export default function Home() {
                 >
                   <CardContent className="p-0">
                     <Image
-                      src={album?.cover}
+                      src={dummyImg}
                       width={250}
                       height={250}
-                      alt={album?.name}
+                      alt={space?.name}
                       style={{
                         height: "250px",
                         width: "100%",
@@ -121,9 +123,11 @@ export default function Home() {
                   </CardContent>
                   <CardFooter>
                     <div className="space-y-1 text-lg mt-4">
-                      <h3 className="font-medium leading-none">{album.name}</h3>
+                      <h3 className="font-medium leading-none">
+                        {space?.name}
+                      </h3>
                       <p className="text-xs text-muted-foreground">
-                        {album.artist}
+                        Created At {space?.created_at.split("T")[0]}
                       </p>
                     </div>
                   </CardFooter>

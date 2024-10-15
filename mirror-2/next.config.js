@@ -10,10 +10,10 @@ const nextConfig = {
       source: "/sign-up",
       destination: "/create-account",
       permanent: true,
-    }
+    },
   ],
   images: {
-    domains: ['images.unsplash.com', '127.0.0.1', 'localhost', 'picsum.photos'],
+    domains: ["images.unsplash.com", "127.0.0.1", "localhost", "picsum.photos"],
   },
 };
 
