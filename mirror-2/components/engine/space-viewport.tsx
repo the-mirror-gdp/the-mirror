@@ -70,6 +70,14 @@ export default function SpaceViewport({
     isSuccess: isSuccessGettingEntities,
     error
   } = useGetAllEntitiesQuery(currentScene?.id || skipToken)
+
+  useEffect(() => {
+    if (isSuccessGetSingleSpace) {
+      initEngine()
+      setEngineLoaded(true)
+    }
+  }, [isSuccessGetSingleSpace])
+
   useEffect(() => {
     if (
       isSuccessGetSingleSpace &&
@@ -92,17 +100,6 @@ export default function SpaceViewport({
     entities,
     hasSetUpEntities
   ])
-
-  const supabase = createSupabaseBrowserClient()
-
-  useEffect(() => {
-    // setTimeout(() => {
-    if (isSuccessGetSingleSpace) {
-      initEngine()
-      setEngineLoaded(true)
-    }
-    // }, 1250)
-  }, [isSuccessGetSingleSpace])
 
   return (
     <>
