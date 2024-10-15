@@ -86,6 +86,10 @@ export const spacesApi = createApi({
       queryFn: async (spaceId) => {
         const supabase = createSupabaseBrowserClient()
 
+        if (spaceId === null || spaceId === undefined) {
+          return { error: 'SpaceID undefined' }
+        }
+
         const { data, error } = await supabase
           .from('spaces')
           .select('*')
