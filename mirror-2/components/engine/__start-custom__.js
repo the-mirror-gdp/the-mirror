@@ -181,7 +181,7 @@ function createGraphicsDevice(callback) {
     var LEGACY_WEBGL = 'webgl';
     var deviceTypes =
       deviceOptions.preferWebGl2 === false
-        ? [pc.DEVICETYPE_WEBGL1, pc.DEVICETYPE_WEBGL2]
+        ? [pc.DEVICETYPE_WEBGL2] // DEVICETYPE_WEBGL1 was removed in engine 2.0
         : deviceOptions.deviceTypes;
     if (!deviceTypes) {
       deviceTypes = []
@@ -252,10 +252,8 @@ function initApp(device, inputSettings = {
       pc.RenderComponentSystem,
       pc.CameraComponentSystem,
       pc.LightComponentSystem,
-      pc.script.legacy
-        ? pc.ScriptLegacyComponentSystem
-        : pc.ScriptComponentSystem,
-      pc.AudioSourceComponentSystem,
+      pc.ScriptComponentSystem, // ScriptLegacyComponentSystem removed in engine 2.0
+      // pc.AudioSourceComponentSystem, // removed in engine 2.0
       pc.SoundComponentSystem,
       pc.AudioListenerComponentSystem,
       pc.ParticleSystemComponentSystem,
@@ -682,6 +680,11 @@ function configureAndStart() {
 }
 
 function initEngine() {
+  if (typeof window === 'undefined') {
+    console.warn('initEngine called on the server side; returning');
+    return; // Prevent the engine from initializing on the server side
+  }
+
   // NOTE: I moved this out of the initial execution of the file to avoid a race condition. There may be a way to speed up loading though to bootstrap most things on page load. The issue was that the document.getElementById to append the canvas was failing because the viewport wasn't loaded yet.
   canvas = pcBootstrap.createCanvas();
   app = new pc.AppBase(canvas);
