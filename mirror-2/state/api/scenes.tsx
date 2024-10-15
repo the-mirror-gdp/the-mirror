@@ -1,3 +1,4 @@
+import { entitiesApi } from '@/state/api/entities'
 import { AnalyticsEvent, sendAnalyticsEvent } from '@/utils/analytics/analytics'
 import { Database } from '@/utils/database.types'
 import { createSupabaseBrowserClient } from '@/utils/supabase/client'
@@ -56,7 +57,18 @@ export const scenesApi = createApi({
           return { error: error.message }
         }
 
-        // Other logic for root entity creation
+        // Root entity creation
+        const result = await dispatch(
+          entitiesApi.endpoints.createEntity.initiate({
+            name: 'Root',
+            scene_id: data.id,
+            isRootEntity: true
+          })
+        ).unwrap() // Unwrap the result for promise handling
+
+        if (result.error) {
+          return { error: result.error }
+        }
 
         return { data }
       },
