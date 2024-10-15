@@ -44,7 +44,7 @@ function getPcBootstrap() {
 
       // Disable long-touch select on iOS devices
       canvas.style['-webkit-user-select'] = 'none';
-      canvas.className = "transition-opacity duration-1000 opacity-0"
+      canvas.className = "transition-opacity duration-750 opacity-0"
       // document.body.appendChild(canvas);
       document.getElementById('direct-container').appendChild(canvas);
 
