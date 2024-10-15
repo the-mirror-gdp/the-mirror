@@ -401,10 +401,11 @@ export const entitiesApi = createApi({
       any,
       {
         id: EntityId
-        component: any // The new component data to be added
+        componentKey: string // The key for the component (e.g., 'render')
+        componentData: any // The new component data to be added
       }
     >({
-      queryFn: async ({ id, component }) => {
+      queryFn: async ({ id, componentKey, componentData }) => {
         const supabase = createSupabaseBrowserClient()
 
         // Fetch the existing components
@@ -418,11 +419,12 @@ export const entitiesApi = createApi({
           return { error: fetchError.message }
         }
 
+        // Merge the new component data under the specified key (componentKey)
         const updatedComponents = {
           ...(typeof existingEntity.components === 'object'
             ? existingEntity.components
             : {}),
-          ...(typeof component === 'object' ? component : {}) // Add or merge new component
+          [componentKey]: componentData // Add or overwrite the specific component
         }
 
         const { data, error } = await supabase
@@ -467,8 +469,8 @@ export const entitiesApi = createApi({
       any,
       {
         id: EntityId
-        componentKey: string
-        updatedComponentData: any
+        componentKey: string // The key for the component (e.g., 'render')
+        updatedComponentData: any // The new data for the component
       }
     >({
       queryFn: async ({ id, componentKey, updatedComponentData }) => {
@@ -487,11 +489,10 @@ export const entitiesApi = createApi({
 
         // Update the specific component in the JSONB object
         const updatedComponents = {
-          ...(typeof existingEntity.components === 'object' &&
-          existingEntity.components !== null
+          ...(typeof existingEntity.components === 'object'
             ? existingEntity.components
             : {}),
-          [componentKey]: updatedComponentData
+          [componentKey]: updatedComponentData // Update only the specific component
         }
 
         const { data, error } = await supabase
@@ -515,7 +516,7 @@ export const entitiesApi = createApi({
       any,
       {
         id: EntityId
-        componentKey: string
+        componentKey: string // The key of the component to be deleted
       }
     >({
       queryFn: async ({ id, componentKey }) => {
@@ -554,8 +555,9 @@ export const entitiesApi = createApi({
         { type: TAG_NAME_FOR_GENERAL_ENTITY, id }
       ]
     })
-
-    //
+    /**
+     * End Components
+     */
   })
 })
 

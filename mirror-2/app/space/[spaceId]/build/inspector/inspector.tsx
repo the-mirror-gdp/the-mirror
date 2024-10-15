@@ -15,7 +15,7 @@ export default function Inspector({ className }) {
       <>
           <EntityFormGroup entity={entity} />
              {/* Create Component Button */}
-          <CreateComponentButton/>
+          <CreateComponentButton entity={entity} />
             </>
     }
   </div>
