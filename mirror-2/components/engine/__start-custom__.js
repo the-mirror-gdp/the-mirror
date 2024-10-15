@@ -20,114 +20,119 @@ var getIosVersion = function () {
   return null;
 };
 
-var lastWindowHeight = window.innerHeight;
-var lastWindowWidth = window.innerWidth;
+var lastWindowHeight
+var lastWindowWidth
 var windowSizeChangeIntervalHandler = null;
 
-var pcBootstrap = {
-  reflowHandler: null,
-  iosVersion: getIosVersion(),
+/**
+ * this was var pcBoostrap = ... but putting it in a function because of ssr issues
+ */
+function getPcBootstrap() {
+  return {
+    reflowHandler: null,
+    iosVersion: getIosVersion(),
 
-  createCanvas: function () {
-    var canvas = document.createElement('canvas');
-    canvas.setAttribute('id', CANVAS_ID);
-    canvas.setAttribute('tabindex', 0);
+    createCanvas: function () {
+      var canvas = document.createElement('canvas');
+      canvas.setAttribute('id', CANVAS_ID);
+      canvas.setAttribute('tabindex', 0);
 
-    // Disable I-bar cursor on click+drag
-    canvas.onselectstart = function () {
-      return false;
-    };
+      // Disable I-bar cursor on click+drag
+      canvas.onselectstart = function () {
+        return false;
+      };
 
-    // Disable long-touch select on iOS devices
-    canvas.style['-webkit-user-select'] = 'none';
-    canvas.className = "transition-opacity duration-1000 opacity-0"
-    // document.body.appendChild(canvas);
-    document.getElementById('direct-container').appendChild(canvas);
+      // Disable long-touch select on iOS devices
+      canvas.style['-webkit-user-select'] = 'none';
+      canvas.className = "transition-opacity duration-1000 opacity-0"
+      // document.body.appendChild(canvas);
+      document.getElementById('direct-container').appendChild(canvas);
 
-    setTimeout(() => {
-      canvas.classList.add('opacity-100');  // This will smoothly transition to visible
-      canvas.classList.remove('opacity-0');  // This will smoothly transition to visible
-    }, 50);  // A slight delay to ensure the DOM is updated before applying the transition
+      setTimeout(() => {
+        canvas.classList.add('opacity-100');  // This will smoothly transition to visible
+        canvas.classList.remove('opacity-0');  // This will smoothly transition to visible
+      }, 50);  // A slight delay to ensure the DOM is updated before applying the transition
 
-    return canvas;
-  },
+      return canvas;
+    },
 
-  resizeCanvas: function (app, canvas) {
-    // change to __start__ script here
-    var fillMode = app._fillMode;
+    resizeCanvas: function (app, canvas) {
+      // change to __start__ script here
+      var fillMode = app._fillMode;
 
-    canvas.style.width = '';
-    canvas.style.height = '';
-    if (fillMode === pc.FILLMODE_NONE) {
-      // our change for build mode (see below too)
-      const canvasContainer = document.getElementById('build-container')
-      app.resizeCanvas(canvasContainer.offsetWidth, canvasContainer.offsetHeight);
-    } else {
-      // non-custom behavior
-      app.resizeCanvas(canvas.width, canvas.height);
-    }
-
-
-    if (fillMode === pc.FILLMODE_NONE || fillMode === pc.FILLMODE_KEEP_ASPECT) {
-      if (
-        (fillMode === pc.FILLMODE_NONE &&
-          canvas.clientHeight < window.innerHeight) ||
-        canvas.clientWidth / canvas.clientHeight >=
-        window.innerWidth / window.innerHeight
-      ) {
-        // old line here for posterity
-        // canvas.style.marginTop = Math.floor((window.innerHeight - canvas.clientHeight) / 2) + 'px';
+      canvas.style.width = '';
+      canvas.style.height = '';
+      if (fillMode === pc.FILLMODE_NONE) {
+        // our change for build mode (see below too)
         const canvasContainer = document.getElementById('build-container')
-        canvas.style.marginTop = canvasContainer.offsetTop + 'px'
-        canvas.style.marginLeft = canvasContainer.offsetLeft + 'px'
-
+        app.resizeCanvas(canvasContainer.offsetWidth, canvasContainer.offsetHeight);
       } else {
-        canvas.style.marginTop = '';
+        // non-custom behavior
+        app.resizeCanvas(canvas.width, canvas.height);
       }
-    }
 
-    lastWindowHeight = window.innerHeight;
-    lastWindowWidth = window.innerWidth;
 
-    // Work around when in landscape to work on iOS 12 otherwise
-    // the content is under the URL bar at the top
-    if (this.iosVersion && this.iosVersion[0] <= 12) {
-      window.scrollTo(0, 0);
-    }
-  },
+      if (fillMode === pc.FILLMODE_NONE || fillMode === pc.FILLMODE_KEEP_ASPECT) {
+        if (
+          (fillMode === pc.FILLMODE_NONE &&
+            canvas.clientHeight < window.innerHeight) ||
+          canvas.clientWidth / canvas.clientHeight >=
+          window.innerWidth / window.innerHeight
+        ) {
+          // old line here for posterity
+          // canvas.style.marginTop = Math.floor((window.innerHeight - canvas.clientHeight) / 2) + 'px';
+          const canvasContainer = document.getElementById('build-container')
+          canvas.style.marginTop = canvasContainer.offsetTop + 'px'
+          canvas.style.marginLeft = canvasContainer.offsetLeft + 'px'
 
-  reflow: function (app, canvas) {
-    this.resizeCanvas(app, canvas);
-
-    // Poll for size changes as the window inner height can change after the resize event for iOS
-    // Have one tab only, and rotate from portrait -> landscape -> portrait
-    if (windowSizeChangeIntervalHandler === null) {
-      windowSizeChangeIntervalHandler = setInterval(
-        function () {
-          if (
-            lastWindowHeight !== window.innerHeight ||
-            lastWindowWidth !== window.innerWidth
-          ) {
-            this.resizeCanvas(app, canvas);
-          }
-        }.bind(this),
-        100
-      );
-
-      // Don't want to do this all the time so stop polling after some short time
-      setTimeout(function () {
-        if (!!windowSizeChangeIntervalHandler) {
-          clearInterval(windowSizeChangeIntervalHandler);
-          windowSizeChangeIntervalHandler = null;
+        } else {
+          canvas.style.marginTop = '';
         }
-      }, 2000);
-    }
-  },
-};
+      }
+
+      lastWindowHeight = window.innerHeight;
+      lastWindowWidth = window.innerWidth;
+
+      // Work around when in landscape to work on iOS 12 otherwise
+      // the content is under the URL bar at the top
+      if (this.iosVersion && this.iosVersion[0] <= 12) {
+        window.scrollTo(0, 0);
+      }
+    },
+
+    reflow: function (app, canvas) {
+      this.resizeCanvas(app, canvas);
+
+      // Poll for size changes as the window inner height can change after the resize event for iOS
+      // Have one tab only, and rotate from portrait -> landscape -> portrait
+      if (windowSizeChangeIntervalHandler === null) {
+        windowSizeChangeIntervalHandler = setInterval(
+          function () {
+            if (
+              lastWindowHeight !== window.innerHeight ||
+              lastWindowWidth !== window.innerWidth
+            ) {
+              this.resizeCanvas(app, canvas);
+            }
+          }.bind(this),
+          100
+        );
+
+        // Don't want to do this all the time so stop polling after some short time
+        setTimeout(function () {
+          if (!!windowSizeChangeIntervalHandler) {
+            clearInterval(windowSizeChangeIntervalHandler);
+            windowSizeChangeIntervalHandler = null;
+          }
+        }, 2000);
+      }
+    },
+  };
+}
 
 // Expose the reflow to users so that they can override the existing
 // reflow logic if need be
-window.pcBootstrap = pcBootstrap;
+// window.pcBootstrap = pcBootstrap;
 // })();
 
 // (function () {
@@ -684,7 +689,11 @@ function initEngine() {
     console.warn('initEngine called on the server side; returning');
     return; // Prevent the engine from initializing on the server side
   }
-
+  const pcBootstrap = getPcBootstrap()
+  window.pcBootstrap = pcBootstrap;
+  lastWindowHeight = window.innerHeight;
+  lastWindowWidth = window.innerWidth;
+  windowSizeChangeIntervalHandler = null;
   // NOTE: I moved this out of the initial execution of the file to avoid a race condition. There may be a way to speed up loading though to bootstrap most things on page load. The issue was that the document.getElementById to append the canvas was failing because the viewport wasn't loaded yet.
   canvas = pcBootstrap.createCanvas();
   app = new pc.AppBase(canvas);
