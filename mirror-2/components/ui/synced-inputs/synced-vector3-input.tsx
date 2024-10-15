@@ -11,21 +11,18 @@ import {
 } from '@/components/ui/form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import {
-  DatabaseEntity,
-  useGetSingleEntityQuery,
-  useUpdateEntityMutation
-} from '@/state/api/entities' // Import entities
+import { DatabaseEntity } from '@/state/api/entities' // Import entities
 import { z } from 'zod' // Import zod for validation
 import { useEffect } from 'react'
 import { Separator } from '@/components/ui/separator'
+import { skipToken } from '@reduxjs/toolkit/query'
 
 interface SyncedVector3InputProps {
   label: string
   entity: DatabaseEntity
   dbColumnNameSnakeCase: keyof DatabaseEntity
   defaultValues: [number, number, number] // Array of default values [x, y, z]
-  useGetSingleGenericEntityQuery: (id: string) => {
+  useGetSingleGenericEntityQuery: (id: any) => {
     isLoading: boolean
     isSuccess: boolean
     data?: DatabaseEntity
@@ -73,7 +70,7 @@ export default function SyncedVector3Input({
     isLoading,
     isSuccess,
     data: fetchedGenericEntity
-  } = useGetSingleGenericEntityQuery(entity.id)
+  } = useGetSingleGenericEntityQuery(entity.id || skipToken)
 
   // Update form with fetched values
   useEffect(() => {

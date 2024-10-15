@@ -28,6 +28,7 @@ export type DatabaseEntityInsert =
 export type DatabaseEntityUpdate =
   Database['public']['Tables']['entities']['Update']
 export const TAG_NAME_FOR_GENERAL_ENTITY = 'Entities'
+export type EntityId = string
 
 // Supabase API for spaces
 export const entitiesApi = createApi({
@@ -163,8 +164,11 @@ export const entitiesApi = createApi({
           : [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }]
     }),
 
-    getSingleEntity: builder.query<DatabaseEntity, string>({
-      queryFn: async (entityId) => {
+    getSingleEntity: builder.query<DatabaseEntity, EntityId>({
+      queryFn: async (entityId: EntityId) => {
+        if (!entityId) {
+          return { error: 'No entityId (string) provided' }
+        }
         const supabase = createSupabaseBrowserClient()
 
         const { data, error } = await supabase
@@ -186,7 +190,7 @@ export const entitiesApi = createApi({
     updateEntity: builder.mutation<
       any,
       {
-        id: string
+        id: EntityId
         name?: string
         enabled?: boolean
         parent_id?: string
@@ -310,7 +314,7 @@ export const entitiesApi = createApi({
       any,
       {
         entities: {
-          id: string
+          id: EntityId
           name?: string
           scene_id?: number
           parent_id?: string
@@ -376,8 +380,8 @@ export const entitiesApi = createApi({
       invalidatesTags: [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }] // Invalidates the cache
     }),
 
-    deleteEntity: builder.mutation<any, number>({
-      queryFn: async (entityId) => {
+    deleteEntity: builder.mutation<any, EntityId>({
+      queryFn: async (entityId: EntityId) => {
         const supabase = createSupabaseBrowserClient()
 
         const { data, error } = await supabase
