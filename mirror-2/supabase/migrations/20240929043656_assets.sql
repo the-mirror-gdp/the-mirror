@@ -17,13 +17,14 @@ $$ LANGUAGE plpgsql;
 
 -- assets
 create table assets (
-  id BIGINT PRIMARY KEY DEFAULT (floor(random() * 9007198754740991 + 500000000)::BIGINT), -- unique number instead of uuid since the game engine wants a number for this. set a floor above 500000000. 9007198754740991 is below the MAX_SAFE_INTEGER for js
+  id bigint primary key default (floor(random() * 9007198754740991 + 500000000)::BIGINT), -- unique number instead of uuid since the game engine wants a number for this. set a floor above 500000000. 9007198754740991 is below the MAX_SAFE_INTEGER for js
   owner_user_id uuid references auth.users(id) not null, -- owner is different from creator. Assets can be transferred and we want to retain the creator
   creator_user_id uuid references auth.users(id) not null,
   name text not null,
   description text,
   file_url text not null,
   thumbnail_url text not null,
+  data jsonb not null default  '{}'::jsonb, -- TODO add jsonb validation once this is hardened
   created_at timestamp with time zone not null default now(),
   updated_at timestamp with time zone not null default now()
   );
