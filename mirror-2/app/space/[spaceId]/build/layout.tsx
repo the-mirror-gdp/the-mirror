@@ -1,6 +1,6 @@
 "use client"
 import InnerControlBar from "@/app/space/[spaceId]/build/controlBar/inner-control-bar"
-import Inspector from "@/app/space/[spaceId]/build/inspector/inspector"
+import Inspector from "@/components/ui/inspector/inspector"
 import { Sidebar } from "@/app/space/[spaceId]/build/sidebar"
 import { TopNavbar } from "@/app/space/[spaceId]/build/top-navbar"
 import SpaceViewport from "@/components/engine/space-viewport"
