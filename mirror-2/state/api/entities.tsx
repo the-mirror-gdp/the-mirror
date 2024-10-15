@@ -6,20 +6,14 @@ import {
   isAnyOf,
   createSelector
 } from '@reduxjs/toolkit'
-import {
-  RootState,
-  createApi,
-  fakeBaseQuery
-} from '@reduxjs/toolkit/query/react'
+import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react'
 import { createSupabaseBrowserClient } from '@/utils/supabase/client'
 import { TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY } from '@/state/shared-cache-tags'
 
-import {
-  createGeneralEntityListenerMiddleware,
-  selectAllEntities
-} from '@/state/engine/middleware'
 import { Database } from '@/utils/database.types'
 import { SceneId } from '@/state/api/scenes'
+import { updateEngineApp } from '@/state/engine/engine-old'
+import { RootState } from '@/state/store'
 
 // Define types for the entities table
 export type DatabaseEntity = Database['public']['Tables']['entities']['Row']
@@ -402,6 +396,157 @@ export const entitiesApi = createApi({
   })
 })
 
+/**
+ * Middleware to react to state/entity updates and update the Space app
+ */
+export const listenerMiddlewareEntities = createListenerMiddleware()
+
+// **Pending Actions Listener**
+listenerMiddlewareEntities.startListening({
+  predicate: (action) =>
+    entitiesApi.endpoints.createEntity.matchPending(action) ||
+    entitiesApi.endpoints.updateEntity.matchPending(action) ||
+    entitiesApi.endpoints.batchUpdateEntities.matchPending(action) ||
+    entitiesApi.endpoints.deleteEntity.matchPending(action),
+  effect: async (action, listenerApi) => {
+    const state = listenerApi.getState() as RootState
+
+    // Access all queries from the entitiesApi cache
+    const queries = state[entitiesApi.reducerPath]?.queries || {}
+
+    // Extract all entities from each cached query
+    const allEntities: DatabaseEntity[] = []
+
+    try {
+      Object.keys(queries).forEach((queryKey) => {
+        const query = queries[queryKey]
+
+        // Ensure query.data exists and is an array
+        if (query?.data && Array.isArray(query.data)) {
+          // Type assertion: Now we can safely assume query.data is an array of DatabaseEntity[]
+          const entitiesArray = query.data as DatabaseEntity[]
+
+          allEntities.push(...entitiesArray)
+        }
+      })
+    } catch (error) {
+      console.error('Error while extracting entities from cache:', error)
+    }
+
+    // Pass the optimistic changes to PlayCanvas or your engine
+    console.log('Optimistically updating entities', allEntities)
+    updateEngineApp(allEntities, { isOptimistic: true })
+  }
+})
+
+listenerMiddlewareEntities.startListening({
+  predicate: (action) =>
+    entitiesApi.endpoints.createEntity.matchFulfilled(action) ||
+    entitiesApi.endpoints.updateEntity.matchFulfilled(action) ||
+    entitiesApi.endpoints.batchUpdateEntities.matchFulfilled(action) ||
+    entitiesApi.endpoints.deleteEntity.matchFulfilled(action),
+  effect: async (action, listenerApi) => {
+    const state = listenerApi.getState() as RootState
+
+    // Access all queries from the entitiesApi cache
+    const queries = state[entitiesApi.reducerPath]?.queries || {}
+
+    // Extract all entities from each cached query
+    const allEntities: DatabaseEntity[] = []
+
+    try {
+      Object.keys(queries).forEach((queryKey) => {
+        const query = queries[queryKey]
+
+        // Ensure query.data exists and is an array
+        if (query?.data && Array.isArray(query.data)) {
+          // Type assertion: Now we can safely assume query.data is an array of DatabaseEntity[]
+          const entitiesArray = query.data as DatabaseEntity[]
+
+          allEntities.push(...entitiesArray)
+        }
+      })
+    } catch (error) {
+      console.error('Error while extracting entities from cache:', error)
+    }
+
+    // Apply confirmed changes to PlayCanvas or your engine
+    console.log('Applying confirmed updates to entities', allEntities)
+    updateEngineApp(allEntities, { isOptimistic: false })
+  }
+})
+
+listenerMiddlewareEntities.startListening({
+  predicate: (action) =>
+    entitiesApi.endpoints.createEntity.matchRejected(action) ||
+    entitiesApi.endpoints.updateEntity.matchRejected(action) ||
+    entitiesApi.endpoints.batchUpdateEntities.matchRejected(action) ||
+    entitiesApi.endpoints.deleteEntity.matchRejected(action),
+  effect: async (action, listenerApi) => {
+    const state = listenerApi.getState() as RootState
+
+    // Access all queries from the entitiesApi cache
+    const queries = state[entitiesApi.reducerPath]?.queries || {}
+
+    // Extract all entities from each cached query
+    const allEntities: DatabaseEntity[] = []
+
+    try {
+      Object.keys(queries).forEach((queryKey) => {
+        const query = queries[queryKey]
+
+        // Ensure query.data exists and is an array
+        if (query?.data && Array.isArray(query.data)) {
+          // Type assertion: Now we can safely assume query.data is an array of DatabaseEntity[]
+          const entitiesArray = query.data as DatabaseEntity[]
+
+          allEntities.push(...entitiesArray)
+        }
+      })
+    } catch (error) {
+      console.error('Error while extracting entities from cache:', error)
+    }
+
+    // Revert the changes in PlayCanvas or your engine
+    console.log('Reverting updates to entities', allEntities)
+    updateEngineApp(allEntities, { isReverted: true })
+  }
+})
+
+// // **Rejected Actions Listener**
+// listenerMiddleware.startListening({
+//   predicate: (action) =>
+//     entitiesApi.endpoints.createEntity.matchRejected(action) ||
+//     entitiesApi.endpoints.updateEntity.matchRejected(action) ||
+//     entitiesApi.endpoints.batchUpdateEntities.matchRejected(action) ||
+//     entitiesApi.endpoints.deleteEntity.matchRejected(action),
+//   effect: async (action, listenerApi) => {
+//     const state = listenerApi.getState() as RootState
+//     const entities = getEntities(state)
+
+//     console.log(`Reverting updates for ${generalEntityName}`, entities)
+//     updateEngineApp(entities, { isReverted: true })
+//   }
+// })
+
+// // **Fulfilled Actions Listener**
+// listenerMiddleware.startListening({
+//   predicate: (action) =>
+//     entitiesApi.endpoints.createEntity.matchFulfilled(action) ||
+//     entitiesApi.endpoints.updateEntity.matchFulfilled(action) ||
+//     entitiesApi.endpoints.batchUpdateEntities.matchFulfilled(action) ||
+//     entitiesApi.endpoints.deleteEntity.matchFulfilled(action) ||
+//     entitiesApi.endpoints.getAllEntities.matchFulfilled(action),
+//   effect: async (action, listenerApi) => {
+//     const state = listenerApi.getState() as RootState
+//     const entities = getEntities(state)
+
+//     console.log(`Applying confirmed updates to ${generalEntityName}`, entities)
+//     updateEngineApp(entities, { isOptimistic: false })
+//   }
+// })
+
+//old
 // export const listenerMiddlewareEntities = createGeneralEntityListenerMiddleware(
 //   entitiesApi,
 //   'Entities',

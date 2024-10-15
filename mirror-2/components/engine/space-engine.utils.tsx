@@ -57,11 +57,11 @@ export const setUpSpace = (
   app.root.addChild(light)
 
   // Create a sphere
-  const sphere = new pc.Entity('sphere')
-  sphere.addComponent('model', {
-    type: 'sphere'
-  })
-  app.root.addChild(sphere)
+  // const sphere = new pc.Entity('sphere')
+  // sphere.addComponent('model', {
+  //   type: 'sphere'
+  // })
+  // app.root.addChild(sphere)
 
   // Start the application
   // app.start();
