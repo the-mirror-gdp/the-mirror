@@ -160,7 +160,7 @@ export const scenesApi = createApi({
      * Delete a Scene by its ID
      */
     deleteScene: builder.mutation<DatabaseScene, SceneId>({
-      queryFn: async (sceneId) => {
+      queryFn: async (sceneId: SceneId) => {
         const supabase = createSupabaseBrowserClient()
 
         const { data, error } = await supabase
