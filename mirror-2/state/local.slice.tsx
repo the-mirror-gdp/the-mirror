@@ -159,12 +159,12 @@ export const selectUiSoundsCanPlay = (state: RootState) =>
 export const selectControlBarCurrentView = (state: RootState) =>
   state.local.controlBarCurrentView
 export const selectLocalUser = (state: RootState) => state.local.user
-export const getCurrentScene = (
+export const selectCurrentScene = (
   state: RootState
 ): DatabaseScene | undefined => {
   return state.local.currentScene
 }
-export const getCurrentEntity = (
+export const selectCurrentEntity = (
   state: RootState
 ): DatabaseEntity | undefined => {
   return state.local.currentEntity

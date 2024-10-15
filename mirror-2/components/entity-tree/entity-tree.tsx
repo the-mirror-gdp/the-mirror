@@ -8,7 +8,7 @@ import {
 } from '@/state/api/entities'
 import {
   addExpandedEntityIds,
-  getCurrentScene,
+  selectCurrentScene,
   insertAutomaticallyExpandedSceneIds,
   selectAutomaticallyExpandedSceneIds,
   selectExpandedEntityIds,
@@ -126,7 +126,7 @@ const EntityTree: React.FC = () => {
   const params = useParams<{ spaceId: string }>()
   const spaceId: number = parseInt(params.spaceId, 10) // Use parseInt for safer conversion
 
-  const currentScene = useAppSelector(getCurrentScene)
+  const currentScene = useAppSelector(selectCurrentScene)
   const automaticallyExpandedSceneIds = useAppSelector(
     selectAutomaticallyExpandedSceneIds
   )
