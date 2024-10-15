@@ -56,6 +56,7 @@ export default function SpaceViewport({
     // if (typeof window !== 'undefined' && !window['pc']) {
     //   window['pc'] = pc // Declare global PlayCanvas variable
     // }
+    // TODO remove this once bugs fixed
     setTimeout(() => {
       if (isSuccess) {
         initEngine()
