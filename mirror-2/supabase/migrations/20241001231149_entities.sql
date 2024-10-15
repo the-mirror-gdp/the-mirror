@@ -1,52 +1,53 @@
-CREATE TABLE entities (
-  id uuid NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
-  name text NOT NULL,
-  enabled boolean NOT NULL DEFAULT true,
-  parent_id uuid REFERENCES entities(id) ON DELETE CASCADE,
+create table entities (
+  id uuid not null primary key default uuid_generate_v4(),
+  name text not null,
+  enabled boolean not null default true,
+  parent_id uuid references entities(id) on delete cascade,
   order_under_parent int,
-  scene_id BIGINT REFERENCES scenes ON DELETE CASCADE NOT NULL, -- delete entity if scene is deleted
-  local_position float8[] NOT NULL DEFAULT ARRAY[0, 0, 0], -- storing position as an array of 3 floats
+  scene_id bigint references scenes on delete cascade not null, -- delete entity if scene is deleted
+  local_position float8[] not null default array[0, 0, 0], -- storing position as an array of 3 floats
   -- Future: store position (global as PointZ for large querying)
-  local_scale float8[] NOT NULL DEFAULT ARRAY[1.0, 1.0, 1.0], -- storing scale as an array of 3 floats
-  local_rotation float8[] NOT NULL DEFAULT ARRAY[0.0, 0.0, 0.0, 1.0],  -- Store rotation as a quaternion (x, y, z, w). NOT euler, though euler is mostly used user-facing
-  tags text[] DEFAULT ARRAY[]::text[], -- storing tags as an empty array of text 
-  created_at timestamp with time zone NOT NULL DEFAULT now(),
-  updated_at timestamp with time zone NOT NULL DEFAULT now(),
-  CONSTRAINT name_length CHECK (char_length(name) >= 0),
-  CONSTRAINT order_not_null_if_parent_id_exists CHECK (
-    (parent_id IS NOT NULL AND order_under_parent IS NOT NULL) OR parent_id IS NULL
+  local_scale float8[] not null default array[1.0, 1.0, 1.0], -- storing scale as an array of 3 floats
+  local_rotation float8[] not null default array[0.0, 0.0, 0.0, 1.0],  -- store rotation as a quaternion (x, y, z, w). NOT euler, though euler is mostly used user-facing
+  tags text[] default array[]::text[], -- storing tags as an empty array of text 
+  components jsonb not null default '{}'::jsonb, -- TODO add jsonb validation once this is hardened
+  created_at timestamp with time zone not null default now(),
+  updated_at timestamp with time zone not null default now(),
+  constraint name_length check (char_length(name) >= 0),
+  constraint order_not_null_if_parent_id_exists check (
+    (parent_id is not null and order_under_parent is not null) or parent_id is null
   ),
-  CONSTRAINT parent_id_not_self CHECK (parent_id IS DISTINCT FROM id) -- Ensures parent_id is not the same as id
+  constraint parent_id_not_self check (parent_id is distinct from id) -- ensures parent_id is not the same as id
 );
 
-CREATE OR REPLACE FUNCTION check_circular_reference()
-RETURNS TRIGGER AS $$
-DECLARE
+create or replace function check_circular_reference()
+returns trigger as $$
+declare
     current_parent uuid;
-BEGIN
+begin
     -- Set the current parent to the newly inserted/updated parent_id
-    current_parent := NEW.parent_id;
+    current_parent := new.parent_id;
 
     -- Traverse up the hierarchy
-    WHILE current_parent IS NOT NULL LOOP
+    while current_parent is not null loop
         -- If at any point, the current parent is the same as the entity's id, we have a cycle
-        IF current_parent = NEW.id THEN
-            RAISE EXCEPTION 'Circular reference detected: Entity % is an ancestor of itself.', NEW.id;
-        END IF;
+        if current_parent = new.id then
+            raise exception 'Circular reference detected: Entity % is an ancestor of itself.', new.id;
+        end if;
 
         -- Move to the next parent in the hierarchy
-        SELECT parent_id INTO current_parent FROM entities WHERE id = current_parent;
-    END LOOP;
+        select parent_id into current_parent from entities where id = current_parent;
+    end loop;
 
     -- If no circular reference is found, return and allow the insert/update
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
+    return new;
+end;
+$$ language plpgsql;
 
-CREATE TRIGGER prevent_circular_reference
-BEFORE INSERT OR UPDATE ON entities
-FOR EACH ROW
-EXECUTE FUNCTION check_circular_reference();
+create trigger prevent_circular_reference
+before insert or update on entities
+for each row
+execute function check_circular_reference();
 
   -- add RLS
 alter table entities
