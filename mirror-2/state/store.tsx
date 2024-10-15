@@ -7,10 +7,7 @@ import { scenesApi } from '@/state/api/scenes'
 import { entitiesApi, listenerMiddlewareEntities } from '@/state/api/entities'
 import { assetsApi } from '@/state/api/assets'
 import { spacePacksApi } from '@/state/api/space-packs'
-import {
-  listenerMiddlewareSpacePack,
-  spacePackSlice
-} from '@/state/space-pack.slice'
+import { spacePackSlice } from '@/state/space-pack.slice'
 
 export const store = configureStore({
   reducer: {
@@ -35,7 +32,6 @@ export const store = configureStore({
       .concat(listenerMiddlewareLocal.middleware)
       .concat(listenerMiddlewareSpaces.middleware)
       .concat(listenerMiddlewareEntities.middleware)
-      .concat(listenerMiddlewareSpacePack.middleware)
 })
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors
