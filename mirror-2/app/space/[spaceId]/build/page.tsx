@@ -1,7 +1,7 @@
 "use client"
 
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks"
-import { getCurrentScene, setCurrentScene } from "@/state/local.slice"
+import { selectCurrentScene, setCurrentScene } from "@/state/local.slice"
 import { useGetAllScenesQuery } from "@/state/api/scenes"
 import { useGetSingleSpaceQuery } from "@/state/api/spaces"
 
@@ -13,7 +13,7 @@ import { store } from "@/state/store"
 
 // blank page since we're using the parallel routes for spaceViewport, controlBar, etc.
 export default function Page() {
-  const currentScene = useAppSelector(getCurrentScene);
+  const currentScene = useAppSelector(selectCurrentScene);
   const params = useParams<{ spaceId: string }>()
   const spaceId: number = parseInt(params.spaceId, 10) // Use parseInt for safer conversion
 

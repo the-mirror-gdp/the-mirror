@@ -3,7 +3,8 @@ import {
   createEntityAdapter,
   createAsyncThunk,
   createListenerMiddleware,
-  isAnyOf
+  isAnyOf,
+  createSelector
 } from '@reduxjs/toolkit'
 import {
   RootState,
@@ -397,11 +398,11 @@ export const entitiesApi = createApi({
   })
 })
 
-export const listenerMiddlewareEntities = createGeneralEntityListenerMiddleware(
-  entitiesApi,
-  'Entities',
-  selectAllEntities
-)
+// export const listenerMiddlewareEntities = createGeneralEntityListenerMiddleware(
+//   entitiesApi,
+//   'Entities',
+//   selectAllEntities
+// )
 
 // export const listenerMiddlewareEntities = createListenerMiddleware();
 
@@ -456,6 +457,13 @@ export const listenerMiddlewareEntities = createGeneralEntityListenerMiddleware(
 // });
 
 export const selectEntitiesResult = entitiesApi.endpoints.getAllEntities.select
+
+const selectEntitiesBySceneId = createSelector(
+  (state) => state.entities.data,
+  (_, sceneId: SceneId) => sceneId,
+  (entities: DatabaseEntity[], sceneId: SceneId) =>
+    entities.filter((entity) => entity.scene_id === sceneId)
+)
 
 // Export the API hooks
 export const {

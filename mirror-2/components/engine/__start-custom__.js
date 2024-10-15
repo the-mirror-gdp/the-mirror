@@ -140,9 +140,12 @@ function getPcBootstrap() {
 var LTC_MAT_1 = [];
 var LTC_MAT_2 = [];
 
-// varants
 var app;
 var canvas;
+
+export function getApp() {
+  return app
+}
 
 function initCSS() {
   if (document.head.querySelector) {

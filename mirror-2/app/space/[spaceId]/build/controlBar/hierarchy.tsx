@@ -5,14 +5,14 @@ import { PlusCircleIcon } from 'lucide-react';
 import EntityTree from '@/components/entity-tree/entity-tree';
 import { useAppSelector } from '@/hooks/hooks';
 import { useCreateEntityMutation } from '@/state/api/entities';
-import { getCurrentScene } from '@/state/local.slice';
+import { selectCurrentScene } from '@/state/local.slice';
 import { useParams } from 'next/navigation';
 import { Separator } from '@/components/ui/separator';
 import { H2 } from '@/components/ui/text/h2';
 import { useEffect, useState } from 'react';
 
 export default function Hierarchy() {
-  const currentScene = useAppSelector(getCurrentScene);  
+  const currentScene = useAppSelector(selectCurrentScene);  
   const [createEntity] = useCreateEntityMutation();
   const [isClient, setIsClient] = useState(false);
 

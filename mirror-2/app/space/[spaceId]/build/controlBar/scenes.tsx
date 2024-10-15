@@ -9,7 +9,7 @@ import { useParams } from 'next/navigation';
 import { z } from 'zod'; // Import zod for validation
 import { SyncedInput } from '@/components/ui/synced-inputs/synced-input';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
-import { getCurrentScene, setControlBarCurrentView, setCurrentScene } from '@/state/local.slice';
+import { selectCurrentScene, setControlBarCurrentView, setCurrentScene } from '@/state/local.slice';
 import { DatabaseScene, useCreateSceneMutation, useDeleteSceneMutation, useGetAllScenesQuery, useGetSingleSceneQuery, useUpdateSceneMutation } from '@/state/api/scenes';
 import { cn } from '@/utils/cn';
 import { generateSceneName } from '@/actions/name-generator';
@@ -24,7 +24,7 @@ export default function Scenes() {
   const [deleteScene] = useDeleteSceneMutation();
   const [updateScene] = useUpdateSceneMutation();
   const dispatch = useAppDispatch();
-  const currentScene = useAppSelector(getCurrentScene);
+  const currentScene = useAppSelector(selectCurrentScene);
 
   // Validation schema for scene name
   const formSchema = z.object({

@@ -195,42 +195,42 @@ const initialState: SpacePackState = {
 export const spacePackSlice = createSlice({
   name: 'spacePack',
   initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    // When getAllScenes or getSingleScene succeeds, update scenes
-    builder
-      .addMatcher(
-        scenesApi.endpoints.getAllScenes.matchFulfilled,
-        (state, { payload }) => {
-          state.scenes = mergeScenes(state.scenes, payload)
-        }
-      )
-      .addMatcher(
-        scenesApi.endpoints.getSingleScene.matchFulfilled,
-        (state, { payload }) => {
-          state.scenes = mergeScenes(state.scenes, [payload])
-        }
-      )
-      .addMatcher(
-        scenesApi.endpoints.createScene.matchFulfilled,
-        (state, { payload }) => {
-          state.scenes = mergeScenes(state.scenes, [payload])
-        }
-      )
-      .addMatcher(
-        scenesApi.endpoints.updateScene.matchFulfilled,
-        (state, { payload }) => {
-          state.scenes = mergeScenes(state.scenes, [payload])
-        }
-      )
-      .addMatcher(
-        scenesApi.endpoints.deleteScene.matchFulfilled,
-        (state, { meta }) => {
-          const sceneId = meta.arg.originalArgs // Extract the scene ID
-          state.scenes = state.scenes.filter((scene) => scene.id !== sceneId)
-        }
-      )
-  }
+  reducers: {}
+  // extraReducers: (builder) => {
+  //   // When getAllScenes or getSingleScene succeeds, update scenes
+  //   builder
+  //     .addMatcher(
+  //       scenesApi.endpoints.getAllScenes.matchFulfilled,
+  //       (state, { payload }) => {
+  //         state.scenes = mergeScenes(state.scenes, payload)
+  //       }
+  //     )
+  //     .addMatcher(
+  //       scenesApi.endpoints.getSingleScene.matchFulfilled,
+  //       (state, { payload }) => {
+  //         state.scenes = mergeScenes(state.scenes, [payload])
+  //       }
+  //     )
+  //     .addMatcher(
+  //       scenesApi.endpoints.createScene.matchFulfilled,
+  //       (state, { payload }) => {
+  //         state.scenes = mergeScenes(state.scenes, [payload])
+  //       }
+  //     )
+  //     .addMatcher(
+  //       scenesApi.endpoints.updateScene.matchFulfilled,
+  //       (state, { payload }) => {
+  //         state.scenes = mergeScenes(state.scenes, [payload])
+  //       }
+  //     )
+  //     .addMatcher(
+  //       scenesApi.endpoints.deleteScene.matchFulfilled,
+  //       (state, { meta }) => {
+  //         const sceneId = meta.arg.originalArgs // Extract the scene ID
+  //         state.scenes = state.scenes.filter((scene) => scene.id !== sceneId)
+  //       }
+  //     )
+  // }
 })
 
 // Helper function to merge and deduplicate scenes

@@ -1,7 +1,7 @@
 'use client'
 
 import { useAppSelector } from '@/hooks/hooks'
-import { selectLocalUser } from '@/state/local.slice'
+import { selectCurrentScene, selectLocalUser } from '@/state/local.slice'
 import { createSupabaseBrowserClient } from '@/utils/supabase/client'
 import { useEffect, useRef, useState } from 'react'
 import initEngine from './__start-custom__'
@@ -11,6 +11,8 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Terminal } from 'lucide-react'
 import { Spinner } from '@/components/ui/spinner'
 import { skipToken } from '@reduxjs/toolkit/query/react' // Important for conditional queries
+import { setUpSpace } from '@/components/engine/space-engine.utils'
+import { useGetAllEntitiesQuery } from '@/state/api/entities'
 
 interface SpaceViewportProps {
   spaceId?: number
@@ -51,37 +53,66 @@ export default function SpaceViewport({
   const [engineLoaded, setEngineLoaded] = useState(false)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const user = useAppSelector(selectLocalUser)
+  const [hasSetUpEntities, setHasSetUpEntities] = useState(false)
 
   // Conditionally fetch space data only if spaceId is defined
   const {
     data: space,
     error: spaceError,
-    isSuccess,
+    isSuccess: isSuccessGetSingleSpace,
     isLoading,
     isUninitialized,
     isError
   } = useGetSingleSpaceQuery(spaceId || skipToken)
+  const currentScene = useAppSelector(selectCurrentScene)
+  const {
+    data: entities,
+    isSuccess: isSuccessGettingEntities,
+    error
+  } = useGetAllEntitiesQuery(currentScene?.id || skipToken)
+  useEffect(() => {
+    if (
+      isSuccessGetSingleSpace &&
+      space &&
+      currentScene &&
+      isSuccessGettingEntities &&
+      entities &&
+      engineLoaded &&
+      !hasSetUpEntities
+    ) {
+      setUpSpace(currentScene.id, entities)
+      // ensure only happens once
+      setHasSetUpEntities(true)
+    }
+  }, [
+    isSuccessGetSingleSpace,
+    space,
+    currentScene,
+    isSuccessGettingEntities,
+    entities,
+    hasSetUpEntities
+  ])
 
   const supabase = createSupabaseBrowserClient()
 
   useEffect(() => {
-    setTimeout(() => {
-      if (isSuccess) {
-        initEngine()
-        setEngineLoaded(true)
-      }
-    }, 1250)
-  }, [isSuccess])
+    // setTimeout(() => {
+    if (isSuccessGetSingleSpace) {
+      initEngine()
+      setEngineLoaded(true)
+    }
+    // }, 1250)
+  }, [isSuccessGetSingleSpace])
 
   return (
     <>
-      {isSuccess && (
+      {isSuccessGetSingleSpace && (
         <>
           <style id="import-style"></style>
           <div id="direct-container" style={{ zIndex: -1 }}></div>
         </>
       )}
-      {!isSuccess && (
+      {!isSuccessGetSingleSpace && (
         <div className="flex justify-center my-5">
           {(isLoading || isUninitialized) && <Spinner className="w-12 h-12" />}
           {isError && (
