@@ -2,6 +2,7 @@
 import EntityTreeItem from '@/components/entity-tree/tree-item'
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks'
 import {
+  DatabaseEntity,
   useBatchUpdateEntitiesMutation,
   useGetAllEntitiesQuery
 } from '@/state/api/entities'
@@ -52,7 +53,7 @@ const findEntity = (treeData, entityId) => {
 }
 
 function transformDbEntityStructureToTree(
-  entities
+  entities: DatabaseEntity[]
 ): TreeDataNodeWithEntityData[] {
   const entityMap: any = {} // Map to hold entities by their ID for quick lookup
 

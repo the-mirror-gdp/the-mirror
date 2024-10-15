@@ -132,7 +132,7 @@ export const entitiesApi = createApi({
       invalidatesTags: [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }]
     }),
 
-    getAllEntities: builder.query<any, SceneId>({
+    getAllEntities: builder.query<DatabaseEntity[], SceneId>({
       queryFn: async (sceneId) => {
         const supabase = createSupabaseBrowserClient()
 
@@ -150,7 +150,7 @@ export const entitiesApi = createApi({
         }
         return { data }
       },
-      providesTags: (result) =>
+      providesTags: (result: any) =>
         result
           ? [
               ...result.map(({ id }) => ({
