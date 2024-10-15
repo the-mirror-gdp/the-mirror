@@ -392,7 +392,170 @@ export const entitiesApi = createApi({
       invalidatesTags: (result, error, entityId) => [
         { type: TAG_NAME_FOR_GENERAL_ENTITY, id: entityId }
       ]
+    }),
+
+    /**
+     * Components
+     */
+    addComponentToEntity: builder.mutation<
+      any,
+      {
+        id: EntityId
+        component: any // The new component data to be added
+      }
+    >({
+      queryFn: async ({ id, component }) => {
+        const supabase = createSupabaseBrowserClient()
+
+        // Fetch the existing components
+        const { data: existingEntity, error: fetchError } = await supabase
+          .from('entities')
+          .select('components')
+          .eq('id', id)
+          .single()
+
+        if (fetchError) {
+          return { error: fetchError.message }
+        }
+
+        const updatedComponents = {
+          ...(typeof existingEntity.components === 'object'
+            ? existingEntity.components
+            : {}),
+          ...(typeof component === 'object' ? component : {}) // Add or merge new component
+        }
+
+        const { data, error } = await supabase
+          .from('entities')
+          .update({ components: updatedComponents })
+          .eq('id', id)
+          .single()
+
+        if (error) {
+          return { error: error.message }
+        }
+
+        return { data }
+      },
+      invalidatesTags: (result, error, { id }) => [
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id }
+      ]
+    }),
+
+    getComponentsOfEntity: builder.query<any, EntityId>({
+      queryFn: async (id: EntityId) => {
+        const supabase = createSupabaseBrowserClient()
+
+        const { data, error } = await supabase
+          .from('entities')
+          .select('components')
+          .eq('id', id)
+          .single()
+
+        if (error) {
+          return { error: error.message }
+        }
+
+        return { data: data.components }
+      },
+      providesTags: (result, error, id) => [
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id }
+      ]
+    }),
+
+    updateComponentOnEntity: builder.mutation<
+      any,
+      {
+        id: EntityId
+        componentKey: string
+        updatedComponentData: any
+      }
+    >({
+      queryFn: async ({ id, componentKey, updatedComponentData }) => {
+        const supabase = createSupabaseBrowserClient()
+
+        // Fetch the existing components
+        const { data: existingEntity, error: fetchError } = await supabase
+          .from('entities')
+          .select('components')
+          .eq('id', id)
+          .single()
+
+        if (fetchError) {
+          return { error: fetchError.message }
+        }
+
+        // Update the specific component in the JSONB object
+        const updatedComponents = {
+          ...(typeof existingEntity.components === 'object' &&
+          existingEntity.components !== null
+            ? existingEntity.components
+            : {}),
+          [componentKey]: updatedComponentData
+        }
+
+        const { data, error } = await supabase
+          .from('entities')
+          .update({ components: updatedComponents })
+          .eq('id', id)
+          .single()
+
+        if (error) {
+          return { error: error.message }
+        }
+
+        return { data }
+      },
+      invalidatesTags: (result, error, { id }) => [
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id }
+      ]
+    }),
+
+    deleteComponentFromEntity: builder.mutation<
+      any,
+      {
+        id: EntityId
+        componentKey: string
+      }
+    >({
+      queryFn: async ({ id, componentKey }) => {
+        const supabase = createSupabaseBrowserClient()
+
+        // Fetch the existing components
+        const { data: existingEntity, error: fetchError } = await supabase
+          .from('entities')
+          .select('components')
+          .eq('id', id)
+          .single()
+
+        if (fetchError) {
+          return { error: fetchError.message }
+        }
+
+        // Ensure existingEntity.components is typed correctly
+        const components = existingEntity.components as Record<string, any>
+
+        // Remove the specific component from the JSONB object
+        const { [componentKey]: _, ...remainingComponents } = components
+
+        const { data, error } = await supabase
+          .from('entities')
+          .update({ components: remainingComponents })
+          .eq('id', id)
+          .single()
+
+        if (error) {
+          return { error: error.message }
+        }
+
+        return { data }
+      },
+      invalidatesTags: (result, error, { id }) => [
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id }
+      ]
     })
+
+    //
   })
 })
 
@@ -530,5 +693,10 @@ export const {
   useUpdateEntityMutation,
   useGetSingleEntityQuery,
   useLazyGetAllEntitiesQuery,
-  useDeleteEntityMutation
+  useDeleteEntityMutation,
+
+  useAddComponentToEntityMutation,
+  useGetComponentsOfEntityQuery,
+  useUpdateComponentOnEntityMutation,
+  useDeleteComponentFromEntityMutation
 } = entitiesApi
