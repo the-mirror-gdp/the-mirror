@@ -58,7 +58,6 @@ export default function SpaceViewport({
     // }
     setTimeout(() => {
       if (isSuccess) {
-        debugger
         initEngine()
         setEngineLoaded(true)
       }
