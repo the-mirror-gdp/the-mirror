@@ -38,8 +38,8 @@ export function CreateComponentButton() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant={'default'} type="button">
-          <PlusCircleIcon className="mr-2" />
-          Create Component <ChevronDown />
+          {/* <PlusCircleIcon className="mr-2" /> */}
+          Add Component <ChevronDown />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
