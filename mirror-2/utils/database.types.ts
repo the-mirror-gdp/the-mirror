@@ -38,6 +38,7 @@ export type Database = {
         Row: {
           created_at: string
           creator_user_id: string
+          data: Json
           description: string | null
           file_url: string
           id: number
@@ -49,6 +50,7 @@ export type Database = {
         Insert: {
           created_at?: string
           creator_user_id: string
+          data?: Json
           description?: string | null
           file_url: string
           id?: number
@@ -60,6 +62,7 @@ export type Database = {
         Update: {
           created_at?: string
           creator_user_id?: string
+          data?: Json
           description?: string | null
           file_url?: string
           id?: number
@@ -87,6 +90,7 @@ export type Database = {
       }
       entities: {
         Row: {
+          components: Json
           created_at: string
           enabled: boolean
           id: string
@@ -101,6 +105,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          components?: Json
           created_at?: string
           enabled?: boolean
           id?: string
@@ -115,6 +120,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          components?: Json
           created_at?: string
           enabled?: boolean
           id?: string
@@ -401,6 +407,7 @@ export type Database = {
         Returns: {
           created_at: string
           creator_user_id: string
+          data: Json
           description: string | null
           file_url: string
           id: number
