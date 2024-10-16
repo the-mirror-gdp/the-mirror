@@ -1,5 +1,5 @@
 'use client'
-import { EntityFormGroupOld } from '@/components/ui/inspector/entity.formgroup-old'
+
 import { Button } from '@/components/ui/button'
 import { CreateComponentButton } from '@/components/ui/custom-buttons/add-component.button'
 import { useAppSelector } from '@/hooks/hooks'
