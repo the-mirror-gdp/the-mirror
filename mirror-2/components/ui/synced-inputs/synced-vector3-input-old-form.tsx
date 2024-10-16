@@ -3,7 +3,7 @@ import { Input } from '@/components/ui/input'
 import { AxisLabelCharacter } from '@/components/ui/text/axis-label-character'
 import { cn } from '@/lib/utils'
 import {
-  Form,
+  FormProvider,
   FormControl,
   FormField,
   FormItem,
@@ -126,7 +126,7 @@ export default function SyncedVector3Input({
   return (
     <>
       <div className="text-white mt-1">{label}</div>
-      <Form {...form}>
+      <FormProvider {...form}>
         <form className="flex space-x-2" onBlur={form.handleSubmit(onSubmit)}>
           {' '}
           {/* Submit on blur */}
@@ -134,43 +134,7 @@ export default function SyncedVector3Input({
           <AxisInput axis="y" field="y" form={form} />
           <AxisInput axis="z" field="z" form={form} />
         </form>
-      </Form>
+      </FormProvider>
     </>
-  )
-}
-
-// AxisInput Component for each axis (x, y, z)
-function AxisInput({
-  axis,
-  field,
-  form
-}: {
-  axis: 'x' | 'y' | 'z'
-  field: string
-  form: any
-}) {
-  return (
-    <div className="flex items-center space-x-2">
-      <AxisLabelCharacter axis={axis} className="my-auto mr-3" />
-      <FormField
-        control={form.control}
-        name={field}
-        render={({ field }) => (
-          <FormItem>
-            <FormControl>
-              <Input
-                type="number"
-                autoComplete="off"
-                className={cn(
-                  'dark:bg-transparent px-1 py-0 pb-1 border-none shadow-none text-lg text-white'
-                )}
-                {...field}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    </div>
   )
 }

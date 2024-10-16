@@ -1,6 +1,6 @@
 'use client'
 import {
-  Form,
+  FormProvider,
   FormControl,
   FormField,
   FormItem,
@@ -61,7 +61,7 @@ export function EditableSpaceName() {
   return isLoading ? (
     <Skeleton className="w-full dark:bg-transparent border-none text-lg shadow-none md:w-2/3 lg:w-1/3"></Skeleton>
   ) : (
-    <Form {...form}>
+    <FormProvider {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full"
@@ -85,6 +85,6 @@ export function EditableSpaceName() {
           )}
         />
       </form>
-    </Form>
+    </FormProvider>
   )
 }

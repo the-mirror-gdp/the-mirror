@@ -1,4 +1,4 @@
-import { SyncedInput } from '@/components/ui/synced-inputs/synced-input'
+import { SyncedInput } from '@/components/ui/synced-inputs/synced-input-old-form'
 import { Input } from '@/components/ui/input'
 import {
   useGetSingleEntityQuery,

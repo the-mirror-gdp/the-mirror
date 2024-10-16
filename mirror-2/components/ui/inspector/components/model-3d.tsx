@@ -2,7 +2,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { FormItem, FormLabel } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
-import { SyncedInput } from '@/components/ui/synced-inputs/synced-input'
+import { SyncedInput } from '@/components/ui/synced-inputs/synced-input-old-form'
 import {
   useGetSingleEntityQuery,
   useUpdateEntityMutation

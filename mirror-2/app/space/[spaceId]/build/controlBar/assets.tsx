@@ -3,7 +3,7 @@ import AssetThumbnail from '@/components/ui/asset-thumbnail';
 import { Button } from '@/components/ui/button';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@/components/ui/context-menu';
 import AssetUploadButton from '@/components/ui/custom-buttons/asset-upload.button';
-import { Form, FormControl, FormField, FormItem, FormMessage, FormSuccessMessage } from '@/components/ui/form';
+import { FormProvider, FormControl, FormField, FormItem, FormMessage, FormSuccessMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useLazySearchAssetsQuery, useLazyGetUserMostRecentlyUpdatedAssetsQuery, useLazyDownloadAssetQuery } from '@/state/api/assets';
 
@@ -77,7 +77,7 @@ export default function Assets() {
   return (
     <>
       {/* Search bar */}
-      <Form {...form}>
+      <FormProvider {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
           <FormField
             control={form.control}
@@ -112,7 +112,7 @@ export default function Assets() {
             )}
           />
         </form>
-      </Form>
+      </FormProvider>
 
       {/* Asset Upload Button */}
       <AssetUploadButton />

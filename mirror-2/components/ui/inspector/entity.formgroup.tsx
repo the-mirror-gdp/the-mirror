@@ -1,116 +1,127 @@
-"use client";
-import { DatabaseEntity, useGetSingleEntityQuery, useUpdateEntityMutation } from "@/state/api/entities";
-import { Separator } from "@/components/ui/separator";
-import SyncedVector3Input from "@/components/ui/synced-inputs/synced-vector3-input";
-import { SyncedInput } from "@/components/ui/synced-inputs/synced-input";
-import { cn } from "@/lib/utils";
-import { z } from "zod";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import { FormItem, FormLabel } from "@/components/ui/form";
-
+'use client'
+import { entitySchema } from '@/components/engine/schemas/entity.schema'
+import { FormProvider } from '@/components/ui/form'
+import { SyncedTextInput } from '@/components/ui/synced-inputs/synced-text-input'
+import { SyncedVec3Input } from '@/components/ui/synced-inputs/synced-vec3-input'
+import { DatabaseEntity, useUpdateEntityMutation } from '@/state/api/entities'
+import { convertVecNumbersToIndividual } from '@/utils/utils'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 export function EntityFormGroup({ entity }: { entity: DatabaseEntity }) {
+  const [updateEntity, { isLoading: isUpdating, isSuccess: isUpdated, error }] =
+    useUpdateEntityMutation()
+
+  const vecKeys = ['local_position', 'local_rotation', 'local_scale']
+
+  const form = useForm<z.infer<typeof entitySchema>>({
+    resolver: zodResolver(entitySchema),
+    mode: 'onBlur',
+    defaultValues: {
+      ...entity,
+      ...vecKeys.reduce((acc, key) => {
+        return {
+          ...acc,
+          ...convertVecNumbersToIndividual(entity, key)
+        }
+      }, {})
+    }
+  })
+
+  async function onSubmit(values: z.infer<typeof entitySchema>) {
+    // Handle conversion to number if convertSubmissionToNumber is true
+    // if (convertSubmissionToNumber) {
+    //   const convertedValue = Number(values[fieldName]) // Convert to number
+    //   if (isNaN(convertedValue)) {
+    //     console.error('Invalid number input')
+    //     return
+    //   }
+    //   values = { ...values, [fieldName]: convertedValue } // Update values with the converted number
+    // }
+    vecKeys.forEach((key) => {
+      values[key] = [values[`${key}X`], values[`${key}Y`], values[`${key}Z`]]
+      delete values[`${key}X`]
+      delete values[`${key}Y`]
+      delete values[`${key}Z`]
+      delete values[`${key}W`]
+    })
+    console.log('values', values)
+    // const convertedValues = convertIndividualToVecNumbers(values)
+    // console.log('convertedValues', convertedValues)
+    // @ts-ignore
+    await updateEntity({ id: entity.id, ...values })
+  }
+
+  // Reset the form when the entity data is successfully fetched
+  // useEffect(() => {
+  //   if (entity) {
+  //     // defaultValueToSet =
+  //     //   genericEntity?.[fieldName] !== undefined
+  //     //     ? genericEntity[fieldName]
+  //     //     : defaultValue
+
+  //     form.reset()
+  //   }
+  // }, [genericEntity, isSuccess, form])
+
+  const handleChange = async () => {
+    console.log('Form test, vallues:', form.getValues())
+    const isValid = await form.trigger([
+      'local_positionX',
+      'local_positionY',
+      'local_positionZ'
+    ]) // Manually trigger validation
+    console.log('fieldstate', form.getFieldState('local_positionX'))
+    console.log('fieldstate', form.getFieldState('local_positionY'))
+    console.log('fieldstate', form.getFieldState('local_positionZ'))
+    if (isValid) {
+      const values = form.getValues() // Get current form values
+      console.log('Form is valid, triggering submission:', values)
+      onSubmit(values) // Manually call onSubmit after validation passes
+    } else {
+      console.log('form not valid', form)
+    }
+  }
+
+  // Display loading state if data is still being fetched
+  // if (isLoading) {
+  //   return (
+  //     <Skeleton
+  //       className={cn(
+  //         'w-full dark:bg-transparent border-none text-lg shadow-none'
+  //       )}
+  //     />
+  //   )
+  // }
+
   return (
     <>
-      <SyncedInput
-        id={entity.id}
-        generalEntity={entity}
-        defaultValue={entity.name}
-        className={'p-0 m-0 bg-transparent cursor-pointer duration-0'}
-        fieldName="name"
-        formSchema={z.object({
-          name: z.string().min(1, { message: "Entity name must be at least 1 character long" }),
-        })}
-        useGenericGetEntityQuery={useGetSingleEntityQuery}
-        useGenericUpdateEntityMutation={useUpdateEntityMutation}
-        renderComponent={(field) => (
-          <Input
-            type="text"
-            autoComplete="off"
-            className={cn("dark:bg-transparent py-1 pr-1 pl-0 text-lg border-none shadow-none tracking-wider hover:bg-[#ffffff0d] text-white")}
-            {...field}
+      <FormProvider {...form}>
+        <form
+          // isLoading={isLoading}
+          // handleChange={handleChange}
+          onBlur={form.handleSubmit(onSubmit)} // Trigger submission on blur as fallback
+          onSubmit={(values) => console.log('Submitted values:', values)}
+        >
+          {/* Synced Text Input for Name Field */}
+          <SyncedTextInput
+            fieldName="name"
+            form={form} // Provided by FormProvider context
+            handleChange={handleChange} // Handled internally by SyncedForm
+            triggerOnChange={true} // Triggers submission on each change
           />
-        )}
-      />
 
-      <Separator className="mb-2" />
-
-      <SyncedInput
-        id={entity.id}
-        generalEntity={entity}
-        defaultValue={entity.enabled}
-        className={'p-0 m-0 bg-transparent cursor-pointer duration-0'}
-        fieldName="enabled"
-        formSchema={z.object({
-          enabled: z.boolean()
-        })}
-        useGenericGetEntityQuery={useGetSingleEntityQuery}
-        useGenericUpdateEntityMutation={useUpdateEntityMutation}
-        triggerOnChange={true}
-        renderComponent={(field) => (
-          <>
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md py-2">
-              <Checkbox
-                id={`${entity.id}-enabled`}
-                checked={field.value}
-                onCheckedChange={field.onChange}
-              />
-              <div className="space-y-1 leading-none">
-                <FormLabel htmlFor={`${entity.id}-enabled`} className="cursor-pointer">
-                  Enabled
-                </FormLabel>
-              </div>
-            </FormItem>
-          </>
-        )}
-      />
-
-      <Separator className="mb-2" />
-
-      <SyncedVector3Input
-        label="Position"
-        entity={entity}
-        dbColumnNameSnakeCase="local_position"
-        defaultValues={[entity.local_position[0], entity.local_position[1], entity.local_position[2]]}
-        useGetSingleGenericEntityQuery={useGetSingleEntityQuery}
-        useUpdateGenericEntityMutation={useUpdateEntityMutation as any}
-        propertiesToIncludeInUpdate={{
-          scene_id: entity.scene_id,
-          parent_id: entity.parent_id || undefined,
-          order_under_parent: entity.order_under_parent || undefined,
-        }}
-      />
-
-      <SyncedVector3Input
-        label="Scale"
-        entity={entity}
-        dbColumnNameSnakeCase="local_scale"
-        defaultValues={[entity.local_scale[0], entity.local_scale[1], entity.local_scale[2]]}
-        useGetSingleGenericEntityQuery={useGetSingleEntityQuery}
-        useUpdateGenericEntityMutation={useUpdateEntityMutation as any}
-        propertiesToIncludeInUpdate={{
-          scene_id: entity.scene_id,
-          parent_id: entity.parent_id || undefined,
-          order_under_parent: entity.order_under_parent || undefined,
-        }}
-      />
-
-      <SyncedVector3Input
-        label="Rotation"
-        entity={entity}
-        dbColumnNameSnakeCase="local_rotation"
-        defaultValues={[entity.local_rotation[0], entity.local_rotation[1], entity.local_rotation[2]]}
-        useGetSingleGenericEntityQuery={useGetSingleEntityQuery}
-        useUpdateGenericEntityMutation={useUpdateEntityMutation as any}
-        propertiesToIncludeInUpdate={{
-          scene_id: entity.scene_id,
-          parent_id: entity.parent_id || undefined,
-          order_under_parent: entity.order_under_parent || undefined,
-        }}
-      />
-
-      <Separator className="mt-1 mb-2" />
+          <SyncedVec3Input
+            fieldNameX="local_positionX"
+            fieldNameY="local_positionY"
+            fieldNameZ="local_positionZ"
+            form={form} // Provided by FormProvider context
+            handleChange={handleChange} // Handled internally by SyncedForm
+            triggerOnChange={true} // Triggers submission on each change
+          />
+        </form>
+      </FormProvider>
     </>
-  );
+  )
 }

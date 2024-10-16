@@ -1,6 +1,6 @@
 'use client'
 import {
-  Form,
+  FormProvider,
   FormControl,
   FormField,
   FormItem,
@@ -147,7 +147,7 @@ export function SyncedInput<T>({
   }
 
   return (
-    <Form {...form}>
+    <FormProvider {...form}>
       <form
         className={cn(className)}
         onBlur={form.handleSubmit(onSubmit)} // Trigger submission on blur as fallback
@@ -177,6 +177,6 @@ export function SyncedInput<T>({
           )}
         />
       </form>
-    </Form>
+    </FormProvider>
   )
 }
