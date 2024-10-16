@@ -27,11 +27,10 @@ export const createAccountAction = async (formData: FormData) => {
     console.error(error.code + " " + error.message);
     return encodedRedirect("error", "/create-account", error.message);
   } else {
-
     return encodedRedirect(
       "success",
       "/create-account",
-      "Thanks for signing up! Please check your email for a verification link.",
+      "Thanks for signing up! Please check your email for a verification link."
     );
   }
 };
@@ -72,7 +71,7 @@ export const forgotPasswordAction = async (formData: FormData) => {
     return encodedRedirect(
       "error",
       "/forgot-password",
-      "Could not reset password",
+      "Could not reset password"
     );
   }
 
@@ -83,7 +82,7 @@ export const forgotPasswordAction = async (formData: FormData) => {
   return encodedRedirect(
     "success",
     "/forgot-password",
-    "Check your email for a link to reset your password.",
+    "Check your email for a link to reset your password."
   );
 };
 
@@ -97,7 +96,7 @@ export const resetPasswordAction = async (formData: FormData) => {
     encodedRedirect(
       "error",
       "/protected/reset-password",
-      "Password and confirm password are required",
+      "Password and confirm password are required"
     );
   }
 
@@ -105,7 +104,7 @@ export const resetPasswordAction = async (formData: FormData) => {
     encodedRedirect(
       "error",
       "/protected/reset-password",
-      "Passwords do not match",
+      "Passwords do not match"
     );
   }
 
@@ -117,9 +116,35 @@ export const resetPasswordAction = async (formData: FormData) => {
     encodedRedirect(
       "error",
       "/protected/reset-password",
-      "Password update failed",
+      "Password update failed"
     );
   }
 
   encodedRedirect("success", "/protected/reset-password", "Password updated");
+};
+
+export const resetEmailAction = async (formData: FormData) => {
+  const supabase = createServerClient();
+
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+
+  if (!email || !password) {
+    encodedRedirect(
+      "error",
+      "/protected/reset-password",
+      "Email and password are required"
+    );
+  }
+  //NOTE: Need to match current password with entered password before updating the user's email.
+
+  const { error } = await supabase.auth.updateUser({
+    email,
+  });
+
+  if (error) {
+    encodedRedirect("error", "/protected/reset-email", "Email update failed");
+  }
+
+  encodedRedirect("success", "/protected/reset-email", "Email updated");
 };
