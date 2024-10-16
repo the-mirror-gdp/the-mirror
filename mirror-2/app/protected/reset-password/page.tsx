@@ -15,7 +15,9 @@ export default async function ResetPassword({
       <p className="text-sm text-foreground/60">
         Please enter your new password below.
       </p>
-      <Label htmlFor="password">New password</Label>
+      <Label htmlFor="password" className="mt-3">
+        New password
+      </Label>
       <Input
         type="password"
         name="password"

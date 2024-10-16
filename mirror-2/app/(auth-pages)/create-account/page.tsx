@@ -1,16 +1,26 @@
-"use client"
+"use client";
 import { createAccountAction, loginAction } from "@/actions/auth";
 import { FormMessage, Message } from "@/components/form-message";
 import { SubmitButton } from "@/components/submit-button";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRedirectToHomeIfSignedIn } from "@/hooks/auth";
 import { AppLogoImageMedium } from "@/lib/theme-service";
 import Link from "next/link";
 
-export default function CreateAccount({ searchParams }: { searchParams: Message }) {
-  useRedirectToHomeIfSignedIn()
+export default function CreateAccount({
+  searchParams,
+}: {
+  searchParams: Message;
+}) {
+  useRedirectToHomeIfSignedIn();
   return (
     <form>
       <Card className="w-full max-w-sm">
@@ -25,7 +35,13 @@ export default function CreateAccount({ searchParams }: { searchParams: Message 
         <CardContent className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" name="email" placeholder="m@example.com" required />
+            <Input
+              id="email"
+              type="email"
+              name="email"
+              placeholder="m@example.com"
+              required
+            />
           </div>
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
@@ -33,11 +49,20 @@ export default function CreateAccount({ searchParams }: { searchParams: Message 
           </div>
         </CardContent>
         <CardFooter className="grid grid-cols-1 gap-3">
-          <SubmitButton className="w-full" pendingText="Creating Account..." formAction={createAccountAction}>Create Account</SubmitButton>
+          <SubmitButton
+            className="w-full"
+            pendingText="Creating Account..."
+            formAction={createAccountAction}
+          >
+            Create Account
+          </SubmitButton>
           <FormMessage message={searchParams} />
           <p className="text-sm text-muted-foreground">
             Already have an account?{" "}
-            <Link className="text-foreground font-medium underline" href="/login">
+            <Link
+              className="text-foreground font-medium underline"
+              href="/login"
+            >
               Login
             </Link>
           </p>
