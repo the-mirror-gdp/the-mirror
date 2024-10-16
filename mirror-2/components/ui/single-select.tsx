@@ -24,7 +24,7 @@ interface SingleSelectProps<T> {
   }[]
   placeholder?: string
   defaultValue?: string
-  onValueChange: (value: string) => void
+  handleChange: (value: string) => void
   className?: string
 }
 
@@ -36,8 +36,8 @@ export const SingleSelect = React.forwardRef<
     {
       options,
       defaultValue,
-      onValueChange,
-      placeholder = 'Select option',
+      handleChange,
+      placeholder = 'Select Option',
       className,
       ...props
     },
@@ -50,7 +50,7 @@ export const SingleSelect = React.forwardRef<
 
     const toggleOption = (option: string) => {
       setSelectedValue(option)
-      onValueChange(option)
+      handleChange(option)
       setIsPopoverOpen(false) // Close the popover on selection
     }
 

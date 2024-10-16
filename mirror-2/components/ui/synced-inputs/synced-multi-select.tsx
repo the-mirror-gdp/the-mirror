@@ -24,7 +24,7 @@ export function SyncedMultiSelect<T>({
   maxCount = 3,
   handleChange,
   className,
-  triggerOnChange = false,
+  triggerOnChange = true,
   animation = 0
 }: SyncedMultiSelectProps<T>) {
   return (
@@ -38,7 +38,7 @@ export function SyncedMultiSelect<T>({
         <MultiSelect
           options={options}
           defaultValue={field.value || []} // Bind the selected values to form state
-          onValueChange={(values) => {
+          handleChange={(values) => {
             field.onChange(values) // Update form state with selected values
             if (triggerOnChange) {
               handleChange()

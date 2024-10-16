@@ -20,7 +20,7 @@ export function SyncedSingleSelect<T>({
   placeholder = 'Select option',
   handleChange,
   className,
-  triggerOnChange = false
+  triggerOnChange = true
 }: SyncedSingleSelectProps<T>) {
   return (
     <SyncedFormField
@@ -33,7 +33,7 @@ export function SyncedSingleSelect<T>({
         <SingleSelect
           options={options}
           defaultValue={field.value || ''} // Bind the selected value to form state
-          onValueChange={(value) => {
+          handleChange={(value) => {
             field.onChange(value) // Update form state with selected value
             if (triggerOnChange) {
               handleChange()

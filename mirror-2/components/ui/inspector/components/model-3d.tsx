@@ -9,6 +9,7 @@ import { SyncedVec3Input } from '@/components/ui/synced-inputs/synced-vec3-input
 import { render3DModelSchema } from '@/components/engine/schemas/component.schemas'
 import { SyncedBooleanInput } from '@/components/ui/synced-inputs/synced-boolean-input'
 import {
+  DatabaseEntity,
   useGetSingleEntityQuery,
   useUpdateComponentOnEntityMutation
 } from '@/state/api/entities'
@@ -17,44 +18,39 @@ import { useAppSelector } from '@/hooks/hooks'
 import { skipToken } from '@reduxjs/toolkit/query'
 import { z } from 'zod'
 import { ComponentType } from '@/components/engine/schemas/components-types'
+import { convertVecNumbersToIndividual } from '@/utils/utils'
+import { useEffect } from 'react'
 
-export default function Model3DRenderFormGroup() {
+export default function Model3DRenderFormGroup({ entity }) {
   const componentKey = ComponentType.Model3D
+  const components = { ...entity.components[componentKey] }
   const [
     updateComponent,
     { isLoading: isUpdating, isSuccess: isUpdated, error }
   ] = useUpdateComponentOnEntityMutation()
 
   // The useGetSingleEntityQuery may seem odd to use this here instead of passing props, but this helps with rerendering. It was a huge pain earlier with not rerendering correctly since we're working with nested data
-  const currentEntity = useAppSelector(selectCurrentEntity)
-  const { data: entity } = useGetSingleEntityQuery(
-    currentEntity?.id || skipToken
-  )
-
+  // const currentEntity = useAppSelector(selectCurrentEntity)
+  // const { data: entity } = useGetSingleEntityQuery(
+  //   currentEntity?.id || skipToken
+  // )
   const vecKeys = ['aabbCenter', 'aabbHalfExtents']
+  const defaultValues = {
+    ...components,
+    ...vecKeys.reduce((acc, key) => {
+      if (components[key]) {
+        return {
+          ...acc,
+          ...convertVecNumbersToIndividual(components, key)
+        }
+      }
+      return acc
+    }, {})
+  }
+
   const form = useForm({
     resolver: zodResolver(render3DModelSchema),
-    defaultValues: {
-      enabled: false,
-      type: '',
-      asset: null,
-      materialAssets: [],
-      layers: [],
-      batchGroupId: null,
-      castShadows: false,
-      castShadowsLightmap: false,
-      receiveShadows: false,
-      lightmapped: false,
-      lightmapSizeMultiplier: 1,
-      isStatic: false,
-      customAabb: false,
-      aabbCenterX: null,
-      aabbCenterY: null,
-      aabbCenterZ: null,
-      aabbHalfExtentsX: null,
-      aabbHalfExtentsY: null,
-      aabbHalfExtentsZ: null
-    }
+    defaultValues
   })
 
   async function onSubmit(values: z.infer<typeof render3DModelSchema>) {
@@ -75,8 +71,16 @@ export default function Model3DRenderFormGroup() {
     }
   }
 
-  const handleChange = () => {
-    console.log('Form value changed')
+  const handleChange = async () => {
+    console.log('Form test, values:', form.getValues())
+    const isValid = await form.trigger([]) // Manually trigger validation
+    if (isValid) {
+      const values = form.getValues() // Get current form values
+      console.log('Form is valid, triggering submission:', values)
+      onSubmit(values) // Manually call onSubmit after validation passes
+    } else {
+      console.log('form not valid', form)
+    }
   }
 
   const { watch } = form

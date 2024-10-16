@@ -28,6 +28,9 @@ export function convertVecNumbersToIndividual(
   key = 'local_position'
 ) {
   // const [x, y, z, w] = obj[key] // w code is here for later, just not tested
+  if (!obj[key]) {
+    debugger
+  }
   const [x, y, z] = obj[key]
 
   // Construct the new keys dynamically

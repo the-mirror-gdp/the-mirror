@@ -56,10 +56,6 @@ export function VerticalTabs() {
     } else {
       setComponentKeys([])
     }
-
-    return () => {
-      setSelectedTab(undefined)
-    }
   }, [entity])
 
   const handleTabClick = (key: ComponentType) => {
@@ -93,12 +89,17 @@ export function VerticalTabs() {
           </div>
         </h3>
         <div className="flex flex-col">
-          {selectedTab && (
+          {selectedTab && entity && (
             <div className="mt-4">
               {(() => {
                 switch (selectedTab) {
                   case ComponentType.Model3D:
-                    return <Model3DRenderFormGroup />
+                    return (
+                      <Model3DRenderFormGroup
+                        entity={entity}
+                        key={'Model3DRenderFormGroup' + entity.id}
+                      />
+                    )
                   // case ComponentType.TypeB:
                   //   return <ComponentB />;
                   // case ComponentType.TypeC:

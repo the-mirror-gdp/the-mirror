@@ -15,7 +15,7 @@ export function SyncedBooleanInput<T>({
   form,
   handleChange,
   className,
-  triggerOnChange = false,
+  triggerOnChange = true,
   label
 }: SyncedBooleanInputProps<T>) {
   return (

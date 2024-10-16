@@ -76,7 +76,7 @@ interface MultiSelectProps
    * Callback function triggered when the selected values change.
    * Receives an array of the new selected values.
    */
-  onValueChange: (value: string[]) => void
+  handleChange: (value: string[]) => void
 
   /** The default selected values when the component mounts. */
   defaultValue?: string[]
@@ -126,7 +126,7 @@ export const MultiSelect = React.forwardRef<
   (
     {
       options,
-      onValueChange,
+      handleChange,
       variant,
       defaultValue = [],
       placeholder = 'Select options',
@@ -153,7 +153,7 @@ export const MultiSelect = React.forwardRef<
         const newSelectedValues = [...selectedValues]
         newSelectedValues.pop()
         setSelectedValues(newSelectedValues)
-        onValueChange(newSelectedValues)
+        handleChange(newSelectedValues)
       }
     }
 
@@ -162,12 +162,12 @@ export const MultiSelect = React.forwardRef<
         ? selectedValues.filter((value) => value !== option)
         : [...selectedValues, option]
       setSelectedValues(newSelectedValues)
-      onValueChange(newSelectedValues)
+      handleChange(newSelectedValues)
     }
 
     const handleClear = () => {
       setSelectedValues([])
-      onValueChange([])
+      handleChange([])
     }
 
     const handleTogglePopover = () => {
@@ -177,7 +177,7 @@ export const MultiSelect = React.forwardRef<
     const clearExtraOptions = () => {
       const newSelectedValues = selectedValues.slice(0, maxCount)
       setSelectedValues(newSelectedValues)
-      onValueChange(newSelectedValues)
+      handleChange(newSelectedValues)
     }
 
     const toggleAll = () => {
@@ -186,7 +186,7 @@ export const MultiSelect = React.forwardRef<
       } else {
         const allValues = options.map((option) => option.value)
         setSelectedValues(allValues)
-        onValueChange(allValues)
+        handleChange(allValues)
       }
     }
 
