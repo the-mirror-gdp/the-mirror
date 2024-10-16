@@ -73,7 +73,7 @@ export default function Model3DRenderFormGroup({ entity }) {
 
   const handleChange = async () => {
     console.log('Form test, values:', form.getValues())
-    const isValid = await form.trigger([]) // Manually trigger validation
+    const isValid = await form.trigger() // Manually trigger validation
     if (isValid) {
       const values = form.getValues() // Get current form values
       console.log('Form is valid, triggering submission:', values)
@@ -113,9 +113,9 @@ export default function Model3DRenderFormGroup({ entity }) {
           fieldName="type"
           form={form}
           options={[
-            { label: 'Box', value: 'Box' },
-            { label: 'Sphere', value: 'Sphere' },
-            { label: 'Cylinder', value: 'Cylinder' }
+            { label: 'Box', value: 'box' },
+            { label: 'Sphere', value: 'sphere' },
+            { label: 'Cylinder', value: 'cylinder' }
           ]}
           handleChange={handleChange}
           placeholder="Select Type"

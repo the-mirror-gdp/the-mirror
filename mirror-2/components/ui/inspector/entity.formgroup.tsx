@@ -44,7 +44,7 @@ export function EntityFormGroup({ entity }: { entity: DatabaseEntity }) {
 
   const handleChange = async () => {
     console.log('Form test, values:', form.getValues())
-    const isValid = await form.trigger([]) // Manually trigger validation
+    const isValid = await form.trigger() // Manually trigger validation
     if (isValid) {
       const values = form.getValues() // Get current form values
       console.log('Form is valid, triggering submission:', values)

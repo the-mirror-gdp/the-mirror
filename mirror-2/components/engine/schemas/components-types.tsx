@@ -38,6 +38,7 @@ export enum ComponentType {
   // Animation = 'animation', // legacy; commented out here for reference
   // Model = 'model', // legacy; commented out here for reference
 }
+
 export const getIconForComponent = (componentType: ComponentType) => {
   const iconClassName = 'mr-2 h-4 w-4'
   switch (componentType) {
@@ -106,3 +107,4 @@ export const getLongestDisplayName = () => {
     ''
   )
 }
+;``

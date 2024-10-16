@@ -12,7 +12,7 @@ import { TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY } from '@/state/shared-cache-tags'
 
 import { Database } from '@/utils/database.types'
 import { SceneId } from '@/state/api/scenes'
-import { updateEngineApp } from '@/state/engine/engine-old'
+import { updateEngineApp } from '@/state/engine/engine'
 import { RootState } from '@/state/store'
 import { setCurrentEntity } from '@/state/local.slice'
 
@@ -614,7 +614,7 @@ listenerMiddlewareEntities.startListening({
     updateCurrentlySelectedEntity(state, allEntities, listenerApi)
 
     // Pass the optimistic changes to PlayCanvas or your engine
-    console.log('Optimistically updating entities', allEntities)
+    // console.log('Optimistically updating entities', allEntities)
     updateEngineApp(allEntities, { isOptimistic: true })
   }
 })
@@ -659,7 +659,7 @@ listenerMiddlewareEntities.startListening({
     updateCurrentlySelectedEntity(state, allEntities, listenerApi)
 
     // Apply confirmed changes to PlayCanvas or your engine
-    console.log('Applying confirmed updates to entities', allEntities)
+    // console.log('Applying confirmed updates to entities', allEntities)
     updateEngineApp(allEntities, { isOptimistic: false })
   }
 })
@@ -703,8 +703,8 @@ listenerMiddlewareEntities.startListening({
 
     updateCurrentlySelectedEntity(state, allEntities, listenerApi)
 
-    // Revert the changes in PlayCanvas or your engine
-    console.log('Reverting updates to entities', allEntities)
+    // Revert the changes
+    // console.log('Reverting updates to entities', allEntities)
     updateEngineApp(allEntities, { isReverted: true })
   }
 })
