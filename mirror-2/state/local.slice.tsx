@@ -1,5 +1,5 @@
 'use client'
-import { DatabaseEntity } from '@/state/api/entities'
+import { DatabaseComponent, DatabaseEntity } from '@/state/api/entities'
 import { DatabaseScene } from '@/state/api/scenes'
 import { RootState } from '@/state/store'
 import { setAnalyticsUserId } from '@/utils/analytics/analytics'
@@ -82,7 +82,10 @@ export const localSlice = createSlice({
       state.currentScene = action.payload
     },
     setCurrentEntity: (state, action: PayloadAction<DatabaseEntity>) => {
-      state.currentEntity = action.payload
+      const entity = {
+        ...action.payload
+      }
+      state.currentEntity = entity
     },
     clearCurrentEntity: (state) => {
       state.currentScene = undefined
@@ -169,6 +172,14 @@ export const selectCurrentEntity = (
 ): DatabaseEntity | undefined => {
   return state.local.currentEntity
 }
+import { createSelector } from '@reduxjs/toolkit'
+
+export const selectCurrentEntityComponents = createSelector(
+  (state: RootState) => state.local.currentEntity?.components,
+  (components: any) => {
+    return components
+  }
+)
 export const selectExpandedEntityIds = (state: RootState) =>
   state.local.expandedEntityIds
 export const selectAutomaticallyExpandedSceneIds = (state: RootState) =>

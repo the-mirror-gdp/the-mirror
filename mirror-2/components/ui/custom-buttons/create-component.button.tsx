@@ -31,16 +31,17 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { DatabaseEntity } from '@/state/api/entities'
 import { useAddComponentToEntityMutation } from '@/state/api/entities'
-import { ComponentType } from '@/components/engine/schemas/components-types'
+import {
+  ComponentType,
+  getIconForComponent
+} from '@/components/engine/schemas/components-types'
 
 export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
-  const iconClassName = 'mr-2 h-4 w-4'
   const itemClassName = 'cursor-pointer'
 
   // Access the addComponentToEntity mutation hook
   const [addComponentToEntity] = useAddComponentToEntityMutation()
 
-  // Function to handle adding a component when a menu item is clicked
   // Function to handle adding a component when a menu item is clicked
   const handleAddComponent = (componentKey: string, componentData: any) => {
     addComponentToEntity({
@@ -63,7 +64,7 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
             className={itemClassName}
             onClick={() => handleAddComponent(ComponentType.Sprite2D, {})}
           >
-            <BookImage className={iconClassName} />
+            {getIconForComponent(ComponentType.Sprite2D)}
             <span>2D Sprite</span>
           </DropdownMenuItem>
 
@@ -71,7 +72,7 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
             className={itemClassName}
             onClick={() => handleAddComponent(ComponentType.Model3D, {})}
           >
-            <Box className={iconClassName} />
+            {getIconForComponent(ComponentType.Model3D)}
             <span>3D Model</span>
           </DropdownMenuItem>
 
@@ -79,7 +80,7 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
             className={itemClassName}
             onClick={() => handleAddComponent(ComponentType.Anim, {})}
           >
-            <PersonStanding className={iconClassName} />
+            {getIconForComponent(ComponentType.Anim)}
             <span>Animation</span>
           </DropdownMenuItem>
 
@@ -87,7 +88,7 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
             className={itemClassName}
             onClick={() => handleAddComponent(ComponentType.Camera, {})}
           >
-            <Cctv className={iconClassName} />
+            {getIconForComponent(ComponentType.Camera)}
             <span>Camera</span>
           </DropdownMenuItem>
 
@@ -95,7 +96,7 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
             className={itemClassName}
             onClick={() => handleAddComponent(ComponentType.GSplat, {})}
           >
-            <Grip className={iconClassName} />
+            {getIconForComponent(ComponentType.GSplat)}
             <span>Gaussian Splat</span>
           </DropdownMenuItem>
 
@@ -105,7 +106,7 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
             className={itemClassName}
             onClick={() => handleAddComponent(ComponentType.Light, {})}
           >
-            <Lightbulb className={iconClassName} />
+            {getIconForComponent(ComponentType.Light)}
             <span>Light</span>
           </DropdownMenuItem>
 
@@ -113,7 +114,7 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
             className={itemClassName}
             onClick={() => handleAddComponent(ComponentType.ParticleSystem, {})}
           >
-            <Atom className={iconClassName} />
+            {getIconForComponent(ComponentType.ParticleSystem)}
             <span>Particles</span>
           </DropdownMenuItem>
 
@@ -121,7 +122,7 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
             className={itemClassName}
             onClick={() => handleAddComponent(ComponentType.Collision, {})}
           >
-            <Orbit className={iconClassName} />
+            {getIconForComponent(ComponentType.Collision)}
             <span>Physics</span>
           </DropdownMenuItem>
 
@@ -129,7 +130,7 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
             className={itemClassName}
             onClick={() => handleAddComponent(ComponentType.Script, {})}
           >
-            <ScrollText className={iconClassName} />
+            {getIconForComponent(ComponentType.Script)}
             <span>Script</span>
           </DropdownMenuItem>
 
@@ -137,7 +138,7 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
             className={itemClassName}
             onClick={() => handleAddComponent(ComponentType.Sound, {})}
           >
-            <Volume2 className={iconClassName} />
+            {getIconForComponent(ComponentType.Sound)}
             <span>Sound</span>
           </DropdownMenuItem>
 
@@ -145,7 +146,7 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
             className={itemClassName}
             onClick={() => handleAddComponent(ComponentType.Element, {})}
           >
-            <Proportions className={iconClassName} />
+            {getIconForComponent(ComponentType.Element)}
             <span>UI</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>

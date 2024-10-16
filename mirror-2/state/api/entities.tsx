@@ -14,6 +14,7 @@ import { Database } from '@/utils/database.types'
 import { SceneId } from '@/state/api/scenes'
 import { updateEngineApp } from '@/state/engine/engine-old'
 import { RootState } from '@/state/store'
+import { setCurrentEntity } from '@/state/local.slice'
 
 // Define types for the entities table
 export type DatabaseEntity = Database['public']['Tables']['entities']['Row']
@@ -23,6 +24,9 @@ export type DatabaseEntityUpdate =
   Database['public']['Tables']['entities']['Update']
 export const TAG_NAME_FOR_GENERAL_ENTITY = 'Entities'
 export type EntityId = string
+
+export type DatabaseComponent =
+  Database['public']['Tables']['entities']['Row']['components']
 
 // Supabase API for spaces
 export const entitiesApi = createApi({
@@ -575,7 +579,12 @@ listenerMiddlewareEntities.startListening({
     entitiesApi.endpoints.createEntity.matchPending(action) ||
     entitiesApi.endpoints.updateEntity.matchPending(action) ||
     entitiesApi.endpoints.batchUpdateEntities.matchPending(action) ||
-    entitiesApi.endpoints.deleteEntity.matchPending(action),
+    entitiesApi.endpoints.deleteEntity.matchPending(action) ||
+    // components
+    entitiesApi.endpoints.addComponentToEntity.matchPending(action) ||
+    entitiesApi.endpoints.getComponentsOfEntity.matchPending(action) ||
+    entitiesApi.endpoints.updateComponentOnEntity.matchPending(action) ||
+    entitiesApi.endpoints.deleteComponentFromEntity.matchPending(action),
   effect: async (action, listenerApi) => {
     const state = listenerApi.getState() as RootState
 
@@ -601,6 +610,18 @@ listenerMiddlewareEntities.startListening({
       console.error('Error while extracting entities from cache:', error)
     }
 
+    // update currentlySeletedEntity since it's separate state from RTK
+    const currentlySelectedEntity = state.local.currentEntity
+
+    if (currentlySelectedEntity) {
+      const updatedEntity = allEntities.find(
+        (entity) => entity.id === currentlySelectedEntity.id
+      )
+      if (updatedEntity) {
+        listenerApi.dispatch(setCurrentEntity(updatedEntity))
+      }
+    }
+
     // Pass the optimistic changes to PlayCanvas or your engine
     console.log('Optimistically updating entities', allEntities)
     updateEngineApp(allEntities, { isOptimistic: true })
@@ -612,7 +633,12 @@ listenerMiddlewareEntities.startListening({
     entitiesApi.endpoints.createEntity.matchFulfilled(action) ||
     entitiesApi.endpoints.updateEntity.matchFulfilled(action) ||
     entitiesApi.endpoints.batchUpdateEntities.matchFulfilled(action) ||
-    entitiesApi.endpoints.deleteEntity.matchFulfilled(action),
+    entitiesApi.endpoints.deleteEntity.matchFulfilled(action) ||
+    // components
+    entitiesApi.endpoints.addComponentToEntity.matchPending(action) ||
+    entitiesApi.endpoints.getComponentsOfEntity.matchPending(action) ||
+    entitiesApi.endpoints.updateComponentOnEntity.matchPending(action) ||
+    entitiesApi.endpoints.deleteComponentFromEntity.matchPending(action),
   effect: async (action, listenerApi) => {
     const state = listenerApi.getState() as RootState
 
@@ -649,7 +675,12 @@ listenerMiddlewareEntities.startListening({
     entitiesApi.endpoints.createEntity.matchRejected(action) ||
     entitiesApi.endpoints.updateEntity.matchRejected(action) ||
     entitiesApi.endpoints.batchUpdateEntities.matchRejected(action) ||
-    entitiesApi.endpoints.deleteEntity.matchRejected(action),
+    entitiesApi.endpoints.deleteEntity.matchRejected(action) ||
+    // components
+    entitiesApi.endpoints.addComponentToEntity.matchPending(action) ||
+    entitiesApi.endpoints.getComponentsOfEntity.matchPending(action) ||
+    entitiesApi.endpoints.updateComponentOnEntity.matchPending(action) ||
+    entitiesApi.endpoints.deleteComponentFromEntity.matchPending(action),
   effect: async (action, listenerApi) => {
     const state = listenerApi.getState() as RootState
 

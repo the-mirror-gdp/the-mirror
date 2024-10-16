@@ -7,6 +7,7 @@ import {
   useGetSingleEntityQuery,
   useUpdateEntityMutation
 } from '@/state/api/entities'
+import { useFormContext } from 'react-hook-form'
 import { z } from 'zod'
 
 export const renderSchema = z.object({
@@ -26,5 +27,7 @@ export const renderSchema = z.object({
 })
 
 export const RenderComponent = ({ entity }: { entity: any }) => {
+  const form = useFormContext()
+
   return <></>
 }
