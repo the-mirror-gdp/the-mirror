@@ -5,7 +5,7 @@ import {
   useUpdateEntityMutation
 } from '@/state/api/entities'
 import { Separator } from '@/components/ui/separator'
-import SyncedVector3Input from '@/components/ui/synced-inputs/synced-vector3-input-old-form'
+import SyncedVector3InputDepr from '@/components/ui/synced-inputs/synced-vector3-input-old-form'
 import { SyncedInput } from '@/components/ui/synced-inputs/synced-input-old-form'
 import { cn } from '@/lib/utils'
 import { z } from 'zod'
@@ -78,7 +78,7 @@ export function EntityFormGroupOld({ entity }: { entity: DatabaseEntity }) {
 
       <Separator className="mb-2" />
 
-      <SyncedVector3Input
+      <SyncedVector3InputDepr
         label="Position"
         entity={entity}
         dbColumnNameSnakeCase="local_position"
@@ -96,7 +96,7 @@ export function EntityFormGroupOld({ entity }: { entity: DatabaseEntity }) {
         }}
       />
 
-      <SyncedVector3Input
+      <SyncedVector3InputDepr
         label="Scale"
         entity={entity}
         dbColumnNameSnakeCase="local_scale"
@@ -114,7 +114,7 @@ export function EntityFormGroupOld({ entity }: { entity: DatabaseEntity }) {
         }}
       />
 
-      <SyncedVector3Input
+      <SyncedVector3InputDepr
         label="Rotation"
         entity={entity}
         dbColumnNameSnakeCase="local_rotation"

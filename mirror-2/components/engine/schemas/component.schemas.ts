@@ -87,9 +87,9 @@ export const lightSchema = z.object({
 })
 
 //
-// Render Component
+// 3D Model/Render Component
 //
-export const renderSchema = z.object({
+export const render3DModelSchema = z.object({
   enabled: z.boolean(),
   type: z.string(),
   asset: z.number().nullable(),

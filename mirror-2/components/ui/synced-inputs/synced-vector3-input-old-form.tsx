@@ -37,7 +37,7 @@ interface SyncedVector3InputProps {
   propertiesToIncludeInUpdate: { [x: string]: any }
 }
 
-export default function SyncedVector3Input({
+export default function SyncedVector3InputDepr({
   label,
   entity,
   dbColumnNameSnakeCase,
