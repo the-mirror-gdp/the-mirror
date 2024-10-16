@@ -11,15 +11,21 @@ import { Separator } from '@/components/ui/separator'
 
 export default function Inspector({ className }) {
   const entity = useAppSelector(selectCurrentEntity)
-
+  console.log('ins entity', entity)
   return (
     <div className={cn(className, 'flex flex-col gap-3 p-2')}>
       {entity && (
         <>
-          <EntityFormGroup entity={entity} />
+          <EntityFormGroup
+            entity={entity}
+            key={'EntityFormGroup' + entity.id} // had to add key bc wasn't rerendering
+          />
 
           {/* Create Component Button */}
-          <CreateComponentButton entity={entity} />
+          <CreateComponentButton
+            entity={entity}
+            key={'CreateComponentButton' + entity.id}
+          />
         </>
       )}
     </div>
