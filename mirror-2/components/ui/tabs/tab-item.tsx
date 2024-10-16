@@ -19,8 +19,8 @@ export function TabItem({
   onClick
 }: TabItemProps) {
   const baseClasses =
-    'flex items-center pl-1 pr-2 py-1 w-full cursor-pointer w-full h-full border-r-2 border-gray-800'
-  const activeClasses = 'text-primary border-r-2 border-primary'
+    'flex flex-auto text-center justify-center items-center pl-1 pr-2 py-1 cursor-pointer h-12 border-b-2 border-gray-800'
+  const activeClasses = 'text-primary border-b-2 border-primary'
   const defaultClasses =
     ' bg-gray-50 bg-transparent hover:text-accent hover:border-accent'
   const disabledClasses =

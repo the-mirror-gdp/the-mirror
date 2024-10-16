@@ -18,6 +18,7 @@ import {
 } from '@/components/engine/schemas/components-types'
 import { selectCurrentEntity } from '@/state/local.slice'
 import { skipToken } from '@reduxjs/toolkit/query'
+import { Separator } from '@/components/ui/separator'
 
 export function VerticalTabs() {
   const form = useFormContext()
@@ -26,8 +27,16 @@ export function VerticalTabs() {
   const { data: entity } = useGetSingleEntityQuery(
     currentEntity?.id || skipToken
   )
-  const [selectedTab, setSelectedTab] = useState<ComponentType | null>(null)
+  const [selectedTab, setSelectedTab] = useState<ComponentType | undefined>(
+    undefined
+  )
   const [componentKeys, setComponentKeys] = useState<string[]>([])
+
+  useEffect(() => {
+    if (!currentEntity?.id) {
+      console.log('Skipping query with skipToken.')
+    }
+  }, [currentEntity?.id])
 
   useEffect(() => {
     if (entity && entity.components) {
@@ -38,8 +47,17 @@ export function VerticalTabs() {
         return orderA - orderB
       })
       setComponentKeys(keys)
+
+      // in a transition, if the new entity doesn't have the component of the previously selected tab, set selected tab to first
+      if (keys.length > 0 && !keys.includes(selectedTab as string)) {
+        setSelectedTab(keys[0] as ComponentType)
+      }
     } else {
       setComponentKeys([])
+    }
+
+    return () => {
+      setSelectedTab(undefined)
     }
   }, [entity])
 
@@ -48,8 +66,8 @@ export function VerticalTabs() {
   }
 
   return (
-    <div className="flex">
-      <div className="flex-col text-sm font-medium h-12">
+    <div className="flex flex-col h-full">
+      <div className="flex flex-wrap gap-0 text-sm font-medium">
         {componentKeys.map((key) => {
           return (
             <TabItem
@@ -63,7 +81,7 @@ export function VerticalTabs() {
         })}
       </div>
 
-      <div className="p-2 text-medium text-gray-400 text-center  w-full">
+      <div className="mt-2 p-2 text-medium text-gray-400 text-center w-full">
         <h3 className="flex flex-row justify-center items-center text-lg font-bold text-white gap-2">
           <div className="flex justify-center items-center">
             {selectedTab && getIconForComponent(selectedTab as ComponentType)}
