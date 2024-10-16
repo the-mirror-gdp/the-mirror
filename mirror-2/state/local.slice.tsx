@@ -139,8 +139,14 @@ export const {
   setControlBarCurrentView,
   updateLocalUserState,
   clearLocalUserState,
-  setCurrentScene,
-  setCurrentEntity,
+  /**
+   * We don't want to duplicate the state here and rely on it since RTK query handles the caching for us; TODO change this to only contain ID
+   */
+  setCurrentScene: setCurrentSceneUseOnlyForId,
+  /**
+   * We don't want to duplicate the state here and rely on it since RTK query handles the caching for us; TODO change this to only contain ID
+   */
+  setCurrentEntity: setCurrentEntityUseOnlyForId,
   clearCurrentEntity,
   setExpandedEntityIds,
   addExpandedEntityIds,

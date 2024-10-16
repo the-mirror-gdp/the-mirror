@@ -9,7 +9,7 @@ import {
 interface SyncedFormFieldProps<T> {
   form: any
   handleChange: () => void
-  fieldName: keyof T
+  fieldName: string
   renderComponent: (field: any, fieldName: string) => JSX.Element // Function to dynamically render input component
   triggerOnChange?: boolean // triggers the form component on change. Use for booleans or specific cases.
   className?: string // Optional className prop

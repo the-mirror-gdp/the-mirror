@@ -2,7 +2,7 @@ import { SyncedInputDepr } from '@/components/ui/synced-inputs/synced-input-old-
 import { Input } from '@/components/ui/input'
 import {
   useGetSingleEntityQuery,
-  useUpdateEntityMutation
+  useUpdateEntityTreeItemMutation
 } from '@/state/api/entities'
 import { cn } from '@/utils/cn'
 import { useState } from 'react'
@@ -24,7 +24,7 @@ export default function EntityTreeItem({ nodeData }) {
             })
           })}
           useGenericGetEntityQuery={useGetSingleEntityQuery}
-          useGenericUpdateEntityMutation={useUpdateEntityMutation}
+          useGenericUpdateEntityMutation={useUpdateEntityTreeItemMutation}
           renderComponent={(field) => (
             <Input
               type="text"

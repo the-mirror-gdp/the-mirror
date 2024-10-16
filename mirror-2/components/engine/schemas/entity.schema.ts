@@ -1,5 +1,7 @@
 import { z } from 'zod'
 /**
+ * Zod for Forms AND Postgres JsonSchema
+ *
  * Source of truth for the schemas of JSONB data in the DB with entities
  * Why? Postgres uses JSONSchema for JSON validation, which is fine, but it's a raw text string and hard to tweak/debug without tons of migrations and iterations.
  * We use zod elsewhere and there's a great zod-to-json schema library.
@@ -7,26 +9,31 @@ import { z } from 'zod'
  */
 
 export const entitySchema = z.object({
-  name: z.string().nonempty(), // Non-empty string for the name
+  name: z.string(),
 
   enabled: z.boolean(),
+  local_position: z.tuple([
+    z.coerce.number(),
+    z.coerce.number(),
+    z.coerce.number()
+  ]),
+  // local_rotation: z.tuple([z.coerce.number(), z.coerce.number(), z.coerce.number()]),
+  local_scale: z.tuple([
+    z.coerce.number(),
+    z.coerce.number(),
+    z.coerce.number()
+  ]),
 
-  // Individual position components
-  local_positionX: z.coerce.number(), // X component of local position
-  local_positionY: z.coerce.number(), // Y component of local position
-  local_positionZ: z.coerce.number(), // Z component of local position
-
-  // Individual rotation components
-  local_rotationX: z.coerce.number(), // X component of local rotation
-  local_rotationY: z.coerce.number(), // Y component of local rotation
-  local_rotationZ: z.coerce.number(), // Z component of local rotation
-
-  // Individual scale components
-  local_scaleX: z.coerce.number(), // X component of local scale
-  local_scaleY: z.coerce.number(), // Y component of local scale
-  local_scaleZ: z.coerce.number(), // Z component of local scale
-
-  tags: z.array(z.string()).nullable().optional(), // Optional array of strings for tags
+  tags: z.array(z.string()).optional(), // Optional array of strings for tags
 
   components: z.any() // Assuming components is a JSON object, this could be updated further if there's a specific structure
 })
+export const entitySchemaUiFormDefaultValues = {
+  name: '',
+  enabled: true,
+  local_position: [0, 0, 0] as [number, number, number],
+  // local_rotation: [0, 0, 0] as [number,number,number],
+  local_scale: [1, 1, 1] as [number, number, number],
+  tags: [],
+  components: {}
+}

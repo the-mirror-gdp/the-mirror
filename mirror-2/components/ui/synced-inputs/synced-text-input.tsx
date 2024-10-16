@@ -3,7 +3,7 @@ import { SyncedFormField } from '@/components/ui/synced-inputs/synced-form-field
 import clsx from 'clsx'
 
 interface SyncedTextInputProps<T> {
-  fieldName: keyof T
+  fieldName: string
   form: any
   handleChange: () => void
   className?: string

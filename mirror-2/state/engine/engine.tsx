@@ -41,6 +41,11 @@ export function updateEngineApp<T extends { id: string }>(
 ) {
   const app = getApp()
 
+  if ('istemp' === 'istemp') {
+    console.warn('bypassing engine update')
+    return
+  }
+
   if (!app) {
     console.warn('PlayCanvas app is not initialized.')
     return

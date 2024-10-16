@@ -1,7 +1,7 @@
 "use client"
 
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks"
-import { selectCurrentScene, setCurrentScene } from "@/state/local.slice"
+import { selectCurrentScene, setCurrentSceneUseOnlyForId } from "@/state/local.slice"
 import { useGetAllScenesQuery } from "@/state/api/scenes"
 import { useGetSingleSpaceQuery } from "@/state/api/spaces"
 
@@ -27,7 +27,7 @@ export default function Page() {
     if (scenes && scenes?.length > 0 && scenes[0]) {
       if (!currentScene?.id) {
         console.log("setting current scene to first scene", scenes[0])
-        dispatch(setCurrentScene(scenes[0]))
+        dispatch(setCurrentSceneUseOnlyForId(scenes[0]))
       }
     } else {
       console.log('No scenes to set', scenes, currentScene)

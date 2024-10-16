@@ -1,7 +1,7 @@
 'use client'
 import * as pc from 'playcanvas'
 import { AssetId, DatabaseAsset } from '@/state/api/assets'
-import { setCurrentScene } from '@/state/local.slice'
+import { setCurrentSceneUseOnlyForId } from '@/state/local.slice'
 import { RootState } from '@/state/store'
 import { createListenerMiddleware, createSlice } from '@reduxjs/toolkit'
 import { DatabaseScene, scenesApi } from '@/state/api/scenes'

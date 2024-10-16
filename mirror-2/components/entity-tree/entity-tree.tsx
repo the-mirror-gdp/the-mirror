@@ -12,7 +12,7 @@ import {
   insertAutomaticallyExpandedSceneIds,
   selectAutomaticallyExpandedSceneIds,
   selectExpandedEntityIds,
-  setCurrentEntity,
+  setCurrentEntityUseOnlyForId,
   setExpandedEntityIds
 } from '@/state/local.slice'
 import { useGetAllScenesQuery } from '@/state/api/scenes'
@@ -381,7 +381,7 @@ const EntityTree: React.FC = () => {
           if (!entity) {
             return
           }
-          dispatch(setCurrentEntity(entity))
+          dispatch(setCurrentEntityUseOnlyForId(entity))
         }}
         titleRender={(nodeData: TreeDataNodeWithEntityData) => (
           <>

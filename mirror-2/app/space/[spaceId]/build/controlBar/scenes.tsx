@@ -9,7 +9,7 @@ import { useParams } from 'next/navigation';
 import { z } from 'zod'; // Import zod for validation
 import { SyncedInputDepr } from '@/components/ui/synced-inputs/synced-input-old-form';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
-import { selectCurrentScene, setControlBarCurrentView, setCurrentScene } from '@/state/local.slice';
+import { selectCurrentScene, setControlBarCurrentView, setCurrentSceneUseOnlyForId } from '@/state/local.slice';
 import { DatabaseScene, useCreateSceneMutation, useDeleteSceneMutation, useGetAllScenesQuery, useGetSingleSceneQuery, useUpdateSceneMutation } from '@/state/api/scenes';
 import { cn } from '@/utils/cn';
 import { generateSceneName } from '@/actions/name-generator';
@@ -38,7 +38,7 @@ export default function Scenes() {
         const result = await createScene({ name: await generateSceneName(), space_id: spaceId });
         if (result.data) {
           console.log("Scene created successfully:", result.data);
-          await dispatch(setCurrentScene(result.data));
+          await dispatch(setCurrentSceneUseOnlyForId(result.data));
           dispatch(setControlBarCurrentView('hierarchy'));
         } else {
           console.error("Error creating scene:", result.error);
@@ -58,7 +58,7 @@ export default function Scenes() {
                 className={cn("relative flex flex-col items-center shadow-md rounded-lg p-4 gap-4 border border-transparent hover:border-accent transition-all duration-100 cursor-pointer", { "border border-primary": currentScene?.id === scene.id })}
                 onClick={() => {
                   // Handle scene click
-                  dispatch(setCurrentScene(scene));
+                  dispatch(setCurrentSceneUseOnlyForId(scene));
                   dispatch(setControlBarCurrentView('hierarchy'));
                 }}
               >

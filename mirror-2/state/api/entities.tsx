@@ -10,14 +10,15 @@ import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react'
 import { createSupabaseBrowserClient } from '@/utils/supabase/client'
 import { TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY } from '@/state/shared-cache-tags'
 
-import { Database } from '@/utils/database.types'
+import { Database, Tables } from '@/utils/database.types'
 import { SceneId } from '@/state/api/scenes'
 import { updateEngineApp } from '@/state/engine/engine'
 import { RootState } from '@/state/store'
-import { setCurrentEntity } from '@/state/local.slice'
+import { setCurrentEntityUseOnlyForId } from '@/state/local.slice'
+import { TransformTuples, TupleLengthMap } from '@/utils/database.types.helpers'
 
 // Define types for the entities table
-export type DatabaseEntity = Database['public']['Tables']['entities']['Row']
+export type DatabaseEntity = TransformTuples<Tables<'entities'>>
 export type DatabaseEntityInsert =
   Database['public']['Tables']['entities']['Insert']
 export type DatabaseEntityUpdate =
@@ -135,11 +136,6 @@ export const entitiesApi = createApi({
     getAllEntities: builder.query<DatabaseEntity[], SceneId>({
       queryFn: async (sceneId) => {
         const supabase = createSupabaseBrowserClient()
-
-        if (!sceneId) {
-          return { error: 'No scene_id provided' }
-        }
-
         const { data, error } = await supabase
           .from('entities')
           .select('*')
@@ -148,7 +144,29 @@ export const entitiesApi = createApi({
         if (error) {
           return { error: error.message }
         }
-        return { data }
+
+        // Ensure the data matches the expected type
+        const formattedData = data.map((entity) => ({
+          ...entity,
+          local_position: [
+            entity.local_position[0],
+            entity.local_position[1],
+            entity.local_position[2]
+          ] as [number, number, number],
+          local_scale: [
+            entity.local_scale[0],
+            entity.local_scale[1],
+            entity.local_scale[2]
+          ] as [number, number, number],
+          local_rotation: [
+            entity.local_rotation[0],
+            entity.local_rotation[1],
+            entity.local_rotation[2],
+            entity.local_rotation[3]
+          ] as [number, number, number, number]
+        }))
+
+        return { data: formattedData }
       },
       providesTags: (result: any) =>
         result
@@ -178,7 +196,30 @@ export const entitiesApi = createApi({
         if (error) {
           return { error: error.message }
         }
-        return { data }
+
+        // update formatting to handle number[] to [number,number,number, (number?)] conversion
+        const formattedData = {
+          ...data,
+          local_position: [
+            data.local_position[0],
+            data.local_position[1],
+            data.local_position[2]
+          ] as [number, number, number],
+          local_rotation: [
+            data.local_rotation[0],
+            data.local_rotation[1],
+            data.local_rotation[2],
+            data.local_rotation[3]
+          ] as [number, number, number, number],
+          local_scale: [
+            data.local_scale[0],
+            data.local_scale[1],
+            data.local_scale[2]
+          ] as [number, number, number]
+        }
+        return {
+          data: formattedData
+        }
       },
       providesTags: (result, error, entityId) => [
         { type: TAG_NAME_FOR_GENERAL_ENTITY, id: entityId }
@@ -186,6 +227,86 @@ export const entitiesApi = createApi({
     }),
 
     updateEntity: builder.mutation<
+      any,
+      {
+        id: EntityId
+        name?: string
+        enabled?: boolean
+        parent_id?: string
+        order_under_parent?: number
+        scene_id?: number
+        local_position?: [number, number, number] // Using array for vector3
+        local_scale?: [number, number, number] // Using array for scale
+        local_rotation?: [number, number, number] // Using array for rotation (Euler angles or quaternion)
+        tags?: string[]
+
+        // use the components method for updating components
+      }
+    >({
+      queryFn: async ({
+        id,
+        name,
+        enabled,
+        parent_id,
+        order_under_parent,
+        scene_id,
+        local_position,
+        local_scale,
+        local_rotation,
+        tags
+      }) => {
+        const supabase = createSupabaseBrowserClient()
+
+        // Whitelist update payload
+        const updatePayload: any = {
+          name,
+          enabled,
+          parent_id,
+          order_under_parent,
+          scene_id,
+          local_position,
+          local_rotation,
+          local_scale,
+          tags
+        }
+
+        const { data, error } = await supabase
+          .from('entities')
+          .update(updatePayload)
+          .eq('id', id)
+          .single()
+
+        if (error) {
+          return { error: error.message }
+        }
+
+        return { data }
+      },
+
+      // Optimistic update
+      async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          entitiesApi.util.updateQueryData('getSingleEntity', id, (draft) => {
+            Object.assign(draft, patch)
+          })
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult.undo()
+        }
+      },
+
+      invalidatesTags: (result, error, { id: entityId }) => [
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: entityId },
+        TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY
+      ]
+    }),
+
+    /**
+     * Has custom logic for checking parent_id and order_under_parent. Should only be used by a TreeItem. Not ideal but easier to avoid errors this way
+     */
+    updateEntityTreeItem: builder.mutation<
       any,
       {
         id: EntityId
@@ -578,6 +699,7 @@ listenerMiddlewareEntities.startListening({
   predicate: (action) =>
     entitiesApi.endpoints.createEntity.matchPending(action) ||
     entitiesApi.endpoints.updateEntity.matchPending(action) ||
+    entitiesApi.endpoints.updateEntityTreeItem.matchPending(action) ||
     entitiesApi.endpoints.batchUpdateEntities.matchPending(action) ||
     entitiesApi.endpoints.deleteEntity.matchPending(action) ||
     // components
@@ -623,6 +745,7 @@ listenerMiddlewareEntities.startListening({
   predicate: (action) =>
     entitiesApi.endpoints.createEntity.matchFulfilled(action) ||
     entitiesApi.endpoints.updateEntity.matchFulfilled(action) ||
+    entitiesApi.endpoints.updateEntityTreeItem.matchFulfilled(action) ||
     entitiesApi.endpoints.batchUpdateEntities.matchFulfilled(action) ||
     entitiesApi.endpoints.deleteEntity.matchFulfilled(action) ||
     // components
@@ -668,6 +791,7 @@ listenerMiddlewareEntities.startListening({
   predicate: (action) =>
     entitiesApi.endpoints.createEntity.matchRejected(action) ||
     entitiesApi.endpoints.updateEntity.matchRejected(action) ||
+    entitiesApi.endpoints.updateEntityTreeItem.matchRejected(action) ||
     entitiesApi.endpoints.batchUpdateEntities.matchRejected(action) ||
     entitiesApi.endpoints.deleteEntity.matchRejected(action) ||
     // components
@@ -719,7 +843,7 @@ function updateCurrentlySelectedEntity(
 ) {
   const currentlySelectedEntity = state.local.currentEntity
   console.log(
-    'updateCurrentlySelectedEntity', //@ts-ignore
+    'updateCurrentlySelectedEntity components', //@ts-ignore
     allEntities.find((entity) => entity.id === currentlySelectedEntity?.id)
       .components,
     currentlySelectedEntity?.components
@@ -729,7 +853,7 @@ function updateCurrentlySelectedEntity(
       (entity) => entity.id === currentlySelectedEntity.id
     )
     if (updatedEntity) {
-      listenerApi.dispatch(setCurrentEntity(updatedEntity))
+      listenerApi.dispatch(setCurrentEntityUseOnlyForId(updatedEntity))
     }
   }
 }
@@ -749,6 +873,7 @@ export const {
   useBatchUpdateEntitiesMutation,
   useGetAllEntitiesQuery,
   useUpdateEntityMutation,
+  useUpdateEntityTreeItemMutation,
   useGetSingleEntityQuery,
   useLazyGetAllEntitiesQuery,
   useDeleteEntityMutation,
