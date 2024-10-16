@@ -9,7 +9,7 @@ create table entities (
   -- Future: store position (global as PointZ for large querying)
   local_scale float8[] not null default array[1.0, 1.0, 1.0], -- storing scale as an array of 3 floats
   local_rotation float8[] not null default array[0.0, 0.0, 0.0, 1.0],  -- store rotation as a quaternion (x, y, z, w). NOT euler, though euler is mostly used user-facing
-  tags text[] default array[]::text[], -- storing tags as an empty array of text 
+  tags text[] not null default array[]::text[], -- storing tags as an empty array of text 
   components jsonb not null default '{}'::jsonb, -- TODO add jsonb validation once this is hardened
   created_at timestamp with time zone not null default now(),
   updated_at timestamp with time zone not null default now(),

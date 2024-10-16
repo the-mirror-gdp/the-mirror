@@ -20,6 +20,7 @@ import { skipToken } from '@reduxjs/toolkit/query'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import * as pc from 'playcanvas' // Ensure you have the correct import for PlayCanvas
 
 export function EntityFormGroup() {
   const currentEntityForId = useAppSelector(selectCurrentEntity)
@@ -42,18 +43,57 @@ export function EntityFormGroup() {
   // hadnle form reset on entity update
   useEffect(() => {
     if (entity && getEntitySuccess) {
-      // @ts-expect-error null vs. undefined not playing nicely
-      form.reset(entity)
+      // Convert quaternion to Euler angles
+      const quaternion = new pc.Quat(
+        entity.local_rotation[0],
+        entity.local_rotation[1],
+        entity.local_rotation[2],
+        entity.local_rotation[3]
+      )
+      const eulerAngles = new pc.Vec3()
+      quaternion.getEulerAngles(eulerAngles)
+
+      // Prepare the entity with Euler angles for form reset
+      const local_rotation_euler: [number, number, number] = [
+        eulerAngles.x,
+        eulerAngles.y,
+        eulerAngles.z
+      ]
+      const entityWithEuler = {
+        ...entity,
+        local_rotation_euler
+      }
+
+      // Reset the form with the updated entity
+      form.reset(entityWithEuler)
     }
-  }, [entity])
+  }, [entity, getEntitySuccess, form])
 
   async function onSubmit(values: z.infer<typeof entitySchema>) {
     console.log('onSubmit values', values)
     const isValid = await form.trigger() // Manually trigger validation
     if (isValid) {
       const values = form.getValues() // Get current form values
-      console.log('Form is valid, triggering submission:', values)
-      await updateEntity({ id: entity?.id as string, ...values })
+
+      // Convert local_rotation from Euler angles to a quaternion
+      const eulerAngles = new pc.Vec3(...values.local_rotation_euler)
+      const quaternion = new pc.Quat()
+      quaternion.setFromEulerAngles(eulerAngles)
+      const quaternionArray: [number, number, number, number] = [
+        quaternion.x,
+        quaternion.y,
+        quaternion.z,
+        quaternion.w
+      ]
+
+      const updatedValues = {
+        ...values,
+        local_rotation: quaternionArray,
+        local_rotation_euler: undefined
+      }
+
+      console.log('Form is valid, triggering submission:', updatedValues)
+      await updateEntity({ id: entity?.id as string, ...updatedValues })
     } else {
       console.log('form not valid', form)
     }
@@ -86,17 +126,14 @@ export function EntityFormGroup() {
               handleChange={handleChange} // Handled internally by SyncedForm
               triggerOnChange={true} // Triggers submission on each change
             />
-            <p className="text-sm">Will be vec4</p>
-            {/* <p className="text-sm">Rotation</p>
+            <p className="text-sm">Rotation</p>
             <SyncedVec3Input
               className="pl-1"
-              fieldNameX="local_rotationX"
-              fieldNameY="local_rotationY"
-              fieldNameZ="local_rotationZ"
+              fieldName="local_rotation_euler"
               form={form} // Provided by FormProvider context
               handleChange={handleChange} // Handled internally by SyncedForm
               triggerOnChange={true} // Triggers submission on each change
-            /> */}
+            />
             <p className="text-sm">Scale</p>
             <SyncedVec3Input
               className="pl-1"

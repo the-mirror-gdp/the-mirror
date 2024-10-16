@@ -237,7 +237,7 @@ export const entitiesApi = createApi({
         scene_id?: number
         local_position?: [number, number, number] // Using array for vector3
         local_scale?: [number, number, number] // Using array for scale
-        local_rotation?: [number, number, number] // Using array for rotation (Euler angles or quaternion)
+        local_rotation?: [number, number, number, number] // Using array for rotation (quaternion)
         tags?: string[]
 
         // use the components method for updating components

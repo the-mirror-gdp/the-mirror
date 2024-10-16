@@ -101,7 +101,7 @@ export type Database = {
           order_under_parent: number | null
           parent_id: string | null
           scene_id: number
-          tags: string[] | null
+          tags: string[]
           updated_at: string
         }
         Insert: {
@@ -116,7 +116,7 @@ export type Database = {
           order_under_parent?: number | null
           parent_id?: string | null
           scene_id: number
-          tags?: string[] | null
+          tags?: string[]
           updated_at?: string
         }
         Update: {
@@ -131,7 +131,7 @@ export type Database = {
           order_under_parent?: number | null
           parent_id?: string | null
           scene_id?: number
-          tags?: string[] | null
+          tags?: string[]
           updated_at?: string
         }
         Relationships: [

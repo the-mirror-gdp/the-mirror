@@ -4,7 +4,7 @@ export const AxisLabelCharacter = ({
   axis,
   className
 }: {
-  axis: 'x' | 'y' | 'z'
+  axis: 'x' | 'y' | 'z' | 'w'
   className: string
 }) => {
   const axisColorClasses = {

@@ -17,7 +17,11 @@ export const entitySchema = z.object({
     z.coerce.number(),
     z.coerce.number()
   ]),
-  // local_rotation: z.tuple([z.coerce.number(), z.coerce.number(), z.coerce.number()]),
+  local_rotation_euler: z.tuple([
+    z.coerce.number(),
+    z.coerce.number(),
+    z.coerce.number()
+  ]),
   local_scale: z.tuple([
     z.coerce.number(),
     z.coerce.number(),
@@ -32,7 +36,7 @@ export const entitySchemaUiFormDefaultValues = {
   name: '',
   enabled: true,
   local_position: [0, 0, 0] as [number, number, number],
-  // local_rotation: [0, 0, 0] as [number,number,number],
+  local_rotation_euler: [0, 0, 0] as [number, number, number],
   local_scale: [1, 1, 1] as [number, number, number],
   tags: [],
   components: {}
