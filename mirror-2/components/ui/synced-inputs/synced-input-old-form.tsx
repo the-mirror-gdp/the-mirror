@@ -39,7 +39,7 @@ interface SyncedInputProps<T> {
   triggerOnChange?: boolean // triggers the form component on change. Use for booleans or specific cases.
 }
 
-export function SyncedInput<T>({
+export function SyncedInputDepr<T>({
   id,
   generalEntity,
   fieldName,

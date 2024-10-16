@@ -7,7 +7,7 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import { useParams } from 'next/navigation';
 
 import { z } from 'zod'; // Import zod for validation
-import { SyncedInput } from '@/components/ui/synced-inputs/synced-input-old-form';
+import { SyncedInputDepr } from '@/components/ui/synced-inputs/synced-input-old-form';
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks';
 import { selectCurrentScene, setControlBarCurrentView, setCurrentScene } from '@/state/local.slice';
 import { DatabaseScene, useCreateSceneMutation, useDeleteSceneMutation, useGetAllScenesQuery, useGetSingleSceneQuery, useUpdateSceneMutation } from '@/state/api/scenes';
@@ -69,7 +69,7 @@ export default function Scenes() {
                 />
                 <div className="flex justify-between w-full">
                   <div className="flex-auto">
-                    <SyncedInput
+                    <SyncedInputDepr
                       id={scene.id}
                       fieldName="name"
                       formSchema={formSchema} // Your Zod validation schema
