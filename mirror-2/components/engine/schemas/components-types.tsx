@@ -36,7 +36,6 @@ export enum ComponentType {
   // Animation = 'animation', // legacy; commented out here for reference
   // Model = 'model', // legacy; commented out here for reference
 }
-
 export const getIconForComponent = (componentType: ComponentType) => {
   const iconClassName = 'mr-2 h-4 w-4'
   switch (componentType) {
@@ -64,5 +63,34 @@ export const getIconForComponent = (componentType: ComponentType) => {
       return <Proportions className={iconClassName} />
     default:
       return null
+  }
+}
+
+export const getDisplayNameForComponent = (componentType: ComponentType) => {
+  switch (componentType) {
+    case ComponentType.Sprite2D:
+      return '2D Sprite'
+    case ComponentType.Model3D:
+      return '3D Model'
+    case ComponentType.Anim:
+      return 'Animation'
+    case ComponentType.Camera:
+      return 'Camera'
+    case ComponentType.GSplat:
+      return 'Gaussian Splat'
+    case ComponentType.Light:
+      return 'Light'
+    case ComponentType.ParticleSystem:
+      return 'Particles'
+    case ComponentType.Collision:
+      return 'Collision'
+    case ComponentType.Script:
+      return 'Script'
+    case ComponentType.Sound:
+      return 'Sound'
+    case ComponentType.Element:
+      return 'UI'
+    default:
+      return 'Component'
   }
 }

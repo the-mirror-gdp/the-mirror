@@ -3,7 +3,6 @@ import { ReactNode } from 'react'
 import { cn } from '@/utils/cn'
 
 interface TabItemProps {
-  href: string
   isActive?: boolean
   isDisabled?: boolean
   icon: ReactNode
@@ -12,7 +11,6 @@ interface TabItemProps {
 }
 
 export function TabItem({
-  href,
   isActive = false,
   isDisabled = false,
   icon,

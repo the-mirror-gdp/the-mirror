@@ -1,6 +1,6 @@
 import { TabItem } from '@/components/ui/tabs/tab-item'
 import { useAppSelector } from '@/hooks/hooks'
-import { DatabaseEntity } from '@/state/api/entities'
+import { DatabaseEntity, useGetSingleEntityQuery } from '@/state/api/entities'
 import {
   UserIcon,
   LayoutDashboardIcon,
@@ -10,34 +10,41 @@ import {
 } from 'lucide-react'
 import { useFormContext } from 'react-hook-form'
 import { useState } from 'react'
-import { selectCurrentEntityComponents } from '@/state/local.slice'
 
-export function VerticalTabs({
-  components
-}: {
-  components: DatabaseEntity['components']
-}) {
+import {
+  ComponentType,
+  getDisplayNameForComponent,
+  getIconForComponent
+} from '@/components/engine/schemas/components-types'
+import { selectCurrentEntity } from '@/state/local.slice'
+import { skipToken } from '@reduxjs/toolkit/query'
+
+export function VerticalTabs() {
   const form = useFormContext()
+  const currentEntity = useAppSelector(selectCurrentEntity)
+  // This may seem odd to use this here instead of passing props, but this helps with rerendering. It was a huge pain earlier with not rerendering correctly since we're working with nested data
+  const { data: entity } = useGetSingleEntityQuery(
+    currentEntity?.id || skipToken
+  )
+  const [selectedTab, setSelectedTab] = useState<ComponentType | null>(null)
 
-  const [selectedTab, setSelectedTab] = useState<string | null>(null)
-
-  const handleTabClick = (key: string) => {
+  const handleTabClick = (key: ComponentType) => {
     setSelectedTab(key)
   }
 
   return (
     <div className="md:flex">
       <div className="flex-column space-y-4 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-4 mb-4 md:mb-0">
-        {components &&
-          Object.keys(components).map((key) => {
+        {entity &&
+          entity.components &&
+          Object.keys(entity.components).map((key) => {
             return (
               <div key={key}>
                 <TabItem
-                  href="#"
                   isActive={selectedTab === key}
-                  icon={<UserIcon className="w-4 h-4 me-2 text-white" />}
-                  label={key}
-                  onClick={() => handleTabClick(key)}
+                  icon={getIconForComponent(key as ComponentType)}
+                  label={getDisplayNameForComponent(key as ComponentType)}
+                  onClick={() => handleTabClick(key as ComponentType)}
                 />
               </div>
             )
@@ -46,17 +53,8 @@ export function VerticalTabs({
 
       <div className="p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
         <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-          Profile Tab
+          {selectedTab && getDisplayNameForComponent(selectedTab)}
         </h3>
-        <p className="mb-2">
-          This is some placeholder content the Profile tab's associated content,
-          clicking another tab will toggle the visibility of this one for the
-          next.
-        </p>
-        <p>
-          The tab JavaScript swaps classes to control the content visibility and
-          styling.
-        </p>
       </div>
     </div>
   )

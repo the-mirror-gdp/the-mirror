@@ -174,12 +174,6 @@ export const selectCurrentEntity = (
 }
 import { createSelector } from '@reduxjs/toolkit'
 
-export const selectCurrentEntityComponents = createSelector(
-  (state: RootState) => state.local.currentEntity?.components,
-  (components: any) => {
-    return components
-  }
-)
 export const selectExpandedEntityIds = (state: RootState) =>
   state.local.expandedEntityIds
 export const selectAutomaticallyExpandedSceneIds = (state: RootState) =>

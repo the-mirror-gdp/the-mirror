@@ -33,7 +33,8 @@ import { DatabaseEntity } from '@/state/api/entities'
 import { useAddComponentToEntityMutation } from '@/state/api/entities'
 import {
   ComponentType,
-  getIconForComponent
+  getIconForComponent,
+  getDisplayNameForComponent
 } from '@/components/engine/schemas/components-types'
 
 export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
@@ -65,7 +66,7 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
             onClick={() => handleAddComponent(ComponentType.Sprite2D, {})}
           >
             {getIconForComponent(ComponentType.Sprite2D)}
-            <span>2D Sprite</span>
+            <span>{getDisplayNameForComponent(ComponentType.Sprite2D)}</span>
           </DropdownMenuItem>
 
           <DropdownMenuItem
@@ -73,7 +74,7 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
             onClick={() => handleAddComponent(ComponentType.Model3D, {})}
           >
             {getIconForComponent(ComponentType.Model3D)}
-            <span>3D Model</span>
+            <span>{getDisplayNameForComponent(ComponentType.Model3D)}</span>
           </DropdownMenuItem>
 
           <DropdownMenuItem
@@ -81,7 +82,7 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
             onClick={() => handleAddComponent(ComponentType.Anim, {})}
           >
             {getIconForComponent(ComponentType.Anim)}
-            <span>Animation</span>
+            <span>{getDisplayNameForComponent(ComponentType.Anim)}</span>
           </DropdownMenuItem>
 
           <DropdownMenuItem
@@ -89,7 +90,7 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
             onClick={() => handleAddComponent(ComponentType.Camera, {})}
           >
             {getIconForComponent(ComponentType.Camera)}
-            <span>Camera</span>
+            <span>{getDisplayNameForComponent(ComponentType.Camera)}</span>
           </DropdownMenuItem>
 
           <DropdownMenuItem
@@ -97,7 +98,7 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
             onClick={() => handleAddComponent(ComponentType.GSplat, {})}
           >
             {getIconForComponent(ComponentType.GSplat)}
-            <span>Gaussian Splat</span>
+            <span>{getDisplayNameForComponent(ComponentType.GSplat)}</span>
           </DropdownMenuItem>
 
           {/* <DropdownMenuSeparator /> */}
@@ -107,7 +108,7 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
             onClick={() => handleAddComponent(ComponentType.Light, {})}
           >
             {getIconForComponent(ComponentType.Light)}
-            <span>Light</span>
+            <span>{getDisplayNameForComponent(ComponentType.Light)}</span>
           </DropdownMenuItem>
 
           <DropdownMenuItem
@@ -115,7 +116,9 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
             onClick={() => handleAddComponent(ComponentType.ParticleSystem, {})}
           >
             {getIconForComponent(ComponentType.ParticleSystem)}
-            <span>Particles</span>
+            <span>
+              {getDisplayNameForComponent(ComponentType.ParticleSystem)}
+            </span>
           </DropdownMenuItem>
 
           <DropdownMenuItem
@@ -123,7 +126,7 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
             onClick={() => handleAddComponent(ComponentType.Collision, {})}
           >
             {getIconForComponent(ComponentType.Collision)}
-            <span>Physics</span>
+            <span>{getDisplayNameForComponent(ComponentType.Collision)}</span>
           </DropdownMenuItem>
 
           <DropdownMenuItem
@@ -131,7 +134,7 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
             onClick={() => handleAddComponent(ComponentType.Script, {})}
           >
             {getIconForComponent(ComponentType.Script)}
-            <span>Script</span>
+            <span>{getDisplayNameForComponent(ComponentType.Script)}</span>
           </DropdownMenuItem>
 
           <DropdownMenuItem
@@ -139,7 +142,7 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
             onClick={() => handleAddComponent(ComponentType.Sound, {})}
           >
             {getIconForComponent(ComponentType.Sound)}
-            <span>Sound</span>
+            <span>{getDisplayNameForComponent(ComponentType.Sound)}</span>
           </DropdownMenuItem>
 
           <DropdownMenuItem
@@ -147,7 +150,7 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
             onClick={() => handleAddComponent(ComponentType.Element, {})}
           >
             {getIconForComponent(ComponentType.Element)}
-            <span>UI</span>
+            <span>{getDisplayNameForComponent(ComponentType.Element)}</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

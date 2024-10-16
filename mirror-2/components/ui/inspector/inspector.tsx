@@ -1,12 +1,9 @@
 'use client'
 import { EntityFormGroupOld } from '@/components/ui/inspector/entity.formgroup-old'
 import { Button } from '@/components/ui/button'
-import { CreateComponentButton } from '@/components/ui/custom-buttons/create-component.button'
+import { CreateComponentButton } from '@/components/ui/custom-buttons/add-component.button'
 import { useAppSelector } from '@/hooks/hooks'
-import {
-  selectCurrentEntity,
-  selectCurrentEntityComponents
-} from '@/state/local.slice'
+import { selectCurrentEntity } from '@/state/local.slice'
 import { cn } from '@/utils/cn'
 import { PlusCircleIcon } from 'lucide-react'
 import { EntityFormGroup } from '@/components/ui/inspector/entity.formgroup'
@@ -15,8 +12,6 @@ import { VerticalTabs } from '@/components/ui/tabs/vertical-tabs'
 
 export default function Inspector({ className }) {
   const entity = useAppSelector(selectCurrentEntity)
-  const components = useAppSelector(selectCurrentEntityComponents)
-  console.log('ins entity', entity)
   return (
     <div className={cn(className, 'flex flex-col gap-3 p-2')}>
       {entity && (
@@ -34,12 +29,10 @@ export default function Inspector({ className }) {
             key={'CreateComponentButton' + entity.id}
           />
 
-          {components && (
-            <VerticalTabs
-              components={components}
-              key={'VerticalTabs' + components}
-            />
-          )}
+          <VerticalTabs
+            components={entity.components}
+            key={'VerticalTabs' + entity.components}
+          />
         </>
       )}
     </div>

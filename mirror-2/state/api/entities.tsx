@@ -586,6 +586,7 @@ listenerMiddlewareEntities.startListening({
     entitiesApi.endpoints.updateComponentOnEntity.matchPending(action) ||
     entitiesApi.endpoints.deleteComponentFromEntity.matchPending(action),
   effect: async (action, listenerApi) => {
+    console.log('match pending running', action, listenerApi)
     const state = listenerApi.getState() as RootState
 
     // Access all queries from the entitiesApi cache
@@ -610,17 +611,7 @@ listenerMiddlewareEntities.startListening({
       console.error('Error while extracting entities from cache:', error)
     }
 
-    // update currentlySeletedEntity since it's separate state from RTK
-    const currentlySelectedEntity = state.local.currentEntity
-
-    if (currentlySelectedEntity) {
-      const updatedEntity = allEntities.find(
-        (entity) => entity.id === currentlySelectedEntity.id
-      )
-      if (updatedEntity) {
-        listenerApi.dispatch(setCurrentEntity(updatedEntity))
-      }
-    }
+    updateCurrentlySelectedEntity(state, allEntities, listenerApi)
 
     // Pass the optimistic changes to PlayCanvas or your engine
     console.log('Optimistically updating entities', allEntities)
@@ -635,11 +626,12 @@ listenerMiddlewareEntities.startListening({
     entitiesApi.endpoints.batchUpdateEntities.matchFulfilled(action) ||
     entitiesApi.endpoints.deleteEntity.matchFulfilled(action) ||
     // components
-    entitiesApi.endpoints.addComponentToEntity.matchPending(action) ||
-    entitiesApi.endpoints.getComponentsOfEntity.matchPending(action) ||
-    entitiesApi.endpoints.updateComponentOnEntity.matchPending(action) ||
-    entitiesApi.endpoints.deleteComponentFromEntity.matchPending(action),
+    entitiesApi.endpoints.addComponentToEntity.matchFulfilled(action) ||
+    entitiesApi.endpoints.getComponentsOfEntity.matchFulfilled(action) ||
+    entitiesApi.endpoints.updateComponentOnEntity.matchFulfilled(action) ||
+    entitiesApi.endpoints.deleteComponentFromEntity.matchFulfilled(action),
   effect: async (action, listenerApi) => {
+    console.log('match fulfilled running', action, listenerApi)
     const state = listenerApi.getState() as RootState
 
     // Access all queries from the entitiesApi cache
@@ -663,6 +655,8 @@ listenerMiddlewareEntities.startListening({
     } catch (error) {
       console.error('Error while extracting entities from cache:', error)
     }
+
+    updateCurrentlySelectedEntity(state, allEntities, listenerApi)
 
     // Apply confirmed changes to PlayCanvas or your engine
     console.log('Applying confirmed updates to entities', allEntities)
@@ -677,11 +671,12 @@ listenerMiddlewareEntities.startListening({
     entitiesApi.endpoints.batchUpdateEntities.matchRejected(action) ||
     entitiesApi.endpoints.deleteEntity.matchRejected(action) ||
     // components
-    entitiesApi.endpoints.addComponentToEntity.matchPending(action) ||
-    entitiesApi.endpoints.getComponentsOfEntity.matchPending(action) ||
-    entitiesApi.endpoints.updateComponentOnEntity.matchPending(action) ||
-    entitiesApi.endpoints.deleteComponentFromEntity.matchPending(action),
+    entitiesApi.endpoints.addComponentToEntity.matchRejected(action) ||
+    entitiesApi.endpoints.getComponentsOfEntity.matchRejected(action) ||
+    entitiesApi.endpoints.updateComponentOnEntity.matchRejected(action) ||
+    entitiesApi.endpoints.deleteComponentFromEntity.matchRejected(action),
   effect: async (action, listenerApi) => {
+    console.log('match rejected running', action, listenerApi)
     const state = listenerApi.getState() as RootState
 
     // Access all queries from the entitiesApi cache
@@ -706,11 +701,38 @@ listenerMiddlewareEntities.startListening({
       console.error('Error while extracting entities from cache:', error)
     }
 
+    updateCurrentlySelectedEntity(state, allEntities, listenerApi)
+
     // Revert the changes in PlayCanvas or your engine
     console.log('Reverting updates to entities', allEntities)
     updateEngineApp(allEntities, { isReverted: true })
   }
 })
+
+/**
+ * Updates currentlySeletedEntity since it's separate state from RTK
+ */
+function updateCurrentlySelectedEntity(
+  state: RootState,
+  allEntities: DatabaseEntity[],
+  listenerApi: any
+) {
+  const currentlySelectedEntity = state.local.currentEntity
+  console.log(
+    'updateCurrentlySelectedEntity', //@ts-ignore
+    allEntities.find((entity) => entity.id === currentlySelectedEntity?.id)
+      .components,
+    currentlySelectedEntity?.components
+  )
+  if (currentlySelectedEntity) {
+    const updatedEntity = allEntities.find(
+      (entity) => entity.id === currentlySelectedEntity.id
+    )
+    if (updatedEntity) {
+      listenerApi.dispatch(setCurrentEntity(updatedEntity))
+    }
+  }
+}
 
 export const selectEntitiesResult = entitiesApi.endpoints.getAllEntities.select
 
