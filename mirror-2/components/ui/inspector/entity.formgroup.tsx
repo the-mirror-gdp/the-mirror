@@ -31,15 +31,6 @@ export function EntityFormGroup({ entity }: { entity: DatabaseEntity }) {
   })
 
   async function onSubmit(values: z.infer<typeof entitySchema>) {
-    // Handle conversion to number if convertSubmissionToNumber is true
-    // if (convertSubmissionToNumber) {
-    //   const convertedValue = Number(values[fieldName]) // Convert to number
-    //   if (isNaN(convertedValue)) {
-    //     console.error('Invalid number input')
-    //     return
-    //   }
-    //   values = { ...values, [fieldName]: convertedValue } // Update values with the converted number
-    // }
     vecKeys.forEach((key) => {
       values[key] = [values[`${key}X`], values[`${key}Y`], values[`${key}Z`]]
       delete values[`${key}X`]
@@ -48,23 +39,8 @@ export function EntityFormGroup({ entity }: { entity: DatabaseEntity }) {
       delete values[`${key}W`]
     })
     console.log('onSubmit values', values)
-    // const convertedValues = convertIndividualToVecNumbers(values)
-    // console.log('convertedValues', convertedValues)
-    // @ts-ignore
     await updateEntity({ id: entity.id, ...values })
   }
-
-  // Reset the form when the entity data is successfully fetched
-  // useEffect(() => {
-  //   if (entity) {
-  //     // defaultValueToSet =
-  //     //   genericEntity?.[fieldName] !== undefined
-  //     //     ? genericEntity[fieldName]
-  //     //     : defaultValue
-
-  //     form.reset()
-  //   }
-  // }, [genericEntity, isSuccess, form])
 
   const handleChange = async () => {
     console.log('Form test, vallues:', form.getValues())
@@ -84,17 +60,6 @@ export function EntityFormGroup({ entity }: { entity: DatabaseEntity }) {
       console.log('form not valid', form)
     }
   }
-
-  // Display loading state if data is still being fetched
-  // if (isLoading) {
-  //   return (
-  //     <Skeleton
-  //       className={cn(
-  //         'w-full dark:bg-transparent border-none text-lg shadow-none'
-  //       )}
-  //     />
-  //   )
-  // }
 
   return (
     <>
