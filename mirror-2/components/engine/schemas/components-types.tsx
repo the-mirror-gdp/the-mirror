@@ -21,7 +21,6 @@ export enum ComponentType {
   Button = 'button',
   Camera = 'camera',
   Collision = 'collision',
-  Element = 'element',
   GSplat = 'gsplat',
   LayoutChild = 'layoutchild',
   LayoutGroup = 'layoutgroup',
@@ -32,7 +31,8 @@ export enum ComponentType {
   Script = 'script',
   Scrollbar = 'scrollbar',
   ScrollView = 'scrollview',
-  Sound = 'sound'
+  Sound = 'sound',
+  Element = 'element'
 
   // Legacy
   // Animation = 'animation', // legacy; commented out here for reference
@@ -95,4 +95,14 @@ export const getDisplayNameForComponent = (componentType: ComponentType) => {
     default:
       return 'Component'
   }
+}
+
+export const getLongestDisplayName = () => {
+  const displayNames = Object.values(ComponentType).map((componentType) =>
+    getDisplayNameForComponent(componentType)
+  )
+  return displayNames.reduce(
+    (longest, current) => (current.length > longest.length ? current : longest),
+    ''
+  )
 }

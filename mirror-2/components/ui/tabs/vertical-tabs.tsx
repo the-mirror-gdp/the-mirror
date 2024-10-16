@@ -49,7 +49,7 @@ export function VerticalTabs() {
 
   return (
     <div className="flex">
-      <div className="flex-column text-sm font-medium h-12">
+      <div className="flex-col text-sm font-medium h-12">
         {componentKeys.map((key) => {
           return (
             <TabItem

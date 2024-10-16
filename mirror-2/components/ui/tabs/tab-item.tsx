@@ -1,6 +1,7 @@
 // TabItem.tsx
 import { ReactNode } from 'react'
 import { cn } from '@/utils/cn'
+import { getLongestDisplayName } from '@/components/engine/schemas/components-types'
 
 interface TabItemProps {
   isActive?: boolean
@@ -18,7 +19,7 @@ export function TabItem({
   onClick
 }: TabItemProps) {
   const baseClasses =
-    'flex items-center px-1 py-1 w-full cursor-pointer w-full h-full border-r-2 border-gray-800'
+    'flex items-center pl-1 pr-2 py-1 w-full cursor-pointer w-full h-full border-r-2 border-gray-800'
   const activeClasses = 'text-primary border-r-2 border-primary'
   const defaultClasses =
     ' bg-gray-50 bg-transparent hover:text-accent hover:border-accent'
@@ -40,7 +41,13 @@ export function TabItem({
       onClick={onClick}
     >
       {icon}
-      <span className="whitespace-nowrap">{label}</span>
+      <span
+        className={cn({
+          'whitespace-nowrap': label !== getLongestDisplayName() // remove nowrap if longest name (Gaussian Splat)
+        })}
+      >
+        {label}
+      </span>
     </div>
   )
 }
