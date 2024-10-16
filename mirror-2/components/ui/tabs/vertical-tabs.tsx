@@ -19,6 +19,7 @@ import {
 import { selectCurrentEntity } from '@/state/local.slice'
 import { skipToken } from '@reduxjs/toolkit/query'
 import { Separator } from '@/components/ui/separator'
+import Model3DRenderFormGroup from '@/components/ui/inspector/components/model-3d'
 
 export function VerticalTabs() {
   const form = useFormContext()
@@ -83,11 +84,33 @@ export function VerticalTabs() {
 
       <div className="mt-2 p-2 text-medium text-gray-400 text-center w-full">
         <h3 className="flex flex-row justify-center items-center text-lg font-bold text-white gap-2">
-          <div className="flex justify-center items-center">
-            {selectedTab && getIconForComponent(selectedTab as ComponentType)}
+          <div className="flex justify-center items-center w-full">
+            <div>
+              {' '}
+              {selectedTab && getIconForComponent(selectedTab as ComponentType)}
+            </div>
+            <div> {selectedTab && getDisplayNameForComponent(selectedTab)}</div>
           </div>
-          <div> {selectedTab && getDisplayNameForComponent(selectedTab)}</div>
         </h3>
+        <div className="flex flex-col">
+          {selectedTab && (
+            <div className="mt-4">
+              {(() => {
+                switch (selectedTab) {
+                  case ComponentType.Model3D:
+                    return <Model3DRenderFormGroup />
+                  // case ComponentType.TypeB:
+                  //   return <ComponentB />;
+                  // case ComponentType.TypeC:
+                  //   return <ComponentC />;
+                  // // Add more cases as needed
+                  default:
+                    return <div>Component Not Found</div>
+                }
+              })()}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )

@@ -8,6 +8,7 @@ interface SyncedTextInputProps<T> {
   handleChange: () => void
   className?: string
   triggerOnChange?: boolean
+  placeholder?: any
 }
 
 export function SyncedTextInput<T>({
@@ -15,7 +16,8 @@ export function SyncedTextInput<T>({
   form,
   handleChange,
   className,
-  triggerOnChange = false
+  triggerOnChange = false,
+  placeholder
 }: SyncedTextInputProps<T>) {
   return (
     <SyncedFormField
@@ -27,6 +29,7 @@ export function SyncedTextInput<T>({
       renderComponent={(field, fieldName) => (
         <Input
           {...field} // Sync field with react-hook-form
+          placeholder={placeholder}
           className={clsx('form-input', className)} // Add necessary styles and classes
           type="text"
           autoComplete="off"
