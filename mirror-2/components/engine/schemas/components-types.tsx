@@ -12,7 +12,10 @@ import {
   Proportions
 } from 'lucide-react'
 
+// this order determines the vertical sidebar order
 export enum ComponentType {
+  Sprite2D = 'sprite', // different from engine naming for simplicity
+  Model3D = 'render', // different from engine naming for simplicity
   Anim = 'anim',
   AudioListener = 'audiolistener',
   Button = 'button',
@@ -24,14 +27,13 @@ export enum ComponentType {
   LayoutGroup = 'layoutgroup',
   Light = 'light',
   ParticleSystem = 'particlesystem',
-  Model3D = 'render', // different from engine naming for simplicity
   RigidBody = 'rigidbody',
   Screen = 'screen',
   Script = 'script',
   Scrollbar = 'scrollbar',
   ScrollView = 'scrollview',
-  Sound = 'sound',
-  Sprite2D = 'sprite' // different from engine naming for simplicity
+  Sound = 'sound'
+
   // Legacy
   // Animation = 'animation', // legacy; commented out here for reference
   // Model = 'model', // legacy; commented out here for reference

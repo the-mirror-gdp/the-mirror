@@ -9,7 +9,7 @@ import {
   XCircleIcon
 } from 'lucide-react'
 import { useFormContext } from 'react-hook-form'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import {
   ComponentType,
@@ -27,6 +27,21 @@ export function VerticalTabs() {
     currentEntity?.id || skipToken
   )
   const [selectedTab, setSelectedTab] = useState<ComponentType | null>(null)
+  const [componentKeys, setComponentKeys] = useState<string[]>([])
+
+  useEffect(() => {
+    if (entity && entity.components) {
+      const keys = Object.keys(entity.components)
+      keys.sort((a, b) => {
+        const orderA = Object.values(ComponentType).indexOf(a as ComponentType)
+        const orderB = Object.values(ComponentType).indexOf(b as ComponentType)
+        return orderA - orderB
+      })
+      setComponentKeys(keys)
+    } else {
+      setComponentKeys([])
+    }
+  }, [entity])
 
   const handleTabClick = (key: ComponentType) => {
     setSelectedTab(key)
@@ -35,19 +50,17 @@ export function VerticalTabs() {
   return (
     <div className="flex">
       <div className="flex-column text-sm font-medium h-12">
-        {entity &&
-          entity.components &&
-          Object.keys(entity.components).map((key) => {
-            return (
-              <TabItem
-                key={key}
-                isActive={selectedTab === key}
-                icon={getIconForComponent(key as ComponentType)}
-                label={getDisplayNameForComponent(key as ComponentType)}
-                onClick={() => handleTabClick(key as ComponentType)}
-              />
-            )
-          })}
+        {componentKeys.map((key) => {
+          return (
+            <TabItem
+              key={key}
+              isActive={selectedTab === key}
+              icon={getIconForComponent(key as ComponentType)}
+              label={getDisplayNameForComponent(key as ComponentType)}
+              onClick={() => handleTabClick(key as ComponentType)}
+            />
+          )
+        })}
       </div>
 
       <div className="p-2 text-medium text-gray-400 text-center  w-full">
