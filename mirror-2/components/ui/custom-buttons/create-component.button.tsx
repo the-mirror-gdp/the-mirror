@@ -31,6 +31,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { DatabaseEntity } from '@/state/api/entities'
 import { useAddComponentToEntityMutation } from '@/state/api/entities'
+import { ComponentType } from '@/components/engine/schemas/components-types'
 
 export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
   const iconClassName = 'mr-2 h-4 w-4'
@@ -60,38 +61,49 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
         <DropdownMenuGroup>
           <DropdownMenuItem
             className={itemClassName}
-            onClick={() => handleAddComponent('2D Sprite', {})}
+            onClick={() => handleAddComponent(ComponentType.Sprite2D, {})}
           >
             <BookImage className={iconClassName} />
             <span>2D Sprite</span>
           </DropdownMenuItem>
+
           <DropdownMenuItem
             className={itemClassName}
-            onClick={() => handleAddComponent('3D Model', {})}
+            onClick={() => handleAddComponent(ComponentType.Model3D, {})}
           >
             <Box className={iconClassName} />
             <span>3D Model</span>
           </DropdownMenuItem>
+
           <DropdownMenuItem
             className={itemClassName}
-            onClick={() => handleAddComponent('Animation', {})}
+            onClick={() => handleAddComponent(ComponentType.Anim, {})}
           >
             <PersonStanding className={iconClassName} />
             <span>Animation</span>
           </DropdownMenuItem>
+
           <DropdownMenuItem
             className={itemClassName}
-            onClick={() => handleAddComponent('Camera', {})}
+            onClick={() => handleAddComponent(ComponentType.Camera, {})}
           >
             <Cctv className={iconClassName} />
             <span>Camera</span>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            className={itemClassName}
+            onClick={() => handleAddComponent(ComponentType.GSplat, {})}
+          >
+            <Grip className={iconClassName} />
+            <span>Gaussian Splat</span>
           </DropdownMenuItem>
 
           {/* <DropdownMenuSeparator /> */}
 
           <DropdownMenuItem
             className={itemClassName}
-            onClick={() => handleAddComponent('Light', {})}
+            onClick={() => handleAddComponent(ComponentType.Light, {})}
           >
             <Lightbulb className={iconClassName} />
             <span>Light</span>
@@ -99,23 +111,7 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
 
           <DropdownMenuItem
             className={itemClassName}
-            onClick={() => handleAddComponent('Physics', {})}
-          >
-            <Orbit className={iconClassName} />
-            <span>Physics</span>
-          </DropdownMenuItem>
-
-          <DropdownMenuItem
-            className={itemClassName}
-            onClick={() => handleAddComponent('Gaussian Splat', {})}
-          >
-            <Grip className={iconClassName} />
-            <span>Gaussian Splat</span>
-          </DropdownMenuItem>
-
-          <DropdownMenuItem
-            className={itemClassName}
-            onClick={() => handleAddComponent('Particles', {})}
+            onClick={() => handleAddComponent(ComponentType.ParticleSystem, {})}
           >
             <Atom className={iconClassName} />
             <span>Particles</span>
@@ -123,7 +119,15 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
 
           <DropdownMenuItem
             className={itemClassName}
-            onClick={() => handleAddComponent('Script', {})}
+            onClick={() => handleAddComponent(ComponentType.Collision, {})}
+          >
+            <Orbit className={iconClassName} />
+            <span>Physics</span>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            className={itemClassName}
+            onClick={() => handleAddComponent(ComponentType.Script, {})}
           >
             <ScrollText className={iconClassName} />
             <span>Script</span>
@@ -131,7 +135,7 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
 
           <DropdownMenuItem
             className={itemClassName}
-            onClick={() => handleAddComponent('Sound', {})}
+            onClick={() => handleAddComponent(ComponentType.Sound, {})}
           >
             <Volume2 className={iconClassName} />
             <span>Sound</span>
@@ -139,7 +143,7 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
 
           <DropdownMenuItem
             className={itemClassName}
-            onClick={() => handleAddComponent('UI', {})}
+            onClick={() => handleAddComponent(ComponentType.Element, {})}
           >
             <Proportions className={iconClassName} />
             <span>UI</span>
