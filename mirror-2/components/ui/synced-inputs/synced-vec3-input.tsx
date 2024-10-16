@@ -24,17 +24,14 @@ export function SyncedVec3Input<T>({
   className,
   triggerOnChange = false
 }: SyncedVec3InputProps<T>) {
-  const { control } = useForm()
-
-  // TODO could be refactored to use useFieldArray, but felt like a massive pain and waste of time with shadcn's defaults of abstracting the rhf <Controller out already. Not worth the time at the moment.
+  // TODO could be refactored to use useFieldArray, but felt like a massive pain and waste of time with shadcn's defaults of abstracting the rhf <Controller out already. Not worth the time at the moment. Tried on a /save branch and it was buggy, timebox expired
 
   return (
-    <>
+    <div className={cn('flex', className)}>
       <SyncedFormField
         fieldName={fieldNameX}
         form={form}
         handleChange={handleChange}
-        className={className}
         triggerOnChange={triggerOnChange}
         renderComponent={(field, fieldName) => (
           <>
@@ -62,7 +59,6 @@ export function SyncedVec3Input<T>({
         fieldName={fieldNameY}
         form={form}
         handleChange={handleChange}
-        className={className}
         triggerOnChange={triggerOnChange}
         renderComponent={(field, fieldName) => (
           <>
@@ -84,7 +80,6 @@ export function SyncedVec3Input<T>({
         fieldName={fieldNameZ}
         form={form}
         handleChange={handleChange}
-        className={className}
         triggerOnChange={triggerOnChange}
         renderComponent={(field, fieldName) => (
           <>
@@ -102,6 +97,6 @@ export function SyncedVec3Input<T>({
           </>
         )}
       />
-    </>
+    </div>
   )
 }

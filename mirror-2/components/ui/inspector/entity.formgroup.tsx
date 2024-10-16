@@ -1,6 +1,7 @@
 'use client'
 import { entitySchema } from '@/components/engine/schemas/entity.schema'
 import { FormProvider } from '@/components/ui/form'
+import { Separator } from '@/components/ui/separator'
 import { SyncedTextInput } from '@/components/ui/synced-inputs/synced-text-input'
 import { SyncedVec3Input } from '@/components/ui/synced-inputs/synced-vec3-input'
 import { DatabaseEntity, useUpdateEntityMutation } from '@/state/api/entities'
@@ -46,7 +47,7 @@ export function EntityFormGroup({ entity }: { entity: DatabaseEntity }) {
       delete values[`${key}Z`]
       delete values[`${key}W`]
     })
-    console.log('values', values)
+    console.log('onSubmit values', values)
     // const convertedValues = convertIndividualToVecNumbers(values)
     // console.log('convertedValues', convertedValues)
     // @ts-ignore
@@ -99,27 +100,49 @@ export function EntityFormGroup({ entity }: { entity: DatabaseEntity }) {
     <>
       <FormProvider {...form}>
         <form
-          // isLoading={isLoading}
-          // handleChange={handleChange}
           onBlur={form.handleSubmit(onSubmit)} // Trigger submission on blur as fallback
           onSubmit={(values) => console.log('Submitted values:', values)}
         >
-          {/* Synced Text Input for Name Field */}
-          <SyncedTextInput
-            fieldName="name"
-            form={form} // Provided by FormProvider context
-            handleChange={handleChange} // Handled internally by SyncedForm
-            triggerOnChange={true} // Triggers submission on each change
-          />
-
-          <SyncedVec3Input
-            fieldNameX="local_positionX"
-            fieldNameY="local_positionY"
-            fieldNameZ="local_positionZ"
-            form={form} // Provided by FormProvider context
-            handleChange={handleChange} // Handled internally by SyncedForm
-            triggerOnChange={true} // Triggers submission on each change
-          />
+          <div className="flex flex-col gap-1">
+            <SyncedTextInput
+              className="pl-0"
+              fieldName="name"
+              form={form} // Provided by FormProvider context
+              handleChange={handleChange} // Handled internally by SyncedForm
+              triggerOnChange={true} // Triggers submission on each change
+            />
+            <Separator />
+            <p className="text-sm">Position</p>
+            <SyncedVec3Input
+              className="pl-1"
+              fieldNameX="local_positionX"
+              fieldNameY="local_positionY"
+              fieldNameZ="local_positionZ"
+              form={form} // Provided by FormProvider context
+              handleChange={handleChange} // Handled internally by SyncedForm
+              triggerOnChange={true} // Triggers submission on each change
+            />
+            <p className="text-sm">Rotation</p>
+            <SyncedVec3Input
+              className="pl-1"
+              fieldNameX="local_rotationX"
+              fieldNameY="local_rotationY"
+              fieldNameZ="local_rotationZ"
+              form={form} // Provided by FormProvider context
+              handleChange={handleChange} // Handled internally by SyncedForm
+              triggerOnChange={true} // Triggers submission on each change
+            />
+            <p className="text-sm">Scale</p>
+            <SyncedVec3Input
+              className="pl-1"
+              fieldNameX="local_scaleX"
+              fieldNameY="local_scaleY"
+              fieldNameZ="local_scaleZ"
+              form={form} // Provided by FormProvider context
+              handleChange={handleChange} // Handled internally by SyncedForm
+              triggerOnChange={true} // Triggers submission on each change
+            />
+          </div>
         </form>
       </FormProvider>
     </>

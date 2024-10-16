@@ -7,15 +7,17 @@ import { selectCurrentEntity } from '@/state/local.slice'
 import { cn } from '@/utils/cn'
 import { PlusCircleIcon } from 'lucide-react'
 import { EntityFormGroup } from '@/components/ui/inspector/entity.formgroup'
+import { Separator } from '@/components/ui/separator'
 
 export default function Inspector({ className }) {
   const entity = useAppSelector(selectCurrentEntity)
 
   return (
-    <div className={cn(className, 'flex flex-col p-3')}>
+    <div className={cn(className, 'flex flex-col gap-3 p-2')}>
       {entity && (
         <>
           <EntityFormGroup entity={entity} />
+
           {/* Create Component Button */}
           <CreateComponentButton entity={entity} />
         </>

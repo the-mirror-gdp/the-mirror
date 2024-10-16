@@ -7,9 +7,9 @@ import { z } from 'zod'
  */
 
 export const entitySchema = z.object({
-  components: z.any(), // Assuming components is a JSON object, this could be updated further if there's a specific structure
+  name: z.string().nonempty(), // Non-empty string for the name
+
   enabled: z.boolean(),
-  id: z.string().uuid(), // Assuming id is a UUID, adjust accordingly if it's a different format
 
   // Individual position components
   local_positionX: z.coerce.number(), // X component of local position
@@ -17,18 +17,16 @@ export const entitySchema = z.object({
   local_positionZ: z.coerce.number(), // Z component of local position
 
   // Individual rotation components
-  local_rotationX: z.number(), // X component of local rotation
-  local_rotationY: z.number(), // Y component of local rotation
-  local_rotationZ: z.number(), // Z component of local rotation
+  local_rotationX: z.coerce.number(), // X component of local rotation
+  local_rotationY: z.coerce.number(), // Y component of local rotation
+  local_rotationZ: z.coerce.number(), // Z component of local rotation
 
   // Individual scale components
-  local_scaleX: z.number(), // X component of local scale
-  local_scaleY: z.number(), // Y component of local scale
-  local_scaleZ: z.number(), // Z component of local scale
+  local_scaleX: z.coerce.number(), // X component of local scale
+  local_scaleY: z.coerce.number(), // Y component of local scale
+  local_scaleZ: z.coerce.number(), // Z component of local scale
 
-  name: z.string().nonempty(), // Non-empty string for the name
-  order_under_parent: z.number().nullable().optional(), // Optional number for order under parent
-  parent_id: z.string().nullable().optional(), // Optional string for parent_id
-  scene_id: z.number(), // Scene id as a number
-  tags: z.array(z.string()).nullable().optional() // Optional array of strings for tags
+  tags: z.array(z.string()).nullable().optional(), // Optional array of strings for tags
+
+  components: z.any() // Assuming components is a JSON object, this could be updated further if there's a specific structure
 })
