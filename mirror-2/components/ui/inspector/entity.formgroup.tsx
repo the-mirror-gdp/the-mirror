@@ -70,7 +70,7 @@ export function EntityFormGroup({ entity }: { entity: DatabaseEntity }) {
         >
           <div className="flex flex-col gap-1">
             <SyncedTextInput
-              className="pl-0"
+              className="pl-0 font-bold"
               fieldName="name"
               form={form} // Provided by FormProvider context
               handleChange={handleChange} // Handled internally by SyncedForm
