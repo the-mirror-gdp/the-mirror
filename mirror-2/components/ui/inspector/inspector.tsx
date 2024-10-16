@@ -29,10 +29,7 @@ export default function Inspector({ className }) {
             key={'CreateComponentButton' + entity.id}
           />
 
-          <VerticalTabs
-            components={entity.components}
-            key={'VerticalTabs' + entity.components}
-          />
+          <VerticalTabs key={'VerticalTabs' + entity.components} />
         </>
       )}
     </div>

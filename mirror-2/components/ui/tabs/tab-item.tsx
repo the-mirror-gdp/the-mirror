@@ -18,10 +18,10 @@ export function TabItem({
   onClick
 }: TabItemProps) {
   const baseClasses =
-    'inline-flex items-center px-4 py-3 rounded-lg w-full cursor-pointer'
-  const activeClasses = 'text-white bg-primary dark:bg-blue-600'
+    'flex items-center px-1 py-1 w-full cursor-pointer w-full h-full border-r-2 border-gray-800'
+  const activeClasses = 'text-primary border-r-2 border-primary'
   const defaultClasses =
-    'hover:text-gray-900 bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white'
+    ' bg-gray-50 bg-transparent hover:text-accent hover:border-accent'
   const disabledClasses =
     'text-gray-400 cursor-not-allowed bg-gray-50 dark:bg-gray-800 dark:text-gray-500'
 
@@ -29,7 +29,7 @@ export function TabItem({
     return (
       <div className={cn(baseClasses, disabledClasses)}>
         {icon}
-        {label}
+        <span className="whitespace-nowrap">{label}</span>
       </div>
     )
   }
@@ -40,7 +40,7 @@ export function TabItem({
       onClick={onClick}
     >
       {icon}
-      {label}
+      <span className="whitespace-nowrap">{label}</span>
     </div>
   )
 }

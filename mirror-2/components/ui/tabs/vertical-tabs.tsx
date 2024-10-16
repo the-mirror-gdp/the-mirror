@@ -33,27 +33,29 @@ export function VerticalTabs() {
   }
 
   return (
-    <div className="md:flex">
-      <div className="flex-column space-y-4 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-4 mb-4 md:mb-0">
+    <div className="flex">
+      <div className="flex-column text-sm font-medium h-12">
         {entity &&
           entity.components &&
           Object.keys(entity.components).map((key) => {
             return (
-              <div key={key}>
-                <TabItem
-                  isActive={selectedTab === key}
-                  icon={getIconForComponent(key as ComponentType)}
-                  label={getDisplayNameForComponent(key as ComponentType)}
-                  onClick={() => handleTabClick(key as ComponentType)}
-                />
-              </div>
+              <TabItem
+                key={key}
+                isActive={selectedTab === key}
+                icon={getIconForComponent(key as ComponentType)}
+                label={getDisplayNameForComponent(key as ComponentType)}
+                onClick={() => handleTabClick(key as ComponentType)}
+              />
             )
           })}
       </div>
 
-      <div className="p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
-          {selectedTab && getDisplayNameForComponent(selectedTab)}
+      <div className="p-2 text-medium text-gray-400 text-center  w-full">
+        <h3 className="flex flex-row justify-center items-center text-lg font-bold text-white gap-2">
+          <div className="flex justify-center items-center">
+            {selectedTab && getIconForComponent(selectedTab as ComponentType)}
+          </div>
+          <div> {selectedTab && getDisplayNameForComponent(selectedTab)}</div>
         </h3>
       </div>
     </div>
