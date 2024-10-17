@@ -78,7 +78,7 @@ export default function Model3DRenderFormGroup() {
       console.log('Form is valid, triggering submission:', values)
       onSubmit(values) // Manually call onSubmit after validation passes
     } else {
-      console.log('form not valid', form)
+      console.log('form not valid', form.formState.errors)
     }
   }
 

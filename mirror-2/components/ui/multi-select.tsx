@@ -28,6 +28,7 @@ import {
   CommandList,
   CommandSeparator
 } from '@/components/ui/command'
+import { useEffect } from 'react'
 
 /**
  * Variants for the multi-select component to handle different styles.
@@ -117,6 +118,9 @@ interface MultiSelectProps
    * Optional, can be used to add custom styles.
    */
   className?: string
+
+  fieldName: string
+  form: any
 }
 
 export const MultiSelect = React.forwardRef<
@@ -135,6 +139,8 @@ export const MultiSelect = React.forwardRef<
       modalPopover = false,
       asChild = false,
       className,
+      form,
+      fieldName,
       ...props
     },
     ref
@@ -143,6 +149,12 @@ export const MultiSelect = React.forwardRef<
       React.useState<string[]>(defaultValue)
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false)
     const [isAnimating, setIsAnimating] = React.useState(false)
+
+    // handle default values
+    useEffect(() => {
+      const defaultValue = form.getValues(fieldName)
+      setSelectedValues(defaultValue)
+    }, [form, fieldName])
 
     const handleInputKeyDown = (
       event: React.KeyboardEvent<HTMLInputElement>

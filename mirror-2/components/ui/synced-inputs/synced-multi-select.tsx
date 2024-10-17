@@ -5,7 +5,7 @@ import clsx from 'clsx'
 import { MultiSelect } from '@/components/ui/multi-select'
 
 interface SyncedMultiSelectProps<T> {
-  fieldName: keyof T
+  fieldName: string
   form: any
   options: { label: string; value: string }[]
   placeholder?: string
@@ -37,6 +37,8 @@ export function SyncedMultiSelect<T>({
       renderComponent={(field, fieldName) => (
         <MultiSelect
           options={options}
+          fieldName={fieldName}
+          form={form}
           defaultValue={field.value || []} // Bind the selected values to form state
           handleChange={(values) => {
             field.onChange(values) // Update form state with selected values

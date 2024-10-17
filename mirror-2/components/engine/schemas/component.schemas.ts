@@ -13,15 +13,15 @@ export type Render3DModel = z.infer<typeof render3DModelSchema>
 export const render3DModelSchema = z.object({
   enabled: z.boolean(),
   type: z.string(),
-  asset: z.number().nullable(), // only show if type == asset
-  materialAssets: z.array(z.number().nullable()),
-  layers: z.array(z.number()), // multi select
-  batchGroupId: z.number().nullable(), // select
+  asset: z.coerce.number().nullable(), // only show if type == asset
+  materialAssets: z.array(z.coerce.number().nullable()),
+  layers: z.array(z.coerce.number()), // multi select
+  batchGroupId: z.coerce.number().nullable(), // select
   castShadows: z.boolean(),
   castShadowsLightmap: z.boolean(),
   receiveShadows: z.boolean(),
   lightmapped: z.boolean(),
-  lightmapSizeMultiplier: z.number(), // only show if lightmapped is true
+  lightmapSizeMultiplier: z.coerce.number(), // only show if lightmapped is true
   isStatic: z.boolean(),
   rootBone: z.any().nullable(), // don't include
 
