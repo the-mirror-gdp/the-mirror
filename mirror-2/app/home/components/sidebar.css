@@ -1,0 +1,12 @@
+.sidebar-overlay {
+  --tw-backdrop-blur: blur(16px) !important;
+  backdrop-filter: blur(16px) !important;
+  background-color: rgba(0, 0, 0, 0.8) !important;
+  opacity: 0.7;
+}
+
+.sidebar-content {
+  height: 100vh !important;
+  background-color: transparent !important;
+  max-width: 100%;
+}
