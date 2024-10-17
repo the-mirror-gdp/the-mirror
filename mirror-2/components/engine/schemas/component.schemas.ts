@@ -59,19 +59,19 @@ export const render3DModelSchemaDefaultValues = {
 //
 export const cameraSchema = z.object({
   enabled: z.boolean(),
-  orthoHeight: z.number(),
+  orthoHeight: z.coerce.number(),
   offscreen: z.boolean().optional(),
   clearDepthBuffer: z.boolean(),
-  projection: z.number(),
-  clearColor: z.array(z.number()).length(4),
-  fov: z.number(),
-  priority: z.number(),
-  farClip: z.number(),
-  nearClip: z.number(),
-  rect: z.array(z.number()).length(4),
+  projection: z.coerce.number(),
+  clearColor: z.array(z.coerce.number()).length(4),
+  fov: z.coerce.number(),
+  priority: z.coerce.number(),
+  farClip: z.coerce.number(),
+  nearClip: z.coerce.number(),
+  rect: z.array(z.coerce.number()).length(4),
   clearColorBuffer: z.boolean(),
   frustumCulling: z.boolean(),
-  layers: z.array(z.number()),
+  layers: z.array(z.coerce.number()),
   renderSceneDepthMap: z.boolean().optional(),
   renderSceneColorMap: z.boolean().optional()
 })
@@ -97,41 +97,41 @@ export const lightSchema = z.object({
   enabled: z.boolean(),
   type: z.enum(['directional', 'point', 'spot']),
   bake: z.boolean(),
-  bakeArea: z.number(),
-  bakeNumSamples: z.number(),
+  bakeArea: z.coerce.number(),
+  bakeNumSamples: z.coerce.number(),
   bakeDir: z.boolean(),
   affectDynamic: z.boolean(),
   affectLightmapped: z.boolean(),
   affectSpecularity: z.boolean(),
-  color: z.array(z.number()).length(3),
-  intensity: z.number(),
+  color: z.array(z.coerce.number()).length(3),
+  intensity: z.coerce.number(),
   castShadows: z.boolean(),
-  shadowUpdateMode: z.number(),
-  shadowType: z.number(),
-  vsmBlurMode: z.number(),
-  vsmBlurSize: z.number(),
-  vsmBias: z.number(),
-  shadowDistance: z.number(),
-  shadowIntensity: z.number(),
-  shadowResolution: z.number(),
-  numCascades: z.number(),
-  cascadeDistribution: z.number(),
-  shadowBias: z.number(),
-  normalOffsetBias: z.number(),
-  range: z.number(),
-  falloffMode: z.number(),
-  innerConeAngle: z.number(),
-  outerConeAngle: z.number(),
-  shape: z.number(),
+  shadowUpdateMode: z.coerce.number(),
+  shadowType: z.coerce.number(),
+  vsmBlurMode: z.coerce.number(),
+  vsmBlurSize: z.coerce.number(),
+  vsmBias: z.coerce.number(),
+  shadowDistance: z.coerce.number(),
+  shadowIntensity: z.coerce.number(),
+  shadowResolution: z.coerce.number(),
+  numCascades: z.coerce.number(),
+  cascadeDistribution: z.coerce.number(),
+  shadowBias: z.coerce.number(),
+  normalOffsetBias: z.coerce.number(),
+  range: z.coerce.number(),
+  falloffMode: z.coerce.number(),
+  innerConeAngle: z.coerce.number(),
+  outerConeAngle: z.coerce.number(),
+  shape: z.coerce.number(),
   cookieAsset: z.any().nullable(),
-  cookieIntensity: z.number(),
+  cookieIntensity: z.coerce.number(),
   cookieFalloff: z.boolean(),
   cookieChannel: z.string(),
-  cookieAngle: z.number(),
-  cookieScale: z.array(z.number()).length(2),
-  cookieOffset: z.array(z.number()).length(2),
+  cookieAngle: z.coerce.number(),
+  cookieScale: z.array(z.coerce.number()).length(2),
+  cookieOffset: z.array(z.coerce.number()).length(2),
   isStatic: z.boolean(),
-  layers: z.array(z.number())
+  layers: z.array(z.coerce.number())
 })
 
 //
@@ -140,15 +140,15 @@ export const lightSchema = z.object({
 export const collisionSchema = z.object({
   enabled: z.boolean(),
   type: z.enum(['box', 'sphere', 'capsule', 'mesh', 'cylinder']),
-  halfExtents: z.array(z.number()).length(3).optional(),
-  radius: z.number().optional(),
-  axis: z.number().optional(),
-  height: z.number().optional(),
+  halfExtents: z.array(z.coerce.number()).length(3).optional(),
+  radius: z.coerce.number().optional(),
+  axis: z.coerce.number().optional(),
+  height: z.coerce.number().optional(),
   convexHull: z.boolean().optional(),
   asset: z.any().nullable(),
-  renderAsset: z.number().nullable(),
-  linearOffset: z.array(z.number()).length(3),
-  angularOffset: z.array(z.number()).length(3)
+  renderAsset: z.coerce.number().nullable(),
+  linearOffset: z.array(z.coerce.number()).length(3),
+  angularOffset: z.array(z.coerce.number()).length(3)
 })
 
 //
@@ -157,13 +157,13 @@ export const collisionSchema = z.object({
 export const rigidbodySchema = z.object({
   enabled: z.boolean(),
   type: z.enum(['static', 'dynamic', 'kinematic']),
-  mass: z.number(),
-  linearDamping: z.number(),
-  angularDamping: z.number(),
-  linearFactor: z.array(z.number()).length(3),
-  angularFactor: z.array(z.number()).length(3),
-  friction: z.number(),
-  restitution: z.number()
+  mass: z.coerce.number(),
+  linearDamping: z.coerce.number(),
+  angularDamping: z.coerce.number(),
+  linearFactor: z.array(z.coerce.number()).length(3),
+  angularFactor: z.array(z.coerce.number()).length(3),
+  friction: z.coerce.number(),
+  restitution: z.coerce.number()
 })
 
 //
@@ -173,10 +173,10 @@ export const screenSchema = z.object({
   enabled: z.boolean(),
   screenSpace: z.boolean(),
   scaleMode: z.enum(['none', 'blend']),
-  scaleBlend: z.number(),
-  resolution: z.array(z.number()).length(2),
-  referenceResolution: z.array(z.number()).length(2),
-  priority: z.number()
+  scaleBlend: z.coerce.number(),
+  resolution: z.array(z.coerce.number()).length(2),
+  referenceResolution: z.array(z.coerce.number()).length(2),
+  priority: z.coerce.number()
 })
 
 //
@@ -185,43 +185,43 @@ export const screenSchema = z.object({
 export const elementSchema = z.object({
   enabled: z.boolean(),
   type: z.enum(['text', 'image', 'group']),
-  anchor: z.array(z.number()).length(4),
-  pivot: z.array(z.number()).length(2),
+  anchor: z.array(z.coerce.number()).length(4),
+  pivot: z.array(z.coerce.number()).length(2),
   text: z.string(),
   key: z.string().nullable(),
-  fontAsset: z.number().nullable(),
-  fontSize: z.number(),
-  minFontSize: z.number(),
-  maxFontSize: z.number(),
+  fontAsset: z.coerce.number().nullable(),
+  fontSize: z.coerce.number(),
+  minFontSize: z.coerce.number(),
+  maxFontSize: z.coerce.number(),
   autoFitWidth: z.boolean(),
   autoFitHeight: z.boolean(),
-  maxLines: z.number().nullable(),
-  lineHeight: z.number(),
+  maxLines: z.coerce.number().nullable(),
+  lineHeight: z.coerce.number(),
   wrapLines: z.boolean(),
-  spacing: z.number(),
-  color: z.array(z.number()).length(3),
-  opacity: z.number(),
+  spacing: z.coerce.number(),
+  color: z.array(z.coerce.number()).length(3),
+  opacity: z.coerce.number(),
   textureAsset: z.any().nullable(),
   spriteAsset: z.any().nullable(),
-  spriteFrame: z.number(),
-  pixelsPerUnit: z.number().nullable(),
-  width: z.number(),
-  height: z.number(),
-  margin: z.array(z.number()).length(4),
-  alignment: z.array(z.number()).length(2),
-  outlineColor: z.array(z.number()).length(4),
-  outlineThickness: z.number(),
-  shadowColor: z.array(z.number()).length(4),
-  shadowOffset: z.array(z.number()).length(2),
-  rect: z.array(z.number()).length(4),
+  spriteFrame: z.coerce.number(),
+  pixelsPerUnit: z.coerce.number().nullable(),
+  width: z.coerce.number(),
+  height: z.coerce.number(),
+  margin: z.array(z.coerce.number()).length(4),
+  alignment: z.array(z.coerce.number()).length(2),
+  outlineColor: z.array(z.coerce.number()).length(4),
+  outlineThickness: z.coerce.number(),
+  shadowColor: z.array(z.coerce.number()).length(4),
+  shadowOffset: z.array(z.coerce.number()).length(2),
+  rect: z.array(z.coerce.number()).length(4),
   materialAsset: z.any().nullable(),
   autoWidth: z.boolean(),
   autoHeight: z.boolean(),
   fitMode: z.enum(['none', 'stretch']),
   useInput: z.boolean(),
-  batchGroupId: z.number().nullable(),
+  batchGroupId: z.coerce.number().nullable(),
   mask: z.boolean(),
-  layers: z.array(z.number()),
+  layers: z.array(z.coerce.number()),
   enableMarkup: z.boolean()
 })
 
@@ -232,7 +232,7 @@ export const animSchema = z.object({
   enabled: z.boolean(),
   stateGraphAsset: z.any().nullable(),
   animationAssets: z.record(z.any()),
-  speed: z.number(),
+  speed: z.coerce.number(),
   activate: z.boolean(),
   playing: z.boolean(),
   rootBone: z.any().nullable(),
@@ -246,23 +246,23 @@ export const animSchema = z.object({
 export const spriteSchema = z.object({
   enabled: z.boolean(),
   type: z.enum(['simple', 'animated']),
-  width: z.number(),
-  height: z.number(),
-  color: z.array(z.number()).length(3),
-  opacity: z.number(),
+  width: z.coerce.number(),
+  height: z.coerce.number(),
+  color: z.array(z.coerce.number()).length(3),
+  opacity: z.coerce.number(),
   flipX: z.boolean(),
   flipY: z.boolean(),
   spriteAsset: z.any().nullable(),
-  frame: z.number(),
-  speed: z.number(),
-  batchGroupId: z.number().nullable(),
-  layers: z.array(z.number()),
-  drawOrder: z.number(),
+  frame: z.coerce.number(),
+  speed: z.coerce.number(),
+  batchGroupId: z.coerce.number().nullable(),
+  layers: z.array(z.coerce.number()),
+  drawOrder: z.coerce.number(),
   autoPlayClip: z.string().nullable(),
   clips: z.record(
     z.object({
       name: z.string(),
-      fps: z.number(),
+      fps: z.coerce.number(),
       loop: z.boolean(),
       autoPlay: z.boolean(),
       spriteAsset: z.any().nullable()
@@ -276,7 +276,7 @@ export const spriteSchema = z.object({
 export const gsplatSchema = z.object({
   enabled: z.boolean(),
   asset: z.any().nullable(),
-  layers: z.array(z.number())
+  layers: z.array(z.coerce.number())
 })
 
 //
@@ -291,12 +291,12 @@ export const audiolistenerSchema = z.object({
 //
 export const soundSchema = z.object({
   enabled: z.boolean(),
-  volume: z.number(),
-  pitch: z.number(),
+  volume: z.coerce.number(),
+  pitch: z.coerce.number(),
   positional: z.boolean(),
-  refDistance: z.number(),
-  maxDistance: z.number(),
-  rollOffFactor: z.number(),
+  refDistance: z.coerce.number(),
+  maxDistance: z.coerce.number(),
+  rollOffFactor: z.coerce.number(),
   distanceModel: z.enum(['linear', 'inverse', 'exponential']),
   slots: z.record(
     z.object({
@@ -305,10 +305,10 @@ export const soundSchema = z.object({
       autoPlay: z.boolean(),
       overlap: z.boolean(),
       asset: z.any().nullable(),
-      startTime: z.number(),
-      duration: z.number().nullable(),
-      volume: z.number(),
-      pitch: z.number()
+      startTime: z.coerce.number(),
+      duration: z.coerce.number().nullable(),
+      volume: z.coerce.number(),
+      pitch: z.coerce.number()
     })
   )
 })
@@ -319,42 +319,42 @@ export const soundSchema = z.object({
 export const particlesystemSchema = z.object({
   enabled: z.boolean(),
   autoPlay: z.boolean(),
-  numParticles: z.number(),
-  lifetime: z.number(),
-  rate: z.number(),
-  rate2: z.number(),
-  startAngle: z.number(),
-  startAngle2: z.number(),
+  numParticles: z.coerce.number(),
+  lifetime: z.coerce.number(),
+  rate: z.coerce.number(),
+  rate2: z.coerce.number(),
+  startAngle: z.coerce.number(),
+  startAngle2: z.coerce.number(),
   loop: z.boolean(),
   preWarm: z.boolean(),
   lighting: z.boolean(),
   halfLambert: z.boolean(),
-  intensity: z.number(),
+  intensity: z.coerce.number(),
   depthWrite: z.boolean(),
-  depthSoftening: z.number(),
-  sort: z.number(),
-  blendType: z.number(),
-  stretch: z.number(),
+  depthSoftening: z.coerce.number(),
+  sort: z.coerce.number(),
+  blendType: z.coerce.number(),
+  stretch: z.coerce.number(),
   alignToMotion: z.boolean(),
-  emitterShape: z.number(),
-  emitterExtents: z.array(z.number()).length(3),
-  emitterExtentsInner: z.array(z.number()).length(3),
-  orientation: z.number(),
-  particleNormal: z.array(z.number()).length(3),
-  emitterRadius: z.number(),
-  emitterRadiusInner: z.number(),
-  initialVelocity: z.number(),
-  animTilesX: z.number(),
-  animTilesY: z.number(),
-  animStartFrame: z.number(),
-  animNumFrames: z.number(),
-  animNumAnimations: z.number(),
-  animIndex: z.number(),
+  emitterShape: z.coerce.number(),
+  emitterExtents: z.array(z.coerce.number()).length(3),
+  emitterExtentsInner: z.array(z.coerce.number()).length(3),
+  orientation: z.coerce.number(),
+  particleNormal: z.array(z.coerce.number()).length(3),
+  emitterRadius: z.coerce.number(),
+  emitterRadiusInner: z.coerce.number(),
+  initialVelocity: z.coerce.number(),
+  animTilesX: z.coerce.number(),
+  animTilesY: z.coerce.number(),
+  animStartFrame: z.coerce.number(),
+  animNumFrames: z.coerce.number(),
+  animNumAnimations: z.coerce.number(),
+  animIndex: z.coerce.number(),
   randomizeAnimIndex: z.boolean(),
-  animSpeed: z.number(),
+  animSpeed: z.coerce.number(),
   animLoop: z.boolean(),
   wrap: z.boolean(),
-  wrapBounds: z.array(z.number()).length(3),
+  wrapBounds: z.array(z.coerce.number()).length(3),
   colorMapAsset: z.any().nullable(),
   normalMapAsset: z.any().nullable(),
   mesh: z.any().nullable(),
@@ -362,65 +362,65 @@ export const particlesystemSchema = z.object({
   localSpace: z.boolean(),
   screenSpace: z.boolean(),
   localVelocityGraph: z.object({
-    type: z.number(),
-    keys: z.array(z.array(z.number())),
+    type: z.coerce.number(),
+    keys: z.array(z.array(z.coerce.number())),
     betweenCurves: z.boolean()
   }),
   localVelocityGraph2: z.object({
-    type: z.number(),
-    keys: z.array(z.array(z.number()))
+    type: z.coerce.number(),
+    keys: z.array(z.array(z.coerce.number()))
   }),
   velocityGraph: z.object({
-    type: z.number(),
-    keys: z.array(z.array(z.number())),
+    type: z.coerce.number(),
+    keys: z.array(z.array(z.coerce.number())),
     betweenCurves: z.boolean()
   }),
   velocityGraph2: z.object({
-    type: z.number(),
-    keys: z.array(z.array(z.number()))
+    type: z.coerce.number(),
+    keys: z.array(z.array(z.coerce.number()))
   }),
   rotationSpeedGraph: z.object({
-    type: z.number(),
-    keys: z.array(z.number()),
+    type: z.coerce.number(),
+    keys: z.array(z.coerce.number()),
     betweenCurves: z.boolean()
   }),
   rotationSpeedGraph2: z.object({
-    type: z.number(),
-    keys: z.array(z.number())
+    type: z.coerce.number(),
+    keys: z.array(z.coerce.number())
   }),
   radialSpeedGraph: z.object({
-    type: z.number(),
-    keys: z.array(z.number()),
+    type: z.coerce.number(),
+    keys: z.array(z.coerce.number()),
     betweenCurves: z.boolean()
   }),
   radialSpeedGraph2: z.object({
-    type: z.number(),
-    keys: z.array(z.number())
+    type: z.coerce.number(),
+    keys: z.array(z.coerce.number())
   }),
   scaleGraph: z.object({
-    type: z.number(),
-    keys: z.array(z.number()),
+    type: z.coerce.number(),
+    keys: z.array(z.coerce.number()),
     betweenCurves: z.boolean()
   }),
   scaleGraph2: z.object({
-    type: z.number(),
-    keys: z.array(z.number())
+    type: z.coerce.number(),
+    keys: z.array(z.coerce.number())
   }),
   colorGraph: z.object({
-    type: z.number(),
-    keys: z.array(z.array(z.number())),
+    type: z.coerce.number(),
+    keys: z.array(z.array(z.coerce.number())),
     betweenCurves: z.boolean()
   }),
   alphaGraph: z.object({
-    type: z.number(),
-    keys: z.array(z.number()),
+    type: z.coerce.number(),
+    keys: z.array(z.coerce.number()),
     betweenCurves: z.boolean()
   }),
   alphaGraph2: z.object({
-    type: z.number(),
-    keys: z.array(z.number())
+    type: z.coerce.number(),
+    keys: z.array(z.coerce.number())
   }),
-  layers: z.array(z.number())
+  layers: z.array(z.coerce.number())
 })
 
 //
@@ -430,18 +430,18 @@ export const buttonSchema = z.object({
   enabled: z.boolean(),
   active: z.boolean(),
   imageEntity: z.string(),
-  hitPadding: z.array(z.number()).length(4),
-  transitionMode: z.number(),
-  hoverTint: z.array(z.number()).length(4),
-  pressedTint: z.array(z.number()).length(4),
-  inactiveTint: z.array(z.number()).length(4),
-  fadeDuration: z.number(),
+  hitPadding: z.array(z.coerce.number()).length(4),
+  transitionMode: z.coerce.number(),
+  hoverTint: z.array(z.coerce.number()).length(4),
+  pressedTint: z.array(z.coerce.number()).length(4),
+  inactiveTint: z.array(z.coerce.number()).length(4),
+  fadeDuration: z.coerce.number(),
   hoverSpriteAsset: z.any().nullable(),
-  hoverSpriteFrame: z.number(),
+  hoverSpriteFrame: z.coerce.number(),
   pressedSpriteAsset: z.any().nullable(),
-  pressedSpriteFrame: z.number(),
+  pressedSpriteFrame: z.coerce.number(),
   inactiveSpriteAsset: z.any().nullable(),
-  inactiveSpriteFrame: z.number(),
+  inactiveSpriteFrame: z.coerce.number(),
   hoverTextureAsset: z.any().nullable(),
   pressedTextureAsset: z.any().nullable(),
   inactiveTextureAsset: z.any().nullable()
@@ -452,14 +452,14 @@ export const buttonSchema = z.object({
 //
 export const layoutgroupSchema = z.object({
   enabled: z.boolean(),
-  orientation: z.number(),
+  orientation: z.coerce.number(),
   reverseX: z.boolean(),
   reverseY: z.boolean(),
-  alignment: z.array(z.number()).length(2),
-  padding: z.array(z.number()).length(4),
-  spacing: z.array(z.number()).length(2),
-  widthFitting: z.number(),
-  heightFitting: z.number(),
+  alignment: z.array(z.coerce.number()).length(2),
+  padding: z.array(z.coerce.number()).length(4),
+  spacing: z.array(z.coerce.number()).length(2),
+  widthFitting: z.coerce.number(),
+  heightFitting: z.coerce.number(),
   wrap: z.boolean()
 })
 
@@ -468,12 +468,12 @@ export const layoutgroupSchema = z.object({
 //
 export const layoutchildSchema = z.object({
   enabled: z.boolean(),
-  minWidth: z.number(),
-  minHeight: z.number(),
-  maxWidth: z.number().nullable(),
-  maxHeight: z.number().nullable(),
-  fitWidthProportion: z.number(),
-  fitHeightProportion: z.number(),
+  minWidth: z.coerce.number(),
+  minHeight: z.coerce.number(),
+  maxWidth: z.coerce.number().nullable(),
+  maxHeight: z.coerce.number().nullable(),
+  fitWidthProportion: z.coerce.number(),
+  fitHeightProportion: z.coerce.number(),
   excludeFromLayout: z.boolean()
 })
 
@@ -482,9 +482,9 @@ export const layoutchildSchema = z.object({
 //
 export const scrollbarSchema = z.object({
   enabled: z.boolean(),
-  orientation: z.number(),
-  value: z.number(),
-  handleSize: z.number(),
+  orientation: z.coerce.number(),
+  value: z.coerce.number(),
+  handleSize: z.coerce.number(),
   handleEntity: z.string()
 })
 
@@ -495,13 +495,13 @@ export const scrollviewSchema = z.object({
   enabled: z.boolean(),
   horizontal: z.boolean(),
   vertical: z.boolean(),
-  scrollMode: z.number(),
-  bounceAmount: z.number(),
-  friction: z.number(),
+  scrollMode: z.coerce.number(),
+  bounceAmount: z.coerce.number(),
+  friction: z.coerce.number(),
   useMouseWheel: z.boolean(),
-  mouseWheelSensitivity: z.array(z.number()).length(2),
-  horizontalScrollbarVisibility: z.number(),
-  verticalScrollbarVisibility: z.number(),
+  mouseWheelSensitivity: z.array(z.coerce.number()).length(2),
+  horizontalScrollbarVisibility: z.coerce.number(),
+  verticalScrollbarVisibility: z.coerce.number(),
   viewportEntity: z.string(),
   contentEntity: z.string(),
   horizontalScrollbarEntity: z.string(),
