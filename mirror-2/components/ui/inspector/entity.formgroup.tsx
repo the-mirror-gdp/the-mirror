@@ -40,9 +40,12 @@ export function EntityFormGroup() {
       keepDirtyValues: true
     }
   })
-  // hadnle form reset on entity update
+  // handle form reset on entity update
   useEffect(() => {
     if (entity && getEntitySuccess) {
+      if (!entity.local_rotation[0] === null) {
+        debugger
+      }
       // Convert quaternion to Euler angles
       const quaternion = new pc.Quat(
         entity.local_rotation[0],
@@ -52,12 +55,15 @@ export function EntityFormGroup() {
       )
       const eulerAngles = new pc.Vec3()
       quaternion.getEulerAngles(eulerAngles)
+      eulerAngles.x = (eulerAngles.x + 360) % 360
+      eulerAngles.y = (eulerAngles.y + 360) % 360
+      eulerAngles.z = (eulerAngles.z + 360) % 360
 
       // Prepare the entity with Euler angles for form reset
       const local_rotation_euler: [number, number, number] = [
-        eulerAngles.x,
-        eulerAngles.y,
-        eulerAngles.z
+        Number(eulerAngles.x.toFixed(2)),
+        Number(eulerAngles.y.toFixed(2)),
+        Number(eulerAngles.z.toFixed(2))
       ]
       const entityWithEuler = {
         ...entity,
@@ -65,6 +71,14 @@ export function EntityFormGroup() {
       }
 
       // Reset the form with the updated entity
+      console.log(
+        'ui entitywitheuler: quat local_rotation',
+        entityWithEuler.local_rotation
+      )
+      console.log(
+        'ui entitywitheuler: eualer local_rotation_euler',
+        entityWithEuler.local_rotation_euler
+      )
       form.reset(entityWithEuler)
     }
   }, [entity, getEntitySuccess, form])
@@ -73,10 +87,24 @@ export function EntityFormGroup() {
     console.log('onSubmit values', values)
     const isValid = await form.trigger() // Manually trigger validation
     if (isValid) {
-      const values = form.getValues() // Get current form values
-
       // Convert local_rotation from Euler angles to a quaternion
-      const eulerAngles = new pc.Vec3(...values.local_rotation_euler)
+      const convertToFixedArray = (angles: number[], precision: number) => {
+        return angles.map((angle) => {
+          if (!angle.toFixed) {
+            debugger
+          }
+          return Number(angle.toFixed(precision))
+        })
+      }
+      const eulerAnglesArray = convertToFixedArray(
+        values.local_rotation_euler,
+        10
+      )
+      const eulerAngles = new pc.Vec3(
+        eulerAnglesArray[0],
+        eulerAnglesArray[1],
+        eulerAnglesArray[2]
+      )
       const quaternion = new pc.Quat()
       quaternion.setFromEulerAngles(eulerAngles)
       const quaternionArray: [number, number, number, number] = [
@@ -92,7 +120,7 @@ export function EntityFormGroup() {
         local_rotation_euler: undefined
       }
 
-      console.log('Form is valid, triggering submission:', updatedValues)
+      console.log('Form is valid, updating entity:', updatedValues)
       await updateEntity({ id: entity?.id as string, ...updatedValues })
     } else {
       console.log('form not valid', form)

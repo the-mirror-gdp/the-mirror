@@ -5,7 +5,7 @@ create table entities (
   parent_id uuid references entities(id) on delete cascade,
   order_under_parent int,
   scene_id bigint references scenes on delete cascade not null, -- delete entity if scene is deleted
-  local_position float8[] not null default array[0, 0, 0], -- storing position as an array of 3 floats
+  local_position float8[] not null default array[0.0, 0.0, 0.0], -- storing position as an array of 3 floats
   -- Future: store position (global as PointZ for large querying)
   local_scale float8[] not null default array[1.0, 1.0, 1.0], -- storing scale as an array of 3 floats
   local_rotation float8[] not null default array[0.0, 0.0, 0.0, 1.0],  -- store rotation as a quaternion (x, y, z, w). NOT euler, though euler is mostly used user-facing
@@ -17,7 +17,10 @@ create table entities (
   constraint order_not_null_if_parent_id_exists check (
     (parent_id is not null and order_under_parent is not null) or parent_id is null
   ),
-  constraint parent_id_not_self check (parent_id is distinct from id) -- ensures parent_id is not the same as id
+  constraint parent_id_not_self check (parent_id is distinct from id), -- ensures parent_id is not the same as id
+  constraint no_nulls_in_local_position check (array_position(local_position, null) is null),
+  constraint no_nulls_in_local_rotation check (array_position(local_rotation, null) is null),
+  constraint no_nulls_in_local_scale check (array_position(local_scale, null) is null)
 );
 
 create or replace function check_circular_reference()
