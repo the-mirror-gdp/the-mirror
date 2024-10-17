@@ -8,29 +8,27 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import ResetPassword from "@/app/protected/reset-password/page";
 import ResetEmail from "@/app/protected/reset-email/page";
+import "./page.css";
 
 const MyAccount = () => {
   return (
     <div className="bg-background flex">
       <Sidebar
         playlists={playlists}
-        className="hidden lg:block w "
         style={{
           width: "25%",
         }}
       />
       <div
-        className="py-6 px-6 w-full"
+        className="py-6 px-6 w-full setting-container"
         style={{
           maxWidth: "50%",
         }}
       >
-        <div className="flex items-center justify-between">
-          <div className="space-y-1">
-            <h2 className="text-3xl font-semibold tracking-tight">
-              Account Settings
-            </h2>
-          </div>
+        <div className="space-y-1 lg:text-left md:text-center sm:text-center text-center">
+          <h2 className="text-3xl font-semibold tracking-tight">
+            Account Settings
+          </h2>
         </div>
         <Separator className="my-4" />
         <div className="flex items-center gap-2 mobile:gap-1 w-full justify-between">
@@ -41,6 +39,7 @@ const MyAccount = () => {
                 name="email"
                 className="block h-[3.125rem] rounded-xl focus:outline-none pt-6 pl-4 text-white text-base font-semibold font-primary border-gray-700 text-disabledMirror focus:border-ringBlue border-none bg-transparent"
                 value={"tarun@themirror.space"}
+                readOnly
               />
               <Label
                 htmlFor="email"
@@ -59,7 +58,6 @@ const MyAccount = () => {
             </DialogContent>
           </Dialog>
         </div>
-        {/* ========== */}
         <div className="flex items-center gap-2 mobile:gap-1 w-full justify-between mt-4">
           <div className="flex relative">
             <div className="flex-wrap mt-1 rounded-md shadow-sm">
@@ -68,6 +66,7 @@ const MyAccount = () => {
                 name="password"
                 value="tarun@themirror.space"
                 className="block h-[3.125rem] rounded-xl focus:outline-none pt-6 pl-4 text-white text-base font-semibold font-primary border-gray-700 text-disabledMirror focus:border-ringBlue border-none bg-transparent"
+                readOnly
               />
               <Label
                 htmlFor="password"

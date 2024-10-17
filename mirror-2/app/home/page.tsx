@@ -36,7 +36,6 @@ export default function Home() {
       <div className="bg-background flex">
         <Sidebar
           playlists={playlists}
-          className="hidden lg:block w "
           style={{
             width: "25%",
           }}
@@ -58,6 +57,7 @@ export default function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {madeForYouAlbums.slice(0, 4).map((album) => (
                 <Card
+                  key={album?.name}
                   className="rounded-none"
                   style={{
                     borderBottomLeftRadius: "0.75rem",

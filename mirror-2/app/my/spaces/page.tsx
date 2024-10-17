@@ -22,7 +22,6 @@ const MySpaces = () => {
     <div className="bg-background flex">
       <Sidebar
         playlists={playlists}
-        className="hidden lg:block w "
         style={{
           width: "25%",
         }}
@@ -42,38 +41,43 @@ const MySpaces = () => {
           </div>
         </div>
         <Separator className="my-4" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {spaces?.map((space) => (
-            <Card
-              className="rounded-none"
-              style={{
-                borderBottomLeftRadius: "0.75rem",
-                borderBottomRightRadius: "0.75rem",
-              }}
-            >
-              <CardContent className="p-0">
-                <Image
-                  src={dummyImg}
-                  width={250}
-                  height={250}
-                  alt={space?.name}
-                  style={{
-                    height: "250px",
-                    width: "100%",
-                  }}
-                />
-              </CardContent>
-              <CardFooter>
-                <div className="space-y-1 text-lg mt-4">
-                  <h3 className="font-medium leading-none">{space?.name}</h3>
-                  <p className="text-xs text-muted-foreground">
-                    Created At {space?.created_at.split("T")[0]}
-                  </p>
-                </div>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
+        {spaces?.length ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {spaces?.map((space) => (
+              <Card
+                key={space?.name}
+                className="rounded-none"
+                style={{
+                  borderBottomLeftRadius: "0.75rem",
+                  borderBottomRightRadius: "0.75rem",
+                }}
+              >
+                <CardContent className="p-0">
+                  <Image
+                    src={dummyImg}
+                    width={250}
+                    height={250}
+                    alt={space?.name}
+                    style={{
+                      height: "250px",
+                      width: "100%",
+                    }}
+                  />
+                </CardContent>
+                <CardFooter>
+                  <div className="space-y-1 text-lg mt-4">
+                    <h3 className="font-medium leading-none">{space?.name}</h3>
+                    <p className="text-xs text-muted-foreground">
+                      Created At {space?.created_at.split("T")[0]}
+                    </p>
+                  </div>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <h3 className="text-center">No Space found</h3>
+        )}
       </div>
     </div>
   );
