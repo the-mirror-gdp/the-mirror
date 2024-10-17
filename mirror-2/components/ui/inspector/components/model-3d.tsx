@@ -54,7 +54,7 @@ export default function Model3DRenderFormGroup() {
         console.log('setting 3D model form data', newData)
         form.reset(newData)
       } else {
-        debugger // temp
+        // debugger // temp
       }
     }
   }, [entity, getEntitySuccess, form])

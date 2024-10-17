@@ -17,7 +17,6 @@ export default function Inspector({ className }) {
       {entity && (
         <>
           <EntityFormGroup
-            entity={entity}
             key={'EntityFormGroup' + entity.id} // had to add key bc wasn't rerendering
           />
 
@@ -29,7 +28,9 @@ export default function Inspector({ className }) {
             key={'CreateComponentButton' + entity.id}
           />
 
-          <VerticalTabs key={'VerticalTabs' + entity.components} />
+          {entity.components && (
+            <VerticalTabs key={'VerticalTabs' + entity.id} />
+          )}
         </>
       )}
     </div>

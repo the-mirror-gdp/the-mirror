@@ -59,9 +59,10 @@ export function updateEngineApp<T extends { id: string }>(
 
       if (!pcEntity) {
         // Create a new PlayCanvas entity
-        pcEntity = new pc.Entity(entityData.id)
-        app.root.addChild(pcEntity)
-
+        pcEntity = new pc.Entity(entityData.name)
+        console.warn('add back')
+        // app.root.addChild(pcEntity)
+        console.log('children added optimistic')
         // Store the entity for potential reverts
         optimisticEntities.set(entityData.id, pcEntity as pc.Entity)
       }
@@ -90,8 +91,25 @@ export function updateEngineApp<T extends { id: string }>(
       let pcEntity = app.root.findByName(entityData.id)
 
       if (!pcEntity) {
-        pcEntity = new pc.Entity(entityData.id)
-        app.root.addChild(pcEntity)
+        pcEntity = new pc.Entity(entityData.name)
+        // console.warn('add back')
+        // app.root.addChild(pcEntity)
+
+        const sphere = new pc.Entity('cylindertest')
+        sphere.setLocalScale(2.1, 2.1, 2.1)
+        sphere.enabled = true
+        sphere.setLocalPosition(
+          Math.random() * 1.2,
+          Math.random() * 1.2,
+          Math.random() * 1.2
+        )
+        sphere.addComponent('render', {
+          type: 'cylinder',
+          castShadows: true,
+          receiveShadows: true
+        })
+        app.root.addChild(sphere)
+        // console.log('children added confirmed')
       }
 
       // Ensure pcEntity is of type Entity
@@ -99,17 +117,23 @@ export function updateEngineApp<T extends { id: string }>(
       updateEngineEntity(entity, entityData)
 
       // Remove from optimisticEntities if it was added optimistically
-      if (optimisticEntities.has(entityData.id)) {
-        optimisticEntities.delete(entityData.id)
-      }
+      console.warn('skipping optimistic removes!!!!!!')
+      // if (optimisticEntities.has(entityData.id)) {
+      //   optimisticEntities.delete(entityData.id)
+      // }
     })
 
     // Optionally remove entities not present in the confirmed data
-    removeStaleEntities(app, entities)
+    console.warn('Skipping stale remove')
+    // removeStaleEntities(app, entities)
   }
 }
 
 function updateEngineEntity(pcEntity: pc.Entity, entityData: DatabaseEntity) {
+  if ('enabled' in entityData) {
+    pcEntity.enabled = entityData.enabled
+  }
+
   if ('position' in entityData && Array.isArray(entityData.position)) {
     const [x, y, z] = entityData.position
     pcEntity.setPosition(x, y, z)
@@ -179,6 +203,8 @@ function updateEngineEntity(pcEntity: pc.Entity, entityData: DatabaseEntity) {
               } else {
                 var checkType = ComponentType.Model3D // for some reason, having to declare this here or else ComponentType is imported incorrectly
                 entity.addComponent(checkType, componentData)
+                console.log(`Component added: ${key}`, componentData)
+                console.log(`Entity for component:`, entity)
               }
               break
             case ComponentType.Sprite2D:
@@ -215,6 +241,29 @@ function updateEngineEntity(pcEntity: pc.Entity, entityData: DatabaseEntity) {
             componentKey as ComponentType,
             componentData
           )
+
+          // Log all entities in the scene
+          const app = getApp()
+
+          const box = new pc.Entity('boxtest')
+          box.enabled = true
+          box.setLocalScale(1.1, 1.1, 1.1)
+          box.setLocalPosition(
+            Math.random() * 1.2,
+            Math.random() * 1.2,
+            Math.random() * 1.2
+          )
+          box.addComponent('render', {
+            type: 'box',
+            castShadows: true,
+            receiveShadows: true
+          })
+          app.root.addChild(box)
+
+          console.log('Entities in the scene:', app.root.children)
+          app.root.children.forEach((child) => {
+            console.log(`Entity Name: ${child.name}, Entity:`, child)
+          })
         })
       })
     }

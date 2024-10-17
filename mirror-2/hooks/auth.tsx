@@ -1,16 +1,8 @@
 'use client'
 import { useAppDispatch, useAppSelector } from '@/hooks/hooks'
 import { updateLocalUserState, clearLocalUserState } from '@/state/local.slice'
-import { store } from '@/state/store'
 import { createSupabaseBrowserClient } from '@/utils/supabase/client'
 import { useRouter } from 'next/navigation'
-
-export const signOut = async () => {
-  const supabase = createSupabaseBrowserClient()
-  await supabase.auth.signOut()
-  store.dispatch(clearLocalUserState())
-  window.location.href = '/login'
-}
 
 export function useSetupAuthEvents() {
   const supabase = createSupabaseBrowserClient()

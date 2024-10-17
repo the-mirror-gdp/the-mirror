@@ -55,6 +55,7 @@
     "react-hook-form": "^7.53.0",
     "react-redux": "^9.1.2",
     "react-resizable-panels": "^2.1.4",
+    "redux-persist": "^6.0.0",
     "redux-undo": "^1.1.0",
     "replace-in-file": "^8.2.0",
     "server-only": "^0.0.1",

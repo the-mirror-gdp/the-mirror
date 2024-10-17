@@ -75,6 +75,10 @@ export default function SpaceViewport({
 
   // main engine init method
   useEffect(() => {
+    console.log('space:', space)
+    console.log('engineLoaded:', engineLoaded)
+    console.log('appRef.current:', appRef.current)
+    console.log('typeof window !== "undefined":', typeof window !== 'undefined')
     if (
       space &&
       !engineLoaded &&
@@ -86,7 +90,13 @@ export default function SpaceViewport({
       setEngineLoaded(true)
     }
     return () => {
-      if (engineLoaded && typeof window !== 'undefined' && appRef.current) {
+      if (
+        // existingApp &&
+        engineLoaded &&
+        typeof window !== 'undefined' &&
+        // existingApp.destroy
+        appRef.current
+      ) {
         console.log('Destroying existing PlayCanvas app', appRef.current)
         appRef.current.destroy()
         appRef.current = undefined
@@ -101,6 +111,23 @@ export default function SpaceViewport({
       setAppWasDestroyed(false)
     }
   }, [appWasDestroyed])
+
+  // devtools only for helping with hot reloads
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development') {
+      const canvas = document.getElementById(CANVAS_ID)
+      if (canvas) {
+        console.log('listening webgl context')
+        canvas.addEventListener('webglcontextlost', (event) => {
+          event.preventDefault()
+          console.warn('WebGL context lost')
+          // Handle context loss, possibly by reinitializing the app
+        })
+      }
+    }
+  }, [engineLoaded])
+
+  console.log('TEMP space:', space)
 
   useEffect(() => {
     if (
@@ -127,13 +154,13 @@ export default function SpaceViewport({
 
   return (
     <>
-      {isSuccessGetSingleSpace && (
+      {space && (
         <>
           <style id="import-style"></style>
           <div id="direct-container" style={{ zIndex: -1 }}></div>
         </>
       )}
-      {!isSuccessGetSingleSpace && (
+      {!space && (
         <div className="flex justify-center my-5">
           {(isLoading || isUninitialized) && <Spinner className="w-12 h-12" />}
           {isError && (

@@ -96,7 +96,6 @@ export function VerticalTabs() {
                   case ComponentType.Model3D:
                     return (
                       <Model3DRenderFormGroup
-                        entity={entity}
                         key={'Model3DRenderFormGroup' + entity.id}
                       />
                     )

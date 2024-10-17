@@ -1,12 +1,11 @@
 'use client'
-import { store } from '@/state/store'
-import { Provider } from 'react-redux'
 import { ThemeProvider } from 'next-themes'
 import { useSetupAuthEvents } from '@/hooks/auth'
+import StoreProvider from '@/state/store.provider'
 
 export default function ClientLayout({ children }) {
   return (
-    <Provider store={store}>
+    <StoreProvider>
       <ThemeProvider
         attribute="class"
         defaultTheme="system"
@@ -15,7 +14,7 @@ export default function ClientLayout({ children }) {
       >
         <AuthLayout children={children} />
       </ThemeProvider>
-    </Provider>
+    </StoreProvider>
   )
 }
 

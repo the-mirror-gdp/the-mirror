@@ -8,14 +8,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { signOut } from '@/hooks/auth'
-import { useAppSelector } from '@/hooks/hooks'
-import { selectLocalUser } from '@/state/local.slice'
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks'
+import { clearLocalUserState, selectLocalUser } from '@/state/local.slice'
+import { createSupabaseBrowserClient } from '@/utils/supabase/client'
 import { CircleUser } from 'lucide-react'
 import Link from 'next/link'
 
 export default function AccountDropdownMenu() {
   const localUserState = useAppSelector(selectLocalUser)
+  const dispatch = useAppDispatch()
+
+  const signOut = async () => {
+    const supabase = createSupabaseBrowserClient()
+    await supabase.auth.signOut()
+    dispatch(clearLocalUserState())
+    window.location.href = '/login'
+  }
 
   return (
     <DropdownMenu>
