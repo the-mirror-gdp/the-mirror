@@ -1,8 +1,9 @@
+import { Checkbox } from '@/components/ui/checkbox'
 import { SyncedFormField } from '@/components/ui/synced-inputs/synced-form-field'
 import clsx from 'clsx'
 
 interface SyncedBooleanInputProps<T> {
-  fieldName: keyof T
+  fieldName: string
   form: any
   handleChange: () => void
   className?: string
@@ -28,12 +29,10 @@ export function SyncedBooleanInput<T>({
       renderComponent={(field, fieldName) => (
         <div className={clsx('form-control', className)}>
           <label className="flex items-center space-x-3">
-            <input
-              type="checkbox"
-              {...field} // Sync field with react-hook-form
+            <Checkbox
               checked={field.value || false} // Ensure the field is treated as a boolean
-              onChange={(e) => {
-                field.onChange(e.target.checked) // Update the form with the boolean value
+              onCheckedChange={(newValue) => {
+                field.onChange(newValue) // Update the form with the boolean value
                 if (triggerOnChange) {
                   handleChange()
                 }
