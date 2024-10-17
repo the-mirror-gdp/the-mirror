@@ -9,7 +9,7 @@ export function useSetupAuthEvents() {
   const dispatch = useAppDispatch()
   const router = useRouter()
 
-  // if no user, clear local state
+  // if no user, clear local state. TODO update this to use a Context
   // useEffect(() => {
   //   async function clearStateIfNoUser() {
   //     const user = await supabase.auth.getSession()

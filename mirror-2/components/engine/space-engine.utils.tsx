@@ -43,7 +43,7 @@ export const setUpSpace = (
   camera.addComponent('camera', {
     clearColor: new pc.Color(0.1, 0.1, 0.1)
   })
-  camera.setPosition(0, 0, 10)
+  camera.setPosition(0, 0, 5)
   app.root.addChild(camera)
 
   // Create a directional light
@@ -59,6 +59,7 @@ export const setUpSpace = (
   // Create a sphere
   const sphere = new pc.Entity('spheretest')
   sphere.setLocalScale(0.1, 0.1, 0.1)
+  sphere.setLocalPosition(0.1, 1.1, 0.1)
   sphere.addComponent('render', {
     type: 'sphere'
   })

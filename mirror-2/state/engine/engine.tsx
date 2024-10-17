@@ -41,11 +41,6 @@ export function updateEngineApp<T extends { id: string }>(
 ) {
   const app = getApp()
 
-  // if ('istemp' === 'istemp') {
-  //   console.warn('bypassing engine update')
-  //   return
-  // }
-
   if (!app) {
     console.warn('PlayCanvas app is not initialized.')
     return
@@ -88,27 +83,39 @@ export function updateEngineApp<T extends { id: string }>(
     console.log('Applying confirmed updates to PlayCanvas', entities)
 
     entities.forEach((entityData) => {
-      let pcEntity = app.root.findByName(entityData.id)
+      let pcEntity = app.root.findByName(entityData.name)
 
       if (!pcEntity) {
         pcEntity = new pc.Entity(entityData.name)
-        // console.warn('add back')
-        // app.root.addChild(pcEntity)
-
-        const sphere = new pc.Entity('cylindertest')
-        sphere.setLocalScale(2.1, 2.1, 2.1)
-        sphere.enabled = true
-        sphere.setLocalPosition(
+        app.root.addChild(pcEntity)
+        pcEntity.enabled = true
+        pcEntity.setLocalScale(3.1, 0.1, 5.1)
+        pcEntity.setLocalPosition(
           Math.random() * 1.2,
           Math.random() * 1.2,
           Math.random() * 1.2
         )
-        sphere.addComponent('render', {
+        console.log('Adding entity! updated log', pcEntity)
+        pcEntity.addComponent('render', {
           type: 'cylinder',
           castShadows: true,
           receiveShadows: true
         })
-        app.root.addChild(sphere)
+
+        // const sphere = new pc.Entity('spheretest')
+        // sphere.setLocalScale(0.1, 0.1, 0.1)
+        // sphere.enabled = true
+        // sphere.setLocalPosition(
+        //   Math.random() * 1.2,
+        //   Math.random() * 1.2,
+        //   Math.random() * 1.2
+        // )
+        // sphere.addComponent('render', {
+        //   type: 'sphere',
+        //   castShadows: true,
+        //   receiveShadows: true
+        // })
+        // app.root.addChild(sphere)
         // console.log('children added confirmed')
       }
 
@@ -161,112 +168,111 @@ function updateEngineEntity(pcEntity: pc.Entity, entityData: DatabaseEntity) {
   }
 
   // Handle entity components
-  if ('components' in entityData && typeof entityData.components === 'object') {
+  if (entityData?.components) {
     const components = entityData.components
-    if (components) {
-      const componentKeys = Object.keys(components)
 
+    const componentKeys = Object.keys(components)
+
+    componentKeys.forEach((componentKey) => {
+      const componentData = components[componentKey]
+      if (Object.keys(componentData).length === 0) {
+        return
+      }
+      // Abstract logic for updating or adding components based on their type
+      const updateOrAddComponent = (
+        entity: pc.Entity,
+        // key: typeof ComponentType,
+        key: any,
+        data: any
+      ) => {
+        switch (key) {
+          case ComponentType.Model3D:
+            const componentData = {
+              enabled: data.enabled,
+              type: data.type,
+              asset: data.asset,
+              materialAssets: data.materialAssets,
+              layers: data.layers,
+              // batchGroupId: data.batchGroupId, TODO add/fix
+              castShadows: data.castShadows,
+              castShadowsLightmap: data.castShadowsLightmap,
+              receiveShadows: data.receiveShadows,
+              lightmapped: data.lightmapped,
+              lightmapSizeMultiplier: data.lightmapSizeMultiplier,
+              isStatic: data.isStatic,
+              rootBone: data.rootBone,
+              customAabb: data.customAabb,
+              aabbCenter: data.aabbCenter,
+              aabbHalfExtents: data.aabbHalfExtents
+            }
+            if (entity.render) {
+              Object.assign(entity.render, componentData)
+            } else {
+              var checkType = ComponentType.Model3D // for some reason, having to declare this here or else ComponentType is imported incorrectly
+              entity.addComponent(checkType, componentData)
+              console.log(`Component added: ${key}`, componentData)
+            }
+            console.log(`Updated entity:`, entity[componentKey])
+            break
+          case ComponentType.Sprite2D:
+            if (entity.sprite) {
+              Object.assign(entity.sprite, data)
+            } else {
+              entity.addComponent('sprite', data)
+            }
+            break
+          // Add more cases for other component types as needed
+          default:
+            // if (entity[key]) {
+            //   Object.assign(entity[key], data)
+            // } else {
+            //   entity.addComponent(key, data)
+            // }
+            break
+        }
+      }
+
+      // Iterate over component keys and update or add components
       componentKeys.forEach((componentKey) => {
+        // if (!Object.values(ComponentType).includes(componentKey)) {
+        //   console.error(
+        //     `Component key ${componentKey} does not exist in ComponentType`
+        //   )
+        //   throw new Error(
+        //     `Component key ${componentKey} does not exist in ComponentType`
+        //   )
+        // }
         const componentData = components[componentKey]
-        if (Object.keys(componentData).length === 0) {
-          return
-        }
-        // Abstract logic for updating or adding components based on their type
-        const updateOrAddComponent = (
-          entity: pc.Entity,
-          // key: typeof ComponentType,
-          key: any,
-          data: any
-        ) => {
-          switch (key) {
-            case ComponentType.Model3D:
-              const componentData = {
-                enabled: data.enabled,
-                type: data.type,
-                asset: data.asset,
-                materialAssets: data.materialAssets,
-                layers: data.layers,
-                // batchGroupId: data.batchGroupId, TODO add/fix
-                castShadows: data.castShadows,
-                castShadowsLightmap: data.castShadowsLightmap,
-                receiveShadows: data.receiveShadows,
-                lightmapped: data.lightmapped,
-                lightmapSizeMultiplier: data.lightmapSizeMultiplier,
-                isStatic: data.isStatic,
-                rootBone: data.rootBone,
-                customAabb: data.customAabb,
-                aabbCenter: data.aabbCenter,
-                aabbHalfExtents: data.aabbHalfExtents
-              }
-              if (entity.render) {
-                Object.assign(entity.render, componentData)
-              } else {
-                var checkType = ComponentType.Model3D // for some reason, having to declare this here or else ComponentType is imported incorrectly
-                entity.addComponent(checkType, componentData)
-                console.log(`Component added: ${key}`, componentData)
-                console.log(`Entity for component:`, entity)
-              }
-              break
-            case ComponentType.Sprite2D:
-              if (entity.sprite) {
-                Object.assign(entity.sprite, data)
-              } else {
-                entity.addComponent('sprite', data)
-              }
-              break
-            // Add more cases for other component types as needed
-            default:
-              // if (entity[key]) {
-              //   Object.assign(entity[key], data)
-              // } else {
-              //   entity.addComponent(key, data)
-              // }
-              break
-          }
-        }
+        updateOrAddComponent(
+          pcEntity,
+          componentKey as ComponentType,
+          componentData
+        )
 
-        // Iterate over component keys and update or add components
-        componentKeys.forEach((componentKey) => {
-          // if (!Object.values(ComponentType).includes(componentKey)) {
-          //   console.error(
-          //     `Component key ${componentKey} does not exist in ComponentType`
-          //   )
-          //   throw new Error(
-          //     `Component key ${componentKey} does not exist in ComponentType`
-          //   )
-          // }
-          const componentData = components[componentKey]
-          updateOrAddComponent(
-            pcEntity,
-            componentKey as ComponentType,
-            componentData
-          )
+        // Log all entities in the scene
+        const app = getApp()
 
-          // Log all entities in the scene
-          const app = getApp()
+        // const box = new pc.Entity('boxtest')
+        // box.enabled = true
+        // box.setLocalScale(0.1, 0.1, 0.1)
+        // box.setLocalPosition(
+        //   Math.random() * 1.2,
+        //   Math.random() * 1.2,
+        //   Math.random() * 1.2
+        // )
+        // box.addComponent('render', {
+        //   type: 'box',
+        //   castShadows: true,
+        //   receiveShadows: true
+        // })
+        // app.root.addChild(box)
 
-          const box = new pc.Entity('boxtest')
-          box.enabled = true
-          box.setLocalScale(1.1, 1.1, 1.1)
-          box.setLocalPosition(
-            Math.random() * 1.2,
-            Math.random() * 1.2,
-            Math.random() * 1.2
-          )
-          box.addComponent('render', {
-            type: 'box',
-            castShadows: true,
-            receiveShadows: true
-          })
-          app.root.addChild(box)
-
-          console.log('Entities in the scene:', app.root.children)
-          app.root.children.forEach((child) => {
-            console.log(`Entity Name: ${child.name}, Entity:`, child)
-          })
+        console.log('Entities in the scene:', app.root.children)
+        app.root.children.forEach((child) => {
+          console.log(`Entity Name: ${child.name}, Entity:`, child)
         })
       })
-    }
+    })
   }
 }
 
