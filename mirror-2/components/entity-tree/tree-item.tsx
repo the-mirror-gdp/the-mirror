@@ -10,7 +10,7 @@ import { z } from 'zod'
 
 export default function EntityTreeItem({ nodeData }) {
   return (
-    <div>
+    <div className="">
       {
         <SyncedInputDepr
           id={nodeData.id}
@@ -30,7 +30,7 @@ export default function EntityTreeItem({ nodeData }) {
               type="text"
               autoComplete="off"
               className={cn(
-                'dark:bg-transparent p-1 border-none shadow-none tracking-wider hover:bg-[#ffffff0d] text-white'
+                'dark:bg-transparent p-1 border-none shadow-none cursor-pointer tracking-wider hover:bg-[#ffffff0d] text-white'
               )}
               {...field}
             />
