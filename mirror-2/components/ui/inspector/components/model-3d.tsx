@@ -6,7 +6,11 @@ import { SyncedTextInput } from '@/components/ui/synced-inputs/synced-text-input
 import { SyncedMultiSelect } from '@/components/ui/synced-inputs/synced-multi-select'
 import { SyncedSingleSelect } from '@/components/ui/synced-inputs/synced-single-select'
 import { SyncedVec3Input } from '@/components/ui/synced-inputs/synced-vec3-input'
-import { render3DModelSchema } from '@/components/engine/schemas/component.schemas'
+import {
+  Render3DModel,
+  render3DModelSchema,
+  render3DModelSchemaDefaultValues
+} from '@/components/engine/schemas/component.schemas'
 import { SyncedBooleanInput } from '@/components/ui/synced-inputs/synced-boolean-input'
 import {
   DatabaseEntity,
@@ -18,52 +22,47 @@ import { useAppSelector } from '@/hooks/hooks'
 import { skipToken } from '@reduxjs/toolkit/query'
 import { z } from 'zod'
 import { ComponentType } from '@/components/engine/schemas/components-types'
-import { convertVecNumbersToIndividual } from '@/utils/utils'
 import { useEffect } from 'react'
+import * as pc from 'playcanvas'
 
-export default function Model3DRenderFormGroup({ entity }) {
+export default function Model3DRenderFormGroup() {
+  const currentEntityForId = useAppSelector(selectCurrentEntity)
+  // The useGetSingleEntityQuery may seem odd to use this here instead of passing props, but this helps with rerendering and ensuring having latest updated state since RTK manages cache. It was a huge pain earlier with not rerendering correctly since we're working with nested date
+  const { data: entity, isSuccess: getEntitySuccess } = useGetSingleEntityQuery(
+    currentEntityForId?.id || skipToken
+  )
   const componentKey = ComponentType.Model3D
-  const components = { ...entity.components[componentKey] }
+  const components =
+    entity && entity.components ? { ...entity.components[componentKey] } : {}
   const [
-    updateComponent,
+    updateComponentOnEntity,
     { isLoading: isUpdating, isSuccess: isUpdated, error }
   ] = useUpdateComponentOnEntityMutation()
 
-  // The useGetSingleEntityQuery may seem odd to use this here instead of passing props, but this helps with rerendering. It was a huge pain earlier with not rerendering correctly since we're working with nested data
-  // const currentEntity = useAppSelector(selectCurrentEntity)
-  // const { data: entity } = useGetSingleEntityQuery(
-  //   currentEntity?.id || skipToken
-  // )
-  const vecKeys = ['aabbCenter', 'aabbHalfExtents']
-  const defaultValues = {
-    ...components,
-    ...vecKeys.reduce((acc, key) => {
-      if (components[key]) {
-        return {
-          ...acc,
-          ...convertVecNumbersToIndividual(components, key)
-        }
-      }
-      return acc
-    }, {})
-  }
-
-  const form = useForm({
+  const form = useForm<Render3DModel>({
     resolver: zodResolver(render3DModelSchema),
-    defaultValues
+    mode: 'onBlur',
+    defaultValues: render3DModelSchemaDefaultValues
   })
 
+  useEffect(() => {
+    if (entity && entity.components && getEntitySuccess) {
+      // use safeParse to only reset the form with the values IF it matches the schema. Keeps data integrity
+      const newData = entity.components[componentKey]
+      const parseResult = render3DModelSchema.safeParse(newData)
+      if (parseResult.success) {
+        console.log('setting 3D model form data', newData)
+        form.reset(newData)
+      } else {
+        debugger // temp
+      }
+    }
+  }, [entity, getEntitySuccess, form])
+
   async function onSubmit(values: z.infer<typeof render3DModelSchema>) {
-    vecKeys.forEach((key) => {
-      values[key] = [values[`${key}X`], values[`${key}Y`], values[`${key}Z`]]
-      delete values[`${key}X`]
-      delete values[`${key}Y`]
-      delete values[`${key}Z`]
-      delete values[`${key}W`]
-    })
     console.log('onSubmit values', values)
     if (entity) {
-      await updateComponent({
+      await updateComponentOnEntity({
         id: entity.id,
         componentKey: componentKey,
         updatedComponentData: values
@@ -91,7 +90,7 @@ export default function Model3DRenderFormGroup({ entity }) {
   return (
     <FormProvider {...form}>
       <form
-        onBlur={form.handleSubmit(onSubmit)} // Trigger submission on blur as fallback
+        // onBlur={form.handleSubmit(onSubmit)} // Trigger submission on blur as fallback
         onSubmit={(values) => console.log('Submitted values:', values)}
       >
         {/* Enabled */}
@@ -232,17 +231,13 @@ export default function Model3DRenderFormGroup({ entity }) {
         {customAabbValue && (
           <>
             <SyncedVec3Input
-              fieldNameX="aabbCenterX"
-              fieldNameY="aabbCenterY"
-              fieldNameZ="aabbCenterZ"
+              fieldName="aabbCenter"
               form={form}
               handleChange={handleChange}
               triggerOnChange={true}
             />
             <SyncedVec3Input
-              fieldNameX="aabbHalfExtentsX"
-              fieldNameY="aabbHalfExtentsY"
-              fieldNameZ="aabbHalfExtentsZ"
+              fieldName="aabbHalfExtents"
               form={form}
               handleChange={handleChange}
               triggerOnChange={true}

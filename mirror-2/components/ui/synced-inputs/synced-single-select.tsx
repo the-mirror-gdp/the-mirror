@@ -4,7 +4,7 @@ import { SyncedFormField } from '@/components/ui/synced-inputs/synced-form-field
 import clsx from 'clsx'
 
 interface SyncedSingleSelectProps<T> {
-  fieldName: keyof T
+  fieldName: string
   form: any
   options: { label: string; value: string }[]
   placeholder?: string
@@ -30,17 +30,20 @@ export function SyncedSingleSelect<T>({
       className={clsx('form-single-select', className)}
       triggerOnChange={triggerOnChange}
       renderComponent={(field, fieldName) => (
-        <SingleSelect
-          options={options}
-          defaultValue={field.value || ''} // Bind the selected value to form state
-          handleChange={(value) => {
-            field.onChange(value) // Update form state with selected value
-            if (triggerOnChange) {
-              handleChange()
-            }
-          }}
-          placeholder={placeholder}
-        />
+        <>
+          <SingleSelect
+            options={options}
+            form={form}
+            fieldName={fieldName}
+            handleChange={(value) => {
+              field.onChange(value) // Update form state with selected value
+              // if (triggerOnChange) {
+              //   handleChange()
+              // }
+            }}
+            placeholder={placeholder}
+          />
+        </>
       )}
     />
   )

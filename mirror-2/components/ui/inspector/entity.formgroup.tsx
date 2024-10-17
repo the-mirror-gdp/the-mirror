@@ -14,13 +14,12 @@ import {
   useUpdateEntityMutation
 } from '@/state/api/entities'
 import { selectCurrentEntity } from '@/state/local.slice'
-import { convertVecNumbersToIndividual } from '@/utils/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { skipToken } from '@reduxjs/toolkit/query'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import * as pc from 'playcanvas' // Ensure you have the correct import for PlayCanvas
+import * as pc from 'playcanvas'
 
 export function EntityFormGroup() {
   const currentEntityForId = useAppSelector(selectCurrentEntity)
@@ -40,12 +39,10 @@ export function EntityFormGroup() {
       keepDirtyValues: true
     }
   })
+
   // handle form reset on entity update
   useEffect(() => {
     if (entity && getEntitySuccess) {
-      if (!entity.local_rotation[0] === null) {
-        debugger
-      }
       // Convert quaternion to Euler angles
       const quaternion = new pc.Quat(
         entity.local_rotation[0],
@@ -69,16 +66,7 @@ export function EntityFormGroup() {
         ...entity,
         local_rotation_euler
       }
-
-      // Reset the form with the updated entity
-      console.log(
-        'ui entitywitheuler: quat local_rotation',
-        entityWithEuler.local_rotation
-      )
-      console.log(
-        'ui entitywitheuler: eualer local_rotation_euler',
-        entityWithEuler.local_rotation_euler
-      )
+      // TODO update this with a safeParse (see model-3d component)
       form.reset(entityWithEuler)
     }
   }, [entity, getEntitySuccess, form])

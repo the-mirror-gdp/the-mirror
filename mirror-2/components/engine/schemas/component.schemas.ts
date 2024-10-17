@@ -9,79 +9,50 @@ import { z } from 'zod'
 //
 // 3D Model/Render Component
 //
+export type Render3DModel = z.infer<typeof render3DModelSchema>
+export const render3DModelSchema = z.object({
+  enabled: z.boolean(),
+  type: z.string(),
+  asset: z.number().nullable(), // only show if type == asset
+  materialAssets: z.array(z.number().nullable()),
+  layers: z.array(z.number()), // multi select
+  batchGroupId: z.number().nullable(), // select
+  castShadows: z.boolean(),
+  castShadowsLightmap: z.boolean(),
+  receiveShadows: z.boolean(),
+  lightmapped: z.boolean(),
+  lightmapSizeMultiplier: z.number(), // only show if lightmapped is true
+  isStatic: z.boolean(),
+  rootBone: z.any().nullable(), // don't include
 
-export const render3DModelSchema = z
-  .object({
-    enabled: z.boolean(),
-    type: z.string(),
-    asset: z.number().nullable(), // only show if type == asset
-    materialAssets: z.array(z.number().nullable()),
-    layers: z.array(z.number()), // multi select
-    batchGroupId: z.number().nullable(), // select
-    castShadows: z.boolean(),
-    castShadowsLightmap: z.boolean(),
-    receiveShadows: z.boolean(),
-    lightmapped: z.boolean(),
-    lightmapSizeMultiplier: z.number(), // only show if lightmapped is true
-    isStatic: z.boolean(),
-    rootBone: z.any().nullable(), // don't include
+  // For custom AABB
+  customAabb: z.boolean().nullable(),
+  aabbCenter: z
+    .tuple([z.coerce.number(), z.coerce.number(), z.coerce.number()])
+    .optional(),
+  aabbHalfExtents: z
+    .tuple([z.coerce.number(), z.coerce.number(), z.coerce.number()])
+    .optional()
+})
 
-    // For custom AABB
-    customAabb: z.boolean().nullable(),
-    aabbCenterX: z.coerce.number().nullable(), // X component
-    aabbCenterY: z.coerce.number().nullable(), // Y component
-    aabbCenterZ: z.coerce.number().nullable(), // Z component
-    aabbHalfExtentsX: z.coerce.number().nullable(), // X component
-    aabbHalfExtentsY: z.coerce.number().nullable(), // Y component
-    aabbHalfExtentsZ: z.coerce.number().nullable() // Z component
-  })
-  .superRefine((data, ctx) => {
-    if (data.customAabb) {
-      // If customAabb is true, ensure AABB fields are not null
-      if (data.aabbCenterX === null) {
-        ctx.addIssue({
-          path: ['aabbCenterX'],
-          message: 'AABB Center X is required when customAabb is true',
-          code: z.ZodIssueCode.custom
-        })
-      }
-      if (data.aabbCenterY === null) {
-        ctx.addIssue({
-          path: ['aabbCenterY'],
-          message: 'AABB Center Y is required when customAabb is true',
-          code: z.ZodIssueCode.custom
-        })
-      }
-      if (data.aabbCenterZ === null) {
-        ctx.addIssue({
-          path: ['aabbCenterZ'],
-          message: 'AABB Center Z is required when customAabb is true',
-          code: z.ZodIssueCode.custom
-        })
-      }
-      if (data.aabbHalfExtentsX === null) {
-        ctx.addIssue({
-          path: ['aabbHalfExtentsX'],
-          message: 'AABB Half Extents X is required when customAabb is true',
-          code: z.ZodIssueCode.custom
-        })
-      }
-      if (data.aabbHalfExtentsY === null) {
-        ctx.addIssue({
-          path: ['aabbHalfExtentsY'],
-          message: 'AABB Half Extents Y is required when customAabb is true',
-          code: z.ZodIssueCode.custom
-        })
-      }
-      if (data.aabbHalfExtentsZ === null) {
-        ctx.addIssue({
-          path: ['aabbHalfExtentsZ'],
-          message: 'AABB Half Extents Z is required when customAabb is true',
-          code: z.ZodIssueCode.custom
-        })
-      }
-    }
-  })
+export const render3DModelSchemaDefaultValues = {
+  enabled: true,
+  type: '',
+  asset: null,
+  materialAssets: [],
+  layers: [],
+  batchGroupId: null,
+  castShadows: false,
+  castShadowsLightmap: false,
+  receiveShadows: false,
+  lightmapped: false,
+  lightmapSizeMultiplier: 1,
+  isStatic: false,
+  rootBone: null,
+  customAabb: null,
+  aabbCenter: undefined,
+  aabbHalfExtents: undefined
+}
 
 //
 // Camera Component
