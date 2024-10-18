@@ -1,11 +1,10 @@
-
-"use client";
-import { ProgressIndeterminate } from "@/components/ui/progress-indeterminate";
-import { Skeleton } from "@/components/ui/skeleton";
+'use client'
+import { ProgressIndeterminate } from '@/components/ui/progress-indeterminate'
+import { Skeleton } from '@/components/ui/skeleton'
 
 import { useRouter } from 'next/navigation'
-import { useCreateSpaceMutation } from "@/state/spaces";
-import { useEffect, useState } from "react";
+import { useCreateSpaceMutation } from '@/state/api/spaces'
+import { useEffect, useState } from 'react'
 
 // Note: with React 19 this will annoying run twice with strict mode. Not sure about solution and I don't want to disable strict mode. https://stackoverflow.com/questions/72238175/why-useeffect-running-twice-and-how-to-handle-it-well-in-react#comment139336889_78443665
 export default function NewSpacePage() {
@@ -24,8 +23,7 @@ export default function NewSpacePage() {
     }
     if (!started) {
       setStarted(true)
-      // debugger
-      create();
+      create()
     }
   }, [])
   return (
@@ -43,11 +41,11 @@ export default function NewSpacePage() {
 
         {/* Main content area (80% of the width) */}
         <div className="flex flex-grow p-4 items-center justify-center">
-          <div className='w-full'>
+          <div className="w-full">
             <ProgressIndeterminate />
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }

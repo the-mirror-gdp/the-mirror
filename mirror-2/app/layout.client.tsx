@@ -1,16 +1,16 @@
-"use client";
-import { store } from "@/state/store";
-import { Provider } from "react-redux";
-import { ThemeProvider } from "next-themes";
-import { useSetupAuthEvents } from "@/hooks/auth";
+'use client'
+import { store } from '@/state/store'
+import { Provider } from 'react-redux'
+import { ThemeProvider } from 'next-themes'
+import { useSetupAuthEvents } from '@/hooks/auth'
 
 export default function ClientLayout({ children }) {
   return (
     <Provider store={store}>
       <ThemeProvider
-        attribute={"class"}
-        themes={["blue-theme", "red-theme"]}
-        defaultTheme={"blue-theme"}
+        attribute={'class'}
+        themes={['blue-theme', 'red-theme']}
+        defaultTheme={'blue-theme'}
         enableSystem={false}
         disableTransitionOnChange
         enableColorScheme
@@ -18,11 +18,11 @@ export default function ClientLayout({ children }) {
         <AuthLayout children={children} />
       </ThemeProvider>
     </Provider>
-  );
+  )
 }
 
 // separate component here because auth setup needs to be within the store
 export function AuthLayout({ children }) {
-  useSetupAuthEvents();
-  return <main className="items-center h-full">{children}</main>;
+  useSetupAuthEvents()
+  return <main className="items-center h-full">{children}</main>
 }

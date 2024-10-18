@@ -10,6 +10,11 @@ const nextConfig = {
       source: "/sign-up",
       destination: "/create-account",
       permanent: true,
+    },
+    {
+      source: "/",
+      destination: "/home",
+      permanent: true,
     }
   ],
   images: {

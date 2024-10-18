@@ -38,9 +38,10 @@ export type Database = {
         Row: {
           created_at: string
           creator_user_id: string
+          data: Json
           description: string | null
           file_url: string
-          id: string
+          id: number
           name: string
           owner_user_id: string
           thumbnail_url: string
@@ -49,9 +50,10 @@ export type Database = {
         Insert: {
           created_at?: string
           creator_user_id: string
+          data?: Json
           description?: string | null
           file_url: string
-          id?: string
+          id?: number
           name: string
           owner_user_id: string
           thumbnail_url: string
@@ -60,9 +62,10 @@ export type Database = {
         Update: {
           created_at?: string
           creator_user_id?: string
+          data?: Json
           description?: string | null
           file_url?: string
-          id?: string
+          id?: number
           name?: string
           owner_user_id?: string
           thumbnail_url?: string
@@ -85,81 +88,49 @@ export type Database = {
           },
         ]
       }
-      components: {
-        Row: {
-          attributes: Json | null
-          component_key: Database["public"]["Enums"]["component_key"]
-          created_at: string
-          entity_id: string
-          id: string
-          updated_at: string
-        }
-        Insert: {
-          attributes?: Json | null
-          component_key: Database["public"]["Enums"]["component_key"]
-          created_at?: string
-          entity_id: string
-          id?: string
-          updated_at?: string
-        }
-        Update: {
-          attributes?: Json | null
-          component_key?: Database["public"]["Enums"]["component_key"]
-          created_at?: string
-          entity_id?: string
-          id?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "components_entity_id_fkey"
-            columns: ["entity_id"]
-            isOneToOne: false
-            referencedRelation: "entities"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       entities: {
         Row: {
+          components: Json
           created_at: string
           enabled: boolean
           id: string
+          local_position: number[]
+          local_rotation: number[]
+          local_scale: number[]
           name: string
           order_under_parent: number | null
           parent_id: string | null
-          position: number[]
-          rotation: number[]
-          scale: number[]
-          scene_id: string
+          scene_id: number
           tags: string[] | null
           updated_at: string
         }
         Insert: {
+          components?: Json
           created_at?: string
           enabled?: boolean
           id?: string
+          local_position?: number[]
+          local_rotation?: number[]
+          local_scale?: number[]
           name: string
           order_under_parent?: number | null
           parent_id?: string | null
-          position?: number[]
-          rotation?: number[]
-          scale?: number[]
-          scene_id: string
+          scene_id: number
           tags?: string[] | null
           updated_at?: string
         }
         Update: {
+          components?: Json
           created_at?: string
           enabled?: boolean
           id?: string
+          local_position?: number[]
+          local_rotation?: number[]
+          local_scale?: number[]
           name?: string
           order_under_parent?: number | null
           parent_id?: string | null
-          position?: number[]
-          rotation?: number[]
-          scale?: number[]
-          scene_id?: string
+          scene_id?: number
           tags?: string[] | null
           updated_at?: string
         }
@@ -180,26 +151,61 @@ export type Database = {
           },
         ]
       }
-      scenes: {
+      pc_imports: {
         Row: {
           created_at: string
+          display_name: string
           id: string
-          name: string
-          space_id: string
+          owner_user_id: string | null
           updated_at: string
         }
         Insert: {
           created_at?: string
+          display_name: string
           id?: string
-          name: string
-          space_id: string
+          owner_user_id?: string | null
           updated_at?: string
         }
         Update: {
           created_at?: string
+          display_name?: string
           id?: string
+          owner_user_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pc_imports_owner_user_id_fkey"
+            columns: ["owner_user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scenes: {
+        Row: {
+          created_at: string
+          id: number
+          name: string
+          settings: Json
+          space_id: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          name: string
+          settings: Json
+          space_id: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
           name?: string
-          space_id?: string
+          settings?: Json
+          space_id?: number
           updated_at?: string
         }
         Relationships: [
@@ -212,23 +218,58 @@ export type Database = {
           },
         ]
       }
+      space_packs: {
+        Row: {
+          created_at: string
+          data: Json
+          display_name: string | null
+          id: number
+          space_id: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          data: Json
+          display_name?: string | null
+          id?: number
+          space_id: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          display_name?: string | null
+          id?: number
+          space_id?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "space_packs_space_id_fkey"
+            columns: ["space_id"]
+            isOneToOne: false
+            referencedRelation: "spaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       space_user_collaborators: {
         Row: {
           created_at: string
           id: string
-          space_id: string
+          space_id: number
           user_id: string
         }
         Insert: {
           created_at?: string
           id?: string
-          space_id: string
+          space_id: number
           user_id: string
         }
         Update: {
           created_at?: string
           id?: string
-          space_id?: string
+          space_id?: number
           user_id?: string
         }
         Relationships: [
@@ -248,44 +289,12 @@ export type Database = {
           },
         ]
       }
-      space_versions: {
-        Row: {
-          created_at: string
-          id: string
-          name: string
-          space_id: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          name: string
-          space_id: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          name?: string
-          space_id?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "space_versions_space_id_fkey"
-            columns: ["space_id"]
-            isOneToOne: false
-            referencedRelation: "spaces"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       spaces: {
         Row: {
           created_at: string
           creator_user_id: string
           description: string | null
-          id: string
+          id: number
           name: string
           owner_user_id: string
           public_page_image_urls: string[] | null
@@ -295,7 +304,7 @@ export type Database = {
           created_at?: string
           creator_user_id: string
           description?: string | null
-          id?: string
+          id?: number
           name: string
           owner_user_id: string
           public_page_image_urls?: string[] | null
@@ -305,7 +314,7 @@ export type Database = {
           created_at?: string
           creator_user_id?: string
           description?: string | null
-          id?: string
+          id?: number
           name?: string
           owner_user_id?: string
           public_page_image_urls?: string[] | null
@@ -398,9 +407,10 @@ export type Database = {
         Returns: {
           created_at: string
           creator_user_id: string
+          data: Json
           description: string | null
           file_url: string
-          id: string
+          id: number
           name: string
           owner_user_id: string
           thumbnail_url: string
@@ -415,7 +425,7 @@ export type Database = {
           created_at: string
           creator_user_id: string
           description: string | null
-          id: string
+          id: number
           name: string
           owner_user_id: string
           public_page_image_urls: string[] | null
@@ -425,26 +435,6 @@ export type Database = {
     }
     Enums: {
       avatar_type: "ready_player_me"
-      component_key:
-        | "script"
-        | "render"
-        | "collision"
-        | "rigidbody"
-        | "camera"
-        | "light"
-        | "anim"
-        | "sprite"
-        | "screen"
-        | "element"
-        | "button"
-        | "particlesystem"
-        | "gsplat"
-        | "audiolistener"
-        | "sound"
-        | "scrollbar"
-        | "scrollview"
-        | "layoutgroup"
-        | "layoutchild"
     }
     CompositeTypes: {
       [_ in never]: never

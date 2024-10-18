@@ -1,0 +1,6 @@
+# Ignore artifacts:
+build
+coverage
+dist
+# ignore JS for now because of vanilla JS file imports might mess up some text replacement. Can revisit in the future but not high priority
+*.js
