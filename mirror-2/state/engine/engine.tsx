@@ -1,31 +1,33 @@
 import { getApp } from '@/components/engine/__start-custom__'
+import { ComponentType } from '@/components/engine/schemas/component-type'
+import { render3DModelSchemaDefaultValues } from '@/components/engine/schemas/component.schemas'
 import { entitySchema } from '@/components/engine/schemas/entity.schema'
 import { DatabaseEntity } from '@/state/api/entities'
 import * as pc from 'playcanvas'
 
 // No clue why but ComponentType is getting imported as a full module so just redeclaring here for now :/. Maybe a TSBug? TODO watch for fix
 
-enum ComponentType {
-  Sprite2D = 'sprite', // different from engine naming for simplicity
-  Model3D = 'render', // different from engine naming for simplicity
-  Anim = 'anim',
-  AudioListener = 'audiolistener',
-  Button = 'button',
-  Camera = 'camera',
-  Collision = 'collision',
-  GSplat = 'gsplat',
-  LayoutChild = 'layoutchild',
-  LayoutGroup = 'layoutgroup',
-  Light = 'light',
-  ParticleSystem = 'particlesystem',
-  RigidBody = 'rigidbody',
-  Screen = 'screen',
-  Script = 'script',
-  Scrollbar = 'scrollbar',
-  ScrollView = 'scrollview',
-  Sound = 'sound',
-  Element = 'element'
-}
+// enum ComponentType {
+//   Sprite2D = 'sprite', // different from engine naming for simplicity
+//   Model3D = 'render', // different from engine naming for simplicity
+//   Anim = 'anim',
+//   AudioListener = 'audiolistener',
+//   Button = 'button',
+//   Camera = 'camera',
+//   Collision = 'collision',
+//   GSplat = 'gsplat',
+//   LayoutChild = 'layoutchild',
+//   LayoutGroup = 'layoutgroup',
+//   Light = 'light',
+//   ParticleSystem = 'particlesystem',
+//   RigidBody = 'rigidbody',
+//   Screen = 'screen',
+//   Script = 'script',
+//   Scrollbar = 'scrollbar',
+//   ScrollView = 'scrollview',
+//   Sound = 'sound',
+//   Element = 'element'
+// }
 
 // Singleton PlayCanvas instance manager. Primary engine class that makes PlayCanvas updates based on the Redux store
 let playCanvasApp: pc.Application | null = null
@@ -135,14 +137,17 @@ function updateEngineEntity(databaseEntity: DatabaseEntity) {
   if (!pcEntity) {
     pcEntity = new pc.Entity(databaseEntity.name)
     pcEntity.setGuid(databaseEntity.id)
-    pcEntity.addComponent('render', {
-      type: 'sphere',
-      castShadows: true,
-      receiveShadows: true
-    })
     app.root.addChild(pcEntity)
     added = true
+    // pcEntity.addComponent('render', {
+    //   type: 'sphere',
+    //   castShadows: true,
+    //   receiveShadows: true
+    // })
+    // TODO update parent-child
+    // app.root.addChild(pcEntity)
   }
+  // TODO add entity.reparent() methods
 
   if ('enabled' in databaseEntity) {
     pcEntity.enabled = databaseEntity.enabled
@@ -178,14 +183,9 @@ function updateEngineEntity(databaseEntity: DatabaseEntity) {
     const existingTags = new Set(pcEntity.tags.list())
     databaseEntity.tags.forEach((tag: string) => {
       if (!existingTags.has(tag)) {
-        pcEntity?.tags.add(tag)
+        pcEntity!.tags.add(tag)
       }
     })
-  }
-
-  if (added) {
-    console.log('new pcEntity', pcEntity)
-    console.log('from databaseEntity', databaseEntity)
   }
 
   // Handle entity components
@@ -193,32 +193,72 @@ function updateEngineEntity(databaseEntity: DatabaseEntity) {
   //   const components = databaseEntity.components
   //   const componentKeys = Object.keys(components)
 
+  // if no components, ensure removed on entity
+  if (!databaseEntity?.components) {
+    // Remove all existing components from the pcEntity
+    const existingComponents = pcEntity.c
+    Object.keys(existingComponents).forEach((componentKey) => {
+      pcEntity!.removeComponent(componentKey)
+    })
+  }
+
+  // update the entity's components
   Object.entries(databaseEntity?.components || {}).forEach(
-    ([componentKey, componentData]) => {
-      if (Object.keys(componentData).length === 0) {
-        return
-      }
+    ([componentKey, newComponentData]) => {
+      // let componentData = cd // use let so we can manipulate
       switch (componentKey) {
         case ComponentType.Model3D: // render
-          const updatedComponentData = {
-            enabled: componentData.enabled,
-            type: componentData.type,
-            asset: componentData.asset,
-            materialAssets: componentData.materialAssets,
-            layers: componentData.layers,
-            // batchGroupId: data.batchGroupId, TODO add/fix
-            castShadows: componentData.castShadows,
-            castShadowsLightmap: componentData.castShadowsLightmap,
-            receiveShadows: componentData.receiveShadows,
-            lightmapped: componentData.lightmapped,
-            lightmapSizeMultiplier: componentData.lightmapSizeMultiplier,
-            isStatic: componentData.isStatic,
-            rootBone: componentData.rootBone,
-            customAabb: componentData.customAabb,
-            aabbCenter: componentData.aabbCenter,
-            aabbHalfExtents: componentData.aabbHalfExtents
+          // pseudocode
+          //1. check if componentData is falsey or empty object. if so, use defaults (this should only occur on first time component creation)
+
+          if (!newComponentData || Object.keys(newComponentData).length === 0) {
+            const updateComponentData = Object.assign(
+              {},
+              newComponentData,
+              render3DModelSchemaDefaultValues
+            )
+            if (pcEntity && pcEntity[componentKey]) {
+              Object.assign(pcEntity[componentKey]!, updateComponentData)
+            } else {
+              pcEntity!.addComponent(componentKey, updateComponentData)
+            }
+            return
           }
-          pcEntity?.addComponent(componentKey, updatedComponentData)
+          // 2. apply changes from newComponentData (if not a new object)
+
+          const updateComponentData = {
+            enabled: newComponentData.enabled,
+            type: newComponentData.type,
+            asset: newComponentData.asset,
+            materialAssets: newComponentData.materialAssets,
+            // layers: newComponentData.layers,
+            layers: [0],
+            // batchGroupId: data.batchGroupId, TODO add/fix
+            // castShadows: componenewComponentDatantData.castShadows,
+            castShadows: true,
+            // castShadowsLightmap: newComponentData.castShadowsLightmap,
+            castShadowsLightmap: true,
+            // receiveShadows: newComponentData.receiveShadows,
+            receiveShadows: true,
+            lightmapped: newComponentData.lightmapped,
+            lightmapSizeMultiplier: newComponentData.lightmapSizeMultiplier,
+            isStatic: newComponentData.isStatic,
+            rootBone: newComponentData.rootBone,
+            customAabb: newComponentData.customAabb,
+            aabbCenter: newComponentData.aabbCenter,
+            aabbHalfExtents: newComponentData.aabbHalfExtents
+          }
+
+          if (pcEntity && pcEntity[componentKey]) {
+            Object.assign(pcEntity[componentKey]!, updateComponentData)
+          } else {
+            pcEntity!.addComponent(componentKey, updateComponentData)
+          }
+
+        // pcEntity?.addComponent(componentKey, updatedComponentData)
+        // app.root.addChild(pcEntity)
+        // added = true
+
         // if (entity.render) {
         //   Object.assign(entity.render, componentData)
         //   console.log(`1.1 updateEngineEntity: Obj. assign: entity`, entity)
@@ -249,12 +289,25 @@ function updateEngineEntity(databaseEntity: DatabaseEntity) {
           break
       }
 
+      if (added) {
+        console.log('new pcEntity', pcEntity)
+        console.log('from databaseEntity', databaseEntity)
+
+        var pcEntityTemp = new pc.Entity('temp' + Math.random())
+        pcEntityTemp.addComponent('render', {
+          type: 'sphere',
+          castShadows: true,
+          receiveShadows: true
+        })
+        app.root.addChild(pcEntityTemp)
+        console.log('new pcEntityTemp', pcEntityTemp)
+      }
+
       // Log all entities in the scene
-      const app = getApp()
-      console.log('Entities in the scene:', app.root.children)
-      app.root.children.forEach((child) => {
-        // console.log(`Entity Name: ${child.name}, Entity:`, child)
-      })
+      // console.log('Entities in the scene:', app.root.children)
+      // app.root.children.forEach((child) => {
+      //   // console.log(`Entity Name: ${child.name}, Entity:`, child)
+      // })
       // })
     }
   )
