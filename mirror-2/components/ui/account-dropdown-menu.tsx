@@ -30,6 +30,9 @@ export default function AccountDropdownMenu() {
           {localUserState?.email || 'Welcome'}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <DropdownMenuItem className="cursor-pointer">
+          <Link href={'/my/account'}>Account Settings</Link>
+        </DropdownMenuItem>
         {process.env.NEXT_PUBLIC_DISCORD_INVITE_URL && (
           <DropdownMenuItem className="cursor-pointer">
             <Link

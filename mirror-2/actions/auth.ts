@@ -122,3 +122,29 @@ export const resetPasswordAction = async (formData: FormData) => {
 
   encodedRedirect('success', '/protected/reset-password', 'Password updated')
 }
+
+export const resetEmailAction = async (formData: FormData) => {
+  const supabase = createServerClient()
+
+  const email = formData.get('email') as string
+  const password = formData.get('password') as string
+
+  if (!email || !password) {
+    encodedRedirect(
+      'error',
+      '/protected/reset-password',
+      'Email and password are required'
+    )
+  }
+  //NOTE: Need to match current password with entered password before updating the user's email.
+
+  const { error } = await supabase.auth.updateUser({
+    email
+  })
+
+  if (error) {
+    encodedRedirect('error', '/protected/reset-email', 'Email update failed')
+  }
+
+  encodedRedirect('success', '/protected/reset-email', 'Email updated')
+}

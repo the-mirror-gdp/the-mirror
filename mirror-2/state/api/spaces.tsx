@@ -154,6 +154,28 @@ export const spacesApi = createApi({
       invalidatesTags: (result, error, spaceId) => [
         { type: TAG_NAME_FOR_GENERAL_ENTITY, id: spaceId }
       ]
+    }),
+
+    getSpacesByUserId: builder.query<any, string>({
+      queryFn: async () => {
+        const supabase = createSupabaseBrowserClient()
+        const {
+          data: { user }
+        } = await supabase.auth.getUser()
+
+        const { data, error } = await supabase
+          .from('spaces')
+          .select('*')
+          .eq('creator_user_id', user?.id)
+
+        if (error) {
+          return { error: error.message }
+        }
+        return { data }
+      },
+      providesTags: (result, error, id) => [
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id }
+      ]
     })
   })
 })
@@ -174,5 +196,6 @@ export const {
   useGetSingleSpaceQuery,
   useCreateSpaceMutation,
   useUpdateSpaceMutation,
-  useDeleteSpaceMutation
+  useDeleteSpaceMutation,
+  useGetSpacesByUserIdQuery
 } = spacesApi

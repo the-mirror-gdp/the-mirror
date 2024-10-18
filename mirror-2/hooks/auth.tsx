@@ -85,3 +85,12 @@ export function useRedirectToHomeIfSignedIn() {
     router.replace('/home')
   }
 }
+
+export function useRedirectToLoginIfNotSignedIn() {
+  const router = useRouter()
+  const id = useAppSelector((state) => state.local?.user?.id)
+  console.log('auth router check', id)
+  if (!id) {
+    router.replace('/login')
+  }
+}
