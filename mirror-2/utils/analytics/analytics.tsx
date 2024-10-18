@@ -1,21 +1,83 @@
-"use client"
-import { useEffect } from 'react';
-import packageJson from '../../package.json';
-import { GameAnalytics } from 'gameanalytics'
+'use client'
+import packageJson from '../../package.json'
+import { ampli } from '@/src/ampli'
+import { sessionReplayPlugin } from '@amplitude/plugin-session-replay-browser'
+import { useEffect } from 'react'
 
-export function setAnalyticsUserId(userId: string) {
-  GameAnalytics("configureUserId", userId);
+export enum AnalyticsEvent {
+  /**
+   * Spaces
+   */
+  CreateSpaceAPISuccess = 'Create Space API Success',
+  DeleteSpaceAPISuccess = 'Delete Space API Success',
+
+  /**
+   * Scenes
+   */
+  CreateSceneAPISuccess = 'Create Scene API Success',
+  CreateSceneAPIFailure = 'Create Scene API Failure',
+  UpdateSceneAPISuccess = 'Update Scene API Success',
+  UpdateSceneAPIFailure = 'Update Scene API Failure',
+  DeleteSceneAPISuccess = 'Delete Scene API Success',
+  DeleteSceneAPIFailure = 'Delete Scene API Failure',
+
+  /**
+   * Entity
+   */
+  CreateEntityAPISuccess = 'Create Entity API Success',
+  DeleteEntityAPISuccess = 'Delete Entity API Success',
+
+  /**
+   * Space Packs
+   */
+  CreateSpacePackAPISuccess = 'Create Space Pack API Success',
+  DeleteSpacePackAPISuccess = 'Delete Space Pack API Success',
+
+  /**
+   * User
+   */
+  UserLogin = 'User Login',
+  UserLogout = 'User Logout'
 }
 
-const Analytics = function () {
+if (typeof window !== 'undefined') {
+  window['analyticsInitialized'] = false
+}
+
+export function sendAnalyticsEvent(event: AnalyticsEvent) {
+  // don't track if we're not client-side since NextJS renders the HTML on server
+  if (typeof window !== 'undefined' && window['analyticsInitialized']) {
+    ampli.track({
+      event_type: event,
+      app_version: packageJson.version
+    })
+  }
+}
+
+export function setAnalyticsUserId(userId: string) {
+  if (typeof window !== 'undefined' && !window['analyticsInitialized']) {
+    ampli.client.setUserId(userId)
+  }
+}
+
+export default function AnalyticsInitializer() {
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      GameAnalytics("configureBuild", `web ${packageJson.version}`);
-      GameAnalytics("initialize", process.env.NEXT_PUBLIC_GA_KEY_GAME_PUBLIC, process.env.NEXT_PUBLIC_GA_KEY_SECRET);
+    // Ensure we are in the browser and analytics has not been initialized
+    if (typeof window !== 'undefined' && !window['analyticsInitialized']) {
+      if (!process.env.NEXT_PUBLIC_AMPLITUDE_PUBLIC_KEY) {
+        throw new Error('Missing analytics key')
+      }
+
+      ampli.load({
+        client: { apiKey: process.env.NEXT_PUBLIC_AMPLITUDE_PUBLIC_KEY }
+      })
+      ampli.client.add(sessionReplayPlugin())
+
+      console.log('Analytics: Initializing')
+
+      window['analyticsInitialized'] = true
     }
   }, [])
 
-  return <></>
+  return null // No UI component to render
 }
-
-export default Analytics

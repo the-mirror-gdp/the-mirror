@@ -1,8 +1,8 @@
-"use client"
-import { store } from "@/state/store";
+'use client'
+import { store } from '@/state/store'
 import { Provider } from 'react-redux'
-import { ThemeProvider } from "next-themes";
-import { useSetupAuthEvents } from "@/hooks/auth";
+import { ThemeProvider } from 'next-themes'
+import { useSetupAuthEvents } from '@/hooks/auth'
 
 export default function ClientLayout({ children }) {
   return (
@@ -22,10 +22,5 @@ export default function ClientLayout({ children }) {
 // separate component here because auth setup needs to be within the store
 export function AuthLayout({ children }) {
   useSetupAuthEvents()
-  return (
-    <main className="items-center h-full">
-      {children}
-    </main>
-
-  )
+  return <main className="items-center h-full">{children}</main>
 }

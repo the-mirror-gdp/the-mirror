@@ -1,21 +1,21 @@
-"use client";
-import { Button } from "@/components/ui/button";
+'use client'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { signOut } from "@/hooks/auth";
-import { useAppSelector } from "@/hooks/hooks";
-import { selectLocalUserState } from "@/state/local";
-import { CircleUser } from "lucide-react";
-import Link from "next/link";
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
+import { signOut } from '@/hooks/auth'
+import { useAppSelector } from '@/hooks/hooks'
+import { selectLocalUser } from '@/state/local.slice'
+import { CircleUser } from 'lucide-react'
+import Link from 'next/link'
 
 export default function AccountDropdownMenu() {
-  const localUserState = useAppSelector(selectLocalUserState);
+  const localUserState = useAppSelector(selectLocalUser)
 
   return (
     <DropdownMenu>
@@ -27,11 +27,11 @@ export default function AccountDropdownMenu() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>
-          {localUserState?.email || "Welcome"}
+          {localUserState?.email || 'Welcome'}
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="cursor-pointer">
-          <Link href={"/my/account"}>Account Settings</Link>
+          <Link href={'/my/account'}>Account Settings</Link>
         </DropdownMenuItem>
         {process.env.NEXT_PUBLIC_DISCORD_INVITE_URL && (
           <DropdownMenuItem className="cursor-pointer">
@@ -49,5 +49,5 @@ export default function AccountDropdownMenu() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  );
+  )
 }

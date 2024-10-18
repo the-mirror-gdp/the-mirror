@@ -1,17 +1,17 @@
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils'
 
-import { Playlist } from "../data/playlists";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { Axis3D, Gamepad2, PlusCircleIcon } from "lucide-react";
+import { Playlist } from '../data/playlists'
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
+import { Axis3D, Gamepad2, PlusCircleIcon } from 'lucide-react'
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
-  playlists: Playlist[];
+  playlists: Playlist[]
 }
 
 export function Sidebar({ className, playlists, style }: SidebarProps) {
   return (
-    <div className={cn("pb-12", className)} style={{ ...style }}>
+    <div className={cn('pb-12', className)} style={{ ...style }}>
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
           <h2 className="mb-2 px-4 text-2xl font-semibold tracking-tight">
@@ -64,7 +64,7 @@ export function Sidebar({ className, playlists, style }: SidebarProps) {
                   href={process.env.NEXT_PUBLIC_DISCORD_INVITE_URL}
                   target="_blank"
                 >
-                  {" "}
+                  {' '}
                   <Gamepad2 className="mr-2" />
                   Chat on Discord
                 </Link>
@@ -80,5 +80,5 @@ export function Sidebar({ className, playlists, style }: SidebarProps) {
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,14 +1,14 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss'
 
 const config = {
-  darkMode: ["class"],
+  darkMode: ['class'],
   content: [
-    "./pages/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}'
   ],
-  prefix: "",
+  prefix: '',
   theme: {
     container: {
       center: true,
@@ -19,7 +19,7 @@ const config = {
     },
     extend: {
       fontFamily: {
-        sans: ['Montserrat', 'sans-serif'], // Add Montserrat as the default font
+        sans: ['Montserrat', 'sans-serif'] // Add Montserrat as the default font
       },
       colors: {
         border: 'hsl(var(--border))',
@@ -59,7 +59,8 @@ const config = {
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)'
+        sm: 'calc(var(--radius) - 4px)',
+        xs: 'calc(var(--radius) - 6px)'
       },
       keyframes: {
         'accordion-down': {
@@ -81,20 +82,20 @@ const config = {
         progress: {
           '0%': { transform: ' translateX(0) scaleX(0)' },
           '40%': { transform: 'translateX(0) scaleX(0.4)' },
-          '100%': { transform: 'translateX(100%) scaleX(0.5)' },
-        },
+          '100%': { transform: 'translateX(100%) scaleX(0.5)' }
+        }
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        progress: 'progress 0.65s infinite linear',
+        progress: 'progress 0.65s infinite linear'
       },
       transformOrigin: {
-        'left-right': '0% 50%',
+        'left-right': '0% 50%'
       }
     }
   },
-  plugins: [require("tailwindcss-animate")],
-} satisfies Config;
+  plugins: [require('tailwindcss-animate')]
+} satisfies Config
 
-export default config;
+export default config

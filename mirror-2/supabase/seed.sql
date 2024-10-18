@@ -6,7 +6,7 @@ CREATE OR REPLACE FUNCTION public.create_user(
     user_id uuid;
     encrypted_pw text;
 BEGIN
-  -- Generate a new user UUID and encrypt the password
+  -- Generate a new user uuid and encrypt the password
   user_id := gen_random_uuid();
   encrypted_pw := crypt(password, gen_salt('bf'));
   
@@ -36,8 +36,8 @@ DECLARE
   profile_url TEXT;
   file_url TEXT;
   thumbnail_url TEXT;
-  space_id uuid;
-  scene_id uuid;
+  space_id bigint;
+  scene_id bigint;
   entity_name TEXT;
   entity_id uuid;
   component_name TEXT;
@@ -46,11 +46,11 @@ BEGIN
     -- Loop to insert 15 users
     FOR i IN 1..15 LOOP
       -- Construct the email dynamically
-      email := format('user%s@example.com', i);  -- Use %s for numbers
+      email := format('user%s@example.com', i);  
 
       -- Call the create_user function with the constructed email and capture user_id
       user_id := public.create_user(email, password);
-      user_ids := array_append(user_ids, user_id);  -- Store user_id in array
+      user_ids := array_append(user_ids, user_id);  
 
       -- Optionally, print each email for verification during execution
       RAISE NOTICE 'Created user with email: %, ID: %', email, user_id;
@@ -61,55 +61,52 @@ BEGIN
       VALUES
         (user_id, format('User %s', i), format('This is the bio of user %s.', i), format('https://picsum.photos/seed/picsum/300/300', i));
 
-      -- Insert 30 assets for each user, now including creator_user_id, owner_user_id, and thumbnail_url
+      -- Insert 30 assets for each user
       FOR j IN 1..30 LOOP
-        file_url := format('https://picsum.photos/seed/picsum/800/600', i, j);  -- Use %s for numbers
-        thumbnail_url := format('https://picsum.photos/seed/picsum/200/150', i, j);  -- Use %s for thumbnails
+        file_url := format('https://picsum.photos/seed/picsum/800/600', i, j);  
+        thumbnail_url := format('https://picsum.photos/seed/picsum/200/150', i, j);  
 
         INSERT INTO public.assets
           (id, name, description, file_url, thumbnail_url, creator_user_id, owner_user_id, created_at, updated_at)
         VALUES
-          (gen_random_uuid(), format('Asset %s', j), 'This is a placeholder description for the asset.', file_url, thumbnail_url, user_id, user_id, now(), now());  -- Added thumbnail_url and description
+          (floor(random() * 9007199254740991 + 500000000)::BIGINT, format('Asset %s', j), 'This is a placeholder description for the asset.', file_url, thumbnail_url, user_id, user_id, now(), now()); 
       END LOOP;
 
     END LOOP;
 
-    -- Insert spaces, using user_ids from the array and setting both owner_user_id and creator_user_id
+    -- Insert spaces
     FOR i IN 1..45 LOOP
-      -- Create an array of image URLs for the space's public_page_image_urls
       public_page_image_urls := ARRAY[
         format('https://picsum.photos/seed/picsum/%s/800', i),
         format('https://picsum.photos/seed/picsum/%s/801', i),
         format('https://picsum.photos/seed/picsum/%s/802', i)
       ];
 
-      -- Create a new space
       INSERT INTO public.spaces
         (id, name, description, public_page_image_urls, creator_user_id, owner_user_id, created_at, updated_at)
       VALUES
-        (gen_random_uuid(), format('Space %s', i), 'This is a placeholder description for the space.', public_page_image_urls, user_ids[((i - 1) % 15) + 1], user_ids[((i - 1) % 15) + 1], now(), now())  -- Added public_page_image_urls and description
-      RETURNING id INTO space_id;  -- Capture the newly created space ID
+        (floor(random() * 9007199254740991 + 500000000)::BIGINT, format('Space %s', i), 'This is a placeholder description for the space.', public_page_image_urls, user_ids[((i - 1) % 15) + 1], user_ids[((i - 1) % 15) + 1], now(), now())
+      RETURNING id INTO space_id;  
 
-      -- Insert 3 space_versions for each space
+      -- Insert 3 space_packs for each space
       FOR v IN 1..3 LOOP
-        INSERT INTO public.space_versions
-          (id, name, space_id, created_at, updated_at)
+        INSERT INTO public.space_packs
+          (id, space_id, data, created_at, updated_at)
         VALUES
-          (gen_random_uuid(), format('Version %s-%s', i, v), space_id, now(), now());
+          (floor(random() * 9007199254740991 + 500000000)::BIGINT,space_id, '{}'::jsonb, now(), now());
       END LOOP;
 
       -- Insert 3 scenes for each space
       FOR j IN 1..3 LOOP
-        -- Create a new scene
         INSERT INTO public.scenes
-          (id, space_id, name, created_at, updated_at)
+          (id, space_id, name, created_at, updated_at, settings)
         VALUES
-          (gen_random_uuid(), space_id, format('Scene %s-%s', i, j), now(), now())
-        RETURNING id INTO scene_id;  -- Capture the newly created scene ID
+          (floor(random() * 9007199254740991 + 500000000)::BIGINT, space_id, format('Scene %s-%s', i, j), now(), now(), '{}'::jsonb)
+        RETURNING id INTO scene_id;  
 
         -- Insert 20 entities for each scene
         FOR k IN 1..20 LOOP
-          entity_name := format('Entity %s-%s-%s', i, j, k);  -- Create unique entity names
+          entity_name := format('Entity %s-%s-%s', i, j, k);  
 
           -- Insert entity
           INSERT INTO public.entities
@@ -117,15 +114,6 @@ BEGIN
           VALUES
             (gen_random_uuid(), entity_name, scene_id, now(), now())
           RETURNING id INTO entity_id;  -- Capture the newly created entity ID
-
-          -- Insert 3 components for each entity, including component_key and attributes
-          FOR c IN 1..3 LOOP
-
-            INSERT INTO public.components
-              (id, entity_id, component_key, attributes, created_at, updated_at)
-            VALUES
-              (gen_random_uuid(), entity_id, 'script', '{"attribute": "value"}'::jsonb, now(), now());  -- Add component_key and attributes
-          END LOOP;
 
         END LOOP;
 

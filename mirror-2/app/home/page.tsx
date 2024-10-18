@@ -1,19 +1,19 @@
-"use client";
-import Image from "next/image";
-import { Sidebar } from "./components/sidebar";
-import { listenNowAlbums, madeForYouAlbums } from "./data/albums";
-import { playlists } from "./data/playlists";
-import { Separator } from "@/components/ui/separator";
-import { appDescription, appName } from "@/lib/theme-service";
-import AccountDropdownMenu from "@/components/ui/account-dropdown-menu";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { useGetSpacesByUserIdQuery } from "@/state/spaces";
+'use client'
+import Image from 'next/image'
+import { Sidebar } from './components/sidebar'
+import { listenNowAlbums, madeForYouAlbums } from './data/albums'
+import { playlists } from './data/playlists'
+import { Separator } from '@/components/ui/separator'
+import { appDescription, appName } from '@/lib/theme-service'
+import AccountDropdownMenu from '@/components/ui/account-dropdown-menu'
+import { Card, CardContent, CardFooter } from '@/components/ui/card'
+import { useGetSpacesByUserIdQuery } from '@/state/spaces'
 
 const dummyImg =
-  "https://images.unsplash.com/photo-1513745405825-efaf9a49315f?w=300&dpr=2&q=80";
+  'https://images.unsplash.com/photo-1513745405825-efaf9a49315f?w=300&dpr=2&q=80'
 
 export default function Home() {
-  const { data: spaces, error } = useGetSpacesByUserIdQuery("");
+  const { data: spaces, error } = useGetSpacesByUserIdQuery('')
 
   return (
     <>
@@ -38,7 +38,7 @@ export default function Home() {
           playlists={playlists}
           className="hidden lg:block w "
           style={{
-            width: "25%",
+            width: '25%'
           }}
         />
         <div className="py-6 px-6 w-full">
@@ -60,8 +60,8 @@ export default function Home() {
                 <Card
                   className="rounded-none"
                   style={{
-                    borderBottomLeftRadius: "0.75rem",
-                    borderBottomRightRadius: "0.75rem",
+                    borderBottomLeftRadius: '0.75rem',
+                    borderBottomRightRadius: '0.75rem'
                   }}
                 >
                   <CardContent className="p-0">
@@ -71,8 +71,8 @@ export default function Home() {
                       height={250}
                       alt={album?.name}
                       style={{
-                        height: "250px",
-                        width: "100%",
+                        height: '250px',
+                        width: '100%'
                       }}
                     />
                   </CardContent>
@@ -105,8 +105,8 @@ export default function Home() {
                   <Card
                     className="rounded-none"
                     style={{
-                      borderBottomLeftRadius: "0.75rem",
-                      borderBottomRightRadius: "0.75rem",
+                      borderBottomLeftRadius: '0.75rem',
+                      borderBottomRightRadius: '0.75rem'
                     }}
                   >
                     <CardContent className="p-0">
@@ -116,8 +116,8 @@ export default function Home() {
                         height={250}
                         alt={space?.name}
                         style={{
-                          height: "250px",
-                          width: "100%",
+                          height: '250px',
+                          width: '100%'
                         }}
                       />
                     </CardContent>
@@ -127,7 +127,7 @@ export default function Home() {
                           {space?.name}
                         </h3>
                         <p className="text-xs text-muted-foreground">
-                          Created At {space?.created_at.split("T")[0]}
+                          Created At {space?.created_at.split('T')[0]}
                         </p>
                       </div>
                     </CardFooter>
@@ -141,5 +141,5 @@ export default function Home() {
         </div>
       </div>
     </>
-  );
+  )
 }

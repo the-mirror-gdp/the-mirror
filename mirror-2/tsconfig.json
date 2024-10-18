@@ -18,6 +18,11 @@
     "plugins": [
       {
         "name": "next"
+      },
+      {
+        "name": "ts-plugin-sort-import-suggestions",
+        "moveUpPatterns": ["@/", "\\.{1,2}/"],
+        "moveDownPatterns": ["dist", "antd"]
       }
     ],
     "paths": {
@@ -30,7 +35,11 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/types/app/my/spaces/page.tsx",
-    ".next/types/app/my/assets/page.tsx"
+    ".next/types/app/my/assets/page.tsx",
+    "state/engine/__settings__.js",
+    "state/engine/__loading__.js",
+    "state/engine/__modules__.js",
+    "state/engine/__start__.js"
   ],
   "exclude": ["node_modules"]
 }

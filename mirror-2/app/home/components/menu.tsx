@@ -1,5 +1,19 @@
-import { Menubar, MenubarMenu, MenubarTrigger, MenubarContent, MenubarItem, MenubarSeparator, MenubarShortcut, MenubarSub, MenubarSubTrigger, MenubarSubContent, MenubarCheckboxItem, MenubarLabel, MenubarRadioGroup, MenubarRadioItem } from "@/components/ui/menubar";
-
+import {
+  Menubar,
+  MenubarMenu,
+  MenubarTrigger,
+  MenubarContent,
+  MenubarItem,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarSub,
+  MenubarSubTrigger,
+  MenubarSubContent,
+  MenubarCheckboxItem,
+  MenubarLabel,
+  MenubarRadioGroup,
+  MenubarRadioItem
+} from '@/components/ui/menubar'
 
 export function Menu() {
   return (
@@ -74,7 +88,7 @@ export function Menu() {
           <MenubarItem disabled>Burn Playlist to Disc...</MenubarItem>
           <MenubarSeparator />
           <MenubarItem>
-            Show in Finder <MenubarShortcut>⇧⌘R</MenubarShortcut>{" "}
+            Show in Finder <MenubarShortcut>⇧⌘R</MenubarShortcut>{' '}
           </MenubarItem>
           <MenubarItem>Convert</MenubarItem>
           <MenubarSeparator />
@@ -112,7 +126,7 @@ export function Menu() {
           </MenubarItem>
           <MenubarSeparator />
           <MenubarItem>
-            Smart Dictation...{" "}
+            Smart Dictation...{' '}
             <MenubarShortcut>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -130,7 +144,7 @@ export function Menu() {
             </MenubarShortcut>
           </MenubarItem>
           <MenubarItem>
-            Emoji & Symbols{" "}
+            Emoji & Symbols{' '}
             <MenubarShortcut>
               <svg
                 xmlns="http://www.w3.org/2000/svg"

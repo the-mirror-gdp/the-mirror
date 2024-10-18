@@ -1,41 +1,41 @@
-"use client";
-import { loginAction } from "@/actions/auth";
-import { FormMessage, Message } from "@/components/form-message";
-import { SubmitButton } from "@/components/submit-button";
+'use client'
+import { loginAction } from '@/actions/auth'
+import { FormMessage, Message } from '@/components/form-message'
+import { SubmitButton } from '@/components/submit-button'
 import {
   Card,
   CardHeader,
   CardTitle,
   CardContent,
-  CardFooter,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useRedirectToHomeIfSignedIn } from "@/hooks/auth";
-import { AppLogoImageMedium } from "@/lib/theme-service";
-import Link from "next/link";
-import { useRef } from "react";
+  CardFooter
+} from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { useRedirectToHomeIfSignedIn } from '@/hooks/auth'
+import { AppLogoImageMedium } from '@/lib/theme-service'
+import Link from 'next/link'
+import { useRef } from 'react'
+
+const isDevelopment = process.env.NODE_ENV === 'development'
 
 export default function Login({ searchParams }: { searchParams: Message }) {
-  useRedirectToHomeIfSignedIn();
-
-  const isDevelopment = process.env.NODE_ENV === "development";
+  useRedirectToHomeIfSignedIn()
 
   // References for email and password fields
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null)
+  const passwordRef = useRef<HTMLInputElement>(null)
 
   // Function to simulate login with specific user
   const handleDevLoginWithUser = (userEmail: string) => {
     if (emailRef.current && passwordRef.current) {
-      emailRef.current.value = userEmail;
-      passwordRef.current.value = "password"; // Default password for all dev users
+      emailRef.current.value = userEmail
+      passwordRef.current.value = 'password' // Default password for all dev users
     }
 
     // Simulate form submission by calling formAction
     // Since the SubmitButton uses formAction, this will trigger loginAction
-    (document.getElementById("login-form") as HTMLFormElement)?.requestSubmit();
-  };
+    ;(document.getElementById('login-form') as HTMLFormElement)?.requestSubmit()
+  }
 
   return (
     <form id="login-form" action={loginAction}>
@@ -81,7 +81,7 @@ export default function Login({ searchParams }: { searchParams: Message }) {
           </SubmitButton>
           <FormMessage message={searchParams} />
           <p className="text-sm text-muted-foreground">
-            Don't have an account?{" "}
+            Don't have an account?{' '}
             <Link
               className="text-foreground font-medium underline"
               href="/create-account"
@@ -96,21 +96,21 @@ export default function Login({ searchParams }: { searchParams: Message }) {
               <button
                 type="button"
                 className="bg-gray-900 p-2 rounded-md"
-                onClick={() => handleDevLoginWithUser("user1@example.com")}
+                onClick={() => handleDevLoginWithUser('user1@example.com')}
               >
                 Dev Login with User 1
               </button>
               <button
                 type="button"
                 className="bg-gray-900 p-2 rounded-md"
-                onClick={() => handleDevLoginWithUser("user2@example.com")}
+                onClick={() => handleDevLoginWithUser('user2@example.com')}
               >
                 Dev Login with User 2
               </button>
               <button
                 type="button"
                 className="bg-gray-900 p-2 rounded-md"
-                onClick={() => handleDevLoginWithUser("user3@example.com")}
+                onClick={() => handleDevLoginWithUser('user3@example.com')}
               >
                 Dev Login with User 3
               </button>
@@ -119,5 +119,5 @@ export default function Login({ searchParams }: { searchParams: Message }) {
         </CardFooter>
       </Card>
     </form>
-  );
+  )
 }

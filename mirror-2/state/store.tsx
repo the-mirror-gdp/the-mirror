@@ -1,22 +1,24 @@
-"use client"
+'use client'
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query/react'
-import { listenerMiddlewareLocal, localSlice } from '@/state/local'
-import { spacesApi } from '@/state/spaces'
-import { scenesApi } from '@/state/scenes'
-import { entitiesApi } from '@/state/entities'
-import { assetsApi } from '@/state/assets'
-import { componentsApi } from '@/state/components'
+import { listenerMiddlewareLocal, localSlice } from '@/state/local.slice'
+import { listenerMiddlewareSpaces, spacesApi } from '@/state/api/spaces'
+import { scenesApi } from '@/state/api/scenes'
+import { entitiesApi, listenerMiddlewareEntities } from '@/state/api/entities'
+import { assetsApi } from '@/state/api/assets'
+import { spacePacksApi } from '@/state/api/space-packs'
+import { spacePackSlice } from '@/state/space-pack.slice'
 
 export const store = configureStore({
   reducer: {
     // Add the generated reducer as a specific top-level slice
     [localSlice.reducerPath]: localSlice.reducer,
+    [spacePackSlice.reducerPath]: spacePackSlice.reducer,
     [assetsApi.reducerPath]: assetsApi.reducer,
     [spacesApi.reducerPath]: spacesApi.reducer,
     [scenesApi.reducerPath]: scenesApi.reducer,
     [entitiesApi.reducerPath]: entitiesApi.reducer,
-    [componentsApi.reducerPath]: componentsApi.reducer,
+    [spacePacksApi.reducerPath]: spacePacksApi.reducer
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
@@ -26,8 +28,10 @@ export const store = configureStore({
       .concat(spacesApi.middleware)
       .concat(scenesApi.middleware)
       .concat(entitiesApi.middleware)
-      .concat(componentsApi.middleware)
+      .concat(spacePacksApi.middleware)
       .concat(listenerMiddlewareLocal.middleware)
+      .concat(listenerMiddlewareSpaces.middleware)
+      .concat(listenerMiddlewareEntities.middleware)
 })
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors
