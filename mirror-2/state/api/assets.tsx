@@ -17,6 +17,7 @@ export type AssetId = number & { __brand: 'AssetId' }
 export const ASSETS_BUCKET_USERS_FOLDER = 'users' // used for the assets bucket
 export const ASSETS_BUCKET_VERSIONED_ASSETS_FOLDER = 'versioned' // generally immutable, used for space_packs (published Spaces/games)
 const TABLE_NAME = 'assets'
+export const TAG_NAME_FOR_LIST = 'LIST'
 
 export interface CreateAssetMutation {
   name: string
@@ -27,7 +28,8 @@ export const TAG_NAME_FOR_GENERAL_ENTITY = 'Assets'
 export const assetsApi = createApi({
   reducerPath: 'assetsApi',
   baseQuery: fakeBaseQuery(),
-  tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, 'LIST'],
+  tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, TAG_NAME_FOR_LIST],
+  invalidationBehavior: 'delayed', // TODO try changing this to `immediately` and time behavior of Redux updates to engine. `delayed` is default
   endpoints: (builder) => ({
     createAsset: builder.mutation<
       any,
@@ -124,7 +126,9 @@ export const assetsApi = createApi({
 
         return { data: insertedAsset }
       },
-      invalidatesTags: [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }]
+      invalidatesTags: [
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }
+      ]
     }),
 
     getSingleAsset: builder.query<any, string>({
@@ -174,9 +178,9 @@ export const assetsApi = createApi({
                 type: TAG_NAME_FOR_GENERAL_ENTITY,
                 id
               })),
-              { type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }
+              { type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }
             ]
-          : [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }]
+          : [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }]
     }),
 
     searchAssets: builder.query<any, { text: string }>({
@@ -202,11 +206,10 @@ export const assetsApi = createApi({
                 type: TAG_NAME_FOR_GENERAL_ENTITY,
                 id
               })),
-              { type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }
+              { type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }
             ]
-          : [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }]
+          : [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }]
     }),
-
     updateAsset: builder.mutation<
       any,
       { id: string; updateData: Record<string, any> }
@@ -226,7 +229,29 @@ export const assetsApi = createApi({
         return { data }
       },
       invalidatesTags: (result, error, { id: assetId }) => [
-        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: assetId }
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: assetId },
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }
+      ]
+    }),
+
+    deleteAsset: builder.mutation<any, { id: string }>({
+      queryFn: async ({ id: assetId }) => {
+        const supabase = createSupabaseBrowserClient()
+
+        const { data, error } = await supabase
+          .from(TABLE_NAME)
+          .delete()
+          .eq('id', assetId)
+          .single()
+
+        if (error) {
+          return { error: error.message }
+        }
+        return { data }
+      },
+      invalidatesTags: (result, error, { id: assetId }) => [
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: assetId },
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }
       ]
     }),
 
@@ -256,5 +281,6 @@ export const {
   useGetSingleAssetQuery,
   useLazyGetUserMostRecentlyUpdatedAssetsQuery,
   useUpdateAssetMutation,
-  useLazyDownloadAssetQuery
+  useLazyDownloadAssetQuery,
+  useDeleteAssetMutation
 } = assetsApi

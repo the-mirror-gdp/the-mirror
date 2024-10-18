@@ -4,7 +4,7 @@ import { setupListeners } from '@reduxjs/toolkit/query/react'
 import { listenerMiddlewareLocal, localSlice } from '@/state/local.slice'
 import { listenerMiddlewareSpaces, spacesApi } from '@/state/api/spaces'
 import { scenesApi } from '@/state/api/scenes'
-import { entitiesApi, listenerMiddlewareEntities } from '@/state/api/entities'
+import { entitiesApi } from '@/state/api/entities'
 import { assetsApi } from '@/state/api/assets'
 import { spacePacksApi } from '@/state/api/space-packs'
 import { spacePackSlice } from '@/state/space-pack.slice'
@@ -35,15 +35,15 @@ export const makeStore = () => {
     // Adding the api middleware enables caching, invalidation, polling,
     // and other useful features of `rtk-query`.
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware()
-        .concat(assetsApi.middleware)
-        .concat(spacesApi.middleware)
-        .concat(scenesApi.middleware)
-        .concat(entitiesApi.middleware)
-        .concat(spacePacksApi.middleware)
-        .concat(listenerMiddlewareLocal.middleware)
-        .concat(listenerMiddlewareSpaces.middleware)
-        .concat(listenerMiddlewareEntities.middleware)
+      getDefaultMiddleware().concat(
+        assetsApi.middleware,
+        spacesApi.middleware,
+        scenesApi.middleware,
+        entitiesApi.middleware,
+        spacePacksApi.middleware,
+        listenerMiddlewareLocal.middleware,
+        listenerMiddlewareSpaces.middleware
+      )
   })
 }
 

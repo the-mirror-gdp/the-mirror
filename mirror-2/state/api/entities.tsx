@@ -1,14 +1,6 @@
-import {
-  createSlice,
-  createEntityAdapter,
-  createAsyncThunk,
-  createListenerMiddleware,
-  isAnyOf,
-  createSelector
-} from '@reduxjs/toolkit'
+import { createSelector } from '@reduxjs/toolkit'
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react'
 import { createSupabaseBrowserClient } from '@/utils/supabase/client'
-import { TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY } from '@/state/shared-cache-tags'
 
 import { Database, Tables } from '@/utils/database.types'
 import { SceneId } from '@/state/api/scenes'
@@ -24,6 +16,7 @@ export type DatabaseEntityInsert =
 export type DatabaseEntityUpdate =
   Database['public']['Tables']['entities']['Update']
 export const TAG_NAME_FOR_GENERAL_ENTITY = 'Entities'
+export const TAG_NAME_FOR_LIST = 'LIST'
 export type EntityId = string
 
 export type DatabaseComponent =
@@ -33,11 +26,8 @@ export type DatabaseComponent =
 export const entitiesApi = createApi({
   reducerPath: 'entitiesApi',
   baseQuery: fakeBaseQuery(),
-  tagTypes: [
-    TAG_NAME_FOR_GENERAL_ENTITY,
-    'LIST',
-    TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY
-  ],
+  tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, TAG_NAME_FOR_LIST],
+  invalidationBehavior: 'delayed', // TODO try changing this to `immediately` and time behavior of Redux updates to engine. `delayed` is default
   endpoints: (builder) => ({
     createEntity: builder.mutation<
       any,
@@ -130,7 +120,9 @@ export const entitiesApi = createApi({
 
         return { data }
       },
-      invalidatesTags: [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }]
+      invalidatesTags: [
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }
+      ]
     }),
 
     getAllEntities: builder.query<DatabaseEntity[], SceneId>({
@@ -175,9 +167,17 @@ export const entitiesApi = createApi({
                 type: TAG_NAME_FOR_GENERAL_ENTITY,
                 id
               })),
-              { type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }
+              {
+                type: TAG_NAME_FOR_GENERAL_ENTITY,
+                id: TAG_NAME_FOR_LIST
+              }
             ]
-          : [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }]
+          : [
+              {
+                type: TAG_NAME_FOR_GENERAL_ENTITY,
+                id: TAG_NAME_FOR_LIST
+              }
+            ]
     }),
 
     getSingleEntity: builder.query<DatabaseEntity, EntityId>({
@@ -284,7 +284,9 @@ export const entitiesApi = createApi({
       },
 
       // Optimistic update
+      // not sure if working??
       async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
+        console.log('QUERY optimistic entity update --------')
         const patchResult = dispatch(
           entitiesApi.util.updateQueryData('getSingleEntity', id, (draft) => {
             Object.assign(draft, patch)
@@ -299,7 +301,7 @@ export const entitiesApi = createApi({
 
       invalidatesTags: (result, error, { id: entityId }) => [
         { type: TAG_NAME_FOR_GENERAL_ENTITY, id: entityId },
-        TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }
       ]
     }),
 
@@ -428,7 +430,7 @@ export const entitiesApi = createApi({
 
       invalidatesTags: (result, error, { id: entityId }) => [
         { type: TAG_NAME_FOR_GENERAL_ENTITY, id: entityId },
-        TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }
       ]
     }),
 
@@ -499,7 +501,9 @@ export const entitiesApi = createApi({
 
         return { data: upsertData }
       },
-      invalidatesTags: [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }] // Invalidates the cache
+      invalidatesTags: [
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }
+      ]
     }),
 
     deleteEntity: builder.mutation<any, EntityId>({
@@ -518,7 +522,8 @@ export const entitiesApi = createApi({
         return { data }
       },
       invalidatesTags: (result, error, entityId) => [
-        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: entityId }
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: entityId },
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }
       ]
     }),
 
@@ -568,7 +573,8 @@ export const entitiesApi = createApi({
         return { data }
       },
       invalidatesTags: (result, error, { id }) => [
-        { type: TAG_NAME_FOR_GENERAL_ENTITY, id }
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: id },
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }
       ]
     }),
 
@@ -589,7 +595,8 @@ export const entitiesApi = createApi({
         return { data: data.components }
       },
       providesTags: (result, error, id) => [
-        { type: TAG_NAME_FOR_GENERAL_ENTITY, id }
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id },
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }
       ]
     }),
 
@@ -635,8 +642,9 @@ export const entitiesApi = createApi({
 
         return { data }
       },
-      invalidatesTags: (result, error, { id }) => [
-        { type: TAG_NAME_FOR_GENERAL_ENTITY, id }
+      invalidatesTags: (result, error, { id: entityId }) => [
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: entityId },
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }
       ]
     }),
 
@@ -680,7 +688,8 @@ export const entitiesApi = createApi({
         return { data }
       },
       invalidatesTags: (result, error, { id }) => [
-        { type: TAG_NAME_FOR_GENERAL_ENTITY, id }
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: id },
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }
       ]
     })
     /**
@@ -688,175 +697,6 @@ export const entitiesApi = createApi({
      */
   })
 })
-
-/**
- * Middleware to react to state/entity updates and update the Space app
- */
-export const listenerMiddlewareEntities = createListenerMiddleware()
-
-// **Pending Actions Listener**
-listenerMiddlewareEntities.startListening({
-  predicate: (action) =>
-    entitiesApi.endpoints.createEntity.matchPending(action) ||
-    entitiesApi.endpoints.updateEntity.matchPending(action) ||
-    entitiesApi.endpoints.updateEntityTreeItem.matchPending(action) ||
-    entitiesApi.endpoints.batchUpdateEntities.matchPending(action) ||
-    entitiesApi.endpoints.deleteEntity.matchPending(action) ||
-    // components
-    entitiesApi.endpoints.addComponentToEntity.matchPending(action) ||
-    entitiesApi.endpoints.getComponentsOfEntity.matchPending(action) ||
-    entitiesApi.endpoints.updateComponentOnEntity.matchPending(action) ||
-    entitiesApi.endpoints.deleteComponentFromEntity.matchPending(action),
-  effect: async (action, listenerApi) => {
-    console.log('match pending running', action, listenerApi)
-    const state = listenerApi.getState() as RootState
-
-    // Access all queries from the entitiesApi cache
-    const queries = state[entitiesApi.reducerPath]?.queries || {}
-
-    // Extract all entities from each cached query
-    const allEntities: DatabaseEntity[] = []
-
-    try {
-      Object.keys(queries).forEach((queryKey) => {
-        const query = queries[queryKey]
-
-        // Ensure query.data exists and is an array
-        if (query?.data && Array.isArray(query.data)) {
-          // Type assertion: Now we can safely assume query.data is an array of DatabaseEntity[]
-          const entitiesArray = query.data as DatabaseEntity[]
-
-          allEntities.push(...entitiesArray)
-        }
-      })
-    } catch (error) {
-      console.error('Error while extracting entities from cache:', error)
-    }
-
-    updateCurrentlySelectedEntity(state, allEntities, listenerApi)
-
-    // Pass the optimistic changes to PlayCanvas or your engine
-    // console.log('Optimistically updating entities', allEntities)
-    updateEngineApp(allEntities, { isOptimistic: true })
-  }
-})
-
-listenerMiddlewareEntities.startListening({
-  predicate: (action) =>
-    entitiesApi.endpoints.createEntity.matchFulfilled(action) ||
-    entitiesApi.endpoints.updateEntity.matchFulfilled(action) ||
-    entitiesApi.endpoints.updateEntityTreeItem.matchFulfilled(action) ||
-    entitiesApi.endpoints.batchUpdateEntities.matchFulfilled(action) ||
-    entitiesApi.endpoints.deleteEntity.matchFulfilled(action) ||
-    // components
-    entitiesApi.endpoints.addComponentToEntity.matchFulfilled(action) ||
-    entitiesApi.endpoints.getComponentsOfEntity.matchFulfilled(action) ||
-    entitiesApi.endpoints.updateComponentOnEntity.matchFulfilled(action) ||
-    entitiesApi.endpoints.deleteComponentFromEntity.matchFulfilled(action),
-  effect: async (action, listenerApi) => {
-    console.log('match fulfilled running', action, listenerApi)
-    const state = listenerApi.getState() as RootState
-
-    // Access all queries from the entitiesApi cache
-    const queries = state[entitiesApi.reducerPath]?.queries || {}
-
-    // Extract all entities from each cached query
-    const allEntities: DatabaseEntity[] = []
-
-    try {
-      Object.keys(queries).forEach((queryKey) => {
-        const query = queries[queryKey]
-
-        // Ensure query.data exists and is an array
-        if (query?.data && Array.isArray(query.data)) {
-          // Type assertion: Now we can safely assume query.data is an array of DatabaseEntity[]
-          const entitiesArray = query.data as DatabaseEntity[]
-
-          allEntities.push(...entitiesArray)
-        }
-      })
-    } catch (error) {
-      console.error('Error while extracting entities from cache:', error)
-    }
-
-    updateCurrentlySelectedEntity(state, allEntities, listenerApi)
-
-    // Apply confirmed changes to PlayCanvas or your engine
-    // console.log('Applying confirmed updates to entities', allEntities)
-    updateEngineApp(allEntities, { isOptimistic: false })
-  }
-})
-
-listenerMiddlewareEntities.startListening({
-  predicate: (action) =>
-    entitiesApi.endpoints.createEntity.matchRejected(action) ||
-    entitiesApi.endpoints.updateEntity.matchRejected(action) ||
-    entitiesApi.endpoints.updateEntityTreeItem.matchRejected(action) ||
-    entitiesApi.endpoints.batchUpdateEntities.matchRejected(action) ||
-    entitiesApi.endpoints.deleteEntity.matchRejected(action) ||
-    // components
-    entitiesApi.endpoints.addComponentToEntity.matchRejected(action) ||
-    entitiesApi.endpoints.getComponentsOfEntity.matchRejected(action) ||
-    entitiesApi.endpoints.updateComponentOnEntity.matchRejected(action) ||
-    entitiesApi.endpoints.deleteComponentFromEntity.matchRejected(action),
-  effect: async (action, listenerApi) => {
-    console.log('match rejected running', action, listenerApi)
-    const state = listenerApi.getState() as RootState
-
-    // Access all queries from the entitiesApi cache
-    const queries = state[entitiesApi.reducerPath]?.queries || {}
-
-    // Extract all entities from each cached query
-    const allEntities: DatabaseEntity[] = []
-
-    try {
-      Object.keys(queries).forEach((queryKey) => {
-        const query = queries[queryKey]
-
-        // Ensure query.data exists and is an array
-        if (query?.data && Array.isArray(query.data)) {
-          // Type assertion: Now we can safely assume query.data is an array of DatabaseEntity[]
-          const entitiesArray = query.data as DatabaseEntity[]
-
-          allEntities.push(...entitiesArray)
-        }
-      })
-    } catch (error) {
-      console.error('Error while extracting entities from cache:', error)
-    }
-
-    updateCurrentlySelectedEntity(state, allEntities, listenerApi)
-
-    // Revert the changes
-    // console.log('Reverting updates to entities', allEntities)
-    updateEngineApp(allEntities, { isReverted: true })
-  }
-})
-
-/**
- * Updates currentlySeletedEntity since it's separate state from RTK
- */
-function updateCurrentlySelectedEntity(
-  state: RootState,
-  allEntities: DatabaseEntity[],
-  listenerApi: any
-) {
-  const currentlySelectedEntity = state.local.currentEntity
-  console.log(
-    'updateCurrentlySelectedEntity components', //@ts-ignore
-    allEntities.find((entity) => entity.id === currentlySelectedEntity?.id)
-      .components,
-    currentlySelectedEntity?.components
-  )
-  if (currentlySelectedEntity) {
-    const updatedEntity = allEntities.find(
-      (entity) => entity.id === currentlySelectedEntity.id
-    )
-    if (updatedEntity) {
-      listenerApi.dispatch(setCurrentEntityUseOnlyForId(updatedEntity))
-    }
-  }
-}
 
 export const selectEntitiesResult = entitiesApi.endpoints.getAllEntities.select
 

@@ -12,14 +12,14 @@ export default function ClientLayout({ children }) {
         enableSystem
         disableTransitionOnChange
       >
-        <AuthLayout children={children} />
+        <InitAuthLayout children={children} />
       </ThemeProvider>
     </StoreProvider>
   )
 }
 
 // separate component here because auth setup needs to be within the store
-export function AuthLayout({ children }) {
+export function InitAuthLayout({ children }) {
   useSetupAuthEvents()
   return <main className="items-center h-full">{children}</main>
 }

@@ -12,6 +12,7 @@ export type DatabaseSceneInsert =
   Database['public']['Tables']['scenes']['Insert']
 export type DatabaseSceneUpdate =
   Database['public']['Tables']['scenes']['Update']
+export const TAG_NAME_FOR_LIST = 'LIST'
 
 export type SceneId = number
 
@@ -19,7 +20,8 @@ export type SceneId = number
 export const scenesApi = createApi({
   reducerPath: 'scenesApi',
   baseQuery: fakeBaseQuery(),
-  tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, 'LIST'],
+  invalidationBehavior: 'delayed', // TODO try changing this to `immediately` and time behavior of Redux updates to engine. `delayed` is default
+  tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, TAG_NAME_FOR_LIST],
   endpoints: (builder) => ({
     /**
      * Create a new Scene
@@ -72,7 +74,9 @@ export const scenesApi = createApi({
 
         return { data }
       },
-      invalidatesTags: [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }]
+      invalidatesTags: [
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }
+      ]
     }),
 
     /**
@@ -117,16 +121,16 @@ export const scenesApi = createApi({
 
         return { data }
       },
-      providesTags: (result) =>
+      providesTags: (result: any) =>
         result
           ? [
               ...result.map(({ id }) => ({
-                type: 'Scenes' as const, // Directly assign the type as "Scenes"
+                type: TAG_NAME_FOR_GENERAL_ENTITY,
                 id
               })),
-              { type: 'LIST' as const, id: 'LIST' } // Ensure the type is "LIST"
+              { type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }
             ]
-          : [{ type: 'LIST' as const, id: 'LIST' }]
+          : [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }]
     }),
 
     /**
@@ -152,7 +156,8 @@ export const scenesApi = createApi({
         return { data }
       },
       invalidatesTags: (result, error, { id: sceneId }) => [
-        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: sceneId }
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: sceneId },
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }
       ]
     }),
 
@@ -176,7 +181,8 @@ export const scenesApi = createApi({
         return { data }
       },
       invalidatesTags: (result, error, sceneId) => [
-        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: sceneId }
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: sceneId },
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }
       ]
     })
   })

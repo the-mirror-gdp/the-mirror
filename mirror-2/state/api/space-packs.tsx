@@ -12,13 +12,15 @@ export type DatabaseSpacePackInsert =
 export type DatabaseSpacePackUpdate =
   Database['public']['Tables']['space_packs']['Update']
 
-export const TAG_NAME_FOR_SPACE_PACK: string = 'SpacePacks'
+export const TAG_NAME_FOR_GENERAL_ENTITY: string = 'SpacePacks'
+export const TAG_NAME_FOR_LIST = 'LIST'
 export const SPACE_PACKS_BUCKET_NAME: string = 'space-packs'
 
 export const spacePacksApi = createApi({
   reducerPath: 'spacePacksApi',
   baseQuery: fakeBaseQuery(),
-  tagTypes: [TAG_NAME_FOR_SPACE_PACK, 'LIST'],
+  invalidationBehavior: 'delayed', // TODO try changing this to `immediately` and time behavior of Redux updates to engine. `delayed` is default
+  tagTypes: [TAG_NAME_FOR_GENERAL_ENTITY, TAG_NAME_FOR_LIST],
   endpoints: (builder) => ({
     /**
      * Create a new Space Pack
@@ -46,7 +48,9 @@ export const spacePacksApi = createApi({
 
         return { data: insertedData }
       },
-      invalidatesTags: [{ type: TAG_NAME_FOR_SPACE_PACK, id: 'LIST' }]
+      invalidatesTags: [
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }
+      ]
     }),
 
     /**
@@ -69,7 +73,7 @@ export const spacePacksApi = createApi({
         return { data }
       },
       providesTags: (result, error, spacePackId) => [
-        { type: TAG_NAME_FOR_SPACE_PACK, id: spacePackId }
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: spacePackId }
       ]
     }),
 
@@ -91,16 +95,24 @@ export const spacePacksApi = createApi({
 
         return { data }
       },
-      providesTags: (result) =>
+      providesTags: (result: any) =>
         result
           ? [
               ...result.map(({ id }) => ({
-                type: TAG_NAME_FOR_SPACE_PACK,
+                type: TAG_NAME_FOR_GENERAL_ENTITY,
                 id
               })),
-              { type: 'LIST' as const, id: 'LIST' }
+              {
+                type: TAG_NAME_FOR_GENERAL_ENTITY,
+                id: TAG_NAME_FOR_LIST
+              }
             ]
-          : [{ type: 'LIST' as const, id: 'LIST' }]
+          : [
+              {
+                type: TAG_NAME_FOR_GENERAL_ENTITY,
+                id: TAG_NAME_FOR_LIST
+              }
+            ]
     }),
 
     /**
@@ -127,7 +139,8 @@ export const spacePacksApi = createApi({
         return { data: updatedData }
       },
       invalidatesTags: (result, error, { id: spacePackId }) => [
-        { type: TAG_NAME_FOR_SPACE_PACK, id: spacePackId }
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: spacePackId },
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }
       ]
     }),
 
@@ -151,7 +164,8 @@ export const spacePacksApi = createApi({
         return { data }
       },
       invalidatesTags: (result, error, spacePackId) => [
-        { type: TAG_NAME_FOR_SPACE_PACK, id: spacePackId }
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: spacePackId },
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }
       ]
     })
   })

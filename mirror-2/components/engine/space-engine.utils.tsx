@@ -43,7 +43,7 @@ export const setUpSpace = (
   camera.addComponent('camera', {
     clearColor: new pc.Color(0.1, 0.1, 0.1)
   })
-  camera.setPosition(0, 0, 5)
+  camera.setPosition(0, 0, 7.5)
   app.root.addChild(camera)
 
   // Create a directional light

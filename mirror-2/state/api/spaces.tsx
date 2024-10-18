@@ -10,7 +10,6 @@ import {
   TAG_NAME_FOR_GENERAL_ENTITY as ENTITIES_TAG_NAME_FOR_GENERAL_ENTITY,
   entitiesApi
 } from '@/state/api/entities'
-import { TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY } from '@/state/shared-cache-tags'
 import { createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit'
 import { AnalyticsEvent, sendAnalyticsEvent } from '@/utils/analytics/analytics'
 
@@ -19,19 +18,19 @@ export type DatabaseSpaceInsert =
   Database['public']['Tables']['spaces']['Insert']
 export type DatabaseSpaceUpdate =
   Database['public']['Tables']['spaces']['Update']
-
+export const TAG_NAME_FOR_LIST = 'LIST'
 export const TAG_NAME_FOR_GENERAL_ENTITY = 'Spaces'
 
 // Supabase API for spaces
 export const spacesApi = createApi({
   reducerPath: 'spacesApi',
   baseQuery: fakeBaseQuery(),
+  invalidationBehavior: 'delayed', // TODO try changing this to `immediately` and time behavior of Redux updates to engine. `delayed` is default
   tagTypes: [
     TAG_NAME_FOR_GENERAL_ENTITY,
     SCENES_TAG_NAME_FOR_GENERAL_ENTITY,
     ENTITIES_TAG_NAME_FOR_GENERAL_ENTITY,
-    TAG_NAME_FOR_BUILD_MODE_SPACE_QUERY,
-    'LIST'
+    TAG_NAME_FOR_LIST
   ],
   endpoints: (builder) => ({
     createSpace: builder.mutation<any, any>({
@@ -79,7 +78,9 @@ export const spacesApi = createApi({
         // }
         return { data }
       },
-      invalidatesTags: [{ type: TAG_NAME_FOR_GENERAL_ENTITY, id: 'LIST' }]
+      invalidatesTags: [
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }
+      ]
     }),
 
     getSingleSpace: builder.query<any, number>({
@@ -129,7 +130,8 @@ export const spacesApi = createApi({
         return { data }
       },
       invalidatesTags: (result, error, { id: spaceId }) => [
-        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: spaceId }
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: spaceId },
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }
       ]
     }),
 
@@ -152,13 +154,14 @@ export const spacesApi = createApi({
         return { data }
       },
       invalidatesTags: (result, error, spaceId) => [
-        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: spaceId }
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: spaceId },
+        { type: TAG_NAME_FOR_GENERAL_ENTITY, id: TAG_NAME_FOR_LIST }
       ]
     })
   })
 })
 
-// Middleware
+// TODO separate into separate file per docs rec and add rest of API calls
 export const listenerMiddlewareSpaces = createListenerMiddleware()
 listenerMiddlewareSpaces.startListening({
   matcher: isAnyOf(

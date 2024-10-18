@@ -13,6 +13,7 @@ import { Spinner } from '@/components/ui/spinner'
 import { skipToken } from '@reduxjs/toolkit/query/react' // Important for conditional queries
 import { setUpSpace } from '@/components/engine/space-engine.utils'
 import { useGetAllEntitiesQuery } from '@/state/api/entities'
+import { useSpaceEngine } from '@/components/engine/use-space-engine'
 
 interface SpaceViewportProps {
   spaceId?: number
@@ -56,6 +57,8 @@ export default function SpaceViewport({
   const user = useAppSelector(selectLocalUser)
   const [hasSetUpEntities, setHasSetUpEntities] = useState(false)
   const appRef = useRef<pc.AppBase | undefined>(undefined)
+  // main engine manager for scenes, entities, etc.
+  useSpaceEngine()
 
   // Conditionally fetch space data only if spaceId is defined
   const {
