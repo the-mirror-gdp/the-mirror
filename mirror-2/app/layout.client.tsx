@@ -8,10 +8,12 @@ export default function ClientLayout({ children }) {
   return (
     <Provider store={store}>
       <ThemeProvider
-        attribute="class"
-        defaultTheme="system"
-        enableSystem
+        attribute={'class'}
+        themes={['blue-theme', 'red-theme']}
+        defaultTheme={'blue-theme'}
+        enableSystem={false}
         disableTransitionOnChange
+        enableColorScheme
       >
         <AuthLayout children={children} />
       </ThemeProvider>
