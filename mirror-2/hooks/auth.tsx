@@ -1,21 +1,21 @@
-"use client";
-import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
-import { updateLocalUserState, clearLocalUserState } from "@/state/local";
-import { store } from "@/state/store";
-import { createSupabaseBrowserClient } from "@/utils/supabase/client";
-import { useRouter } from "next/navigation";
+'use client'
+import { useAppDispatch, useAppSelector } from '@/hooks/hooks'
+import { updateLocalUserState, clearLocalUserState } from '@/state/local.slice'
+import { store } from '@/state/store'
+import { createSupabaseBrowserClient } from '@/utils/supabase/client'
+import { useRouter } from 'next/navigation'
 
 export const signOut = async () => {
-  const supabase = createSupabaseBrowserClient();
-  await supabase.auth.signOut();
-  store.dispatch(clearLocalUserState());
-  window.location.href = "/login";
-};
+  const supabase = createSupabaseBrowserClient()
+  await supabase.auth.signOut()
+  store.dispatch(clearLocalUserState())
+  window.location.href = '/login'
+}
 
 export function useSetupAuthEvents() {
-  const supabase = createSupabaseBrowserClient();
-  const dispatch = useAppDispatch();
-  const router = useRouter();
+  const supabase = createSupabaseBrowserClient()
+  const dispatch = useAppDispatch()
+  const router = useRouter()
 
   // if no user, clear local state
   // useEffect(() => {
@@ -34,60 +34,63 @@ export function useSetupAuthEvents() {
         if (session?.user) {
           // console.log('auth: DID fire')
           // console.log("updateLocalUserState", event, session?.user)
-          const { id, email, is_anonymous } = session.user;
-          dispatch(updateLocalUserState({ id, email, is_anonymous }));
+          const { id, email, is_anonymous } = session.user
+          dispatch(updateLocalUserState({ id, email, is_anonymous }))
         } else {
-          console.log("auth: did not fire");
+          console.log('auth: did not fire')
         }
       }
 
       function handleLogout() {
-        dispatch(clearLocalUserState());
-        router.push("/login");
+        dispatch(clearLocalUserState())
+        if (typeof window !== 'undefined') {
+          router.push('/login')
+        }
       }
       // console.log("auth", event, session)
-      if (event === "INITIAL_SESSION") {
+      if (event === 'INITIAL_SESSION') {
         // handle initial session
         if (session?.user) {
-          handleLogin();
+          handleLogin()
         } else {
-          handleLogout();
+          handleLogout()
         }
-      } else if (event === "SIGNED_IN") {
+      } else if (event === 'SIGNED_IN') {
         // handle sign in event
-        handleLogin();
-      } else if (event === "SIGNED_OUT") {
+        handleLogin()
+      } else if (event === 'SIGNED_OUT') {
         // handle sign out event
-        handleLogout();
-      } else if (event === "PASSWORD_RECOVERY") {
+        handleLogout()
+      } else if (event === 'PASSWORD_RECOVERY') {
         // handle password recovery event
-      } else if (event === "TOKEN_REFRESHED") {
+      } else if (event === 'TOKEN_REFRESHED') {
         // handle token refreshed event
-      } else if (event === "USER_UPDATED") {
+      } else if (event === 'USER_UPDATED') {
         // handle user updated event
       }
     }
-  );
+  )
 
   // Cleanup the subscription when the component is unmounted
   return () => {
-    authListener.subscription.unsubscribe();
-  };
+    authListener.subscription.unsubscribe()
+  }
 }
 
 export function useRedirectToHomeIfSignedIn() {
-  const router = useRouter();
-  const id = useAppSelector((state) => state.local?.user?.id);
-  console.log("auth router check", id);
+  const router = useRouter()
+  const id = useAppSelector((state) => state.local?.user?.id)
+  console.log('auth router check', id)
   if (id) {
-    router.replace("/home");
+    router.replace('/home')
   }
 }
 
 export function useRedirectToLoginIfNotSignedIn() {
-  const router = useRouter();
-  const id = useAppSelector((state) => state.local?.user?.id);
+  const router = useRouter()
+  const id = useAppSelector((state) => state.local?.user?.id)
+  console.log('auth router check', id)
   if (!id) {
-    router.replace("/login");
+    router.replace('/login')
   }
 }

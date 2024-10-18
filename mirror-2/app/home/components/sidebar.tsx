@@ -1,21 +1,21 @@
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils'
 
-import { Playlist } from "../data/playlists";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { Axis3D, Gamepad2, PlusCircleIcon } from "lucide-react";
+import { Playlist } from '../data/playlists'
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
+import { Axis3D, Gamepad2, PlusCircleIcon } from 'lucide-react'
 import {
   Dialog,
   DialogClose,
   DialogContent,
   DialogOverlay,
   DialogPortal,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import "./sidebar.css";
+  DialogTrigger
+} from '@/components/ui/dialog'
+import './sidebar.css'
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
-  playlists: Playlist[];
+  playlists: Playlist[]
 }
 
 const SidebarMenuForSmallScreen = () => {
@@ -52,7 +52,7 @@ const SidebarMenuForSmallScreen = () => {
               href={process.env.NEXT_PUBLIC_DISCORD_INVITE_URL}
               target="_blank"
             >
-              {" "}
+              {' '}
               <Gamepad2 className="mr-2" />
               Chat on Discord
             </Link>
@@ -66,14 +66,14 @@ const SidebarMenuForSmallScreen = () => {
             </Button> */}
       </div>
     </>
-  );
-};
+  )
+}
 
 export function Sidebar({ className, playlists, style }: SidebarProps) {
   return (
     <>
       <div
-        className={cn("pb-12 hidden sm:hidden md:hidden lg:block", className)}
+        className={cn('pb-12 hidden sm:hidden md:hidden lg:block', className)}
         style={{ ...style }}
       >
         <div className="space-y-4 py-4">
@@ -132,7 +132,7 @@ export function Sidebar({ className, playlists, style }: SidebarProps) {
                     href={process.env.NEXT_PUBLIC_DISCORD_INVITE_URL}
                     target="_blank"
                   >
-                    {" "}
+                    {' '}
                     <Gamepad2 className="mr-2" />
                     Chat on Discord
                   </Link>
@@ -173,7 +173,7 @@ export function Sidebar({ className, playlists, style }: SidebarProps) {
                   stroke-width="2"
                   d="M4 8h16M4 16h16"
                 ></path>
-              </svg>{" "}
+              </svg>{' '}
             </Button>
           </DialogTrigger>
           <DialogPortal>
@@ -186,5 +186,5 @@ export function Sidebar({ className, playlists, style }: SidebarProps) {
         </Dialog>
       </div>
     </>
-  );
+  )
 }

@@ -85,9 +85,10 @@ canvas:focus {
   outline: none;
 }
 
+/* leaving here bc will probably need to tweak */
 .ant-tree-switcher_close {
-  margin-top: 0.5rem !important;
+  /* margin-top: 0.5rem !important; */
 }
 .ant-tree-switcher_open {
-  margin-top: 0.5rem !important;
+  /* margin-top: 0.5rem !important; */
 }

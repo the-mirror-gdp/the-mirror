@@ -1,5 +1,5 @@
-import { ArrowUpRight, InfoIcon } from "lucide-react";
-import Link from "next/link";
+import { ArrowUpRight, InfoIcon } from 'lucide-react'
+import Link from 'next/link'
 
 export function SmtpMessage() {
   return (
@@ -21,5 +21,5 @@ export function SmtpMessage() {
         </div>
       </div>
     </div>
-  );
+  )
 }

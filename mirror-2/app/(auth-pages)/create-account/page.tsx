@@ -1,26 +1,26 @@
-"use client";
-import { createAccountAction, loginAction } from "@/actions/auth";
-import { FormMessage, Message } from "@/components/form-message";
-import { SubmitButton } from "@/components/submit-button";
+'use client'
+import { createAccountAction, loginAction } from '@/actions/auth'
+import { FormMessage, Message } from '@/components/form-message'
+import { SubmitButton } from '@/components/submit-button'
 import {
   Card,
   CardHeader,
   CardTitle,
   CardContent,
-  CardFooter,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useRedirectToHomeIfSignedIn } from "@/hooks/auth";
-import { AppLogoImageMedium } from "@/lib/theme-service";
-import Link from "next/link";
+  CardFooter
+} from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { useRedirectToHomeIfSignedIn } from '@/hooks/auth'
+import { AppLogoImageMedium } from '@/lib/theme-service'
+import Link from 'next/link'
 
 export default function CreateAccount({
-  searchParams,
+  searchParams
 }: {
-  searchParams: Message;
+  searchParams: Message
 }) {
-  useRedirectToHomeIfSignedIn();
+  useRedirectToHomeIfSignedIn()
   return (
     <form>
       <Card className="w-full max-w-sm">
@@ -58,7 +58,7 @@ export default function CreateAccount({
           </SubmitButton>
           <FormMessage message={searchParams} />
           <p className="text-sm text-muted-foreground">
-            Already have an account?{" "}
+            Already have an account?{' '}
             <Link
               className="text-foreground font-medium underline"
               href="/login"
@@ -69,5 +69,5 @@ export default function CreateAccount({
         </CardFooter>
       </Card>
     </form>
-  );
+  )
 }

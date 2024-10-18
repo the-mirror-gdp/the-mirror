@@ -2,7 +2,7 @@
 -- Create the space_user_collaborators table
 create table space_user_collaborators (
   id uuid not null primary key default uuid_generate_v4(),
-  space_id uuid references spaces(id) on delete cascade not null,
+  space_id BIGINT references spaces(id) on delete cascade not null,
   user_id uuid references auth.users(id) on delete cascade not null,
   created_at timestamp with time zone not null default now(),
   constraint unique_space_user unique(space_id, user_id)

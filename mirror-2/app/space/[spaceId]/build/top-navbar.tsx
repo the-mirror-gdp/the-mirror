@@ -5,16 +5,17 @@ import AccountDropdownMenu from "@/components/ui/account-dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/hooks/hooks";
 import { AppLogoImageSmall } from "@/lib/theme-service";
-import { selectLocalUserState } from "@/state/local";
+import { selectLocalUser } from "@/state/local.slice";
 import { Play } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export function TopNavbar() {
-  const localUserState = useAppSelector(selectLocalUserState)
+  const localUserState = useAppSelector(selectLocalUser)
   const [hasMounted, setHasMounted] = useState(false);
   const params = useParams<{ spaceId: string }>()
+  const spaceId: number = parseInt(params.spaceId, 10) // Use parseInt for safer conversion  
 
   // Check if the component is fully mounted (client-side)
   useEffect(() => {
@@ -41,7 +42,7 @@ export function TopNavbar() {
 
           >
             <Link href={`/space/${params.spaceId}/play`} prefetch={true}><Play className="mr-2 text-white" />
-              Play
+              Preview
             </Link>
           </Button>
           {!localUserState?.id && <Button

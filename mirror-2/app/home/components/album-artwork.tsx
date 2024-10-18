@@ -1,9 +1,9 @@
-import Image from "next/image";
+import Image from 'next/image'
 
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils'
 
-import { Album } from "../data/albums";
-import { playlists } from "../data/playlists";
+import { Album } from '../data/albums'
+import { playlists } from '../data/playlists'
 import {
   ContextMenu,
   ContextMenuTrigger,
@@ -12,27 +12,27 @@ import {
   ContextMenuSub,
   ContextMenuSubTrigger,
   ContextMenuSubContent,
-  ContextMenuSeparator,
-} from "@/components/ui/context-menu";
-import { PlusCircleIcon } from "lucide-react";
+  ContextMenuSeparator
+} from '@/components/ui/context-menu'
+import { PlusCircleIcon } from 'lucide-react'
 
 interface AlbumArtworkProps extends React.HTMLAttributes<HTMLDivElement> {
-  album: Album;
-  aspectRatio?: "portrait" | "square";
-  width?: number;
-  height?: number;
+  album: Album
+  aspectRatio?: 'portrait' | 'square'
+  width?: number
+  height?: number
 }
 
 export function AlbumArtwork({
   album,
-  aspectRatio = "portrait",
+  aspectRatio = 'portrait',
   width,
   height,
   className,
   ...props
 }: AlbumArtworkProps) {
   return (
-    <div className={cn("space-y-3", className)} {...props}>
+    <div className={cn('space-y-3', className)} {...props}>
       <ContextMenu>
         <ContextMenuTrigger>
           <div className="overflow-hidden rounded-md">
@@ -42,8 +42,8 @@ export function AlbumArtwork({
               width={width}
               height={height}
               className={cn(
-                "h-auto w-auto object-cover transition-all hover:scale-105",
-                aspectRatio === "portrait" ? "aspect-[3/4]" : "aspect-square"
+                'h-auto w-auto object-cover transition-all hover:scale-105',
+                aspectRatio === 'portrait' ? 'aspect-[3/4]' : 'aspect-square'
               )}
             />
           </div>
@@ -91,5 +91,5 @@ export function AlbumArtwork({
         <p className="text-xs text-muted-foreground">{album.artist}</p>
       </div>
     </div>
-  );
+  )
 }
