@@ -39,7 +39,7 @@ export function SyncedBooleanInput<T>({
               }}
               className="form-checkbox h-5 w-5 text-primary focus:ring-primary"
             />
-            {label && <span>{label}</span>}
+            {label && <span className="text-primary-foreground">{label}</span>}
           </label>
         </div>
       )}
