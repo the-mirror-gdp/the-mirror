@@ -59,9 +59,10 @@ export default function Model3DRenderFormGroup() {
     }
   }, [entity, getEntitySuccess, form])
 
-  async function onSubmit(values: z.infer<typeof render3DModelSchema>) {
-    console.log('onSubmit values', values)
-    if (entity) {
+  async function onSubmit(v: z.infer<typeof render3DModelSchema>) {
+    const validation = render3DModelSchema.safeParse(form.getValues())
+    if (entity && validation.success) {
+      const values = validation.data
       await updateComponentOnEntity({
         id: entity.id,
         componentKey: componentKey,
@@ -71,15 +72,7 @@ export default function Model3DRenderFormGroup() {
   }
 
   const handleChange = async () => {
-    console.log('Form test, values:', form.getValues())
-    const isValid = await form.trigger() // Manually trigger validation
-    if (isValid) {
-      const values = form.getValues() // Get current form values
-      console.log('Form is valid, triggering submission:', values)
-      onSubmit(values) // Manually call onSubmit after validation passes
-    } else {
-      console.log('form not valid', form.formState.errors)
-    }
+    onSubmit(form.getValues())
   }
 
   const { watch } = form
