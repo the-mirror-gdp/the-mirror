@@ -10,9 +10,25 @@ import { z } from 'zod'
 // 3D Model/Render Component
 //
 export type Render3DModel = z.infer<typeof render3DModelSchema>
+export enum Render3DModelType {
+  Asset = 'asset',
+  Box = 'box',
+  Sphere = 'sphere',
+  Capsule = 'capsule',
+  Cylinder = 'cylinder',
+  Cone = 'cone',
+  Mesh = 'mesh',
+  Compound = 'compound'
+}
+export const Render3DModelTypeValues = Object.entries(Render3DModelType).map(
+  ([key, value]) => ({
+    displayName: key,
+    value: value
+  })
+)
 export const render3DModelSchema = z.object({
   enabled: z.boolean(),
-  type: z.string(),
+  type: z.nativeEnum(Render3DModelType),
   asset: z.coerce.number().nullable(), // only show if type == asset
   materialAssets: z.array(z.coerce.number().nullable()),
   layers: z.array(z.coerce.number()), // multi select
@@ -37,7 +53,7 @@ export const render3DModelSchema = z.object({
 
 export const render3DModelSchemaDefaultValues = {
   enabled: true,
-  type: 'box',
+  type: 'box' as Render3DModelType,
   asset: null,
   materialAssets: [],
   layers: [0],

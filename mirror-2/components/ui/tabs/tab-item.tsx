@@ -1,7 +1,7 @@
 // TabItem.tsx
 import { ReactNode } from 'react'
 import { cn } from '@/utils/cn'
-import { getLongestDisplayName } from '@/components/engine/schemas/components-types'
+import { getLongestDisplayName } from '@/components/engine/schemas/component-icon-displayname'
 
 interface TabItemProps {
   isActive?: boolean

@@ -1,3 +1,4 @@
+import { ComponentType } from '@/components/engine/schemas/component-type'
 import {
   BookImage,
   Box,
@@ -11,33 +12,6 @@ import {
   Volume2,
   Proportions
 } from 'lucide-react'
-
-// this order determines the vertical sidebar order
-export enum ComponentType {
-  Sprite2D = 'sprite', // different from engine naming for simplicity
-  Model3D = 'render', // different from engine naming for simplicity
-  Anim = 'anim',
-  AudioListener = 'audiolistener',
-  Button = 'button',
-  Camera = 'camera',
-  Collision = 'collision',
-  GSplat = 'gsplat',
-  LayoutChild = 'layoutchild',
-  LayoutGroup = 'layoutgroup',
-  Light = 'light',
-  ParticleSystem = 'particlesystem',
-  RigidBody = 'rigidbody',
-  Screen = 'screen',
-  Script = 'script',
-  Scrollbar = 'scrollbar',
-  ScrollView = 'scrollview',
-  Sound = 'sound',
-  Element = 'element'
-
-  // Legacy
-  // Animation = 'animation', // legacy; commented out here for reference
-  // Model = 'model', // legacy; commented out here for reference
-}
 
 export const getIconForComponent = (componentType: ComponentType) => {
   const iconClassName = 'mr-2 h-4 w-4'
@@ -62,7 +36,7 @@ export const getIconForComponent = (componentType: ComponentType) => {
       return <ScrollText className={iconClassName} />
     case ComponentType.Sound:
       return <Volume2 className={iconClassName} />
-    case ComponentType.Element:
+    case ComponentType.UI:
       return <Proportions className={iconClassName} />
     default:
       return null
@@ -91,7 +65,7 @@ export const getDisplayNameForComponent = (componentType: ComponentType) => {
       return 'Script'
     case ComponentType.Sound:
       return 'Sound'
-    case ComponentType.Element:
+    case ComponentType.UI:
       return 'UI'
     default:
       return 'Component'
@@ -107,4 +81,3 @@ export const getLongestDisplayName = () => {
     ''
   )
 }
-;``

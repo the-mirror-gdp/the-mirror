@@ -12,14 +12,17 @@ import { useFormContext } from 'react-hook-form'
 import { useState, useEffect } from 'react'
 
 import {
-  ComponentType,
   getDisplayNameForComponent,
   getIconForComponent
-} from '@/components/engine/schemas/components-types'
+} from '@/components/engine/schemas/component-icon-displayname'
 import { selectCurrentEntity } from '@/state/local.slice'
 import { skipToken } from '@reduxjs/toolkit/query'
 import { Separator } from '@/components/ui/separator'
 import Model3DRenderFormGroup from '@/components/ui/inspector/components/model-3d'
+import {
+  ComponentType,
+  ComponentTypeOptions
+} from '@/components/engine/schemas/component-type'
 
 export function VerticalTabs() {
   const form = useFormContext()
@@ -41,17 +44,19 @@ export function VerticalTabs() {
 
   useEffect(() => {
     if (entity && entity.components) {
-      const keys = Object.keys(entity.components)
+      const keys: ComponentType[] = Object.keys(
+        entity.components
+      ) as ComponentType[] // TODO change out as assertion
       keys.sort((a, b) => {
-        const orderA = Object.values(ComponentType).indexOf(a as ComponentType)
-        const orderB = Object.values(ComponentType).indexOf(b as ComponentType)
+        const orderA = ComponentTypeOptions.indexOf(a)
+        const orderB = ComponentTypeOptions.indexOf(b)
         return orderA - orderB
       })
       setComponentKeys(keys)
 
       // in a transition, if the new entity doesn't have the component of the previously selected tab, set selected tab to first
-      if (keys.length > 0 && !keys.includes(selectedTab as string)) {
-        setSelectedTab(keys[0] as ComponentType)
+      if (keys.length > 0 && (!selectedTab || !keys.includes(selectedTab))) {
+        setSelectedTab(keys[0])
       }
     } else {
       setComponentKeys([])

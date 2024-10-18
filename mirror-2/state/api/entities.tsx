@@ -8,9 +8,28 @@ import { updateEngineApp } from '@/state/engine/engine'
 import { RootState } from '@/state/store'
 import { setCurrentEntityUseOnlyForId } from '@/state/local.slice'
 import { TransformTuples, TupleLengthMap } from '@/utils/database.types.helpers'
+import { ComponentType } from '@/components/engine/schemas/component-type'
 
-// Define types for the entities table
-export type DatabaseEntity = TransformTuples<Tables<'entities'>>
+// DatabaseComponentRaw not exported since just DatabaseComponent should be exported
+type DatabaseComponentRaw =
+  Database['public']['Tables']['entities']['Row']['components']
+// Define a more specific type for components
+type ComponentDataMap = {
+  [key in keyof ComponentType]: {
+    componentData: any // TODO replace any with more specific type
+  }
+}
+// Extend DatabaseComponent with the specific component structure
+export type DatabaseComponentsEntityProperty = DatabaseComponentRaw &
+  ComponentDataMap
+
+export type DatabaseEntity = Omit<
+  TransformTuples<Tables<'entities'>>,
+  'components'
+> & {
+  components: DatabaseComponentsEntityProperty
+}
+
 export type DatabaseEntityInsert =
   Database['public']['Tables']['entities']['Insert']
 export type DatabaseEntityUpdate =
@@ -18,9 +37,6 @@ export type DatabaseEntityUpdate =
 export const TAG_NAME_FOR_GENERAL_ENTITY = 'Entities'
 export const TAG_NAME_FOR_LIST = 'LIST'
 export type EntityId = string
-
-export type DatabaseComponent =
-  Database['public']['Tables']['entities']['Row']['components']
 
 // Supabase API for spaces
 export const entitiesApi = createApi({
@@ -155,7 +171,8 @@ export const entitiesApi = createApi({
             entity.local_rotation[1],
             entity.local_rotation[2],
             entity.local_rotation[3]
-          ] as [number, number, number, number]
+          ] as [number, number, number, number],
+          components: entity.components as DatabaseComponentsEntityProperty // TODO add some safety here in case the DB comes back in a shape we don't expect
         }))
 
         return { data: formattedData }
@@ -187,7 +204,7 @@ export const entitiesApi = createApi({
         }
         const supabase = createSupabaseBrowserClient()
 
-        const { data, error } = await supabase
+        const { data: entity, error } = await supabase
           .from('entities')
           .select('*')
           .eq('id', entityId)
@@ -199,23 +216,24 @@ export const entitiesApi = createApi({
 
         // update formatting to handle number[] to [number,number,number, (number?)] conversion
         const formattedData = {
-          ...data,
+          ...entity,
           local_position: [
-            data.local_position[0],
-            data.local_position[1],
-            data.local_position[2]
+            entity.local_position[0],
+            entity.local_position[1],
+            entity.local_position[2]
           ] as [number, number, number],
           local_rotation: [
-            data.local_rotation[0],
-            data.local_rotation[1],
-            data.local_rotation[2],
-            data.local_rotation[3]
+            entity.local_rotation[0],
+            entity.local_rotation[1],
+            entity.local_rotation[2],
+            entity.local_rotation[3]
           ] as [number, number, number, number],
           local_scale: [
-            data.local_scale[0],
-            data.local_scale[1],
-            data.local_scale[2]
-          ] as [number, number, number]
+            entity.local_scale[0],
+            entity.local_scale[1],
+            entity.local_scale[2]
+          ] as [number, number, number],
+          components: entity.components as DatabaseComponentsEntityProperty // TODO add some safety here in case the DB comes back in a shape we don't expect
         }
         return {
           data: formattedData

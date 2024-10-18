@@ -1,5 +1,8 @@
 'use client'
-import { DatabaseComponent, DatabaseEntity } from '@/state/api/entities'
+import {
+  DatabaseComponentsEntityProperty,
+  DatabaseEntity
+} from '@/state/api/entities'
 import { DatabaseScene } from '@/state/api/scenes'
 import { RootState } from '@/state/store'
 import { setAnalyticsUserId } from '@/utils/analytics/analytics'

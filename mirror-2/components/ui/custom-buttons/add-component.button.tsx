@@ -29,13 +29,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { DatabaseEntity } from '@/state/api/entities'
+import {
+  DatabaseComponentsEntityProperty,
+  DatabaseEntity
+} from '@/state/api/entities'
 import { useAddComponentToEntityMutation } from '@/state/api/entities'
 import {
-  ComponentType,
   getIconForComponent,
   getDisplayNameForComponent
-} from '@/components/engine/schemas/components-types'
+} from '@/components/engine/schemas/component-icon-displayname'
+import { render3DModelSchemaDefaultValues } from '@/components/engine/schemas/component.schemas'
+import { ComponentType } from '@/components/engine/schemas/component-type'
 
 export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
   const itemClassName = 'cursor-pointer'
@@ -71,7 +75,12 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
 
           <DropdownMenuItem
             className={itemClassName}
-            onClick={() => handleAddComponent(ComponentType.Model3D, {})}
+            onClick={() =>
+              handleAddComponent(
+                ComponentType.Model3D,
+                render3DModelSchemaDefaultValues
+              )
+            }
           >
             {getIconForComponent(ComponentType.Model3D)}
             <span>{getDisplayNameForComponent(ComponentType.Model3D)}</span>
@@ -147,10 +156,10 @@ export function CreateComponentButton({ entity }: { entity: DatabaseEntity }) {
 
           <DropdownMenuItem
             className={itemClassName}
-            onClick={() => handleAddComponent(ComponentType.Element, {})}
+            onClick={() => handleAddComponent(ComponentType.UI, {})}
           >
-            {getIconForComponent(ComponentType.Element)}
-            <span>{getDisplayNameForComponent(ComponentType.Element)}</span>
+            {getIconForComponent(ComponentType.UI)}
+            <span>{getDisplayNameForComponent(ComponentType.UI)}</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>

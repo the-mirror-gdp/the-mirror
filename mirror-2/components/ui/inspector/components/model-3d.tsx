@@ -8,6 +8,7 @@ import { SyncedSingleSelect } from '@/components/ui/synced-inputs/synced-single-
 import { SyncedVec3Input } from '@/components/ui/synced-inputs/synced-vec3-input'
 import {
   Render3DModel,
+  Render3DModelTypeValues,
   render3DModelSchema,
   render3DModelSchemaDefaultValues
 } from '@/components/engine/schemas/component.schemas'
@@ -21,9 +22,10 @@ import { selectCurrentEntity } from '@/state/local.slice'
 import { useAppSelector } from '@/hooks/hooks'
 import { skipToken } from '@reduxjs/toolkit/query'
 import { z } from 'zod'
-import { ComponentType } from '@/components/engine/schemas/components-types'
+
 import { useEffect } from 'react'
 import * as pc from 'playcanvas'
+import { ComponentType } from '@/components/engine/schemas/component-type'
 
 export default function Model3DRenderFormGroup() {
   const currentEntityForId = useAppSelector(selectCurrentEntity)
@@ -105,11 +107,10 @@ export default function Model3DRenderFormGroup() {
           <SyncedSingleSelect
             fieldName="type"
             form={form}
-            options={[
-              { label: 'Box', value: 'box' },
-              { label: 'Sphere', value: 'sphere' },
-              { label: 'Cylinder', value: 'cylinder' }
-            ]}
+            options={Render3DModelTypeValues.map(({ displayName, value }) => ({
+              label: displayName, // Map displayName to label
+              value: value
+            }))}
             handleChange={handleChange}
             placeholder="Select Type"
           />

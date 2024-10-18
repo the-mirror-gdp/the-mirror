@@ -30,10 +30,10 @@ export const entitySchema = z.object({
 
   tags: z.array(z.string()).optional(), // Optional array of strings for tags
 
-  components: z.any() // Assuming components is a JSON object, this could be updated further if there's a specific structure
+  components: z.any() // TODO restrict to component schemas
 })
 export const entitySchemaUiFormDefaultValues = {
-  name: '',
+  name: 'New Entity',
   enabled: true,
   local_position: [0, 0, 0] as [number, number, number],
   local_rotation_euler: [0, 0, 0] as [number, number, number],
