@@ -58,7 +58,7 @@ export const setUpSpace = (
 
   // Create a sphere
   const sphere = new pc.Entity('spheretest')
-  sphere.setLocalScale(0.1, 0.1, 0.1)
+  sphere.setLocalScale(4.1, 0.1, 0.1)
   sphere.setLocalPosition(0.1, 1.1, 0.1)
   sphere.addComponent('render', {
     type: 'sphere'

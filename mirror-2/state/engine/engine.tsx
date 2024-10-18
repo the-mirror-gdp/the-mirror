@@ -1,4 +1,5 @@
 import { getApp } from '@/components/engine/__start-custom__'
+import { entitySchema } from '@/components/engine/schemas/entity.schema'
 import { DatabaseEntity } from '@/state/api/entities'
 import * as pc from 'playcanvas'
 
@@ -57,102 +58,51 @@ export function updateEngineApp<T extends { id: string }>(
   //   revertOptimisticEngineUpdates(app, entities)
   // } else {
   // if (!options.isOptimistic && !options.isReverted) {
-  applyConfirmedEngineUpdates(app, entities)
+  applyConfirmedEngineUpdates(entities)
   // }
   // }
 }
 
-function applyOptimisticEngineUpdates(
-  app: pc.Application,
-  entities: DatabaseEntity[]
-) {
-  console.log('Applying optimistic updates to engine', entities)
+function applyConfirmedEngineUpdates(databaseEntities: DatabaseEntity[]) {
+  const app = getApp()
+  console.log('Applying confirmed updates to engine', databaseEntities)
 
-  entities.forEach((entityData) => {
-    let pcEntity = app.root.findByName(entityData.id)
+  databaseEntities.forEach((databaseEntity) => {
+    // app.root.addChild(entity)
+    // pcEntity.enabled = true
+    // entity.setLocalScale(33.1, 5.1, 5.1)
+    // pcEntity.setLocalPosition(
+    //   Math.random() * 1.2,
+    //   Math.random() * 1.2,
+    //   Math.random() * 1.2
+    // )
+    // console.log('Adding entity! updated log', entity)
+    // entity.addComponent('render', {
+    //   type: 'cylinder',
+    //   castShadows: true,
+    //   receiveShadows: true
+    // })
 
-    if (!pcEntity) {
-      // Create a new PlayCanvas entity
-      pcEntity = new pc.Entity(entityData.name)
-      console.warn('add back')
-      app.root.addChild(pcEntity)
-      console.log('children added optimistic')
-      // Store the entity for potential reverts
-      optimisticEntities.set(entityData.id, pcEntity as pc.Entity)
-    }
+    // note: works
+    // const sphere = new pc.dEntity('spheretest')
+    // sphere.setLocalScale(0.1, 0.1, 0.1)
+    // sphere.enabled = true
+    // sphere.setLocalPosition(
+    //   Math.random() * 1.2,
+    //   Math.random() * 1.2,
+    //   Math.random() * 1.2
+    // )
+    // sphere.addComponent('render', {
+    //   type: 'sphere',
+    //   castShadows: true,
+    //   receiveShadows: true
+    // })
+    // app.root.addChild(sphere)
 
-    // Ensure pcEntity is of type Entity
-    const entity: pc.Entity = pcEntity as pc.Entity // Cast to Entity if safe
-    updateEngineEntity(entity, entityData)
-
-    // Remove from optimisticEntities if it was added optimistically
-  })
-}
-
-function revertOptimisticEngineUpdates(
-  app: pc.Application,
-  entities: DatabaseEntity[]
-) {
-  console.log('Reverting engine state', entities)
-
-  entities.forEach((entityData) => {
-    const pcEntity = optimisticEntities.get(entityData.id)
-    if (pcEntity) {
-      // Remove the entity from the scene
-      pcEntity.destroy()
-      optimisticEntities.delete(entityData.id)
-    }
-  })
-}
-
-function applyConfirmedEngineUpdates(
-  app: pc.Application,
-  entities: DatabaseEntity[]
-) {
-  console.log('Applying confirmed updates to engine', entities)
-
-  entities.forEach((entityData) => {
-    let pcEntity: pc.Entity | null = app.root.findByName(
-      entityData.name
-    ) as pc.Entity | null // Entity is subclass of GraphNode
-
-    if (!pcEntity) {
-      pcEntity = new pc.Entity(entityData.name)
-      // app.root.addChild(pcEntity)
-      // pcEntity.enabled = true
-      // pcEntity.setLocalScale(3.1, 5.1, 5.1)
-      // pcEntity.setLocalPosition(
-      //   Math.random() * 1.2,
-      //   Math.random() * 1.2,
-      //   Math.random() * 1.2
-      // )
-      // console.log('Adding entity! updated log', pcEntity)
-      // pcEntity.addComponent('render', {
-      //   type: 'cylinder',
-      //   castShadows: true,
-      //   receiveShadows: true
-      // })
-
-      // const sphere = new pc.Entity('spheretest')
-      // sphere.setLocalScale(0.1, 0.1, 0.1)
-      // sphere.enabled = true
-      // sphere.setLocalPosition(
-      //   Math.random() * 1.2,
-      //   Math.random() * 1.2,
-      //   Math.random() * 1.2
-      // )
-      // sphere.addComponent('render', {
-      //   type: 'sphere',
-      //   castShadows: true,
-      //   receiveShadows: true
-      // })
-      // app.root.addChild(sphere)
-      // console.log('children added confirmed')
-    }
+    // console.log('children added confirmed')
 
     // Ensure pcEntity is of type Entity
-    const entity = pcEntity
-    updateEngineEntity(entity, entityData)
+    updateEngineEntity(databaseEntity)
 
     // Remove from optimisticEntities if it was added optimistically
     // console.warn('skipping optimistic removes!!!!!!')
@@ -166,155 +116,148 @@ function applyConfirmedEngineUpdates(
   // removeStaleEntities(app, entities)
 }
 
-function updateEngineEntity(pcEntity: pc.Entity, entityData: DatabaseEntity) {
-  if ('enabled' in entityData) {
-    pcEntity.enabled = entityData.enabled
+function updateEngineEntity(databaseEntity: DatabaseEntity) {
+  const app = getApp()
+
+  // TODO change to find by id so unique
+  // TODO change to find by id so unique
+  // TODO change to find by id so unique
+  // TODO change to find by id so unique
+  // TODO change to find by id so unique
+  // TODO change to find by id so unique
+  // TODO change to find by id so unique
+  let pcEntity: pc.Entity | null = app.root.findByName(
+    databaseEntity.name
+  ) as pc.Entity | null // Entity is subclass of GraphNode
+
+  let added = false
+  // create if doesn't exist
+  if (!pcEntity) {
+    pcEntity = new pc.Entity(databaseEntity.name)
+    pcEntity.setGuid(databaseEntity.id)
+    pcEntity.addComponent('render', {
+      type: 'sphere',
+      castShadows: true,
+      receiveShadows: true
+    })
+    app.root.addChild(pcEntity)
+    added = true
   }
 
-  if ('position' in entityData && Array.isArray(entityData.position)) {
-    const [x, y, z] = entityData.position
+  if ('enabled' in databaseEntity) {
+    pcEntity.enabled = databaseEntity.enabled
+  }
+
+  if (
+    'local_position' in databaseEntity &&
+    Array.isArray(databaseEntity.local_position)
+  ) {
+    const [x, y, z] = databaseEntity.local_position
     pcEntity.setPosition(x, y, z)
   }
 
-  if ('rotation' in entityData && Array.isArray(entityData.rotation)) {
-    const [x, y, z] = entityData.rotation
-    pcEntity.setEulerAngles(x, y, z)
+  if (
+    'local_rotation' in databaseEntity &&
+    Array.isArray(databaseEntity.local_rotation)
+  ) {
+    const [x, y, z, w] = databaseEntity.local_rotation
+    pcEntity.setLocalRotation(x, y, z, w)
   }
 
-  if ('scale' in entityData && Array.isArray(entityData.scale)) {
-    const [x, y, z] = entityData.scale
+  if (
+    'local_scale' in databaseEntity &&
+    Array.isArray(databaseEntity.local_scale)
+  ) {
+    const [x, y, z] = databaseEntity.local_scale
     pcEntity.setLocalScale(x, y, z)
   }
 
   // Add or update other properties as needed based on your entity schema
   // Update tags if present in entityData
-  if ('tags' in entityData && Array.isArray(entityData.tags)) {
+  if ('tags' in databaseEntity && Array.isArray(databaseEntity.tags)) {
     const existingTags = new Set(pcEntity.tags.list())
-    entityData.tags.forEach((tag: string) => {
+    databaseEntity.tags.forEach((tag: string) => {
       if (!existingTags.has(tag)) {
-        pcEntity.tags.add(tag)
+        pcEntity?.tags.add(tag)
       }
     })
+  }
+
+  if (added) {
+    console.log('new pcEntity', pcEntity)
+    console.log('from databaseEntity', databaseEntity)
   }
 
   // Handle entity components
-  if (entityData?.components) {
-    const components = entityData.components
+  // if (databaseEntity?.components) {
+  //   const components = databaseEntity.components
+  //   const componentKeys = Object.keys(components)
 
-    const componentKeys = Object.keys(components)
-
-    componentKeys.forEach((componentKey) => {
-      const componentData = components[componentKey]
+  Object.entries(databaseEntity?.components || {}).forEach(
+    ([componentKey, componentData]) => {
       if (Object.keys(componentData).length === 0) {
         return
       }
-      // Abstract logic for updating or adding components based on their type
-      const updateOrAddComponent = (
-        entity: pc.Entity,
-        // key: typeof ComponentType,
-        key: any,
-        data: any
-      ) => {
-        switch (key) {
-          case ComponentType.Model3D:
-            const componentData = {
-              enabled: data.enabled,
-              type: data.type,
-              asset: data.asset,
-              materialAssets: data.materialAssets,
-              layers: data.layers,
-              // batchGroupId: data.batchGroupId, TODO add/fix
-              castShadows: data.castShadows,
-              castShadowsLightmap: data.castShadowsLightmap,
-              receiveShadows: data.receiveShadows,
-              lightmapped: data.lightmapped,
-              lightmapSizeMultiplier: data.lightmapSizeMultiplier,
-              isStatic: data.isStatic,
-              rootBone: data.rootBone,
-              customAabb: data.customAabb,
-              aabbCenter: data.aabbCenter,
-              aabbHalfExtents: data.aabbHalfExtents
-            }
-            if (entity.render) {
-              Object.assign(entity.render, componentData)
-              console.log(`1.0 updateEngineEntity: Obj. assign:`, entity.render)
-              console.log(
-                `1.1 updateEngineEntity: Obj. assign: componentData`,
-                componentData
-              )
-            } else {
-              var checkType = ComponentType.Model3D // for some reason, having to declare this here or else ComponentType is imported incorrectly
-              entity.addComponent(checkType, componentData)
-              console.log(
-                `2 updateEngineEntity: Component added: ${key}`,
-                componentData
-              )
-            }
-            console.log(
-              `updateEngineEntity: Updated entity:`,
-              entity[componentKey]
-            )
-            break
-          case ComponentType.Sprite2D:
-            if (entity.sprite) {
-              Object.assign(entity.sprite, data)
-            } else {
-              entity.addComponent('sprite', data)
-            }
-            break
-          // Add more cases for other component types as needed
-          default:
-            // if (entity[key]) {
-            //   Object.assign(entity[key], data)
-            // } else {
-            //   entity.addComponent(key, data)
-            // }
-            break
-        }
+      switch (componentKey) {
+        case ComponentType.Model3D: // render
+          const updatedComponentData = {
+            enabled: componentData.enabled,
+            type: componentData.type,
+            asset: componentData.asset,
+            materialAssets: componentData.materialAssets,
+            layers: componentData.layers,
+            // batchGroupId: data.batchGroupId, TODO add/fix
+            castShadows: componentData.castShadows,
+            castShadowsLightmap: componentData.castShadowsLightmap,
+            receiveShadows: componentData.receiveShadows,
+            lightmapped: componentData.lightmapped,
+            lightmapSizeMultiplier: componentData.lightmapSizeMultiplier,
+            isStatic: componentData.isStatic,
+            rootBone: componentData.rootBone,
+            customAabb: componentData.customAabb,
+            aabbCenter: componentData.aabbCenter,
+            aabbHalfExtents: componentData.aabbHalfExtents
+          }
+          pcEntity?.addComponent(componentKey, updatedComponentData)
+        // if (entity.render) {
+        //   Object.assign(entity.render, componentData)
+        //   console.log(`1.1 updateEngineEntity: Obj. assign: entity`, entity)
+        // } else {
+        //   var checkType = ComponentType.Model3D // for some reason, having to declare this here or else ComponentType is imported incorrectly
+        //   entity.addComponent(checkType, componentData)
+        //   console.log(`2 updateEngineEntity: Component for entity`, entity)
+        // }
+        // console.log(
+        //   `updateEngineEntity: Updated entity:`,
+        //   entity[componentKey]
+        // )
+        //   break
+        // case ComponentType.Sprite2D:
+        //   if (entity.sprite) {
+        //     Object.assign(entity.sprite, componentData)
+        //   } else {
+        //     entity.addComponent('sprite', componentData)
+        //   }
+        //   break
+        // Add more cases for other component types as needed
+        default:
+          // if (entity[key]) {
+          //   Object.assign(entity[key], data)
+          // } else {
+          //   entity.addComponent(key, data)
+          // }
+          break
       }
 
-      // Iterate over component keys and update or add components
-      componentKeys.forEach((componentKey) => {
-        // if (!Object.values(ComponentType).includes(componentKey)) {
-        //   console.error(
-        //     `Component key ${componentKey} does not exist in ComponentType`
-        //   )
-        //   throw new Error(
-        //     `Component key ${componentKey} does not exist in ComponentType`
-        //   )
-        // }
-        const componentData = components[componentKey]
-        updateOrAddComponent(
-          pcEntity,
-          componentKey as ComponentType,
-          componentData
-        )
-
-        // Log all entities in the scene
-        const app = getApp()
-
-        // const box = new pc.Entity('boxtest')
-        // box.enabled = true
-        // box.setLocalScale(0.1, 0.1, 0.1)
-        // box.setLocalPosition(
-        //   Math.random() * 1.2,
-        //   Math.random() * 1.2,
-        //   Math.random() * 1.2
-        // )
-        // box.addComponent('render', {
-        //   type: 'box',
-        //   castShadows: true,
-        //   receiveShadows: true
-        // })
-        // app.root.addChild(box)
-
-        console.log('Entities in the scene:', app.root.children)
-        app.root.children.forEach((child) => {
-          // console.log(`Entity Name: ${child.name}, Entity:`, child)
-        })
+      // Log all entities in the scene
+      const app = getApp()
+      console.log('Entities in the scene:', app.root.children)
+      app.root.children.forEach((child) => {
+        // console.log(`Entity Name: ${child.name}, Entity:`, child)
       })
-    })
-  }
+      // })
+    }
+  )
 }
 
 function removeStaleEntities<T extends { id: string }>(
