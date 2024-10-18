@@ -31,7 +31,7 @@ export function EntityFormGroup() {
 
   const form = useForm<z.infer<typeof entitySchema>>({
     resolver: zodResolver(entitySchema),
-    mode: 'onBlur',
+    mode: 'onChange',
     defaultValues: entitySchemaUiFormDefaultValues,
     // values: <- dont do this here, use the useEffect so we have control over resets. Otherwise, weird behavior.
     resetOptions: {

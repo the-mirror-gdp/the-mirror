@@ -38,7 +38,12 @@ export function SyncedVec3Input<T>({
             triggerOnChange={triggerOnChange}
             renderComponent={() => (
               <Input
-                {...register(`${fieldName}.${index}`)} // Register each input with react-hook-form
+                {...register(`${fieldName}.${index}`, {
+                  onChange: () => {
+                    handleChange()
+                  },
+                  onBlur: (e) => {}
+                })} // Register each input with react-hook-form
                 className={clsx('form-input', className)}
                 type="number"
                 autoComplete="off"
