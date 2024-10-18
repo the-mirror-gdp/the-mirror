@@ -71,10 +71,13 @@ export function EntityFormGroup() {
     }
   }, [entity, getEntitySuccess, form])
 
-  async function onSubmit(values: z.infer<typeof entitySchema>) {
-    console.log('onSubmit values', values)
-    const isValid = await form.trigger() // Manually trigger validation
-    if (isValid) {
+  async function onSubmit(v: z.infer<typeof entitySchema>) {
+    const validation = entitySchema.safeParse(v)
+
+    // const isValid = await form.trigger() // FYI: NOT working. use safeParse instead
+    if (validation.success) {
+      const values = validation.data
+      console.log('onSubmit validated values', values)
       // Convert local_rotation from Euler angles to a quaternion
       const convertToFixedArray = (angles: number[], precision: number) => {
         return angles.map((angle) => {
