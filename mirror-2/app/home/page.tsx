@@ -7,7 +7,7 @@ import { Separator } from '@/components/ui/separator'
 import { appDescription, appName } from '@/lib/theme-service'
 import AccountDropdownMenu from '@/components/ui/account-dropdown-menu'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
-import { useGetSpacesByUserIdQuery } from '@/state/spaces'
+import { useGetSpacesByUserIdQuery } from '@/state/api/spaces'
 
 const dummyImg =
   'https://images.unsplash.com/photo-1513745405825-efaf9a49315f?w=300&dpr=2&q=80'
