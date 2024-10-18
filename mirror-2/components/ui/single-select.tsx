@@ -68,7 +68,7 @@ export const SingleSelect = forwardRef<
               {...props}
               onClick={() => setIsPopoverOpen((prev) => !prev)}
               className={cn(
-                'flex w-full p-1 rounded-md border min-h-10 h-auto items-center justify-between bg-inherit hover:bg-inherit',
+                'flex w-full p-1 rounded-md  min-h-10 h-auto items-center justify-between bg-inherit hover:bg-inherit',
                 className
               )}
             >
