@@ -1,0 +1,11 @@
+@media screen and (max-width: 730px) {
+  .setting-container {
+    max-width: 95% !important;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .setting-container {
+    max-width: 75% !important;
+  }
+}

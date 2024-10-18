@@ -7,7 +7,7 @@ import { Separator } from '@/components/ui/separator'
 import { appDescription, appName } from '@/lib/theme-service'
 import AccountDropdownMenu from '@/components/ui/account-dropdown-menu'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
-import { useGetSpacesByUserIdQuery } from '@/state/spaces'
+import { useGetSpacesByUserIdQuery } from '@/state/api/spaces'
 
 const dummyImg =
   'https://images.unsplash.com/photo-1513745405825-efaf9a49315f?w=300&dpr=2&q=80'
@@ -36,7 +36,6 @@ export default function Home() {
       <div className="bg-background flex">
         <Sidebar
           playlists={playlists}
-          className="hidden lg:block w "
           style={{
             width: '25%'
           }}
@@ -58,6 +57,7 @@ export default function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {madeForYouAlbums.slice(0, 4).map((album) => (
                 <Card
+                  key={album?.name}
                   className="rounded-none"
                   style={{
                     borderBottomLeftRadius: '0.75rem',
