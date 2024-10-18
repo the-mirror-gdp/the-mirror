@@ -53,10 +53,7 @@ export default function Model3DRenderFormGroup() {
       const newData = entity.components[componentKey]
       const parseResult = render3DModelSchema.safeParse(newData)
       if (parseResult.success) {
-        console.log('setting 3D model form data', newData)
         form.reset(newData)
-      } else {
-        // debugger // temp
       }
     }
   }, [entity, getEntitySuccess, form])
