@@ -143,7 +143,7 @@ export function EntityFormGroup() {
             <TextInputPcTwoWay
               path={getJsonPathForObserverStructure('name')}
               entityId={entity.id}
-              className="pl-0 font-bold m-10"
+              className="pl-0 font-bold"
               schema={entitySchema.pick({
                 name: true
               })}
