@@ -1,15 +1,36 @@
 import { createContext, useContext, useEffect, useRef } from 'react'
 import { useAppSelector } from '@/hooks/hooks'
 import { selectCurrentScene } from '@/state/local.slice'
-import { DatabaseEntity, useGetAllEntitiesQuery } from '@/state/api/entities'
+import {
+  DatabaseEntity,
+  useGetAllEntitiesQuery,
+  useUpdateEntityMutation
+} from '@/state/api/entities'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { updateEngineApp } from '@/state/engine/engine'
 import { Observer } from '@playcanvas/observer'
 import { entitySchemaUiFormDefaultValues } from '@/components/engine/schemas/entity.schema'
 
-export const getJsonPathForObserverStructure = (firstKey: string) => {
-  // TODO will be tweaked for nested (likely)
-  return firstKey
+export const getJsonPathForObserverStructure = (
+  entityId: string,
+  key: string
+) => {
+  /**
+   * If databaseEntity is:
+   * {
+   * name: <data>,
+   * ...
+   * }
+   * then the 'path' needs to be 'name'
+   */
+  return `${key}`
+}
+
+export const extractEntityIdFromJsonPathForObserverStructure = (
+  input: string
+) => {
+  const parts = input.split('.')
+  return parts[0]
 }
 
 // Define the type for the context value
@@ -48,6 +69,8 @@ export const SpaceEngineProvider = ({ children }) => {
       updateEngineApp(entities)
     }
   }, [entities, isSuccessGettingEntities])
+  const [updateEntity, { isLoading: isUpdating, isSuccess: isUpdated }] =
+    useUpdateEntityMutation()
 
   const observersRef = useRef(new Map())
 
@@ -63,8 +86,13 @@ export const SpaceEngineProvider = ({ children }) => {
 
     const observer = new Observer(observerData)
 
-    observer.on('*:set', (path, value) => {
-      console.log('observer.on *:set unfinished', path, value)
+    // handle changes/updates to entity
+    observer.on('*:set', async (path, value) => {
+      // const entityId = extractEntityIdFromJsonPathForObserverStructure(path)
+      console.log('observer.on *:set updating entity', path, value)
+      console.log('observer.on: entityId', entityData.id)
+      await updateEntity({ id: entityData.id as string, [path]: value })
+
       // const updatedData = observer.get();
       // updateEngineApp(updatedData);
     })

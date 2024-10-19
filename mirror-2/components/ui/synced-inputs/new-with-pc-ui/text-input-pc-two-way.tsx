@@ -5,7 +5,7 @@ import { cn } from '@/utils/cn'
 import { BindingTwoWay, TextInput } from '@playcanvas/pcui/react'
 import { FC, useContext, useEffect, useRef } from 'react'
 
-export interface TextInputTwoWayProps {
+export interface TextInputPcTwoWayProps {
   // super important: the path to the generalEntity's property here, e.g. <uid>.name, <uid>.nestedSomething.someInput
   path: string
   entityId: string
@@ -14,7 +14,7 @@ export interface TextInputTwoWayProps {
   schemaFieldName: any
 }
 
-const TextInputPcTwoWay: FC<TextInputTwoWayProps> = ({
+const TextInputPcTwoWay: FC<TextInputPcTwoWayProps> = ({
   className,
   path,
   entityId,
@@ -31,7 +31,7 @@ const TextInputPcTwoWay: FC<TextInputTwoWayProps> = ({
   const schemaWithOnlyField = schema.pick({
     [schemaFieldName]: true
   })
-
+  console.log('text input obs path', path)
   return (
     <TextInput
       keyChange
@@ -47,7 +47,7 @@ const TextInputPcTwoWay: FC<TextInputTwoWayProps> = ({
         const test = schemaWithOnlyField.safeParse({
           [schemaFieldName]: val
         })
-        // console.log('validation', test, 'path: ', path, 'info', test)
+        console.log('validation', test, 'path: ', path, 'info', test)
         return test.success
       }}
       binding={new BindingTwoWay()}

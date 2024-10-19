@@ -141,7 +141,7 @@ export function EntityFormGroup() {
               triggerOnChange={true} // Triggers submission on each change
               /> */}
             <TextInputPcTwoWay
-              path={getJsonPathForObserverStructure('name')}
+              path={getJsonPathForObserverStructure(entity.id, 'name')}
               entityId={entity.id}
               className="pl-0 font-bold"
               schema={entitySchema.pick({
