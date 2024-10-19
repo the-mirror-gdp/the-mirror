@@ -15,6 +15,8 @@
     "@amplitude/plugin-session-replay-browser": "^1.8.0",
     "@hookform/resolvers": "^3.9.0",
     "@next/bundle-analyzer": "^14.2.13",
+    "@playcanvas/observer": "^1.5.1",
+    "@playcanvas/pcui": "^4.5.0",
     "@radix-ui/react-checkbox": "^1.1.1",
     "@radix-ui/react-context-menu": "^2.2.2",
     "@radix-ui/react-dialog": "^1.1.2",

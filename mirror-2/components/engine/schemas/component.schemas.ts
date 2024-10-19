@@ -6,6 +6,8 @@ import { z } from 'zod'
  * This allows us to use zod for JSON validation in the client AND we can copy-paste the JSONSchema conversion into our SQL definitions once it's hardened. (However, the client-side validation should take us pretty far bc it can be run right both at the form level and in the API request/RTK query before a DB insert in entitiesApi)
  */
 
+// ** when creating new schemas, validate against https://api.playcanvas.com/classes/Editor.Entity.html
+
 //
 // 3D Model/Render Component
 //
