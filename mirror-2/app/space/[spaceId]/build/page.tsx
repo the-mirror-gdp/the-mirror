@@ -18,7 +18,7 @@ export default function Page() {
 
   const { data: space, error } = useGetSingleSpaceQuery(spaceId)
   const { data: scenes, isLoading: isScenesLoading } = useGetAllScenesQuery(spaceId)
-
+  
   // after successful query, update the current scene to the first in the space.scenes array
   const dispatch = useAppDispatch();
   useEffect(() => {

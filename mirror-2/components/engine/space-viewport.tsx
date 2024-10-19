@@ -3,7 +3,7 @@
 import { useAppSelector } from '@/hooks/hooks'
 import { selectCurrentScene, selectLocalUser } from '@/state/local.slice'
 import { createSupabaseBrowserClient } from '@/utils/supabase/client'
-import { useEffect, useRef, useState } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import initEngine, { CANVAS_ID, getApp } from './__start-custom__'
 
 import { useGetSingleSpaceQuery } from '@/state/api/spaces'
@@ -13,7 +13,7 @@ import { Spinner } from '@/components/ui/spinner'
 import { skipToken } from '@reduxjs/toolkit/query/react' // Important for conditional queries
 import { setUpSpace } from '@/components/engine/space-engine.utils'
 import { useGetAllEntitiesQuery } from '@/state/api/entities'
-import { useSpaceEngine } from '@/components/engine/use-space-engine'
+import { SpaceEngineContext } from '@/components/engine/space-engine-context'
 
 interface SpaceViewportProps {
   spaceId?: number
@@ -50,15 +50,13 @@ export default function SpaceViewport({
       </Alert>
     )
   }
-
+  const spaceEngineContext = useContext(SpaceEngineContext)
   const [engineLoaded, setEngineLoaded] = useState(false)
   const [appWasDestroyed, setAppWasDestroyed] = useState(false)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const user = useAppSelector(selectLocalUser)
   const [hasSetUpEntities, setHasSetUpEntities] = useState(false)
   const appRef = useRef<pc.AppBase | undefined>(undefined)
-  // main engine manager for scenes, entities, etc.
-  useSpaceEngine()
 
   // Conditionally fetch space data only if spaceId is defined
   const {

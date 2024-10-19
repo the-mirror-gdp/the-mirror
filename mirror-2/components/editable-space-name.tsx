@@ -61,30 +61,9 @@ export function EditableSpaceName() {
   return isLoading ? (
     <Skeleton className="w-full dark:bg-transparent border-none text-lg shadow-none md:w-2/3 lg:w-1/3"></Skeleton>
   ) : (
-    <FormProvider {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full"
-        onBlur={form.handleSubmit(onSubmit)}
-      >
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  type="text"
-                  className="w-full dark:bg-transparent border-none text-lg shadow-none md:w-2/3 lg:w-1/3"
-                  {...field}
-                />
-              </FormControl>
-              {/* TODO add better styling for this so it doesn't shift the input field */}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      </form>
-    </FormProvider>
+    <Input
+      type="text"
+      className="w-full dark:bg-transparent border-none text-lg shadow-none md:w-2/3 lg:w-1/3"
+    />
   )
 }

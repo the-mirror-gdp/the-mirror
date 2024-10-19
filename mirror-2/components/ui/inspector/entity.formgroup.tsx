@@ -20,6 +20,8 @@ import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import * as pc from 'playcanvas'
+import { TextInputPcTwoWay } from '@/components/ui/synced-inputs/new-with-pc-ui/text-input-pc-two-way'
+import { getJsonPathForObserverStructure } from '@/components/engine/space-engine-context'
 
 export function EntityFormGroup() {
   const currentEntityForId = useAppSelector(selectCurrentEntity)
@@ -124,21 +126,32 @@ export function EntityFormGroup() {
 
   return (
     <>
-      <FormProvider {...form}>
-        <form
-          onBlur={form.handleSubmit(onSubmit)} // Trigger submission on blur as fallback
-        >
+      {entity && (
+        <>
+          {/* <FormProvider {...form}>
+            <form
+              onBlur={form.handleSubmit(onSubmit)} // Trigger submission on blur as fallback
+            > */}
           <div className="flex flex-col gap-1">
-            <SyncedTextInput
+            {/* <SyncedTextInput
               className="pl-0 font-bold"
               fieldName="name"
               form={form} // Provided by FormProvider context
               handleChange={handleChange} // Handled internally by SyncedForm
               triggerOnChange={true} // Triggers submission on each change
+              /> */}
+            <TextInputPcTwoWay
+              path={getJsonPathForObserverStructure('name')}
+              entityId={entity.id}
+              className="pl-0 font-bold m-10"
+              schema={entitySchema.pick({
+                name: true
+              })}
+              schemaFieldName={'name'}
             />
             <Separator />
             <p className="text-sm">Position</p>
-            <SyncedVec3Input
+            {/* <SyncedVec3Input
               className="pl-1"
               fieldName="local_position"
               form={form} // Provided by FormProvider context
@@ -159,11 +172,12 @@ export function EntityFormGroup() {
               fieldName="local_scale"
               form={form} // Provided by FormProvider context
               handleChange={handleChange} // Handled internally by SyncedForm
-              triggerOnChange={true} // Triggers submission on each change
-            />
+              triggerOnChange={true} /> // Triggers submission on each change */}
           </div>
-        </form>
-      </FormProvider>
+          {/* </form>
+          </FormProvider> */}
+        </>
+      )}
     </>
   )
 }

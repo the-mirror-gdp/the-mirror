@@ -32,6 +32,7 @@ export const entitySchema = z.object({
 
   components: z.any() // TODO restrict to component schemas
 })
+
 export const entitySchemaUiFormDefaultValues = {
   name: 'New Entity',
   enabled: true,
