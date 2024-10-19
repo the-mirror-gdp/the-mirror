@@ -32,15 +32,6 @@ const TextInputPcTwoWay: FC<TextInputTwoWayProps> = ({
     [schemaFieldName]: true
   })
 
-  const inputRef = useRef(null)
-
-  // useEffect(() => {
-  //   if (inputRef.current) {
-  //     inputRef.current.classList.add('your-custom-class');
-  //   }
-  // }, []);
-  // TextInput.input
-
   return (
     <TextInput
       keyChange
