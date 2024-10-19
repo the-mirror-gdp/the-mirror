@@ -292,7 +292,7 @@ export const entitiesApi = createApi({
           .from('entities')
           .update(updatePayload)
           .eq('id', id)
-          .single()
+          .select()
 
         if (error) {
           return { error: error.message }
@@ -423,7 +423,7 @@ export const entitiesApi = createApi({
           .from('entities')
           .update(updatePayload)
           .eq('id', id)
-          .single()
+          .select()
 
         if (error) {
           return { error: error.message }
@@ -532,7 +532,7 @@ export const entitiesApi = createApi({
           .from('entities')
           .delete()
           .eq('id', entityId)
-          .single()
+          .maybeSingle()
 
         if (error) {
           return { error: error.message }
@@ -582,7 +582,7 @@ export const entitiesApi = createApi({
           .from('entities')
           .update({ components: updatedComponents })
           .eq('id', id)
-          .single()
+          .select()
 
         if (error) {
           return { error: error.message }
@@ -652,7 +652,7 @@ export const entitiesApi = createApi({
           .from('entities')
           .update({ components: updatedComponents })
           .eq('id', id)
-          .single()
+          .select()
 
         if (error) {
           return { error: error.message }
@@ -697,7 +697,7 @@ export const entitiesApi = createApi({
           .from('entities')
           .update({ components: remainingComponents })
           .eq('id', id)
-          .single()
+          .select()
 
         if (error) {
           return { error: error.message }

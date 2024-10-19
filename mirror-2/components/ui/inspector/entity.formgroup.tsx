@@ -21,7 +21,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import * as pc from 'playcanvas'
 import { TextInputPcTwoWay } from '@/components/ui/synced-inputs/new-with-pc-ui/text-input-pc-two-way'
-import { getJsonPathForObserverStructure } from '@/components/engine/space-engine-context'
+import { getJsonPathForObserverStructure } from '@/components/engine/space-engine-non-game-context'
 
 export function EntityFormGroup() {
   const currentEntityForId = useAppSelector(selectCurrentEntity)

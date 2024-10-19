@@ -13,7 +13,7 @@ import { Spinner } from '@/components/ui/spinner'
 import { skipToken } from '@reduxjs/toolkit/query/react' // Important for conditional queries
 import { setUpSpace } from '@/components/engine/space-engine.utils'
 import { useGetAllEntitiesQuery } from '@/state/api/entities'
-import { SpaceEngineContext } from '@/components/engine/space-engine-context'
+import { SpaceEngineNonGameContext } from '@/components/engine/space-engine-non-game-context'
 
 interface SpaceViewportProps {
   spaceId?: number
@@ -50,7 +50,7 @@ export default function SpaceViewport({
       </Alert>
     )
   }
-  const spaceEngineContext = useContext(SpaceEngineContext)
+  const spaceEngineNonGameContext = useContext(SpaceEngineNonGameContext)
   const [engineLoaded, setEngineLoaded] = useState(false)
   const [appWasDestroyed, setAppWasDestroyed] = useState(false)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
