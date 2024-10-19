@@ -3,7 +3,7 @@ import { entitySchema } from '@/components/engine/schemas/entity.schema'
 import { SpaceEngineContext } from '@/components/engine/space-engine-context'
 import { cn } from '@/utils/cn'
 import { BindingTwoWay, TextInput } from '@playcanvas/pcui/react'
-import { FC, useContext } from 'react'
+import { FC, useContext, useEffect, useRef } from 'react'
 
 export interface TextInputTwoWayProps {
   // super important: the path to the generalEntity's property here, e.g. <uid>.name, <uid>.nestedSomething.someInput
@@ -32,13 +32,26 @@ const TextInputPcTwoWay: FC<TextInputTwoWayProps> = ({
     [schemaFieldName]: true
   })
 
+  const inputRef = useRef(null)
+
+  // useEffect(() => {
+  //   if (inputRef.current) {
+  //     inputRef.current.classList.add('your-custom-class');
+  //   }
+  // }, []);
+  // TextInput.input
+
   return (
     <TextInput
-      class={cn(
-        'flex h-full w-full border-slate-200 bg-white pl-4 pr-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-slate-950 placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:file:text-slate-50 dark:placeholder:text-slate-400 dark:focus-visible:ring-accent rounded-sm',
-        className
-      ) // the PCUI class= expects an array, not string
-        .split(' ')}
+      keyChange
+      input={(() => {
+        const inputElement = document.createElement('input')
+        inputElement.className = cn(
+          'flex h-full w-full border-slate-200 bg-white pl-4 pr-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-slate-950 placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:file:text-slate-50 dark:placeholder:text-slate-400 dark:focus-visible:ring-accent rounded-sm',
+          className
+        )
+        return inputElement
+      })()}
       onValidate={(val) => {
         const test = schemaWithOnlyField.safeParse({
           [schemaFieldName]: val
