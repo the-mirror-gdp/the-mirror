@@ -22,6 +22,8 @@ import { z } from 'zod'
 import * as pc from 'playcanvas'
 import { TextInputPcTwoWay } from '@/components/ui/synced-inputs/new-with-pc-ui/text-input-pc-two-way'
 import { getJsonPathForObserverStructure } from '@/components/engine/space-engine-non-game-context'
+import { Vec3InputPcTwoWay } from '@/components/ui/synced-inputs/new-with-pc-ui/vec3-input-pc-two-way'
+import { AxisLabelCharacter } from '@/components/ui/text/axis-label-character'
 
 export function EntityFormGroup() {
   const currentEntityForId = useAppSelector(selectCurrentEntity)
@@ -150,7 +152,60 @@ export function EntityFormGroup() {
               schemaFieldName={'name'}
             />
             <Separator />
-            <p className="text-sm">Position</p>
+            <div className="flex flex-row gap-2 text-sm">
+              <div className="min-w-16">Position</div>
+              <AxisLabelCharacter axis="x" />
+              <AxisLabelCharacter axis="y" />
+              <AxisLabelCharacter axis="z" />
+            </div>
+            <Vec3InputPcTwoWay
+              path={getJsonPathForObserverStructure(
+                entity.id,
+                'local_position'
+              )}
+              entityId={entity.id}
+              className="pl-0 font-bold"
+              schema={entitySchema.pick({
+                local_position: true
+              })}
+              schemaFieldName={'local_position'}
+            />
+            <div className="flex flex-row gap-2 text-sm">
+              <div className="min-w-16">Rotation</div>
+              <AxisLabelCharacter axis="x" />
+              <AxisLabelCharacter axis="y" />
+              <AxisLabelCharacter axis="z" />
+            </div>
+            <Vec3InputPcTwoWay
+              path={getJsonPathForObserverStructure(
+                entity.id,
+                'local_position'
+              )}
+              entityId={entity.id}
+              className="pl-0 font-bold"
+              schema={entitySchema.pick({
+                local_position: true
+              })}
+              schemaFieldName={'local_rotation'}
+            />
+            <div className="flex flex-row gap-2 text-sm">
+              <div className="min-w-16">Scale</div>
+              <AxisLabelCharacter axis="x" />
+              <AxisLabelCharacter axis="y" />
+              <AxisLabelCharacter axis="z" />
+            </div>
+            <Vec3InputPcTwoWay
+              path={getJsonPathForObserverStructure(
+                entity.id,
+                'local_position'
+              )}
+              entityId={entity.id}
+              className="pl-0 font-bold"
+              schema={entitySchema.pick({
+                local_position: true
+              })}
+              schemaFieldName={'local_scale'}
+            />
             {/* <SyncedVec3Input
               className="pl-1"
               fieldName="local_position"

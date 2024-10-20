@@ -5,7 +5,7 @@ export const AxisLabelCharacter = ({
   className
 }: {
   axis: 'x' | 'y' | 'z' | 'w'
-  className: string
+  className?: string
 }) => {
   const axisColorClasses = {
     x: 'text-red-500', // Red color for X axis

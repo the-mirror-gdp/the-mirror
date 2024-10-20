@@ -36,7 +36,6 @@ const TextInputPcTwoWay: FC<TextInputPcTwoWayProps> = ({
   const { updateReduxWithDebounce } = useReduxInputSync()
   return (
     <TextInput
-      keyChange
       input={(() => {
         const inputElement = document.createElement('input')
         inputElement.className = cn(
