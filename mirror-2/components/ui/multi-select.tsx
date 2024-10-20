@@ -133,9 +133,9 @@ export const MultiSelect = React.forwardRef<
       handleChange,
       variant,
       defaultValue = [],
-      placeholder = 'Select options',
+      placeholder = 'Select',
       animation = 0,
-      maxCount = 3,
+      maxCount = 4,
       modalPopover = false,
       asChild = false,
       className,
@@ -172,6 +172,14 @@ export const MultiSelect = React.forwardRef<
         setSelectedValues(newSelectedValues)
         handleChange(newSelectedValues)
       }
+    }
+
+    const handleAddTagClick = () => {
+      if (newOption.trim()) {
+        addNewOption(newOption.trim())
+        setNewOption('')
+      }
+      setIsPopoverOpen(true)
     }
 
     const addNewOption = (optionLabel: string) => {
@@ -316,7 +324,13 @@ export const MultiSelect = React.forwardRef<
               onKeyDown={handleInputKeyDown}
             />
             <CommandList>
-              <CommandEmpty>No results found.</CommandEmpty>
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={handleAddTagClick}
+              >
+                {newOption.trim() ? `Add "${newOption.trim()}"` : 'Add Tag'}
+              </Button>
               <CommandGroup>
                 <CommandItem
                   key="all"

@@ -16,17 +16,20 @@ import {
 import { selectCurrentEntity } from '@/state/local.slice'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { skipToken } from '@reduxjs/toolkit/query'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import * as pc from 'playcanvas'
 import { SpaceEngineNonGameContext } from '@/components/engine/space-engine-non-game-context'
+import { SyncedMultiSelect } from '@/components/ui/synced-inputs/synced-multi-select'
 
 export function EntityFormGroup() {
   const currentEntityForId = useAppSelector(selectCurrentEntity)
   const { data: entity, isSuccess: getEntitySuccess } = useGetSingleEntityQuery(
     currentEntityForId?.id || skipToken
   )
+  const [allTags, setAllTags] = useState<string[]>([])
+
   const [updateEntity, { isLoading: isUpdating, isSuccess: isUpdated, error }] =
     useUpdateEntityMutation()
   const { updateObserverForEntity } = useContext(SpaceEngineNonGameContext)
@@ -126,6 +129,13 @@ export function EntityFormGroup() {
 
   const handleChange = async () => {
     onSubmit(form.getValues()) // Manually call onSubmit after validation passes
+
+    // temp local tag storage; will add an API query in the future
+    const formValues = form.getValues()
+    const tags = formValues.tags || undefined
+    if (tags) {
+      setAllTags(tags)
+    }
   }
 
   return (
@@ -166,6 +176,16 @@ export function EntityFormGroup() {
               form={form} // Provided by FormProvider context
               handleChange={handleChange} // Handled internally by SyncedForm
               triggerOnChange={true} // Triggers submission on each change
+            />
+            <p className="text-sm">Tags</p>
+            <SyncedMultiSelect
+              fieldName="tags"
+              form={form}
+              options={
+                allTags?.map((tag) => ({ label: tag, value: tag })) || []
+              }
+              handleChange={handleChange}
+              placeholder="Select Tags"
             />
           </div>
         </form>
