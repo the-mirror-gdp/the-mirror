@@ -122,21 +122,25 @@ export default function Model3DRenderFormGroup() {
             />
           )}
 
+          {/* Placeholders for other attributes to be added later */}
           {/* Material Assets */}
-          <SyncedMultiSelect
+          {/* <p className="text-sm">Materials</p> */}
+          {/* <SyncedMultiSelect
             fieldName="materialAssets"
             form={form}
-            options={[
-              { label: 'Material 1', value: '1' },
-              { label: 'Material 2', value: '2' },
-              { label: 'Material 3', value: '3' }
-            ]}
+            options={
+              [
+                // { label: 'Material 1', value: '1' },
+                // { label: 'Material 2', value: '2' },
+                // { label: 'Material 3', value: '3' }
+              ]
+            }
             handleChange={handleChange}
-            placeholder="Select material assets"
-          />
+            placeholder="Materials"
+          /> */}
 
           {/* Layers (Multi Select) */}
-          <SyncedMultiSelect
+          {/* <SyncedMultiSelect
             fieldName="layers"
             form={form}
             options={[
@@ -145,11 +149,12 @@ export default function Model3DRenderFormGroup() {
               { label: 'Material 3', value: '3' }
             ]}
             handleChange={handleChange}
-            placeholder="Select layers"
-          />
+            placeholder="Select Layers"
+          /> */}
 
           {/* Batch Group Id (Single Select) */}
-          <SyncedSingleSelect
+          {/* Not sure if/when will enable since runtime lightmaps don't work with it and runtime lightmaps seems more advanced and awesome */}
+          {/* <SyncedSingleSelect
             fieldName="batchGroupId"
             form={form}
             options={[
@@ -159,7 +164,7 @@ export default function Model3DRenderFormGroup() {
             ]}
             handleChange={handleChange}
             placeholder="Select batch group"
-          />
+          /> */}
 
           {/* Cast Shadows */}
           <SyncedBooleanInput

@@ -130,13 +130,6 @@ export function EntityFormGroup() {
 
   const handleChange = async () => {
     onSubmit(form.getValues()) // Manually call onSubmit after validation passes
-
-    // temp local tag storage; will add an API query in the future
-    // const formValues = form.getValues()
-    // const tags = formValues.tags || undefined
-    // if (tags) {
-    //   setAllTags(tags)
-    // }
   }
 
   return (
