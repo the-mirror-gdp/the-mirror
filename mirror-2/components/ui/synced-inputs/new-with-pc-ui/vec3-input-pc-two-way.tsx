@@ -4,7 +4,11 @@ import { SpaceEngineNonGameContext } from '@/components/engine/space-engine-non-
 import useReduxInputSync from '@/components/ui/synced-inputs/new-with-pc-ui/redux-input-sync'
 
 import { cn } from '@/utils/cn'
-import { BindingTwoWay, VectorInput } from '@playcanvas/pcui/react'
+import {
+  BindingTwoWay,
+  NumericInput,
+  VectorInput
+} from '@playcanvas/pcui/react'
 import { FC, useContext, useEffect, useRef } from 'react'
 
 export interface Vec3InputPcTwoWayProps {
@@ -34,18 +38,70 @@ const Vec3InputPcTwoWay: FC<Vec3InputPcTwoWayProps> = ({
     [schemaFieldName]: true
   })
   const { updateReduxWithDebounce } = useReduxInputSync()
+  const vectorInputRef = useRef(null)
+
+  useEffect(() => {
+    const numbericInputs: NumericInput[] = (
+      vectorInputRef.current as unknown as VectorInput
+    ).element._inputs
+
+    numbericInputs.forEach((input, index) => {
+      const domInput = input['_domInput']
+      domInput.onblur = (element) => {
+        const value = Number(element?.target?.value)
+        const validation = schemaWithOnlyField.safeParse({
+          [`${schemaFieldName}[${index}]`]: value
+        })
+        console.log('validation ', validation)
+
+        if (validation.success) {
+          updateReduxWithDebounce(entityId, { [path]: value })
+        }
+      }
+      console.log('added listener for ', domInput)
+      // debugger
+    })
+
+    setTimeout(() => {}, 1500)
+  }, [vectorInputRef])
   return (
-    <div className="w-full">
-      <VectorInput
-        // NOTE: see globals.css for style modifications since this wasn't doing the trick
-        class={'w-full flex dark:bg-transparent border-none shadow-none dark:focus-visible:ring-accent rounded-sm'.split(
-          ' '
-        )}
-        binding={new BindingTwoWay()}
-        link={link}
-        {...props}
-      />
-    </div>
+    <VectorInput
+      ref={vectorInputRef}
+      // NOTE: see globals.css for style modifications since this wasn't doing the trick. TODO fork and add the full PC UI so we can make easier modifications
+      class={'w-full flex dark:bg-transparent border-none shadow-none dark:focus-visible:ring-accent rounded-sm'.split(
+        ' '
+      )}
+      binding={new BindingTwoWay()}
+      link={link}
+      // onChange={(value) => {
+      //   const validation = schemaWithOnlyField.safeParse({
+      //     [schemaFieldName]: value
+      //   })
+
+      //   if (validation.success) {
+      //     updateReduxWithDebounce(entityId, { [path]: value })
+      //   }
+      // }}
+      // input={(() => {
+      //   const inputElement = document.createElement('input')
+      //   inputElement.className = cn(
+      //     'flex h-full w-full border-slate-200 bg-white pl-4 pr-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-slate-950 placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:file:text-slate-50 dark:placeholder:text-slate-400 dark:focus-visible:ring-accent rounded-sm',
+      //     className
+      //   )
+      //   inputElement.onblur = () => {
+      //     const value = inputElement.value
+      //     const validation = schemaWithOnlyField.safeParse({
+      //       [schemaFieldName]: value
+      //     })
+
+      //     if (validation.success) {
+      //       updateReduxWithDebounce(entityId, { [path]: value })
+      //     }
+      //   }
+      //   return inputElement
+      // })()}
+      {...props}
+    />
   )
 }
 Vec3InputPcTwoWay.displayName = 'Vec3InputPcTwoWay'

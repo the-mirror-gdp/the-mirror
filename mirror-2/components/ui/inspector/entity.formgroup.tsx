@@ -130,18 +130,7 @@ export function EntityFormGroup() {
     <>
       {entity && (
         <>
-          {/* <FormProvider {...form}>
-            <form
-              onBlur={form.handleSubmit(onSubmit)} // Trigger submission on blur as fallback
-            > */}
           <div className="flex flex-col gap-1">
-            {/* <SyncedTextInput
-              className="pl-0 font-bold"
-              fieldName="name"
-              form={form} // Provided by FormProvider context
-              handleChange={handleChange} // Handled internally by SyncedForm
-              triggerOnChange={true} // Triggers submission on each change
-              /> */}
             <TextInputPcTwoWay
               path={getJsonPathForObserverStructure(entity.id, 'name')}
               entityId={entity.id}
@@ -179,14 +168,14 @@ export function EntityFormGroup() {
             <Vec3InputPcTwoWay
               path={getJsonPathForObserverStructure(
                 entity.id,
-                'local_position'
+                'local_rotation_euler'
               )}
               entityId={entity.id}
               className="pl-0 font-bold"
               schema={entitySchema.pick({
-                local_position: true
+                local_rotation_euler: true
               })}
-              schemaFieldName={'local_rotation'}
+              schemaFieldName={'local_rotation_euler'}
             />
             <div className="flex flex-row gap-2 text-sm">
               <div className="min-w-16">Scale</div>
@@ -195,42 +184,15 @@ export function EntityFormGroup() {
               <AxisLabelCharacter axis="z" />
             </div>
             <Vec3InputPcTwoWay
-              path={getJsonPathForObserverStructure(
-                entity.id,
-                'local_position'
-              )}
+              path={getJsonPathForObserverStructure(entity.id, 'local_scale')}
               entityId={entity.id}
               className="pl-0 font-bold"
               schema={entitySchema.pick({
-                local_position: true
+                local_scale: true
               })}
               schemaFieldName={'local_scale'}
             />
-            {/* <SyncedVec3Input
-              className="pl-1"
-              fieldName="local_position"
-              form={form} // Provided by FormProvider context
-              handleChange={handleChange} // Handled internally by SyncedForm
-              triggerOnChange={true} // Triggers submission on each change
-            />
-            <p className="text-sm">Rotation</p>
-            <SyncedVec3Input
-              className="pl-1"
-              fieldName="local_rotation_euler"
-              form={form} // Provided by FormProvider context
-              handleChange={handleChange} // Handled internally by SyncedForm
-              triggerOnChange={true} // Triggers submission on each change
-            />
-            <p className="text-sm">Scale</p>
-            <SyncedVec3Input
-              className="pl-1"
-              fieldName="local_scale"
-              form={form} // Provided by FormProvider context
-              handleChange={handleChange} // Handled internally by SyncedForm
-              triggerOnChange={true} /> // Triggers submission on each change */}
           </div>
-          {/* </form>
-          </FormProvider> */}
         </>
       )}
     </>
