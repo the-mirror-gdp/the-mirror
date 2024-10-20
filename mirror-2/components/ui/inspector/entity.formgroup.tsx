@@ -29,7 +29,7 @@ export function EntityFormGroup() {
   const { data: entity, isSuccess: getEntitySuccess } = useGetSingleEntityQuery(
     currentEntityForId?.id || skipToken
   )
-  const [allTags, setAllTags] = useState<string[]>([])
+  // const [allTags, setAllTags] = useState<string[]>([])
 
   const [updateEntity, { isLoading: isUpdating, isSuccess: isUpdated, error }] =
     useUpdateEntityMutation()
@@ -132,11 +132,11 @@ export function EntityFormGroup() {
     onSubmit(form.getValues()) // Manually call onSubmit after validation passes
 
     // temp local tag storage; will add an API query in the future
-    const formValues = form.getValues()
-    const tags = formValues.tags || undefined
-    if (tags) {
-      setAllTags(tags)
-    }
+    // const formValues = form.getValues()
+    // const tags = formValues.tags || undefined
+    // if (tags) {
+    //   setAllTags(tags)
+    // }
   }
 
   return (
@@ -184,7 +184,9 @@ export function EntityFormGroup() {
               form={form}
               convertToValidFn={convertToValidTag}
               options={
-                allTags?.map((tag) => ({ label: tag, value: tag })) || []
+                form
+                  .getValues('tags')
+                  ?.map((tag) => ({ label: tag, value: tag })) || []
               }
               handleChange={handleChange}
               placeholder="Select Tags"
