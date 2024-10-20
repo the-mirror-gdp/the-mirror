@@ -6,6 +6,7 @@
     "types": "npx supabase gen types --lang=typescript --local > ./utils/database.types.ts",
     "reset": "supabase db reset && yarn types",
     "build": "next build",
+    "update-mc-ui": "yarn --cwd ./local_modules/mc-ui build && yarn --cwd ./",
     "m": "supabase migration new",
     "start": "next start",
     "prettier": "pretty-quick"
@@ -35,6 +36,7 @@
     "@reduxjs/toolkit": "^2.2.7",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
+    "@the-mirror-gdp/mc-ui": "./local_modules/mc-ui",
     "ahooks": "^3.8.1",
     "antd": "^5.21.2",
     "autoprefixer": "10.4.17",

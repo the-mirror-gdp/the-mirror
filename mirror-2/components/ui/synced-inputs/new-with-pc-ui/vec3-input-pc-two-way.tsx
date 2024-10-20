@@ -5,10 +5,10 @@ import useReduxInputSync from '@/components/ui/synced-inputs/new-with-pc-ui/redu
 
 import { cn } from '@/utils/cn'
 import {
-  BindingTwoWay,
-  NumericInput,
-  VectorInput
+  BindingTwoWay
+  // NumericInput,
 } from '@playcanvas/pcui/react'
+import { VectorInput } from '@the-mirror-gdp/mc-ui/react'
 import { FC, useContext, useEffect, useRef } from 'react'
 
 export interface Vec3InputPcTwoWayProps {
@@ -40,30 +40,6 @@ const Vec3InputPcTwoWay: FC<Vec3InputPcTwoWayProps> = ({
   const { updateReduxWithDebounce } = useReduxInputSync()
   const vectorInputRef = useRef(null)
 
-  useEffect(() => {
-    const numbericInputs: NumericInput[] = (
-      vectorInputRef.current as unknown as VectorInput
-    ).element._inputs
-
-    numbericInputs.forEach((input, index) => {
-      const domInput = input['_domInput']
-      domInput.onblur = (element) => {
-        const value = Number(element?.target?.value)
-        const validation = schemaWithOnlyField.safeParse({
-          [`${schemaFieldName}[${index}]`]: value
-        })
-        console.log('validation ', validation)
-
-        if (validation.success) {
-          updateReduxWithDebounce(entityId, { [path]: value })
-        }
-      }
-      console.log('added listener for ', domInput)
-      // debugger
-    })
-
-    setTimeout(() => {}, 1500)
-  }, [vectorInputRef])
   return (
     <VectorInput
       ref={vectorInputRef}
@@ -71,6 +47,35 @@ const Vec3InputPcTwoWay: FC<Vec3InputPcTwoWayProps> = ({
       class={'w-full flex dark:bg-transparent border-none shadow-none dark:focus-visible:ring-accent rounded-sm'.split(
         ' '
       )}
+      // input={(() => {
+      //   const inputElement = document.createElement('input')
+      //   inputElement.className = cn(
+      //     'flex h-full w-full border-slate-200 bg-white pl-4 pr-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-slate-950 placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-800 dark:bg-slate-950 dark:ring-offset-slate-950 dark:file:text-slate-50 dark:placeholder:text-slate-400 dark:focus-visible:ring-accent rounded-sm',
+      //     className
+      //   )
+      //   inputElement.onblur = () => {
+      //     const value = inputElement.value
+      //     const validation = schemaWithOnlyField.safeParse({
+      //       [schemaFieldName]: value
+      //     })
+
+      //     if (validation.success) {
+      //       updateReduxWithDebounce(entityId, { [path]: value })
+      //     }
+      //   }
+      //   return inputElement
+      // })()}
+      onValidate={(val: number[]) => {
+        // note: this gives ALL inputs, e.g. 3 number array
+        const test = schemaWithOnlyField.safeParse({
+          [schemaFieldName]: val
+        })
+        console.log('validation', test, 'path: ', path, 'info', test)
+        if (test.success) {
+          updateReduxWithDebounce(entityId, { [path]: val })
+        }
+        return test.success
+      }}
       binding={new BindingTwoWay()}
       link={link}
       // onChange={(value) => {
