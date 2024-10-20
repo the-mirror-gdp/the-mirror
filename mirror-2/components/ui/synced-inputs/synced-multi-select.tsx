@@ -14,6 +14,7 @@ interface SyncedMultiSelectProps<T> {
   className?: string
   triggerOnChange?: boolean
   animation?: number
+  convertToValidFn?: Function
 }
 
 export function SyncedMultiSelect<T>({

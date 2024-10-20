@@ -14,3 +14,9 @@ export function encodedRedirect(
 ) {
   return redirect(`${path}?${type}=${encodeURIComponent(message)}`)
 }
+
+// Only allows alphanumeric and underscore
+export function convertToValidTag(input: string) {
+  const regex = /[^a-zA-Z0-9_]/g
+  return input.replace(regex, '').trim()
+}

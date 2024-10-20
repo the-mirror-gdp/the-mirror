@@ -22,6 +22,7 @@ import { z } from 'zod'
 import * as pc from 'playcanvas'
 import { SpaceEngineNonGameContext } from '@/components/engine/space-engine-non-game-context'
 import { SyncedMultiSelect } from '@/components/ui/synced-inputs/synced-multi-select'
+import { convertToValidTag } from '@/utils/utils'
 
 export function EntityFormGroup() {
   const currentEntityForId = useAppSelector(selectCurrentEntity)
@@ -181,6 +182,7 @@ export function EntityFormGroup() {
             <SyncedMultiSelect
               fieldName="tags"
               form={form}
+              convertToValidFn={convertToValidTag}
               options={
                 allTags?.map((tag) => ({ label: tag, value: tag })) || []
               }

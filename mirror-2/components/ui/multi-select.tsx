@@ -29,6 +29,7 @@ import {
   CommandSeparator
 } from '@/components/ui/command'
 import { useEffect } from 'react'
+import { trim } from 'lodash'
 
 /**
  * Variants for the multi-select component to handle different styles.
@@ -121,6 +122,11 @@ interface MultiSelectProps
 
   fieldName: string
   form: any
+
+  /**
+   * Function to run to check if input is valid to create the option, e.g. regex like with convertToValidTag(). Otherwise, just runs trim()
+   */
+  convertToValidFn?: (input: string) => string
 }
 
 export const MultiSelect = React.forwardRef<
@@ -141,6 +147,7 @@ export const MultiSelect = React.forwardRef<
       className,
       form,
       fieldName,
+      convertToValidFn,
       ...props
     },
     ref
@@ -150,6 +157,9 @@ export const MultiSelect = React.forwardRef<
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false)
     const [isAnimating, setIsAnimating] = React.useState(false)
     const [newOption, setNewOption] = React.useState('') // New state for new option input
+
+    const convertToValid = (input: string) =>
+      convertToValidFn ? convertToValidFn(input) : trim(input)
 
     // handle default values
     useEffect(() => {
@@ -161,8 +171,8 @@ export const MultiSelect = React.forwardRef<
       event: React.KeyboardEvent<HTMLInputElement>
     ) => {
       if (event.key === 'Enter') {
-        if (newOption.trim()) {
-          addNewOption(newOption.trim())
+        if (convertToValid(newOption)) {
+          addNewOption(convertToValid(newOption))
           setNewOption('')
         }
         setIsPopoverOpen(true)
@@ -174,9 +184,9 @@ export const MultiSelect = React.forwardRef<
       }
     }
 
-    const handleAddTagClick = () => {
-      if (newOption.trim()) {
-        addNewOption(newOption.trim())
+    const handleAddClick = () => {
+      if (convertToValid(newOption)) {
+        addNewOption(convertToValid(newOption))
         setNewOption('')
       }
       setIsPopoverOpen(true)
@@ -211,6 +221,7 @@ export const MultiSelect = React.forwardRef<
       handleChange(newSelectedValues)
     }
 
+    // TODO add back on once we have tags in DB. The UX here is just bad by removing all tags likely uninentionally
     const toggleAll = () => {
       if (selectedValues.length === options.length) {
         handleClear()
@@ -327,12 +338,16 @@ export const MultiSelect = React.forwardRef<
               <Button
                 variant="outline"
                 className="w-full"
-                onClick={handleAddTagClick}
+                onClick={handleAddClick}
               >
-                {newOption.trim() ? `Add "${newOption.trim()}"` : 'Add Tag'}
+                {convertToValid(newOption)
+                  ? `Add "${convertToValid(newOption)}"`
+                  : 'Add'}
               </Button>
               <CommandGroup>
-                <CommandItem
+                {/* TODO add back on once we have tags in DB. The UX here is just
+                bad by removing all tags likely uninentionally */}
+                {/* <CommandItem
                   key="all"
                   onSelect={toggleAll}
                   className="cursor-pointer"
@@ -348,7 +363,7 @@ export const MultiSelect = React.forwardRef<
                     <CheckIcon className="h-4 w-4" />
                   </div>
                   <span>(Select All)</span>
-                </CommandItem>
+                </CommandItem> */}
                 {options.map((option) => {
                   const isSelected = selectedValues.includes(option.value)
                   return (
