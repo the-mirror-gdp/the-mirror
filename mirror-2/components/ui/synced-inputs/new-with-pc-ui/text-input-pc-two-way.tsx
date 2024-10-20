@@ -4,7 +4,7 @@ import { SpaceEngineNonGameContext } from '@/components/engine/space-engine-non-
 import useReduxInputSync from '@/components/ui/synced-inputs/new-with-pc-ui/redux-input-sync'
 
 import { cn } from '@/utils/cn'
-import { BindingTwoWay, TextInput } from '@playcanvas/pcui/react'
+import { BindingTwoWay, TextInput } from '@the-mirror-gdp/mc-ui/react'
 import { FC, useContext, useEffect, useRef } from 'react'
 
 export interface TextInputPcTwoWayProps {

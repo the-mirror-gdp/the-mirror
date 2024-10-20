@@ -21,13 +21,8 @@
       },
       {
         "name": "ts-plugin-sort-import-suggestions",
-        "moveUpPatterns": [
-          "@/",
-          "@playcanvas/observer",
-          "@playcanvas/pcui/react",
-          "\\.{1,2}/"
-        ],
-        "moveDownPatterns": ["@playcanvas/pcui", "dist", "antd"]
+        "moveUpPatterns": ["@/", "@playcanvas/observer", "\\.{1,2}/"],
+        "moveDownPatterns": ["dist", "antd"]
       }
     ],
     "paths": {

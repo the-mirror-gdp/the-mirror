@@ -997,13 +997,6 @@
   resolved "https://registry.yarnpkg.com/@playcanvas/observer/-/observer-1.5.1.tgz#69c33a0f264ed7d32aad5f844db35fc8377a0fa4"
   integrity sha512-0y4OQOtwhgCvFaNlhLgi4ycSeOdnp0Frf4R+8eewxtfZQW1Muox2lkUGoMywoRRLhaRjUMdaxQN1o53lNjlB9w==
 
-"@playcanvas/pcui@^4.5.0":
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/@playcanvas/pcui/-/pcui-4.5.0.tgz#5516c34decb00571f10e321dbee6548c8e0550a4"
-  integrity sha512-djuHqiRUlQcXHjNk/oi7B9tOInv1BEd8FPvqLBLpsVQ2q/4CfpuIPWsCJMMGADnrqHXVK5YaqnuxE8BzcUx7iw==
-  dependencies:
-    "@playcanvas/observer" "^1.4.0"
-
 "@polka/url@^1.0.0-next.24":
   version "1.0.0-next.28"
   resolved "https://registry.npmjs.org/@polka/url/-/url-1.0.0-next.28.tgz"
