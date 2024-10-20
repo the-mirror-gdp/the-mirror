@@ -16,14 +16,11 @@ import {
 import { selectCurrentEntity } from '@/state/local.slice'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { skipToken } from '@reduxjs/toolkit/query'
-import { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import * as pc from 'playcanvas'
-import { TextInputPcTwoWay } from '@/components/ui/synced-inputs/new-with-pc-ui/text-input-pc-two-way'
-import { getJsonPathForObserverStructure } from '@/components/engine/space-engine-non-game-context'
-import { Vec3InputPcTwoWay } from '@/components/ui/synced-inputs/new-with-pc-ui/vec3-input-pc-two-way'
-import { AxisLabelCharacter } from '@/components/ui/text/axis-label-character'
+import { SpaceEngineNonGameContext } from '@/components/engine/space-engine-non-game-context'
 
 export function EntityFormGroup() {
   const currentEntityForId = useAppSelector(selectCurrentEntity)
@@ -32,10 +29,11 @@ export function EntityFormGroup() {
   )
   const [updateEntity, { isLoading: isUpdating, isSuccess: isUpdated, error }] =
     useUpdateEntityMutation()
+  const { updateObserverForEntity } = useContext(SpaceEngineNonGameContext)
 
   const form = useForm<z.infer<typeof entitySchema>>({
     resolver: zodResolver(entitySchema),
-    mode: 'onChange',
+    mode: 'onBlur', // the components themselves also handle onChange to emit observer update to SpaceEngineNonGameContext. I think the performance may be *slightly* better if the observer emission is closer to the input rather than bubbling up through this form, but either approach should work
     defaultValues: entitySchemaUiFormDefaultValues,
     // values: <- dont do this here, use the useEffect so we have control over resets. Otherwise, weird behavior.
     resetOptions: {
@@ -76,9 +74,10 @@ export function EntityFormGroup() {
   }, [entity, getEntitySuccess, form])
 
   async function onSubmit(v: z.infer<typeof entitySchema>) {
+    window['start'] = performance.now()
+
     const validation = entitySchema.safeParse(v)
 
-    // const isValid = await form.trigger() // FYI: NOT working. use safeParse instead
     if (validation.success) {
       const values = validation.data
       console.log('onSubmit validated values', values)
@@ -116,6 +115,9 @@ export function EntityFormGroup() {
       }
 
       console.log('Form is valid, updating entity:', updatedValues)
+      // Update engine app via observer
+      updateObserverForEntity(entity?.id, updatedValues)
+      // update DB RTK
       await updateEntity({ id: entity?.id as string, ...updatedValues })
     } else {
       console.log('form not valid', form)
@@ -128,73 +130,46 @@ export function EntityFormGroup() {
 
   return (
     <>
-      {entity && (
-        <>
+      <FormProvider {...form}>
+        <form
+          onBlur={form.handleSubmit(onSubmit)} // Trigger submission on blur as fallback
+        >
           <div className="flex flex-col gap-1">
-            <TextInputPcTwoWay
-              path={getJsonPathForObserverStructure(entity.id, 'name')}
-              entityId={entity.id}
+            <SyncedTextInput
               className="pl-0 font-bold"
-              schema={entitySchema.pick({
-                name: true
-              })}
-              schemaFieldName={'name'}
+              fieldName="name"
+              form={form} // Provided by FormProvider context
+              handleChange={handleChange} // Handled internally by SyncedForm
+              triggerOnChange={true} // Triggers submission on each change
             />
             <Separator />
-            <div className="flex flex-row gap-2 text-sm">
-              <div className="min-w-16">Position</div>
-              <AxisLabelCharacter axis="x" />
-              <AxisLabelCharacter axis="y" />
-              <AxisLabelCharacter axis="z" />
-            </div>
-            <Vec3InputPcTwoWay
-              path={getJsonPathForObserverStructure(
-                entity.id,
-                'local_position'
-              )}
-              entityId={entity.id}
-              className="pl-0 font-bold"
-              schema={entitySchema.pick({
-                local_position: true
-              })}
-              schemaFieldName={'local_position'}
+            <p className="text-sm">Position</p>
+            <SyncedVec3Input
+              className="pl-1"
+              fieldName="local_position"
+              form={form} // Provided by FormProvider context
+              handleChange={handleChange} // Handled internally by SyncedForm
+              triggerOnChange={true} // Triggers submission on each change
             />
-            <div className="flex flex-row gap-2 text-sm">
-              <div className="min-w-16">Rotation</div>
-              <AxisLabelCharacter axis="x" />
-              <AxisLabelCharacter axis="y" />
-              <AxisLabelCharacter axis="z" />
-            </div>
-            <Vec3InputPcTwoWay
-              path={getJsonPathForObserverStructure(
-                entity.id,
-                'local_rotation_euler'
-              )}
-              entityId={entity.id}
-              className="pl-0 font-bold"
-              schema={entitySchema.pick({
-                local_rotation_euler: true
-              })}
-              schemaFieldName={'local_rotation_euler'}
+            <p className="text-sm">Rotation</p>
+            <SyncedVec3Input
+              className="pl-1"
+              fieldName="local_rotation_euler"
+              form={form} // Provided by FormProvider context
+              handleChange={handleChange} // Handled internally by SyncedForm
+              triggerOnChange={true} // Triggers submission on each change
             />
-            <div className="flex flex-row gap-2 text-sm">
-              <div className="min-w-16">Scale</div>
-              <AxisLabelCharacter axis="x" />
-              <AxisLabelCharacter axis="y" />
-              <AxisLabelCharacter axis="z" />
-            </div>
-            <Vec3InputPcTwoWay
-              path={getJsonPathForObserverStructure(entity.id, 'local_scale')}
-              entityId={entity.id}
-              className="pl-0 font-bold"
-              schema={entitySchema.pick({
-                local_scale: true
-              })}
-              schemaFieldName={'local_scale'}
+            <p className="text-sm">Scale</p>
+            <SyncedVec3Input
+              className="pl-1"
+              fieldName="local_scale"
+              form={form} // Provided by FormProvider context
+              handleChange={handleChange} // Handled internally by SyncedForm
+              triggerOnChange={true} // Triggers submission on each change
             />
           </div>
-        </>
-      )}
+        </form>
+      </FormProvider>
     </>
   )
 }

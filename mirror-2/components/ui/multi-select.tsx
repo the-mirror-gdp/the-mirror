@@ -149,6 +149,7 @@ export const MultiSelect = React.forwardRef<
       React.useState<string[]>(defaultValue)
     const [isPopoverOpen, setIsPopoverOpen] = React.useState(false)
     const [isAnimating, setIsAnimating] = React.useState(false)
+    const [newOption, setNewOption] = React.useState('') // New state for new option input
 
     // handle default values
     useEffect(() => {
@@ -160,6 +161,10 @@ export const MultiSelect = React.forwardRef<
       event: React.KeyboardEvent<HTMLInputElement>
     ) => {
       if (event.key === 'Enter') {
+        if (newOption.trim()) {
+          addNewOption(newOption.trim())
+          setNewOption('')
+        }
         setIsPopoverOpen(true)
       } else if (event.key === 'Backspace' && !event.currentTarget.value) {
         const newSelectedValues = [...selectedValues]
@@ -167,6 +172,12 @@ export const MultiSelect = React.forwardRef<
         setSelectedValues(newSelectedValues)
         handleChange(newSelectedValues)
       }
+    }
+
+    const addNewOption = (optionLabel: string) => {
+      const newOption = { label: optionLabel, value: optionLabel }
+      options.push(newOption)
+      toggleOption(optionLabel)
     }
 
     const toggleOption = (option: string) => {
@@ -299,7 +310,9 @@ export const MultiSelect = React.forwardRef<
         >
           <Command>
             <CommandInput
-              placeholder="Search..."
+              placeholder="Search or Add Tag"
+              value={newOption}
+              onChangeCapture={(e: any) => setNewOption(e.target.value)}
               onKeyDown={handleInputKeyDown}
             />
             <CommandList>

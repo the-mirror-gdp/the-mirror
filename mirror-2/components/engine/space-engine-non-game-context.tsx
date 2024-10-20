@@ -12,20 +12,20 @@ import { updateEngineApp } from '@/state/engine/engine'
 import { Observer } from '@playcanvas/observer'
 import { entitySchemaUiFormDefaultValues } from '@/components/engine/schemas/entity.schema'
 
-export const getJsonPathForObserverStructure = (
-  entityId: string,
-  key: string
-) => {
-  /**
-   * If databaseEntity is:
-   * {
-   * name: <data>,
-   * ...
-   * }
-   * then the 'path' needs to be 'name'
-   */
-  return `${key}`
-}
+// export const getJsonPathForObserverStructure = (
+//   entityId: string,
+//   key: string
+// ) => {
+//   /**
+//    * If databaseEntity is:
+//    * {
+//    * name: <data>,
+//    * ...
+//    * }
+//    * then the 'path' needs to be 'name'
+//    */
+//   return `${key}`
+// }
 
 export const extractEntityIdFromJsonPathForObserverStructure = (
   input: string
@@ -59,6 +59,7 @@ export const SpaceEngineNonGameProvider = ({ children }) => {
     isSuccess: isSuccessGettingEntities,
     error
   } = useGetAllEntitiesQuery(currentScene?.id || skipToken)
+
   useEffect(() => {
     if (entities && isSuccessGettingEntities) {
       entities.forEach((entity) => {
@@ -89,8 +90,17 @@ export const SpaceEngineNonGameProvider = ({ children }) => {
     // DO NOT use RTK/Redux here; it manages itself separately. Took a lot of hours trying to figure out a solution: it's much easier just to decouple it so that Redux observes the inputs instead of reacting to this Observer system
     observer.on('*:set', async (path, value) => {
       // const entityId = extractEntityIdFromJsonPathForObserverStructure(path)
-      console.log('observer.on *:set, will update engine app', path, value)
+      window['end'] = performance.now()
+      const duration = window['end'] - window['start']
+      console.log('observer.on *:set, will update engine app', value)
       console.log('observer.on: entityId', entityData.id)
+
+      console.log(
+        `Execution time: ${duration} milliseconds, id: ${entityData.id}`
+      )
+
+      // TODO: try out key compare here to reduce calls to update engine, if needed. benchmark
+      // const currentData = observer.get(id)
 
       // const updatedData = observer.get();
       // updateEngineApp(updatedData);
@@ -107,6 +117,8 @@ export const SpaceEngineNonGameProvider = ({ children }) => {
   const updateObserverForEntity = (id, newData) => {
     const observer = observersRef.current.get(id)
     if (observer) {
+      console.log('execution start timer')
+      window['start'] = performance.now()
       observer.set(id, newData)
     }
   }

@@ -41,7 +41,9 @@ export function SyncedFormField<T>({
                       handleChange() // Trigger form submission if needed
                     }
                   },
-                  onBlur: () => handleChange() // Trigger form submission on blur
+                  onBlur: () => {
+                    handleChange() // Trigger form submission on blur
+                  }
                 },
                 fieldName as string
               )}
