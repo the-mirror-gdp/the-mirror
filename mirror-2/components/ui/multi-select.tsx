@@ -310,7 +310,7 @@ export const MultiSelect = React.forwardRef<
         >
           <Command>
             <CommandInput
-              placeholder="Search or Add Tag"
+              placeholder="Search or Type to Add"
               value={newOption}
               onChangeCapture={(e: any) => setNewOption(e.target.value)}
               onKeyDown={handleInputKeyDown}
