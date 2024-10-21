@@ -1,3 +1,6 @@
 [submodule "godot-engine"]
 	path = godot-engine
 	url = git@github.com:the-mirror-gdp/godot.git
+[submodule "mirror-2/app/asset/[assetId]/splat-editor/splat-editor"]
+	path = mirror-2/app/asset/[assetId]/splat-editor/splat-editor
+	url = https://github.com/the-mirror-gdp/splat-editor
