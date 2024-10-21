@@ -1,6 +1,6 @@
 'use client'
 
-import SplatEditorViewport from '@/components/engine/space-viewport-2'
+import SplatEditorViewport from '@/components/engine/splat-editor-viewport'
 import { useParams } from 'next/navigation'
 
 // blank page since we're using the parallel routes for spaceViewport, controlBar, etc.
@@ -12,5 +12,6 @@ export default function Page() {
   if (typeof window !== 'undefined') {
     window.location.href = '/home'
   }
+  return
   // return <SplatEditorViewport assetId={assetId} />
 }
