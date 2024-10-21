@@ -8,5 +8,9 @@ export default function Page() {
   const params = useParams<{ assetId: string }>()
   const assetId: number = parseInt(params.assetId, 10) // Use parseInt for safer conversion
 
-  return <SplatEditorViewport assetId={assetId} />
+  // exit, not implemented yet
+  if (typeof window !== 'undefined') {
+    window.location.href = '/home'
+  }
+  // return <SplatEditorViewport assetId={assetId} />
 }

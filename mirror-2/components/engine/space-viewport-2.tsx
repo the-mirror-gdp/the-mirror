@@ -12,6 +12,13 @@ import { skipToken } from '@reduxjs/toolkit/query/react' // Important for condit
 import { Terminal } from 'lucide-react'
 import main from '/Users/jared/GitHub/the-mirror/mirror-2/splat-editor/src/index'
 
+/**
+ * Not implemented yet; the page will redirect.
+ *
+ * IMPORTANT: The Splat Editor sub-app should NOT be migrated to React since we want to keep it closely at parity with its parent repo since it's a fork and we want to receive updates. We should instead use an Observer pattern for reacting to changes with it (e.g. saving/uploading Asset files).
+ * That means that if we make edits to the Splat Editor directly, the edits HAVE to be in vanilla JS.
+ */
+
 interface SplatEditorViewportProps {
   assetId?: number
 }
