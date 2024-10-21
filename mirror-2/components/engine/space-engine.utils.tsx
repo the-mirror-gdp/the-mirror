@@ -35,37 +35,37 @@ export const setUpSpace = (
   // if (entities && entities.length > 0) {
   // Initialize PlayCanvas app
   // const app = new pc.Application(document.getElementById('canvas'), {});
-  // const app = getApp()
-  // // Create a camera
-  // const camera = new pc.Entity('camera')
-  // camera.addComponent('camera', {
-  //   clearColor: new pc.Color(0.1, 0.1, 0.1)
-  // })
-  // camera.setPosition(0, 0, 7.5)
-  // app.root.addChild(camera)
-  // // Create a directional light
-  // const light = new pc.Entity('light')
-  // light.addComponent('light', {
-  //   type: 'directional',
-  //   color: new pc.Color(1, 1, 1),
-  //   intensity: 1
-  // })
-  // light.setEulerAngles(45, 0, 0)
-  // app.root.addChild(light)
-  // // Create a sphere
-  // const sphere = new pc.Entity('spheretest')
-  // sphere.setLocalScale(4.1, 0.1, 0.1)
-  // sphere.setLocalPosition(0.1, 1.1, 0.1)
-  // sphere.addComponent('render', {
-  //   type: 'sphere'
-  // })
-  // app.root.addChild(sphere)
+  const app = getApp()
+  // Create a camera
+  const camera = new pc.Entity('camera')
+  camera.addComponent('camera', {
+    clearColor: new pc.Color(0.1, 0.1, 0.1)
+  })
+  camera.setPosition(0, 0, 7.5)
+  app.root.addChild(camera)
+  // Create a directional light
+  const light = new pc.Entity('light')
+  light.addComponent('light', {
+    type: 'directional',
+    color: new pc.Color(1, 1, 1),
+    intensity: 1
+  })
+  light.setEulerAngles(45, 0, 0)
+  app.root.addChild(light)
+  // Create a sphere
+  const sphere = new pc.Entity('spheretest')
+  sphere.setLocalScale(4.1, 0.1, 0.1)
+  sphere.setLocalPosition(0.1, 1.1, 0.1)
+  sphere.addComponent('render', {
+    type: 'sphere'
+  })
+  app.root.addChild(sphere)
   // Start the application
-  // app.start();
+  app.start()
   // Set up entities in the scene
-  // entities.forEach(entity => {
-  //   // Add custom logic to set up each entity
-  // });
+  entities.forEach((entity) => {
+    // Add custom logic to set up each entity
+  })
   // setHasSetUpEntities(true)
   // }
   // }, [entities, hasSetUpEntities])
