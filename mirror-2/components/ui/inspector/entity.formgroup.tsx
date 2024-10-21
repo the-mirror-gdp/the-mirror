@@ -78,8 +78,6 @@ export function EntityFormGroup() {
   }, [entity, getEntitySuccess, form])
 
   async function onSubmit(v: z.infer<typeof entitySchema>) {
-    window['start'] = performance.now()
-
     const validation = entitySchema.safeParse(v)
 
     if (validation.success) {

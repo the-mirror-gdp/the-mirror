@@ -93,18 +93,8 @@ export const SpaceEngineNonGameProvider = ({ children }) => {
     // DO NOT use RTK/Redux here; it manages itself separately. Took a lot of hours trying to figure out a solution: it's much easier just to decouple it so that Redux observes the inputs instead of reacting to this Observer system
     observer.on('*:set', async (path, value) => {
       // const entityId = extractEntityIdFromJsonPathForObserverStructure(path)
-      window['end'] = performance.now()
-      const duration = window['end'] - window['start']
-      console.log('observer.on *:set, will update engine app', value)
-      console.log('observer.on: entityId', entityData.id)
-
-      console.log(
-        `Execution time: ${duration} milliseconds, id: ${entityData.id}`
-      )
-
       // TODO: try out key compare here to reduce calls to update engine, if needed. benchmark
       // const currentData = observer.get(id)
-
       // const updatedData = observer.get();
       // updateEngineApp(updatedData);
     })
@@ -120,8 +110,6 @@ export const SpaceEngineNonGameProvider = ({ children }) => {
   const updateObserverForEntity = (id, newData) => {
     const observer = observersRef.current.get(id)
     if (observer) {
-      console.log('execution start timer')
-      window['start'] = performance.now()
       observer.set(id, newData)
     }
   }
