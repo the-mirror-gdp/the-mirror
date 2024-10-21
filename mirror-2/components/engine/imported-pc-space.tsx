@@ -8,6 +8,11 @@ import { createSupabaseBrowserClient } from '@/utils/supabase/client'
 import { useAppSelector } from '@/hooks/hooks'
 import { selectLocalUser } from '@/state/local.slice'
 
+/**
+ * Not fully implemented; feature-flagged.
+ * This allows for import of existing PlayCanvas apps from the exported files.
+ */
+
 import {
   getASSET_PREFIXForLoadingEngineApp,
   getBrowserScriptTagUrlForLoadingScriptsFromStorage,
@@ -19,15 +24,15 @@ import {
   useGetSingleSpacePackQuery
 } from '@/state/api/space-packs'
 
-interface SpaceViewportProps {
+interface ImportedPCSpaceProps {
   spacePackId: number
   mode?: 'build' | 'play' // Optional mode prop with default value 'play'
 }
 
-export default function SpaceViewport({
+export default function ImportedPCSpace({
   spacePackId,
   mode = 'play'
-}: SpaceViewportProps) {
+}: ImportedPCSpaceProps) {
   const [isScriptReady, setIsScriptReady] = useState(false)
   const [engineLoaded, setEngineLoaded] = useState(false)
   const [settingsScriptUrl, setSettingsScriptUrl] = useState('')
