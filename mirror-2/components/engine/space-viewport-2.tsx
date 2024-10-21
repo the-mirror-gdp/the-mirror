@@ -14,7 +14,7 @@ import { skipToken } from '@reduxjs/toolkit/query/react' // Important for condit
 import { setUpSpace } from '@/components/engine/space-engine.utils'
 import { useGetAllEntitiesQuery } from '@/state/api/entities'
 import { SpaceEngineNonGameContext } from '@/components/engine/non-game-context/space-engine-non-game-context'
-import main from '/Users/jared/GitHub/the-mirror/mirror-2/splat/src/index'
+import main from '/Users/jared/GitHub/the-mirror/mirror-2/splat-editor/src/index'
 
 interface SpaceViewport2Props {
   spaceId?: number
