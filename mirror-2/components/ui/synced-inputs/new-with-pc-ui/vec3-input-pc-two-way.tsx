@@ -1,6 +1,6 @@
 'use client'
 import { entitySchema } from '@/components/engine/schemas/entity.schema'
-import { SpaceEngineNonGameContext } from '@/components/engine/space-engine-non-game-context'
+import { SpaceEngineNonGameContext } from '@/components/engine/non-game-context/space-engine-non-game-context'
 import useReduxInputSync from '@/components/ui/synced-inputs/new-with-pc-ui/redux-input-sync'
 import { VectorInput, BindingTwoWay } from '@the-mirror-gdp/mc-ui/react'
 import { FC, useContext, useEffect, useRef } from 'react'

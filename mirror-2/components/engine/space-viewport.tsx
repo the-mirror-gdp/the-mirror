@@ -13,7 +13,7 @@ import { Spinner } from '@/components/ui/spinner'
 import { skipToken } from '@reduxjs/toolkit/query/react' // Important for conditional queries
 import { setUpSpace } from '@/components/engine/space-engine.utils'
 import { useGetAllEntitiesQuery } from '@/state/api/entities'
-import { SpaceEngineNonGameContext } from '@/components/engine/space-engine-non-game-context'
+import { SpaceEngineNonGameContext } from '@/components/engine/non-game-context/space-engine-non-game-context'
 
 interface SpaceViewportProps {
   spaceId?: number

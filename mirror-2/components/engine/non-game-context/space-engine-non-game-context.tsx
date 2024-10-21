@@ -11,6 +11,8 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import { updateEngineApp } from '@/state/engine/engine'
 import { Observer } from '@playcanvas/observer'
 import { entitySchemaUiFormDefaultValues } from '@/components/engine/schemas/entity.schema'
+import * as pc from 'playcanvas'
+import { getApp } from '@/components/engine/__start-custom__'
 
 // export const getJsonPathForObserverStructure = (
 //   entityId: string,
@@ -59,6 +61,7 @@ export const SpaceEngineNonGameProvider = ({ children }) => {
     isSuccess: isSuccessGettingEntities,
     error
   } = useGetAllEntitiesQuery(currentScene?.id || skipToken)
+  const app = getApp()
 
   useEffect(() => {
     if (entities && isSuccessGettingEntities) {

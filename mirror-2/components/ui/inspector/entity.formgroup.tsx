@@ -20,7 +20,7 @@ import { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import * as pc from 'playcanvas'
-import { SpaceEngineNonGameContext } from '@/components/engine/space-engine-non-game-context'
+import { SpaceEngineNonGameContext } from '@/components/engine/non-game-context/space-engine-non-game-context'
 import { SyncedMultiSelect } from '@/components/ui/synced-inputs/synced-multi-select'
 import { convertToValidTag } from '@/utils/utils'
 

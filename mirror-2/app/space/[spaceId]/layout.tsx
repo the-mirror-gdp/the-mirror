@@ -1,6 +1,6 @@
 'use client'
 
-import { SpaceEngineNonGameProvider } from '@/components/engine/space-engine-non-game-context'
+import { SpaceEngineNonGameProvider } from '@/components/engine/non-game-context/space-engine-non-game-context'
 import React from 'react'
 
 // the intent here is for a shared SpaceEngineProvider across both build and play. might be revisited/refactored in the future so they're separate but TBD
