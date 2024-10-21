@@ -1,4 +1,6 @@
+'use client'
 import { cn } from '@/lib/utils'
+import { useEffect, useState } from 'react'
 
 import { Playlist } from '../data/playlists'
 import { Button } from '@/components/ui/button'
@@ -6,7 +8,6 @@ import Link from 'next/link'
 import { Axis3D, Gamepad2, PlusCircleIcon } from 'lucide-react'
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogOverlay,
   DialogPortal,
@@ -69,7 +70,23 @@ const SidebarMenuForSmallScreen = () => {
   )
 }
 
-export function Sidebar({ className, playlists, style }: SidebarProps) {
+export function Sidebar({ className, style }: SidebarProps) {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+  const [showSmallSideBar, setShowSmallSidebar] = useState(false)
+
+  const handleResize = () => setWindowWidth(window.innerWidth)
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  useEffect(() => {
+    if (windowWidth > 1024) {
+      setShowSmallSidebar(false)
+    }
+  }, [windowWidth])
+
   return (
     <>
       <div
@@ -149,9 +166,12 @@ export function Sidebar({ className, playlists, style }: SidebarProps) {
         </div>
       </div>
       {/* =========Sidebar button for smaller screens less than 1024px======= */}
-      <div className="space-y-4 py-4 mt-2 block sm:block md:block lg:hidden">
-        <Dialog>
-          <DialogTrigger>
+      <div className="space-y-4 py-4 mt-2 sm:block md:block lg:hidden sidebarMenuMobile">
+        <Dialog open={showSmallSideBar} onOpenChange={setShowSmallSidebar}>
+          <DialogTrigger
+            onClick={() => setShowSmallSidebar(true)}
+            className="p-2"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
