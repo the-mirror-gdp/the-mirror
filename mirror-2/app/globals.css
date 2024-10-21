@@ -93,27 +93,6 @@ canvas:focus {
   /* margin-top: 0.5rem !important; */
 }
 
-/**
-  PC UI modifications
-**/
-.pcui-element.pcui-element {
-  max-width: 42%;
-}
-.pcui-vector-input.pcui-numeric-element {
-  max-width: 10%;
-}
-.pcui-numeric-input input {
-  padding: 2px 2px 2px 3px;
-  font-size: 0.875rem; /* text-sm */
-  background-color: transparent;
-  box-sizing: border-box;
-  max-width: 80%;
-
-  &:focus-visible {
-    outline: #57ffd5;
-    border: 1px solid #57ffd5;
-    border-radius: 10px;
-
-    box-shadow: 0 0 0 2px var(--accent-color);
-  }
+#app-container-new {
+  height: 100%;
 }
