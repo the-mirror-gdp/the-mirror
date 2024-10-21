@@ -131,7 +131,7 @@ export const assetsApi = createApi({
       ]
     }),
 
-    getSingleAsset: builder.query<any, string>({
+    getSingleAsset: builder.query<any, number>({
       queryFn: async (assetId) => {
         const supabase = createSupabaseBrowserClient()
 
