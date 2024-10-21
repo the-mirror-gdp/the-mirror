@@ -4,3 +4,6 @@
 [submodule "mirror-2/app/asset/[assetId]/splat-editor/splat-editor"]
 	path = mirror-2/app/asset/[assetId]/splat-editor/splat-editor
 	url = https://github.com/the-mirror-gdp/splat-editor
+[submodule "mirror-2/app/asset/[assetId]/splat-editor"]
+	path = mirror-2/app/asset/[assetId]/splat-editor
+	url = https://github.com/the-mirror-gdp/splat-editor
