@@ -5,7 +5,7 @@ import { Observer } from '@playcanvas/observer'
 
 // Note: using JS for PC Script files for now since TypeScript & ES6 support seems underdocumented. Will migrate to ES6 classes in the future.
 
-export const createBuildModeCameraScript = (camera) => {
+export const createBuildModeCameraScript = () => {
   const app = getApp()
 
   const BuildModeCamera = pc.createScript('buildModeCamera', app)
@@ -51,28 +51,7 @@ export const createBuildModeCameraScript = (camera) => {
 
     // TEMP same script
 
-    // Create a sphere
-    const sphere = new pc.Entity('spheretest')
-    sphere.setLocalScale(1.1, 1.1, 1.1)
-    sphere.setLocalPosition(0.1, 1.1, 0.1)
-    sphere.addComponent('render', {
-      type: 'sphere'
-    })
-    app.root.addChild(sphere)
 
-    // create gizmo
-    const gizmoLayer = new pc.Layer({
-      name: 'Gizmo',
-      clearDepthBuffer: true,
-      opaqueSortMode: pc.SORTMODE_NONE,
-      transparentSortMode: pc.SORTMODE_NONE
-    });
-    const layers = app.scene.layers;
-    layers.push(gizmoLayer);
-    camera.camera.layers = camera.camera.layers.concat(gizmoLayer.id);
-
-    const gizmo = new pc.TranslateGizmo(app, camera.camera, gizmoLayer);
-    gizmo.attach([sphere]);
   }
 
   BuildModeCamera.prototype.update = function (dt) {

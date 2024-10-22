@@ -34,6 +34,20 @@ export const setUpSpace = (
   // const app = new pc.Application(document.getElementById('canvas'), {});
   const app = getApp()
 
+  // skydome
+  const atlas = new pc.Asset(
+    'env-atlas',
+    'texture',
+    { url: '/helipad-env-atlas.png' },
+    { type: pc.TEXTURETYPE_RGBP, mipmaps: false }
+  )
+  const assetListLoader = new pc.AssetListLoader([atlas], app.assets)
+  assetListLoader.load(() => {
+    app.scene.envAtlas = atlas.resource
+    app.scene.skyboxMip = 1
+    app.scene.exposure = 1.5
+  })
+
   // Create a camera
   const camera = new pc.Entity('camera')
   camera.addComponent('camera', {
@@ -55,6 +69,42 @@ export const setUpSpace = (
   })
   light.setEulerAngles(45, 0, 0)
   app.root.addChild(light)
+
+  // Create a sphere
+  const sphere = new pc.Entity('spheretest')
+  sphere.setLocalScale(1.1, 1.1, 1.1)
+  sphere.setLocalPosition(0.1, 1.1, 0.1)
+  sphere.addComponent('render', {
+    type: 'sphere'
+  })
+  app.root.addChild(sphere)
+
+  const sphere2 = new pc.Entity('spheretest2')
+  sphere2.setLocalScale(1.1, 1.1, 1.1)
+  sphere2.setLocalPosition(2.1, 1.1, 0.1)
+  sphere2.addComponent('render', {
+    type: 'box'
+  })
+  app.root.addChild(sphere2)
+
+  // create gizmos
+  const gizmoLayer = new pc.Layer({
+    name: 'Gizmo',
+    clearDepthBuffer: true,
+    opaqueSortMode: pc.SORTMODE_NONE,
+    transparentSortMode: pc.SORTMODE_NONE
+  })
+  const layers = app.scene.layers
+  layers.push(gizmoLayer)
+  camera.camera.layers = camera.camera.layers.concat(gizmoLayer.id)
+
+  const translateGizmo = new pc.TranslateGizmo(app, camera.camera, gizmoLayer)
+  const rotateGizmo = new pc.RotateGizmo(app, camera.camera, gizmoLayer)
+  const scaleGizmo = new pc.ScaleGizmo(app, camera.camera, gizmoLayer)
+  translateGizmo.attach([sphere])
+  // rotateGizmo.attach([sphere])
+  // scaleGizmo.attach([sphere])
+
   // // Create a sphere
   // const sphere = new pc.Entity('spheretest')
   // sphere.setLocalScale(1.1, 1.1, 1.1)
