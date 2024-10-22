@@ -1,5 +1,6 @@
 import { getApp } from '@/components/engine/__start-custom__'
 import { createBuildModeCameraScript } from '@/components/engine/non-game-context/camera-build-mode'
+import { createEntityPickerScript } from '@/components/engine/non-game-context/entity-select'
 import { DatabaseEntity } from '@/state/api/entities'
 import { SceneId } from '@/state/api/scenes'
 import * as pc from 'playcanvas'
@@ -58,7 +59,9 @@ export const setUpSpace = async (
 
   camera.addComponent('script')
   const BuildModeCamera = createBuildModeCameraScript(camera)
+  const EntitySelect = createEntityPickerScript()
   camera.script.create(BuildModeCamera)
+  camera.script.create(EntitySelect)
   app.root.addChild(camera)
 
   // Create a directional light
@@ -78,6 +81,13 @@ export const setUpSpace = async (
   sphere.addComponent('render', {
     type: 'sphere'
   })
+  sphere.addComponent('collision', {
+    type: 'sphere',
+    halfExtents: new pc.Vec3(0.55, 0.55, 0.55)
+  })
+  sphere.addComponent('rigidbody', {
+    type: 'static'
+  })
   app.root.addChild(sphere)
 
   const sphere2 = new pc.Entity('spheretest2')
@@ -85,6 +95,13 @@ export const setUpSpace = async (
   sphere2.setLocalPosition(2.1, 1.1, 0.1)
   sphere2.addComponent('render', {
     type: 'box'
+  })
+  sphere2.addComponent('collision', {
+    type: 'box',
+    halfExtents: new pc.Vec3(0.55, 0.55, 0.55)
+  })
+  sphere2.addComponent('rigidbody', {
+    type: 'static'
   })
   app.root.addChild(sphere2)
 
