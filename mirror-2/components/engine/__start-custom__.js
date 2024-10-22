@@ -704,7 +704,7 @@ async function initEngine() {
   pc.WasmModule.setConfig('Ammo', {
     glueUrl: '/scripts/ammo.wasm.js',
     wasmUrl: '/scripts/ammo.wasm.wasm',
-    // fallbackUrl: '/scripts/ammo.js' // TODO add fallback but make it be via dynamic loading
+    // fallbackUrl: '/scripts/ammo.js' // TODO add fallback but make it be via dynamic loading. the JS isn't needed for 99% of browsers though so this is lower priority
   })
   await new Promise((resolve) => {
     pc.WasmModule.getInstance('Ammo', () => resolve())
