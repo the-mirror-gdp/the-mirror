@@ -90,10 +90,22 @@ export const SpaceEngineNonGameProvider = ({ children }) => {
     const observer = new Observer(observerData)
 
     // handle changes/updates to entity
-    // DO NOT use RTK/Redux here; it manages itself separately. Took a lot of hours trying to figure out a solution: it's much easier just to decouple it so that Redux observes the inputs instead of reacting to this Observer system
+    // DO NOT update RTK/Redux here; it manages itself separately. Took a lot of hours trying to figure out a solution: it's much easier just to decouple it so that Redux "observes" the playcanvas app & makes changes instead of updates getting "pushed" from the Observer. This is doubly good with separation of concerns because the PlayCanvas app shoulnd't know Redux exists.
     observer.on('*:set', async (path, value) => {
       // const entityId = extractEntityIdFromJsonPathForObserverStructure(path)
       // TODO: try out key compare here to reduce calls to update engine, if needed. benchmark
+      // console.log('path', path)
+      // console.log('value', value)
+      // console.log('json', )
+      const jsonData: DatabaseEntity = observer.json() as DatabaseEntity
+      const entityId = jsonData.id
+
+      const engineEntity = app.root.findByGuid(entityId)
+
+      if (engineEntity) {
+        console.log('find: engine entity', engineEntity)
+      }
+
       // const currentData = observer.get(id)
       // const updatedData = observer.get();
       // updateEngineApp(updatedData);
