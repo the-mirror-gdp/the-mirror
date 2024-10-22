@@ -62,7 +62,7 @@ export const createBuildModeCameraScript = (camera) => {
 
     // create gizmo
     const gizmoLayer = new pc.Layer({
-      name: 'Gizmo',
+      name: 'Gizmos',
       clearDepthBuffer: true,
       opaqueSortMode: pc.SORTMODE_NONE,
       transparentSortMode: pc.SORTMODE_NONE
