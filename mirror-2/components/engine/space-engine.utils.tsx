@@ -33,6 +33,7 @@ export const setUpSpace = (
   // Initialize PlayCanvas app
   // const app = new pc.Application(document.getElementById('canvas'), {});
   const app = getApp()
+
   // Create a camera
   const camera = new pc.Entity('camera')
   camera.addComponent('camera', {
@@ -41,11 +42,10 @@ export const setUpSpace = (
   camera.setPosition(0, 0, 7.5)
 
   camera.addComponent('script')
-
-  const BuildModeCamera = createBuildModeCameraScript()
+  const BuildModeCamera = createBuildModeCameraScript(camera)
   camera.script.create(BuildModeCamera)
-
   app.root.addChild(camera)
+
   // Create a directional light
   const light = new pc.Entity('light')
   light.addComponent('light', {
@@ -55,14 +55,14 @@ export const setUpSpace = (
   })
   light.setEulerAngles(45, 0, 0)
   app.root.addChild(light)
-  // Create a sphere
-  const sphere = new pc.Entity('spheretest')
-  sphere.setLocalScale(1.1, 1.1, 1.1)
-  sphere.setLocalPosition(0.1, 1.1, 0.1)
-  sphere.addComponent('render', {
-    type: 'sphere'
-  })
-  app.root.addChild(sphere)
+  // // Create a sphere
+  // const sphere = new pc.Entity('spheretest')
+  // sphere.setLocalScale(1.1, 1.1, 1.1)
+  // sphere.setLocalPosition(0.1, 1.1, 0.1)
+  // sphere.addComponent('render', {
+  //   type: 'sphere'
+  // })
+  // app.root.addChild(sphere)
   app.mouse.disableContextMenu()
   // Start the application
   // app.start()

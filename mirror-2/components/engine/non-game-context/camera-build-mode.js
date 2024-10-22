@@ -1,10 +1,11 @@
 'use client'
 import { getApp } from '@/components/engine/__start-custom__'
 import * as pc from 'playcanvas'
+import { Observer } from '@playcanvas/observer'
 
-// Note: using JS for PC Script files for now since TypeScript & ES6 support seems underdocumented
+// Note: using JS for PC Script files for now since TypeScript & ES6 support seems underdocumented. Will migrate to ES6 classes in the future.
 
-export function createBuildModeCameraScript() {
+export const createBuildModeCameraScript = (camera) => {
   const app = getApp()
 
   const BuildModeCamera = pc.createScript('buildModeCamera', app)
@@ -45,7 +46,33 @@ export function createBuildModeCameraScript() {
     this.app.mouse.disableContextMenu()
     this.app.mouse.on(pc.EVENT_MOUSEMOVE, this.onMouseMove, this)
     this.app.mouse.on(pc.EVENT_MOUSEDOWN, this.onMouseDown, this)
-    this.app.mouse.on(pc.EVENT_MOUSEUP, this.onMouseUp, this)
+    this.app.mouse.on(pc.EVENT_MOUSEUP, this.onMouseUp, this);
+
+
+    // TEMP same script
+
+    // Create a sphere
+    const sphere = new pc.Entity('spheretest')
+    sphere.setLocalScale(1.1, 1.1, 1.1)
+    sphere.setLocalPosition(0.1, 1.1, 0.1)
+    sphere.addComponent('render', {
+      type: 'sphere'
+    })
+    app.root.addChild(sphere)
+
+    // create gizmo
+    const gizmoLayer = new pc.Layer({
+      name: 'Gizmo',
+      clearDepthBuffer: true,
+      opaqueSortMode: pc.SORTMODE_NONE,
+      transparentSortMode: pc.SORTMODE_NONE
+    });
+    const layers = app.scene.layers;
+    layers.push(gizmoLayer);
+    camera.camera.layers = camera.camera.layers.concat(gizmoLayer.id);
+
+    const gizmo = new pc.TranslateGizmo(app, camera.camera, gizmoLayer);
+    gizmo.attach([sphere]);
   }
 
   BuildModeCamera.prototype.update = function (dt) {
@@ -123,5 +150,8 @@ export function createBuildModeCameraScript() {
       this.app.mouse.disablePointerLock()
     }
   }
+
+
+
   return BuildModeCamera
 }
