@@ -45,7 +45,7 @@ export const setUpSpace = (
   assetListLoader.load(() => {
     app.scene.envAtlas = atlas.resource
     app.scene.skyboxMip = 1
-    app.scene.exposure = 1.5
+    app.scene.exposure = 2
   })
 
   // Create a camera
