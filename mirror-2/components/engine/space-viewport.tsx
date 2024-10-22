@@ -87,7 +87,9 @@ export default function SpaceViewport({
     ) {
       const app = initEngine()
       appRef.current = app
-      const canvas = document.getElementById(CANVAS_ID)
+      const canvas = document.getElementById(
+        CANVAS_ID
+      ) as HTMLCanvasElement | null
       canvasRef.current = canvas
 
       setEngineLoaded(true)
