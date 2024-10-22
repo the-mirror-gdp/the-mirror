@@ -676,6 +676,7 @@ function configureAndStart() {
 
       app.start();
 
+      // TODO not sure if this is the right approach to do the play/build logic here
       if (window.location.href.includes("build")) {
         setFillMode(pc.FILLMODE_NONE)
       } else if (window.location.href.includes("play")) {
@@ -688,7 +689,7 @@ function configureAndStart() {
   });
 }
 
-function initEngine() {
+async function initEngine() {
   if (typeof window === 'undefined') {
     console.warn('initEngine called on the server side; returning');
     return; // Prevent the engine from initializing on the server side
@@ -698,11 +699,23 @@ function initEngine() {
   lastWindowHeight = window.innerHeight;
   lastWindowWidth = window.innerWidth;
   windowSizeChangeIntervalHandler = null;
+
+  // physics
+  pc.WasmModule.setConfig('Ammo', {
+    glueUrl: '/scripts/ammo.wasm.js',
+    wasmUrl: '/scripts/ammo.wasm.wasm',
+    // fallbackUrl: '/scripts/ammo.js' // TODO add fallback but make it be via dynamic loading
+  })
+  await new Promise((resolve) => {
+    pc.WasmModule.getInstance('Ammo', () => resolve())
+  })
+
+
   // NOTE: I moved this out of the initial execution of the file to avoid a race condition. There may be a way to speed up loading though to bootstrap most things on page load. The issue was that the document.getElementById to append the canvas was failing because the viewport wasn't loaded yet.
   canvas = pcBootstrap.createCanvas();
   app = new pc.AppBase(canvas);
 
-  createGraphicsDevice((device) => {
+  createGraphicsDevice(async (device) => {
     if (!device) {
       return;
     }

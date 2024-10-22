@@ -59,8 +59,6 @@ export default function SpaceViewport({
   const [hasSetUpEntities, setHasSetUpEntities] = useState(false)
   const appRef = useRef<pc.AppBase | undefined>(undefined)
 
-  useAllowDisallowKeyboardPropogationForCanvas(canvasRef)
-
   // Conditionally fetch space data only if spaceId is defined
   const {
     data: space,
@@ -77,6 +75,23 @@ export default function SpaceViewport({
     error
   } = useGetAllEntitiesQuery(currentScene?.id || skipToken)
 
+  // get the canvas once the engine has been loaded
+  useEffect(() => {
+    if (engineLoaded) {
+      const canvas = document.getElementById(
+        CANVAS_ID
+      ) as HTMLCanvasElement | null
+      console.log('canvasref current', canvasRef.current)
+      canvasRef.current = canvas
+      if (!canvasRef.current) {
+        // throw new Error('Could not find canvas')
+        console.log('no canvas...')
+      } else {
+        console.log('got canvas!!')
+      }
+    }
+  }, [engineLoaded])
+
   // main engine init method
   useEffect(() => {
     if (
@@ -85,14 +100,14 @@ export default function SpaceViewport({
       !appRef.current &&
       typeof window !== 'undefined'
     ) {
-      const app = initEngine()
-      appRef.current = app
-      const canvas = document.getElementById(
-        CANVAS_ID
-      ) as HTMLCanvasElement | null
-      canvasRef.current = canvas
-
-      setEngineLoaded(true)
+      const init = async () => {
+        const app = await initEngine()
+        appRef.current = app
+        setEngineLoaded(true)
+      }
+      init().catch((e) => {
+        throw new Error(e)
+      })
     }
     return () => {
       if (engineLoaded && typeof window !== 'undefined' && appRef.current) {
@@ -133,6 +148,8 @@ export default function SpaceViewport({
     entities,
     hasSetUpEntities
   ])
+
+  useAllowDisallowKeyboardPropogationForCanvas(canvasRef)
 
   return (
     <>

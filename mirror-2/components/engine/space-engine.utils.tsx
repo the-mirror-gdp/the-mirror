@@ -5,7 +5,7 @@ import { SceneId } from '@/state/api/scenes'
 import * as pc from 'playcanvas'
 // import '@/components/engine/non-game-context/camera-build-mode.ts'
 
-export const setUpSpace = (
+export const setUpSpace = async (
   currentScene: SceneId,
   entities: DatabaseEntity[]
 ) => {
@@ -32,6 +32,7 @@ export const setUpSpace = (
   // if (entities && entities.length > 0) {
   // Initialize PlayCanvas app
   // const app = new pc.Application(document.getElementById('canvas'), {});
+
   const app = getApp()
 
   // skydome

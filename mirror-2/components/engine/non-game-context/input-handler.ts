@@ -26,7 +26,7 @@ export function useAllowDisallowKeyboardPropogationForCanvas(canvasRef) {
       if (!canvasFocused) {
         // Prevent default keyboard events if canvas isn't focused
         console.log(
-          'useAllowDisallowKeyboardPropogationForCanvas: Canvas not focused; stopping propogation'
+          `useAllowDisallowKeyboardPropogationForCanvas: Canvas not focused; stopping propogation. canvasRef is ${!!canvasRef.current}:`
         )
         event.stopPropagation()
       }
