@@ -2,8 +2,11 @@
 import { getApp } from '@/components/engine/__start-custom__'
 import * as pc from 'playcanvas'
 
+// Note: using JS for PC Script files for now since TypeScript & ES6 support seems underdocumented
+
 export function createBuildModeCameraScript() {
   const app = getApp()
+
   const BuildModeCamera = pc.createScript('buildModeCamera', app)
 
   BuildModeCamera.attributes.add('speed', {

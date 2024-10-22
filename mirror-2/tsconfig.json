@@ -34,11 +34,13 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+    "**/*.js",
     ".next/types/**/*.ts",
     "state/engine/__settings__.js",
     "state/engine/__loading__.js",
     "state/engine/__modules__.js",
-    "state/engine/__start__.js"
+    "state/engine/__start__.js",
+    "components/engine/non-game-context/camera-build-mode.js"
   ],
   "exclude": ["node_modules"]
 }

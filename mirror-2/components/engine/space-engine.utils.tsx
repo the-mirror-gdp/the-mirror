@@ -1,13 +1,8 @@
-import { useAppSelector } from '@/hooks/hooks'
-import { DatabaseEntity, useGetAllEntitiesQuery } from '@/state/api/entities'
-import { useGetSingleSpaceQuery } from '@/state/api/spaces'
-import { selectCurrentScene } from '@/state/local.slice'
-import { skipToken } from '@reduxjs/toolkit/query'
-import { useEffect, useState } from 'react'
-import * as pc from 'playcanvas'
-import { SceneId } from '@/state/api/scenes'
 import { getApp } from '@/components/engine/__start-custom__'
 import { createBuildModeCameraScript } from '@/components/engine/non-game-context/camera-build-mode'
+import { DatabaseEntity } from '@/state/api/entities'
+import { SceneId } from '@/state/api/scenes'
+import * as pc from 'playcanvas'
 // import '@/components/engine/non-game-context/camera-build-mode.ts'
 
 export const setUpSpace = (
