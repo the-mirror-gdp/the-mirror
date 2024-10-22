@@ -14,6 +14,7 @@ import { skipToken } from '@reduxjs/toolkit/query/react' // Important for condit
 import { setUpSpace } from '@/components/engine/space-engine.utils'
 import { useGetAllEntitiesQuery } from '@/state/api/entities'
 import { SpaceEngineNonGameContext } from '@/components/engine/non-game-context/space-engine-non-game-context'
+import { useAllowDisallowKeyboardPropogationForCanvas } from '@/components/engine/non-game-context/input-handler'
 
 interface SpaceViewportProps {
   spaceId?: number
@@ -58,6 +59,8 @@ export default function SpaceViewport({
   const [hasSetUpEntities, setHasSetUpEntities] = useState(false)
   const appRef = useRef<pc.AppBase | undefined>(undefined)
 
+  useAllowDisallowKeyboardPropogationForCanvas(canvasRef)
+
   // Conditionally fetch space data only if spaceId is defined
   const {
     data: space,
@@ -84,6 +87,9 @@ export default function SpaceViewport({
     ) {
       const app = initEngine()
       appRef.current = app
+      const canvas = document.getElementById(CANVAS_ID)
+      canvasRef.current = canvas
+
       setEngineLoaded(true)
     }
     return () => {

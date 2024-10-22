@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react'
 import * as pc from 'playcanvas'
 import { SceneId } from '@/state/api/scenes'
 import { getApp } from '@/components/engine/__start-custom__'
+import { createBuildModeCameraScript } from '@/components/engine/non-game-context/camera-build-mode'
+// import '@/components/engine/non-game-context/camera-build-mode.ts'
 
 export const setUpSpace = (
   currentScene: SceneId,
@@ -42,6 +44,12 @@ export const setUpSpace = (
     clearColor: new pc.Color(0.1, 0.1, 0.1)
   })
   camera.setPosition(0, 0, 7.5)
+
+  camera.addComponent('script')
+
+  const BuildModeCamera = createBuildModeCameraScript()
+  camera.script.create(BuildModeCamera)
+
   app.root.addChild(camera)
   // Create a directional light
   const light = new pc.Entity('light')
@@ -54,14 +62,15 @@ export const setUpSpace = (
   app.root.addChild(light)
   // Create a sphere
   const sphere = new pc.Entity('spheretest')
-  sphere.setLocalScale(4.1, 0.1, 0.1)
+  sphere.setLocalScale(1.1, 1.1, 1.1)
   sphere.setLocalPosition(0.1, 1.1, 0.1)
   sphere.addComponent('render', {
     type: 'sphere'
   })
   app.root.addChild(sphere)
+  app.mouse.disableContextMenu()
   // Start the application
-  app.start()
+  // app.start()
   // Set up entities in the scene
   entities.forEach((entity) => {
     // Add custom logic to set up each entity
@@ -69,4 +78,5 @@ export const setUpSpace = (
   // setHasSetUpEntities(true)
   // }
   // }, [entities, hasSetUpEntities])
+  // }, [])
 }
