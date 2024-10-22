@@ -1,8 +1,18 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript", "eslint:recommended"],
+  "extends": ["next/core-web-vitals", "next/typescript"],
   "rules": {
     "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-unused-vars": "warn",
-    "no-unused-vars": "warn"
-  }
+    "@typescript-eslint/no-unused-vars": "off"
+  },
+
+  "overrides": [
+    {
+      "files": ["*.js", "*.jsx"],
+      "excludedFiles": [],
+      "extends": ["eslint:recommended"],
+      "rules": {
+        "no-unused-vars": "warn"
+      }
+    }
+  ]
 }
