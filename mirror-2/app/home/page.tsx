@@ -8,6 +8,7 @@ import { appDescription, appName } from '@/lib/theme-service'
 import AccountDropdownMenu from '@/components/ui/account-dropdown-menu'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { useGetSpacesByUserIdQuery } from '@/state/api/spaces'
+import Header from '@/components/ui/header'
 
 const dummyImg =
   'https://images.unsplash.com/photo-1513745405825-efaf9a49315f?w=300&dpr=2&q=80'
@@ -17,22 +18,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="md:hidden hidden">
-        <Image
-          src="/examples/music-light.png"
-          width={1280}
-          height={1114}
-          alt="Music"
-          className="block dark:hidden"
-        />
-        <Image
-          src="/examples/music-dark.png"
-          width={1280}
-          height={1114}
-          alt="Music"
-          className="hidden dark:block"
-        />
-      </div>
+      <Header />
       <div className="bg-background flex">
         <Sidebar
           playlists={playlists}
@@ -51,7 +37,6 @@ export default function Home() {
                   Published Spaces from other builders.
                 </p>
               </div>
-              <AccountDropdownMenu />
             </div>
             <Separator className="my-4" />
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
