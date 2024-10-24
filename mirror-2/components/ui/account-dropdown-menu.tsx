@@ -33,6 +33,9 @@ export default function AccountDropdownMenu() {
         <DropdownMenuItem className="cursor-pointer">
           <Link href={'/my/account'}>Account Settings</Link>
         </DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer">
+          <Link href={'/user/:userId'}>User Profile</Link>
+        </DropdownMenuItem>
         {process.env.NEXT_PUBLIC_DISCORD_INVITE_URL && (
           <DropdownMenuItem className="cursor-pointer">
             <Link

@@ -6,10 +6,10 @@ import Link from 'next/link'
 import { Axis3D, Gamepad2 } from 'lucide-react'
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
-  playlists: Playlist[]
+  // playlists: Playlist[]
 }
 
-export function Sidebar({ className, style }: SidebarProps) {
+export function Sidebar({ className = '', style = {} }: SidebarProps) {
   return (
     <>
       <div

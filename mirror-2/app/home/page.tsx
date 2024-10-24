@@ -9,6 +9,7 @@ import AccountDropdownMenu from '@/components/ui/account-dropdown-menu'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { useGetSpacesByUserIdQuery } from '@/state/api/spaces'
 import Header from '@/components/ui/header'
+import Link from 'next/link'
 
 const dummyImg =
   'https://images.unsplash.com/photo-1513745405825-efaf9a49315f?w=300&dpr=2&q=80'
@@ -21,7 +22,6 @@ export default function Home() {
       <Header />
       <div className="bg-background flex">
         <Sidebar
-          playlists={playlists}
           style={{
             width: '25%'
           }}
@@ -41,35 +41,39 @@ export default function Home() {
             <Separator className="my-4" />
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {madeForYouAlbums.slice(0, 4).map((album) => (
-                <Card
-                  key={album?.name}
-                  className="rounded-none"
-                  style={{
-                    borderBottomLeftRadius: '0.75rem',
-                    borderBottomRightRadius: '0.75rem'
-                  }}
-                >
-                  <CardContent className="p-0">
-                    <Image
-                      src={album?.cover}
-                      width={250}
-                      height={250}
-                      alt={album?.name}
-                      style={{
-                        height: '250px',
-                        width: '100%'
-                      }}
-                    />
-                  </CardContent>
-                  <CardFooter>
-                    <div className="space-y-1 text-lg mt-4">
-                      <h3 className="font-medium leading-none">{album.name}</h3>
-                      <p className="text-xs text-muted-foreground">
-                        {album.artist}
-                      </p>
-                    </div>
-                  </CardFooter>
-                </Card>
+                <Link href={'/'} key={album?.name}>
+                  <Card
+                    key={album?.name}
+                    className="rounded-none"
+                    style={{
+                      borderBottomLeftRadius: '0.75rem',
+                      borderBottomRightRadius: '0.75rem'
+                    }}
+                  >
+                    <CardContent className="p-0">
+                      <Image
+                        src={album?.cover}
+                        width={250}
+                        height={250}
+                        alt={album?.name}
+                        style={{
+                          height: '250px',
+                          width: '100%'
+                        }}
+                      />
+                    </CardContent>
+                    <CardFooter>
+                      <div className="space-y-1 text-lg mt-4">
+                        <h3 className="font-medium leading-none">
+                          {album.name}
+                        </h3>
+                        <p className="text-xs text-muted-foreground">
+                          {album.artist}
+                        </p>
+                      </div>
+                    </CardFooter>
+                  </Card>
+                </Link>
               ))}
             </div>
           </div>
@@ -84,39 +88,42 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            {spaces?.length ? (
+            {listenNowAlbums?.length ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-6">
-                {spaces?.slice(0, 4).map((space) => (
-                  <Card
-                    className="rounded-none"
-                    style={{
-                      borderBottomLeftRadius: '0.75rem',
-                      borderBottomRightRadius: '0.75rem'
-                    }}
-                  >
-                    <CardContent className="p-0">
-                      <Image
-                        src={dummyImg}
-                        width={250}
-                        height={250}
-                        alt={space?.name}
-                        style={{
-                          height: '250px',
-                          width: '100%'
-                        }}
-                      />
-                    </CardContent>
-                    <CardFooter>
-                      <div className="space-y-1 text-lg mt-4">
-                        <h3 className="font-medium leading-none">
-                          {space?.name}
-                        </h3>
-                        <p className="text-xs text-muted-foreground">
-                          Created At {space?.created_at.split('T')[0]}
-                        </p>
-                      </div>
-                    </CardFooter>
-                  </Card>
+                {listenNowAlbums?.slice(0, 4).map((space) => (
+                  <Link href={`/space/${space?.id}`} key={space?.id}>
+                    <Card
+                      className="rounded-none"
+                      style={{
+                        borderBottomLeftRadius: '0.75rem',
+                        borderBottomRightRadius: '0.75rem'
+                      }}
+                    >
+                      <CardContent className="p-0">
+                        <Image
+                          src={dummyImg}
+                          width={250}
+                          height={250}
+                          alt={space?.name}
+                          style={{
+                            height: '250px',
+                            width: '100%'
+                          }}
+                        />
+                      </CardContent>
+                      <CardFooter>
+                        <div className="space-y-1 text-lg mt-4">
+                          <h3 className="font-medium leading-none">
+                            {space?.name}
+                          </h3>
+                          <p className="text-xs text-muted-foreground">
+                            Created At{' '}
+                            {space?.created_at?.split('T')[0] || '12-10-2024'}
+                          </p>
+                        </div>
+                      </CardFooter>
+                    </Card>
+                  </Link>
                 ))}
               </div>
             ) : (

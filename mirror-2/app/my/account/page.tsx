@@ -17,7 +17,6 @@ const MyAccount = () => {
       <Header />
       <div className="bg-background flex">
         <Sidebar
-          playlists={playlists}
           style={{
             width: '25%'
           }}
